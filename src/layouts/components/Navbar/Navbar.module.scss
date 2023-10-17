@@ -1,0 +1,60 @@
+.wrapper {
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        height: 80px;
+
+        .logo-container {
+            width: auto;
+            height: 70px;
+            display: inline-block;
+            font-size: 0;
+
+            .logo {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+    }
+}
+
+.wallet-wrapper {
+    width: 448px;
+    z-index: 50;
+    background: #fff;
+    border-radius: 4px;
+
+    .wallet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+
+        .wallet-title {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .wallet-close {
+            font-weight: bold;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.06);
+            }
+        }
+    }
+
+    .wallet-list {
+        padding: 8px 24px 40px;
+    }
+}
