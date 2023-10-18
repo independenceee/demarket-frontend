@@ -3,6 +3,12 @@ import { BsTrashFill as TrashIcon } from "react-icons/bs";
 import { AiOutlineClose as CloseIcon } from "react-icons/ai";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { BsChevronDown as DownIcon } from "react-icons/bs";
+import { AiFillHeart as HeartIcon } from "react-icons/ai";
+import { LuSendHorizonal as HorizonalIcon } from "react-icons/lu";
+import { FaFacebookSquare as FacebookIcon } from "react-icons/fa";
+import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
+import { BsYoutube as YoutubeIcon } from "react-icons/bs";
+
 type Props = {
     width?: string;
     height?: string;
@@ -28,4 +34,15 @@ const SearchIcon = function ({ width = "2.4rem", height = "2.4rem", className }:
     );
 };
 
-export { SearchIcon, CloseIcon, TrashIcon, AddIcon, DownIcon };
+export {
+    SearchIcon,
+    CloseIcon,
+    TrashIcon,
+    AddIcon,
+    DownIcon,
+    HeartIcon,
+    HorizonalIcon,
+    FacebookIcon,
+    LinkedinIcon,
+    YoutubeIcon,
+};

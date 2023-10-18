@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode, lazy } from "react";
 
-const LucidProvider = lazy(() => import("./LucidContext"));
+const LucidProvider = lazy(() => import("./providers/LucidProvider"));
 
 type Props = {
     children: ReactNode;

@@ -1,18 +1,6 @@
-"use client";
-
-import { Lucid, Blockfrost, fromText } from "lucid-cardano";
-import React, { useState, createContext, ReactNode } from "react";
-import { LucidContextType } from "@/types";
-
-const LucidContext = createContext<LucidContextType>(null!);
-
-// function fromText(str: string) {
-//     var hex = "";
-//     for (var i = 0; i < str.length; i++) {
-//         hex += "" + str.charCodeAt(i).toString(16);
-//     }
-//     return hex;
-// }
+import { Blockfrost, Lucid, fromText } from "lucid-cardano";
+import LucidContext from "../components/LucidContext";
+import React, { ReactNode, useEffect, useState } from "react";
 
 type Props = {
     children: ReactNode;
@@ -24,10 +12,10 @@ const LucidProvider = function ({ children }: Props) {
         try {
             const lucid = await Lucid.new(
                 new Blockfrost(
-                    "https://cardano-preview.blockfrost.io/api/v0",
-                    "previewad7caqvYiu70SZAKSYQKg3EE9WsIrcF3",
+                    "https://cardano-preprod.blockfrost.io/api/v0",
+                    "preprodMLN0qpW8GZENdqNe4ot6pwRLku7hXAF6",
                 ),
-                "Preview",
+                "Preprod",
             );
             const api = await walletApi();
 
@@ -38,13 +26,25 @@ const LucidProvider = function ({ children }: Props) {
         }
     };
 
-    const mintNft = async function (
-        title: string,
-        description: string,
-        imagePath: string,
-        metadatas: any,
-    ) {
+    useEffect(() => {
+        console.log(lucid);
+    }, [lucid]);
+
+    const mintNft = async function ({
+        title,
+        description,
+        mediaType,
+        imagePath,
+        customMetadata,
+    }: {
+        title: string;
+        description: string;
+        mediaType: string;
+        imagePath: string;
+        customMetadata: any;
+    }) {
         try {
+            console.log(lucid);
             if (lucid) {
                 const { paymentCredential }: any = lucid?.utils.getAddressDetails(
                     await lucid.wallet.address(),
@@ -59,7 +59,7 @@ const LucidProvider = function ({ children }: Props) {
                         },
                     ],
                 });
-
+                console.log("mint");
                 const policyId = lucid.utils.mintingPolicyToId(mintingPolicy!);
                 const unit = policyId + fromText(title);
 
@@ -69,8 +69,9 @@ const LucidProvider = function ({ children }: Props) {
                     .attachMetadata(721, {
                         name: title,
                         description: description,
-
-                        metadata: metadatas,
+                        image: imagePath,
+                        mediaType: mediaType,
+                        ...customMetadata,
                     })
                     .validTo(Date.now() + 200000)
                     .attachMintingPolicy(mintingPolicy!)
@@ -92,5 +93,4 @@ const LucidProvider = function ({ children }: Props) {
     );
 };
 
-export { LucidContext };
 export default LucidProvider;

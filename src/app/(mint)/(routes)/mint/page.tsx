@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useState, useContext } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import images from "@/assets/images";
 import classNames from "classnames/bind";
 import Button from "@/components/Button";
@@ -8,16 +8,29 @@ import { TrashIcon, AddIcon, DownIcon } from "@/components/Icons";
 import styles from "./Mint.module.scss";
 import Image from "next/image";
 import axios from "axios";
-import { LucidContext } from "@/contexts/LucidContext";
 import { LucidContextType } from "@/types";
+import LucidContext from "@/contexts/components/LucidContext";
 
 const cx = classNames.bind(styles);
+
+function convertMetadataToObj(metadataArray: any) {
+    const resultObj: any = {};
+
+    for (const item of metadataArray) {
+        if (item.hasOwnProperty("property") && item.hasOwnProperty("value")) {
+            resultObj[item.property] = item.value;
+        }
+    }
+
+    return resultObj;
+}
 
 type Props = {};
 
 const MintPage = function ({}: Props) {
     // image
     const [imagePath, setImagePath] = useState<string>("");
+
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>(
         "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
@@ -29,6 +42,7 @@ const MintPage = function ({}: Props) {
             setImage(event.target.files[0]);
             setImagePath(URL.createObjectURL(event.target.files[0]));
             setFileName(event.target.files[0].name);
+            setMediaType(event.target.files[0].type);
         }
     };
 
@@ -113,6 +127,10 @@ const MintPage = function ({}: Props) {
             const metadata = JSON.stringify({
                 name: "fileName",
             });
+
+            const customMetadata = convertMetadataToObj(metadatas);
+
+            console.log(customMetadata);
             formData.append("pinataMetadata", metadata);
             const options = JSON.stringify({
                 cidVersion: 0,
@@ -129,7 +147,20 @@ const MintPage = function ({}: Props) {
                 },
             );
 
-            console.log(response.data);
+            // mintNft({title,
+            //         description,
+            //         "ipfs://" + response.data.IpfsHash,
+            //         mediaType,
+            //         customMetadata,}
+            // );
+
+            mintNft({
+                title,
+                description,
+                mediaType,
+                imagePath: "ipfs://" + response.data.IpfsHash,
+                customMetadata,
+            });
         } catch (error) {
             console.log(error);
         }
@@ -272,9 +303,6 @@ const MintPage = function ({}: Props) {
                             <div className={cx("nft-container")}>
                                 <section className={cx("content")}>
                                     <div className={cx("title")}>{title}</div>
-                                    {mediaType !== "Select Your Option" ? (
-                                        <div className={cx("type")}>{mediaType}</div>
-                                    ) : null}
                                 </section>
 
                                 <section className={cx("description")}>
@@ -292,16 +320,16 @@ const MintPage = function ({}: Props) {
                     <div className={cx("container")}>
                         <h2 className={cx("title")}>Fees</h2>
                         <div className={cx("fee")}>
-                            <p>Plaform fee</p>
+                            <p>Platform fee</p>
                             <span>0.0</span>
                         </div>
                         <div className={cx("fee")}>
                             <p>Estimated Gas Fee</p>
-                            <span>0.3</span>
+                            <span>0.2</span>
                         </div>
                         <div className={cx("fee-total")}>
                             <p>Estimated Gas Fee</p>
-                            <span>0.3</span>
+                            <span>0.2</span>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import styles from "./WalletItem.module.scss";
-import { LucidContext } from "@/contexts/LucidContext";
+import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types";
 
 const cx = classNames.bind(styles);
@@ -23,7 +23,7 @@ const WalletItem = function ({
     connect,
     toggle,
 }: Props) {
-    const { connectWallet } = useContext<LucidContextType>(LucidContext);
+    const { connectWallet, mintNft } = useContext<LucidContextType>(LucidContext);
     const handleConnectWallet = async function () {
         try {
             if (checkExistWallet) {
