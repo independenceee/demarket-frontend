@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const httpRequest = axios.create({
     baseURL: process.env.NEXT_APP_BASE_URL,

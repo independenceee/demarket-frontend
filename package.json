@@ -10,15 +10,19 @@
     },
     "dependencies": {
         "@tippyjs/react": "^4.2.6",
+        "aos": "^2.3.4",
         "axios": "^1.5.1",
         "classnames": "^2.3.2",
         "lucid-cardano": "^0.10.7",
         "next": "13.5.4",
         "react": "^18",
+        "react-countup": "^6.4.2",
         "react-dom": "^18",
-        "react-icons": "^4.11.0"
+        "react-icons": "^4.11.0",
+        "react-player": "^2.13.0"
     },
     "devDependencies": {
+        "@types/aos": "^3.0.6",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",

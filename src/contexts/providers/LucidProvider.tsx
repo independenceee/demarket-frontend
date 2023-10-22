@@ -7,6 +7,7 @@ type Props = {
 };
 const LucidProvider = function ({ children }: Props) {
     const [lucid, setLucid] = useState<Lucid>();
+    const [address, setAddress] = useState<string>();
 
     const connectWallet = async function (walletApi: () => Promise<void> | any) {
         try {

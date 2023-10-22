@@ -54,24 +54,6 @@ const MintPage = function ({}: Props) {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Select Your Option");
-    const [selected, setSelected] = useState<boolean>(false);
-    const options = [
-        {
-            name: "Github",
-        },
-        {
-            name: "Github",
-        },
-    ];
-
-    const handleOpen = function () {
-        setSelected(!selected);
-    };
-
-    const handleSelected = function (option: string) {
-        setMediaType(option);
-        setSelected(false);
-    };
 
     const handleChangeTitle = function (event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value);
@@ -191,7 +173,7 @@ const MintPage = function ({}: Props) {
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>Title</h3>
                         <input
-                            placeholder=""
+                            placeholder="Title of the NFT"
                             type="text"
                             className={cx("title-control")}
                             onChange={handleChangeTitle}
@@ -203,29 +185,9 @@ const MintPage = function ({}: Props) {
                     <div className={cx("select-wrapper")}>
                         <h3 className={cx("label")}>Media Type</h3>
                         <div className={cx("container")}>
-                            <div className={cx("button-container")} onClick={handleOpen}>
+                            <div className={cx("button-container")}>
                                 <span className={cx("button-text")}>{mediaType}</span>
-                                <DownIcon className={cx("button-icon")} />
                             </div>
-                            {selected && (
-                                <ul className={cx("options")}>
-                                    {options.map(function ({ name }, index) {
-                                        return (
-                                            <li
-                                                onClick={function () {
-                                                    handleSelected(name);
-                                                }}
-                                                className={cx("option")}
-                                                key={index}
-                                            >
-                                                <span className={cx("option-text")}>
-                                                    {name}
-                                                </span>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            )}
                         </div>
                     </div>
 
@@ -234,7 +196,7 @@ const MintPage = function ({}: Props) {
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>Description</h3>
                         <textarea
-                            placeholder=""
+                            placeholder="Description of the NFT"
                             rows={15}
                             typeof="text"
                             className={cx("title-control")}

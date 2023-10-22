@@ -18,3 +18,14 @@ export type LucidContextType = {
     connectWallet: (walletApi: () => any) => Promise<void>;
     setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
 };
+
+export type Statistic = {
+    id?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    totalTransaction: number;
+    totalProduct: number;
+    totalCollection: number;
+    totalTrending: number;
+    totalAuthor: number;
+};

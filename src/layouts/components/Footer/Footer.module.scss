@@ -17,6 +17,7 @@
 }
 
 .footer__introduct {
+    padding: 0 30px;
     .footer__introduct--logo {
         width: 300px;
         height: auto;
@@ -68,6 +69,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 0 30px;
 
     .footer__contact--heading {
         color: #555;
@@ -213,14 +215,14 @@
     }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
+@media only screen and (min-width: 768px) and (max-width: 1200px) {
     .wrapper {
         justify-content: center;
         .container {
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            text-align: left;
+            text-align: center;
             gap: 20px;
             padding: 70px 8%;
 
@@ -228,7 +230,7 @@
                 display: flex;
                 text-align: center;
                 flex-direction: column;
-                justify-content: center;
+
                 align-items: center;
                 padding: 0;
 
@@ -240,7 +242,7 @@
             .footer__content {
                 text-align: center;
             }
-            .footer-contact {
+            .footer__contact {
                 padding: 0;
                 text-align: center;
                 display: flex;

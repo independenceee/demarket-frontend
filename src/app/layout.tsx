@@ -1,7 +1,9 @@
-import "./globals.scss";
-import React, { ReactNode } from "react";
-import type { Metadata } from "next";
 
+
+import "./globals.scss";
+
+import React, { ReactNode} from "react";
+import type { Metadata } from "next";
 import { DefaultLayout } from "@/layouts";
 import ContextProvider from "@/contexts";
 
@@ -15,6 +17,7 @@ type Props = {
 };
 
 const RootLayout = function ({ children }: Props) {
+    
     return (
         <html lang="en">
             <body>
