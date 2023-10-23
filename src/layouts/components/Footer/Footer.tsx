@@ -8,7 +8,7 @@ import {
     HorizonalIcon,
     HeartIcon,
     YoutubeIcon,
-    FacebookIcon,
+    TwitterIcon,
     LinkedinIcon,
 } from "@/components/Icons";
 
@@ -100,7 +100,7 @@ const Footer = function ({}: Props) {
                             <YoutubeIcon className={cx("icon")} />
                         </Link>
                         <Link href="#" className={cx("icon-link")}>
-                            <FacebookIcon className={cx("icon")} />
+                            <TwitterIcon className={cx("icon")} />
                         </Link>
                     </div>
                 </section>
