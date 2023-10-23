@@ -11,3 +11,43 @@ html {
 a {
     text-decoration: none;
 }
+:root {
+    --backgroundcolor_60: #fff;
+    --backgroundcolor_30: #f8fafd;
+    --linearcolor_befor_hover: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
+    --linearcolor_hover: (
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
+    --border: 0.1px solid #8f04a6;
+    --color_purple: #8f04a6;
+    --border_input: 0.1px solid #96999c;
+    --border_hover: 0.2px solid #d900ff;
+    --hover_shadow: 4px 10px 4px 0px rgba(0, 0, 0, 0.25);
+    --border_radius_30: 30x;
+    --border_radius_20: 20px;
+    --font_size_p: 14px;
+    --font_size_title: 16px;
+    --font_size_h1: 40px;
+    --font_size_h2: 36px;
+    --font_size_h3: 32px;
+    --font_size_h4: 28px;
+    --font_color_purble_hover: #8f04a6;
+    --font_color_white: #fff;
+    --font_color_dark: #4c4747;
+    --font_color_hover: opacity 0.5;
+    --font_weight: 700;
+}

@@ -7,6 +7,7 @@ const images = {
     flintWallet: require("./wallets/flint.svg"),
     logo: require("./logo.jpg"),
     noImage: require("./no-image.jpg"),
+    logoblur: require("./logoblur.jpg"),
 };
 
 export default images;
