@@ -1,7 +1,10 @@
+import * as dotenv from "dotenv";
 import axios from "axios";
 
+dotenv.config();
+
 const httpRequest = axios.create({
-    baseURL: process.env.NEXT_APP_BASE_URL,
+    baseURL: "https://demarket-backend.vercel.app/api/v1",
 });
 
 export const get = async function (path: string, options = {}) {

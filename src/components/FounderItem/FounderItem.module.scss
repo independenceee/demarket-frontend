@@ -5,7 +5,7 @@
     align-items: center;
     border-radius: 8px;
 
-    .image-wrapper {
+    .image__wrapper {
         background-color: rgba(0, 0, 0, 0.08);
         border-radius: 50%;
         overflow: hidden;
@@ -33,7 +33,7 @@
             }
         }
 
-        .social-icon {
+        .social__icon {
             bottom: 0;
             height: 48px;
             left: 0;
@@ -51,7 +51,7 @@
                 transparent
             );
 
-            .icon-link {
+            .icon__link {
                 position: relative;
                 align-items: center;
                 background-color: #fff;

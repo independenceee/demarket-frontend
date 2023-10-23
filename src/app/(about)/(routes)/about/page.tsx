@@ -1,30 +1,49 @@
 "use client";
 
-import React, { useEffect } from "react";
-import ReactPlayer from "react-player/youtube";
-import classNames from "classnames/bind";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import Link from "next/link";
+import ReactPlayer from "react-player/youtube";
+import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
-import Founder from "@/components/Founder";
+import FounderItem from "@/components/FounderItem";
 import styles from "./About.module.scss";
+import { get } from "@/utils/httpRequest";
+import { Founder } from "@/types";
 
 type Props = {};
-
 const cx = classNames.bind(styles);
 
 const AboutPage = function ({}: Props) {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [founders, setFounders] = useState<Founder[]>();
+
+    const fetchFounder = async function () {
+        try {
+            setLoading(true);
+            const data = await get("/founder");
+            setFounders(data);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(function () {
+        fetchFounder();
+    }, []);
+
     useEffect(function () {
         Aos.init({
             duration: 800,
-            offset: 150,
+            offset: 250,
         });
     }, []);
 
     return (
         <main className={cx("wrapper")}>
-            <div className={cx("container")}>
+            <div className={cx("container")} data-aos="fade-down">
                 <section className={cx("background__wrapper")}>
                     <div className={cx("background__container")} data-aos="fade-down">
                         <h2 className={cx("background__title")}>About Us</h2>
@@ -36,13 +55,15 @@ const AboutPage = function ({}: Props) {
                         </p>
                     </div>
                 </section>
-                <section className={cx("title__wrapper")}>
+                <section className={cx("title__wrapper")} data-aos="zoom-in">
                     <span className={cx("title__main")}>Home</span>
                     <span className={cx("title__middle")}></span>
                     <span className={cx("title__slug")}>About</span>
                 </section>
                 <section className={cx("heading__wrapper")}>
-                    <h2 className={cx("heading__title")}>About Us</h2>
+                    <h2 className={cx("heading__title")} data-aos="fade-up">
+                        About Us
+                    </h2>
                 </section>
                 <section className={cx("about__wrapper")}>
                     <div className={cx("about__container")}>
@@ -85,19 +106,30 @@ const AboutPage = function ({}: Props) {
                 </section>
                 <section className={cx("founder__wrapper")}>
                     <header className={cx("founder__header")}>
-                        <h2 className={cx("founder__title")}>Our Foundation</h2>
-                        <p className={cx("founder__description")}>
+                        <h2 className={cx("founder__title")} data-aos="fade-up">
+                            Our Foundation
+                        </h2>
+                        <p className={cx("founder__description")} data-aos="fade-up">
                             We are impartial and independent, and every day we create
                             distinctive, world-class programmes and develop
                         </p>
                     </header>
                     <div className={cx("founder__container")}>
-                        <Founder />
-                        <Founder />
-                        <Founder />
-                        <Founder />
-                        <Founder />
-                        <Founder />
+                        {founders?.map(function (founder: Founder, index: number) {
+                            return (
+                                <FounderItem
+                                    index={index}
+                                    role={founder.role}
+                                    twitter={founder.twitter}
+                                    linkedin={founder.linkedin}
+                                    lastName={founder.lastName}
+                                    fistName={founder.fistName}
+                                    company={founder.company}
+                                    avatar={founder.avatar}
+                                    key={index}
+                                />
+                            );
+                        })}
                     </div>
                 </section>
             </div>

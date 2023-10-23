@@ -29,3 +29,26 @@ export type Statistic = {
     totalTrending: number;
     totalAuthor: number;
 };
+
+export type Founder = {
+    avatar: string;
+    company: string;
+    createdAt?: string;
+    fistName: string;
+    id?: string;
+    lastName: string;
+    role: string;
+    twitter: string;
+    linkedin: string;
+    updatedAt?: string;
+};
+
+export type Guide = {
+    createdAt?: string;
+    description: string;
+    id?: string;
+    question: string;
+    title: string;
+    updatedAt?: string;
+    url: string;
+};

@@ -4,55 +4,98 @@ import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
 import { Statistic } from "@/types";
-import { get } from "@/utils/httpRequest";
 import styles from "./Statistics.module.scss";
-const cx = classNames.bind(styles);
-
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { get } from "@/utils/httpRequest";
 import axios from "axios";
+const cx = classNames.bind(styles);
 
 type Props = {};
 const Statistics = function ({}: Props) {
     const [statistics, setStatistics] = useState<Statistic>();
     const fetchStatistics = async function () {
         try {
-            const response = await axios.get(
-                "https://demarket-backend.vercel.app/api/v1/guide",
-            );
-            setStatistics(response.data);
-            console.log(statistics);
+            setStatistics(await get("/statistics"));
         } catch (error) {
             console.log(error);
         }
     };
+    useEffect(
+        function () {
+            fetchStatistics();
+        },
+        [statistics],
+    );
+
     useEffect(function () {
-        fetchStatistics();
+        Aos.init({
+            duration: 800,
+            offset: 150,
+        });
     }, []);
 
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper")} data-aos="fade-up">
             <div className={cx("container")}>
                 <ul className={cx("statistics")}>
-                    <li className={cx("statistic")}>
+                    <li
+                        className={cx("statistic")}
+                        data-aos="fade-up"
+                        data-aos-duration="500"
+                    >
                         <h2>
-                            <CountUp start={0} end={3250} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalProduct || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>PRODUCT</p>
                     </li>
-                    <li className={cx("statistic")}>
+                    <li
+                        className={cx("statistic")}
+                        data-aos="fade-up"
+                        data-aos-duration="1000"
+                    >
                         <h2>
-                            <CountUp start={0} end={17112003} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalTransaction || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>COLLECTION</p>
                     </li>
-                    <li className={cx("statistic")}>
+                    <li
+                        className={cx("statistic")}
+                        data-aos="fade-up"
+                        data-aos-duration="1500"
+                    >
                         <h2>
-                            <CountUp start={0} end={3000} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalTrending || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>TRENDING</p>
                     </li>
-                    <li className={cx("statistic")}>
+                    <li
+                        className={cx("statistic")}
+                        data-aos="fade-up"
+                        data-aos-duration="2000"
+                    >
                         <h2>
-                            <CountUp start={0} end={122334} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalAuthor || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>AUTHOR</p>
                     </li>
