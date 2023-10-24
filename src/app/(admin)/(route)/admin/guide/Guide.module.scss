@@ -1,0 +1,115 @@
+.container {
+    font-size: 12px;
+    width: calc((100% - 100px));
+    margin: auto;
+    .wrapper {
+        width: 100%;
+        .header {
+            margin: 30px 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .search {
+                position: relative;
+                width: 300px;
+                height: 40px;
+                .icon {
+                    position: absolute;
+                    left: 10px;
+                    top: calc(50% - 8px);
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    span {
+                        display: flex;
+                        align-self: center;
+                    }
+                }
+                input {
+                    line-height: 100%;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    outline: none;
+                    padding-left: 40px;
+                    border-radius: 8px;
+                    border: 0.5px solid rgba(0, 0, 0, 0.25);
+                    background: #f8fafd;
+                    font-style: italic;
+                    font-size: 12px;
+                    color: var(--font_color_dark);
+                }
+            }
+        }
+        .content {
+            table {
+                border: 0.1px solid #4c4747;
+                border-bottom: 0;
+                border-radius: 8px;
+                font-weight: 400 !important;
+                width: 100%;
+                thead {
+                    width: 100%;
+                    height: 40px;
+                }
+                tbody {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+.row {
+    th,
+    td {
+        font-weight: 400;
+        box-sizing: border-box;
+    }
+    border-bottom: 0.1px solid #4c4747;
+    align-items: center;
+    min-height: 40px;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+    .col1 {
+        flex: 0.5;
+        padding-left: 10px;
+    }
+    .col2 {
+        flex: 0.5;
+        text-align: center;
+    }
+    .col3 {
+        flex: 2;
+    }
+    .col4 {
+        flex: 1;
+        text-align: center;
+    }
+    .col5 {
+        flex: 1;
+    }
+
+    .col6 {
+        flex: 1;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        span {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            &.deleteicon:hover {
+                color: rgb(203, 66, 66);
+            }
+            &.editicon:hover {
+                color: rgb(14, 227, 131);
+            }
+        }
+    }
+}

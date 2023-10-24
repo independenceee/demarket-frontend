@@ -22,7 +22,7 @@ type TitleProviderProps = {
 };
 
 export const TitleProvider = ({ children }: TitleProviderProps) => {
-    const [title, setTitle] = useState("Default Title");
+    const [title, setTitle] = useState("Category");
 
     return (
         <TitleContext.Provider value={{ title, setTitle }}>

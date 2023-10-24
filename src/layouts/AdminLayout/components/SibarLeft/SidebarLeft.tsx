@@ -5,7 +5,7 @@ import styles from "./SidebarLeft.module.scss";
 import images from "@/assets/images";
 import Image from "next/image";
 import Link from "next/link";
-import { useTitle } from "../contexts/TitleContext"; // Import useTitle
+import { useTitle } from "../../contexts/TitleContext"; // Import useTitle
 import { BiCategory, BiUser, BiBook, BiLogOut } from "react-icons/bi";
 
 const cx = classNames.bind(styles);

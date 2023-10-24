@@ -4,7 +4,7 @@ import SidebarHead from "./components/SidebarHead/SidebarHead";
 import SidebarLeft from "./components/SibarLeft/SidebarLeft";
 import classNames from "classnames/bind";
 import styles from "./AdminLayout.module.scss";
-import { TitleProvider } from "./components/contexts/TitleContext";
+import { TitleProvider } from "./contexts/TitleContext";
 const cx = classNames.bind(styles);
 type Prop = {
     children: ReactNode;
