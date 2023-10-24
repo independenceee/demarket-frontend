@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import styles from "./SidebarHead.module.scss";
 import images from "@/assets/images";
-import { useTitle } from "../contexts/TitleContext";
+import { useTitle } from "../../contexts/TitleContext";
 import { IoMdNotificationsOutline } from "react-icons/io";
 
 import classNames from "classnames/bind";
