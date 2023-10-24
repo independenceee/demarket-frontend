@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 import Image from "next/image";
 import classNames from "classnames/bind";
 import styles from "./Guide.module.scss";
@@ -13,6 +12,7 @@ import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 const cx = classNames.bind(styles);
 const Guide = () => {
+    const [isSaw, setIsSaw] = useState(0);
     function getFileNameFromPath(filePath: string) {
         const parts = filePath.split("/");
         const fileName = parts[parts.length - 1];
@@ -31,102 +31,103 @@ const Guide = () => {
         // Tạo chuỗi ngày/tháng/năm
         return `${day}/${month}/${year}`;
     };
+    const [currentId, setCurrentId] = useState(0);
     const data = [
         {
             id: 1,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 2,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 3,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 4,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 5,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 6,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 7,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 8,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 9,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 10,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 11,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
         {
             id: 12,
-            avatar: "@/src/assets/images/wallets/gero.webp",
+            avatar: "/assets/images/logo.jpg",
             title: "Guide 1",
             description:
                 "We're impartial and independent, and every day we create distinctive, world-class programmes and develop...",
-            video: "@/src/assets/images/wallets/gero.webp",
+            video: "/assets/images/logo.jpg",
         },
     ];
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -137,6 +138,15 @@ const Guide = () => {
 
     const handlePageChange = (page: React.SetStateAction<number>) => {
         setCurrentPage(page);
+    };
+    const handlerShow = (id: React.SetStateAction<number>) => {
+        if (currentId != id) {
+            setIsSaw(id);
+            setCurrentId(id);
+        } else {
+            setIsSaw(0);
+            setCurrentId(0);
+        }
     };
     return (
         <div className={cx("container")}>
@@ -173,33 +183,103 @@ const Guide = () => {
                                 let pathAvatar = getFileNameFromPath(data.avatar);
                                 let pathVideo = getFileNameFromPath(data.video);
                                 return (
-                                    <tr className={cx("row")} key={data.id}>
-                                        <th className={cx("col1")}>{data.id}</th>
-                                        <th className={cx("col2")}>{data.title}</th>
-                                        <th className={cx("col3")}>{data.description}</th>
-                                        <th className={cx("col4")}>{pathAvatar}</th>
-                                        <th className={cx("col5")}>{pathVideo}</th>
-                                        <th className={cx("col6")}>
-                                            <span
-                                                className={cx("deleteicon")}
-                                                onClick={() => handlerEdit(data.id)}
-                                            >
-                                                <AiOutlineDelete />
-                                            </span>
-                                            <span
-                                                className={cx("eyeicon")}
-                                                onClick={() => handlerEdit(data.id)}
-                                            >
-                                                <AiOutlineEye />
-                                            </span>
-                                            <span
-                                                className={cx("editicon")}
-                                                onClick={() => handlerDelete(data.id)}
-                                            >
-                                                <FiEdit />
-                                            </span>
-                                        </th>
-                                    </tr>
+                                    <div
+                                        className={cx("box_item", "box_displayItem")}
+                                        key={data.id}
+                                    >
+                                        <tr className={cx("row")}>
+                                            <th className={cx("col1")}>{data.id}</th>
+                                            <th className={cx("col2")}>{data.title}</th>
+                                            <th className={cx("col3")}>
+                                                {data.description}
+                                            </th>
+                                            <th className={cx("col4")}>{pathAvatar}</th>
+                                            <th className={cx("col5")}>{pathVideo}</th>
+                                            <th className={cx("col6")}>
+                                                <span
+                                                    className={cx("deleteicon")}
+                                                    onClick={() => handlerEdit(data.id)}
+                                                >
+                                                    <AiOutlineDelete />
+                                                </span>
+                                                <span
+                                                    className={cx("eyeicon")}
+                                                    onClick={() => handlerShow(data.id)}
+                                                >
+                                                    <AiOutlineEye />
+                                                </span>
+                                                <span
+                                                    className={cx("editicon")}
+                                                    onClick={() => handlerDelete(data.id)}
+                                                >
+                                                    <FiEdit />
+                                                </span>
+                                            </th>
+                                        </tr>
+                                        {isSaw === data.id && (
+                                            <div className={cx("displayItem")}>
+                                                <div
+                                                    className={cx(
+                                                        "box_image",
+                                                        "box_displayItem",
+                                                    )}
+                                                >
+                                                    <div className={cx("image")}>
+                                                        <Image
+                                                            src={data.avatar}
+                                                            alt="Picture"
+                                                            width={134}
+                                                            height={125}
+                                                        />
+                                                    </div>
+                                                    <span>Picture</span>
+                                                </div>
+                                                <div
+                                                    className={cx(
+                                                        "box_video",
+                                                        "box_displayItem",
+                                                    )}
+                                                >
+                                                    <div className={cx("video")}>
+                                                        <Image
+                                                            src={data.video}
+                                                            alt="Picture"
+                                                            width={134}
+                                                            height={125}
+                                                        ></Image>
+                                                    </div>
+                                                    <span>Video</span>
+                                                </div>
+                                                <div
+                                                    className={cx(
+                                                        "box_id",
+                                                        "box_displayItem",
+                                                    )}
+                                                >
+                                                    <span>ID</span>
+                                                    <span>{data.id}</span>
+                                                </div>
+                                                <div
+                                                    className={cx(
+                                                        "box_title",
+                                                        "box_displayItem",
+                                                    )}
+                                                >
+                                                    <span>Title</span>
+                                                    <span>{data.title}</span>
+                                                </div>
+                                                <div
+                                                    className={cx(
+                                                        "box_description",
+                                                        "box_displayItem",
+                                                    )}
+                                                >
+                                                    <span>Description</span>
+                                                    <span>{data.description}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 );
                             })}
                         </tbody>

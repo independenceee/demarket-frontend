@@ -55,6 +55,55 @@
                 }
                 tbody {
                     width: 100%;
+                    .box_item {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        .displayItem {
+                            margin-top: 40px;
+                            padding-bottom: 40px;
+                            justify-content: center;
+                            display: flex;
+                            gap: 10px;
+                            border-bottom: 0.1px solid #4c4747;
+                            .box_displayItem {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 10px;
+                            }
+                            .box_image {
+                                .image {
+                                    width: 134px;
+                                    height: 124px;
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                    }
+                                }
+                            }
+                            .box_video {
+                                .video {
+                                    width: 134px;
+                                    height: 124px;
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                    }
+                                }
+                            }
+                            .box_id {
+                                width: 100px;
+                            }
+                            .box_title {
+                                width: 100px;
+                            }
+                            .box_description {
+                                width: 400px;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -78,11 +127,10 @@
         padding-left: 10px;
     }
     .col2 {
-        flex: 0.5;
-        text-align: center;
+        flex: 1;
     }
     .col3 {
-        flex: 2;
+        flex: 6;
     }
     .col4 {
         flex: 1;

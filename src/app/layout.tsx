@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     title: "Demarket",
     description: "Demarket",
 };
-
 type Props = {
     children: ReactNode;
 };
