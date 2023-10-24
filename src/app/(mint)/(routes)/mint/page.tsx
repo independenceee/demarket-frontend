@@ -4,7 +4,7 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import images from "@/assets/images";
 import classNames from "classnames/bind";
 import Button from "@/components/Button";
-import { TrashIcon, AddIcon, DownIcon } from "@/components/Icons";
+import { TrashIcon, AddIcon } from "@/components/Icons";
 import styles from "./Mint.module.scss";
 import Image from "next/image";
 import axios from "axios";
@@ -30,7 +30,6 @@ type Props = {};
 const MintPage = function ({}: Props) {
     // image
     const [imagePath, setImagePath] = useState<string>("");
-
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>(
         "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
@@ -112,7 +111,6 @@ const MintPage = function ({}: Props) {
 
             const customMetadata = convertMetadataToObj(metadatas);
 
-            console.log(customMetadata);
             formData.append("pinataMetadata", metadata);
             const options = JSON.stringify({
                 cidVersion: 0,
@@ -128,13 +126,6 @@ const MintPage = function ({}: Props) {
                     },
                 },
             );
-
-            // mintNft({title,
-            //         description,
-            //         "ipfs://" + response.data.IpfsHash,
-            //         mediaType,
-            //         customMetadata,}
-            // );
 
             mintNft({
                 title,
@@ -173,7 +164,7 @@ const MintPage = function ({}: Props) {
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>Title</h3>
                         <input
-                            placeholder="Title of the NFT"
+                            placeholder="Enter your title"
                             type="text"
                             className={cx("title-control")}
                             onChange={handleChangeTitle}
@@ -197,7 +188,7 @@ const MintPage = function ({}: Props) {
                         <h3 className={cx("label")}>Description</h3>
                         <textarea
                             placeholder="Description of the NFT"
-                            rows={15}
+                            rows={10}
                             typeof="text"
                             className={cx("title-control")}
                             onChange={handleChangeDescription}

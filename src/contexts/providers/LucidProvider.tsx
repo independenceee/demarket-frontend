@@ -1,4 +1,4 @@
-import { Blockfrost, Lucid, fromText } from "lucid-cardano";
+import { Blockfrost, Lucid, SpendingValidator, fromText } from "lucid-cardano";
 import LucidContext from "../components/LucidContext";
 import React, { ReactNode, useEffect, useState } from "react";
 
@@ -27,10 +27,6 @@ const LucidProvider = function ({ children }: Props) {
         }
     };
 
-    useEffect(() => {
-        console.log(lucid);
-    }, [lucid]);
-
     const mintNft = async function ({
         title,
         description,
@@ -45,7 +41,6 @@ const LucidProvider = function ({ children }: Props) {
         customMetadata: any;
     }) {
         try {
-            console.log(lucid);
             if (lucid) {
                 const { paymentCredential }: any = lucid?.utils.getAddressDetails(
                     await lucid.wallet.address(),
@@ -60,7 +55,7 @@ const LucidProvider = function ({ children }: Props) {
                         },
                     ],
                 });
-                console.log("mint");
+
                 const policyId = lucid.utils.mintingPolicyToId(mintingPolicy!);
                 const unit = policyId + fromText(title);
 
@@ -68,20 +63,30 @@ const LucidProvider = function ({ children }: Props) {
                     .newTx()
                     .mintAssets({ [unit]: BigInt(1) })
                     .attachMetadata(721, {
-                        name: title,
-                        description: description,
-                        image: imagePath,
-                        mediaType: mediaType,
-                        ...customMetadata,
+                        [policyId]: {
+                            [title]: {
+                                name: title,
+                                description: description,
+                                image: imagePath,
+                                mediaType: mediaType,
+                                ...customMetadata,
+                            },
+                        },
                     })
                     .validTo(Date.now() + 200000)
                     .attachMintingPolicy(mintingPolicy!)
                     .complete();
 
                 const signedTx = await tx.sign().complete();
-
-                const txHash = await signedTx.submit();
+                await signedTx.submit();
             }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const listAssetsFromSmartContract = async function () {
+        try {
         } catch (error) {
             console.log(error);
         }
