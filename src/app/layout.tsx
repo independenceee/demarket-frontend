@@ -1,6 +1,6 @@
 import "./globals.scss";
 
-import React, { Children, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import type { Metadata } from "next";
 import { DefaultLayout } from "@/layouts";
 import ContextProvider from "@/contexts";
@@ -19,8 +19,8 @@ const RootLayout = function ({ children }: Props) {
         <html lang="en">
             <body>
                 <ContextProvider>
-                    {/* <DefaultLayout>{children}</DefaultLayout> */}
-                    <AdminLayout>{children}</AdminLayout>
+                    <DefaultLayout>{children}</DefaultLayout>
+                    {/* <AdminLayout>{children}</AdminLayout> */}
                 </ContextProvider>
             </body>
         </html>

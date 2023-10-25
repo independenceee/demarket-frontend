@@ -6,6 +6,8 @@ import styles from "./Collection.module.scss";
 import Button from "@/components/Button";
 import Image from "next/image";
 import images from "@/assets/images";
+import axios from "axios";
+import { post } from "@/utils/httpRequest";
 const cx = classNames.bind(styles);
 type Props = {};
 
@@ -58,6 +60,28 @@ const CollectionPage = function ({}: Props) {
 
     const handleSubmit = async function () {
         try {
+            const formData = new FormData();
+            formData.append("cover", imageBackground);
+            formData.append("avatar", imageItemFile);
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("url", "url");
+            formData.append("accountId", "67bfc8b0-ca42-49c0-9bcb-eed34d0cd357");
+            // const response = await axios.post(
+            //     `http://localhost:5000/api/v1/collection?destination=/images/collection`,
+            //     formData,
+            // );
+
+            const response = await axios.post(
+                `https://demarket-backend.vercel.app/api/v1/collection?destination=/images/collection`,
+                formData,
+            );
+
+            // const response = await post(
+            //     "/collection?destination=/images/collection",
+            //     formData,
+            // );
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -122,14 +146,7 @@ const CollectionPage = function ({}: Props) {
                     </div>
                     {/* title-end */}
                     {/* select-begin */}
-                    <div className={cx("select-wrapper")}>
-                        <h3 className={cx("label")}>Media Type</h3>
-                        <div className={cx("container")}>
-                            <div className={cx("button-container")}>
-                                <span className={cx("button-text")}>{mediaType}</span>
-                            </div>
-                        </div>
-                    </div>
+
                     {/* select-end */}
                     {/* description-begin */}
                     <div className={cx("title-wrapper")}>
@@ -186,7 +203,7 @@ const CollectionPage = function ({}: Props) {
                     </div>
                     {/* button-begin */}
                     <div className={cx("button-wrapper")}>
-                        <Button>CREATE</Button>
+                        <Button onClick={handleSubmit}>CREATE</Button>
                     </div>
                     {/* button-end */}
                 </section>
