@@ -1,0 +1,121 @@
+.wrapper {
+    width: 209px;
+    height: 313px;
+    border-radius: 8px;
+    border: 0.5px solid #8f04a6;
+    opacity: 1;
+    background: #f8fafd;
+    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.1);
+
+    &:hover {
+        opacity: 1;
+    }
+
+    .container {
+        padding: 4px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.image__wrapper {
+    border-radius: 8px;
+    height: 200px;
+    width: 100%;
+
+    .image {
+        border-radius: inherit;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    .content__title {
+        text-align: center;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        color: #7000ff;
+    }
+}
+
+.information {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    background: #e4eeef;
+    padding: 6.5px 0px;
+
+    .author {
+        display: flex;
+        align-items: center;
+        padding: 0 4px;
+        .avatar {
+            display: flex;
+            width: 26px;
+            height: 26px;
+            justify-content: center;
+            align-items: center;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 9px;
+        }
+
+        .name {
+            color: #4c4747;
+            text-align: center;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+        }
+    }
+    .price {
+        text-align: center;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        padding: 0 8px;
+        color: #4c4747;
+    }
+}
+
+.policyId {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    .policyId__name {
+        text-align: center;
+        color: #4c4747;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    .policyId__value {
+        font-size: 10px;
+        font-weight: 600;
+        color: #4c4747;
+    }
+
+    .icon__wrapper {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #7000ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        cursor: pointer;
+    }
+}
