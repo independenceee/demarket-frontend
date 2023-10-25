@@ -22,6 +22,12 @@ const LucidProvider = function ({ children }: Props) {
 
             lucid.selectWallet(api);
             setLucid(lucid);
+
+            const addressConnect = await lucid.wallet.address();
+            setAddress(addressConnect);
+            console.log(address);
+            const utxos = await lucid.wallet.getUtxos();
+            console.log(utxos);
         } catch (error) {
             console.log(error);
         }
