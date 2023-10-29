@@ -1,6 +1,10 @@
 import { Lucid } from "lucid-cardano";
 
 export type LucidContextType = {
+    lucid: Lucid | undefined;
+    connectWallet: (walletApi: () => any) => Promise<void>;
+    setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
+    metadataFromAddress: any;
     mintNft: ({
         title,
         description,
@@ -14,9 +18,33 @@ export type LucidContextType = {
         imagePath: string;
         customMetadata: any;
     }) => Promise<void>;
-    lucid: Lucid | undefined;
-    connectWallet: (walletApi: () => any) => Promise<void>;
-    setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
+    sellAssetService: ({
+        policyId,
+        assetName,
+        author,
+        seller,
+        price,
+        lucid,
+        royalties,
+    }: {
+        policyId: string;
+        assetName: string;
+        seller: string;
+        author: string;
+        price: bigint;
+        royalties: bigint;
+        lucid: Lucid;
+    }) => Promise<void>;
+
+    buyAssetService: ({
+        policyId,
+        assetName,
+        lucid,
+    }: {
+        policyId: string;
+        assetName: string;
+        lucid: Lucid;
+    }) => Promise<void>;
 };
 
 export type Statistic = {

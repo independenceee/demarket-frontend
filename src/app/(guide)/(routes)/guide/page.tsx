@@ -27,12 +27,6 @@ const GuidePage = function ({}: Props) {
         fetchGuides();
     }, []);
 
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 150,
-        });
-    }, []);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
