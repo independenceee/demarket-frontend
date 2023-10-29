@@ -33,7 +33,7 @@ const NftContainer = function ({ data }: Props) {
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 {currentItems.map(function (value: any, index: number) {
-                    return <NftItem key={index} />;
+                    return <NftItem key={index} value={value} />;
                 })}
             </div>
             <ReactPaginate

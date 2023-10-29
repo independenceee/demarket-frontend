@@ -6,14 +6,16 @@ import styles from "./NftItem.module.scss";
 import images from "@/assets/images";
 
 const cx = classNames.bind(styles);
-type Props = {};
+type Props = {
+    value: any;
+};
 
-const NftItem = function ({}: Props) {
+const NftItem = function ({ value }: Props) {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("image__wrapper")}>
-                    <Image className={cx("image")} src={images.background} alt="" />
+                    <img className={cx("image")} src={value.image} alt="" />
                 </section>
                 <section className={cx("content")}>
                     <h3 className={cx("content__title")}>The Dark world</h3>

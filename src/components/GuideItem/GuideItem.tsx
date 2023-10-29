@@ -21,12 +21,7 @@ const GuideItem = function ({ url, index }: Props) {
     const handleOpen = function () {
         setOpened(!opened);
     };
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 150,
-        });
-    }, []);
+
     return (
         <div className={cx("wrapper")}>
             <header className={cx("header")} onClick={handleOpen}>
@@ -55,7 +50,6 @@ const GuideItem = function ({ url, index }: Props) {
                         nec mauris congue, sit amet faucibus nisl dictum. Nullam in urna
                         tincidunt, fringilla nisl a, efficitur neque.
                     </p>
-                    
                 </div>
             )}
         </div>

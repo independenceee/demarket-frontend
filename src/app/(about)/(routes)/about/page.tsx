@@ -34,13 +34,6 @@ const AboutPage = function ({}: Props) {
         fetchFounder();
     }, []);
 
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 250,
-        });
-    }, []);
-
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")} data-aos="fade-down">

@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Autoplay, Navigation, Pagination, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "aos/dist/aos.css";
@@ -15,12 +15,14 @@ import images from "@/assets/images";
 import styles from "./Home.module.scss";
 import NftContainer from "@/components/NftContainer";
 import TopCollection from "@/components/TopCollection";
+import LucidContext from "@/contexts/components/LucidContext";
+import { LucidContextType } from "@/types";
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    useEffect(function () {});
+    const { metadataFromAddress } = useContext<LucidContextType>(LucidContext);
 
     useEffect(function () {
         Aos.init({
@@ -138,7 +140,7 @@ const Home = function ({}: Props) {
                         </p>
                     </header>
 
-                    <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]} />
+                    <NftContainer data={metadataFromAddress} />
                 </section>
                 <section className={cx("trending__wrapper")}>
                     <header className={cx("header")}>
@@ -191,7 +193,7 @@ const Home = function ({}: Props) {
                             tempting to dive right into picking fonts.
                         </p>
                     </header>
-                    <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]} />
+                    {/* <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]} /> */}
                 </section>
                 <section className={cx("collection")}>
                     <header className={cx("header")}>
