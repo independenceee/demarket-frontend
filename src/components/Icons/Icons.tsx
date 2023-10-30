@@ -4,11 +4,16 @@ import { AiOutlineClose as CloseIcon } from "react-icons/ai";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { BsChevronDown as DownIcon } from "react-icons/bs";
 import { AiFillHeart as HeartIcon } from "react-icons/ai";
+import { AiOutlineHeart as UnHeartIcon } from "react-icons/ai";
 import { LuSendHorizonal as HorizonalIcon } from "react-icons/lu";
 import { FaXTwitter as TwitterIcon } from "react-icons/fa6";
 import { BiLogoLinkedin as LinkedinIcon } from "react-icons/bi";
 import { BsYoutube as YoutubeIcon } from "react-icons/bs";
 import { FaTelegramPlane as TelegramIcon } from "react-icons/fa";
+import { GiCheckMark as CheckIcon } from "react-icons/gi";
+import { AiOutlineEye as EyeIcon } from "react-icons/ai";
+import { AiOutlineEyeInvisible as EyeVisibleIcon } from "react-icons/ai";
+import { IoIosArrowDropdownCircle as ArrowDropdownCircleIcon } from "react-icons/io";
 
 type Props = {
     width?: string;
@@ -76,4 +81,9 @@ export {
     LinkedinIcon,
     YoutubeIcon,
     TelegramIcon,
+    CheckIcon,
+    EyeVisibleIcon,
+    EyeIcon,
+    UnHeartIcon,
+    ArrowDropdownCircleIcon,
 };

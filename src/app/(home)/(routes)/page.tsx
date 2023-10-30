@@ -22,14 +22,10 @@ type Props = {};
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { metadataFromAddress } = useContext<LucidContextType>(LucidContext);
+    const { metadataFromAddress, assetsFromAsset } =
+        useContext<LucidContextType>(LucidContext);
 
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 250,
-        });
-    }, []);
+    console.log(metadataFromAddress);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -140,7 +136,7 @@ const Home = function ({}: Props) {
                         </p>
                     </header>
 
-                    <NftContainer data={metadataFromAddress} />
+                    <NftContainer data={[1]} />
                 </section>
                 <section className={cx("trending__wrapper")}>
                     <header className={cx("header")}>

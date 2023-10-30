@@ -17,6 +17,7 @@ import sellAssetService from "@/services/sellAssetService";
 import buyAssetService from "@/services/buyAssetService";
 import * as cbor from "cbor";
 import demarketValidator from "@/libs";
+import axios from "axios";
 
 function hexToString(hex: string) {
     var string = "";
@@ -39,11 +40,12 @@ const LucidProvider = function ({ children }: Props) {
         try {
             const lucid = await Lucid.new(
                 new Blockfrost(
-                    "https://cardano-preview.blockfrost.io/api/v0",
-                    "previewad7caqvYiu70SZAKSYQKg3EE9WsIrcF3",
+                    "https://cardano-preprod.blockfrost.io/api/v0",
+                    "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
                 ),
-                "Preview",
+                "Preprod",
             );
+
             const api = await walletApi();
 
             lucid.selectWallet(api);
@@ -121,54 +123,89 @@ const LucidProvider = function ({ children }: Props) {
         }
     };
 
-    // useEffect(
-    //     function () {
-    //         const fetchMetadataFromAddress = async function () {
-    //             try {
-    //                 const response = await axios.post(
-    //                     "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
-    //                     {
-    //                         _addresses: [address],
-    //                     },
-    //                 );
+    const burnNft = async function (policyId: string, assetName: string) {
+        if (lucid) {
+            const { paymentCredential }: any = lucid?.utils.getAddressDetails(
+                await lucid.wallet.address(),
+            );
+            const mintingPolicy = lucid?.utils.nativeScriptFromJson({
+                type: "all",
+                scripts: [
+                    { type: "sig", keyHash: paymentCredential.hash },
+                    {
+                        type: "before",
+                        slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000),
+                    },
+                ],
+            });
 
-    //                 const policyAssetArray: any = [];
+            // const policyId = lucid.utils.mintingPolicyToId(mintingPolicy!);
+            const unit = policyId + assetName;
+            console.log(unit);
 
-    //                 await response.data[0].asset_list.forEach(
-    //                     async ({ policy_id, asset_name }: any) => {
-    //                         const response = await axios.post(
-    //                             "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
-    //                             {
-    //                                 policyId: policy_id,
-    //                                 assetName: hexToString(asset_name),
-    //                             },
-    //                         );
+            const tx = await lucid
+                .newTx()
+                .mintAssets({ [unit]: BigInt(-1) })
 
-    //                         const data = await response.data.onchain_metadata;
+                .validTo(Date.now() + 200000)
+                .attachMintingPolicy(mintingPolicy!)
+                .complete();
 
-    //                         if (data) {
-    //                             policyAssetArray.push({
-    //                                 ...data,
-    //                                 policyId: policy_id,
-    //                                 assetName: asset_name,
-    //                             });
-    //                         }
-    //                         setMetadataFromAddress(policyAssetArray);
-    //                     },
-    //                 );
-    //                 console.log(metadataFromAddress);
-    //             } catch (error) {
-    //                 console.log(error);
-    //             }
-    //         };
+            const signedTx = await tx.sign().complete();
+            await signedTx.submit();
+        }
+        try {
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    //         // fetchMetadataFromAddress();
-    //         listAssetsFromContract();
-    //     },
-    //     [address, metadataFromAddress],
-    // );
+    useEffect(
+        function () {
+            const fetchMetadataFromAddress = async function () {
+                try {
+                    const response = await axios.post(
+                        "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
+                        {
+                            _addresses: [address],
+                        },
+                    );
 
+                    const policyAssetArray: any = [];
 
+                    await response.data[0].asset_list.forEach(
+                        async ({ policy_id, asset_name }: any) => {
+                            const response = await axios.post(
+                                "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
+                                {
+                                    policyId: policy_id,
+                                    assetName: hexToString(asset_name),
+                                },
+                            );
+
+                            const data = await response.data.onchain_metadata;
+
+                            if (data) {
+                                policyAssetArray.push({
+                                    ...data,
+                                    policyId: policy_id,
+                                    assetName: asset_name,
+                                });
+                            }
+                            setMetadataFromAddress(policyAssetArray);
+                        },
+                    );
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+
+            fetchMetadataFromAddress();
+        },
+        [address],
+    );
+
+    console.log(metadataFromAddress);
     useEffect(function () {
         const fetchAssetsFromContractAddress = async function () {
             setAssetsFromAsset(await listAssetsFromContract());
@@ -180,13 +217,15 @@ const LucidProvider = function ({ children }: Props) {
     return (
         <LucidContext.Provider
             value={{
+                metadataFromAddress,
                 lucid,
+                assetsFromAsset,
                 connectWallet,
                 setLucid,
                 mintNft,
-                metadataFromAddress,
                 sellAssetService,
                 buyAssetService,
+                burnNft,
             }}
         >
             {children}

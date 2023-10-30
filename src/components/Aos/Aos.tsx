@@ -12,7 +12,7 @@ const Aos = function ({}: Props) {
             offset: 250,
             easing: "ease-out-cubic",
             once: true,
-            delay: 400,
+            // delay: 400,
         });
     }, []);
     return null;
