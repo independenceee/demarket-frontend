@@ -5,6 +5,7 @@ export type LucidContextType = {
     connectWallet: (walletApi: () => any) => Promise<void>;
     setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
     metadataFromAddress: any;
+    assetsFromAsset: Array<any>;
     mintNft: ({
         title,
         description,
@@ -45,6 +46,8 @@ export type LucidContextType = {
         assetName: string;
         lucid: Lucid;
     }) => Promise<void>;
+
+    burnNft: (policyId: string, assetName: string) => Promise<void>;
 };
 
 export type Statistic = {

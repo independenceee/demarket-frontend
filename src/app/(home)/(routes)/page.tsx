@@ -6,8 +6,6 @@ import "swiper/css/scrollbar";
 import React, { useContext, useEffect } from "react";
 import { Autoplay, Navigation, Pagination, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "aos/dist/aos.css";
-import Aos from "aos";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
@@ -17,19 +15,15 @@ import NftContainer from "@/components/NftContainer";
 import TopCollection from "@/components/TopCollection";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types";
+import NftItem from "@/components/NftItem";
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { metadataFromAddress } = useContext<LucidContextType>(LucidContext);
+    const { metadataFromAddress, assetsFromAsset } =
+        useContext<LucidContextType>(LucidContext);
 
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 250,
-        });
-    }, []);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -98,11 +92,7 @@ const Home = function ({}: Props) {
                             className={cx("background__slider-container")}
                         >
                             <SwiperSlide className={cx("background__slider-image")}>
-                                <Image
-                                    className={cx("image")}
-                                    src={images.background}
-                                    alt="slide_image"
-                                />
+                                <NftItem value={[]} index={1} />
                             </SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
                                 <Image
@@ -140,7 +130,7 @@ const Home = function ({}: Props) {
                         </p>
                     </header>
 
-                    <NftContainer data={metadataFromAddress} />
+                    <NftContainer data={[1]} />
                 </section>
                 <section className={cx("trending__wrapper")}>
                     <header className={cx("header")}>

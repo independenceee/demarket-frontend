@@ -54,6 +54,7 @@ const buyAssetService = async function ({
         console.log("No redeemable utxo found. You need to wait a little longer...");
         process.exit(1);
     }
+
     const exchange_fee = BigInt((parseInt(assetFilter.price) * 1) / 100);
 
     console.log(redeemer);
@@ -75,13 +76,14 @@ const buyAssetService = async function ({
                 lovelace: assetFilter.royalties,
             },
         ) // Gui tien cho nguoi mua
-        .collectFrom(filterAssets, Data.void())
+        .collectFrom(filterAssets, redeemer)
         .attachSpendingValidator(validator)
         .complete();
 
     const signedTx = await tx.sign().complete();
     console.log(signedTx);
     const txHash = await signedTx.submit();
+
     console.log(txHash);
     await lucid.awaitTx(txHash);
 

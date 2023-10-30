@@ -9,13 +9,14 @@ import NftItem from "../NftItem";
 const cx = classNames.bind(styles);
 type Props = {
     data: Array<any>;
+    itemsPerPage?: number;
 };
 
-const NftContainer = function ({ data }: Props) {
+const NftContainer = function ({ data, itemsPerPage = 8 }: Props) {
     const [currentItems, setCurrentItems] = useState<any>([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0);
-    const itemsPerPage = 8;
+
     useEffect(
         function () {
             const endOffset = itemOffset + itemsPerPage;
@@ -33,7 +34,7 @@ const NftContainer = function ({ data }: Props) {
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 {currentItems.map(function (value: any, index: number) {
-                    return <NftItem key={index} value={value} />;
+                    return <NftItem key={index} value={value} index={index} />;
                 })}
             </div>
             <ReactPaginate

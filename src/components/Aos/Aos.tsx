@@ -11,8 +11,8 @@ const Aos = function ({}: Props) {
             duration: 1000,
             offset: 250,
             easing: "ease-out-cubic",
-            once: true,
-            delay: 400,
+            // once: true,
+            // delay: 400,
         });
     }, []);
     return null;

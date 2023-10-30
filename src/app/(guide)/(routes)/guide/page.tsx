@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Aos from "aos";
-import "aos/dist/aos.css";
+
 import classNames from "classnames/bind";
 import { get } from "@/utils/httpRequest";
 import GuideItem from "@/components/GuideItem";
