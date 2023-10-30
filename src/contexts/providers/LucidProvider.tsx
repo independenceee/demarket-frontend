@@ -205,7 +205,6 @@ const LucidProvider = function ({ children }: Props) {
         [address],
     );
 
-    console.log(metadataFromAddress);
     useEffect(function () {
         const fetchAssetsFromContractAddress = async function () {
             setAssetsFromAsset(await listAssetsFromContract());

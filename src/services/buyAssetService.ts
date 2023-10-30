@@ -76,13 +76,14 @@ const buyAssetService = async function ({
                 lovelace: assetFilter.royalties,
             },
         ) // Gui tien cho nguoi mua
-        .collectFrom(filterAssets)
+        .collectFrom(filterAssets, redeemer)
         .attachSpendingValidator(validator)
         .complete();
 
     const signedTx = await tx.sign().complete();
     console.log(signedTx);
     const txHash = await signedTx.submit();
+
     console.log(txHash);
     await lucid.awaitTx(txHash);
 

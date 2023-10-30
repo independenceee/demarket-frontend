@@ -216,3 +216,73 @@
         }
     }
 }
+
+.backgound__wrapper {
+    background-image: url("../../../../assets/images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: calc(100vh - 80px);
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+
+    .background__content {
+        max-width: 600px;
+        color: #ffffff;
+        z-index: 10;
+
+        .background__content-title {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .background__content-slug {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .background__content-description {
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .button__wrapper {
+            width: 350px;
+            display: flex;
+            height: 50px;
+            position: relative;
+            gap: 35px;
+
+            .button {
+                border-radius: 8px;
+                outline: none;
+                text-align: center;
+                width: 180px;
+                height: 45px;
+                border: none;
+                color: #ffffff;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 500;
+
+                background: linear-gradient(
+                    90deg,
+                    #8f04a6 0%,
+                    #c0f 0%,
+                    #7000ff 39.36%,
+                    rgba(44, 0, 219, 0.91) 63.12%,
+                    rgba(4, 0, 203, 0.89) 79.64%,
+                    #1400ff 99.32%
+                );
+            }
+        }
+    }
+}
