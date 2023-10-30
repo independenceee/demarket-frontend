@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import type { Metadata } from "next";
-import LucidProvider from "@/contexts/providers/LucidProvider";
 
 export const metadata: Metadata = {
     title: "Marketpace - Demarket",
