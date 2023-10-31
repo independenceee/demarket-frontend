@@ -10,6 +10,7 @@
     gap: 50px;
 
     .content__left {
+        flex: 0.3;
         position: sticky;
         top: 20px;
         display: flex;
@@ -19,9 +20,13 @@
     }
 
     .content__right {
+        flex: 0.7;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
     }
 }
-
 
 .content__search {
     padding: 20px 20px;
@@ -178,14 +183,43 @@
 
         .content__filter--group {
             display: flex;
+            gap: 12px;
             align-items: center;
             justify-content: space-between;
 
             .content__filter--name {
-                font-size: 18px;
+                display: flex;
+                align-items: center;
+                font-size: 20px;
                 font-style: normal;
                 font-weight: 400;
                 color: #4c4747;
+
+                .content__filter--icon {
+                    width: 25px;
+                    height: 25px;
+                    color: #4c4747;
+                }
+                span {
+                    color: #4c4747;
+                    margin-left: 12px;
+                    font-size: 12px;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            }
+            .content__filter--description {
+                color: #4c4747;
+                flex: 1;
+                font-size: 12px;
+                text-align: left;
+                font-weight: 600;
+            }
+
+            .content__filter--value {
+                font-size: 16px;
+                font-weight: 600;
+                color: rgba(121, 34, 227, 0.95);
             }
 
             input[type="checkbox"] {
@@ -221,5 +255,44 @@
                 left: 20px;
             }
         }
+    }
+}
+
+.follower__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .follower__header {
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 600;
+        background: linear-gradient(
+            90deg,
+            #8f04a6 0%,
+            #c0f 0%,
+            #7000ff 39.36%,
+            rgba(44, 0, 219, 0.91) 63.12%,
+            rgba(4, 0, 203, 0.89) 79.64%,
+            #1400ff 99.32%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .follower__container {
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content__left {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .content__left {
+        display: none !important;
     }
 }

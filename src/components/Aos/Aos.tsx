@@ -9,9 +9,9 @@ const Aos = function ({}: Props) {
     useEffect(function () {
         AOS.init({
             duration: 1000,
-            offset: 250,
+            offset: 100,
             easing: "ease-out-cubic",
-            // once: true,
+            once: true,
             // delay: 400,
         });
     }, []);
