@@ -1,16 +1,15 @@
 .wrapper {
-    width: 209px;
+    width: 100%;
     height: 313px;
     border-radius: 8px;
     border: 0.5px solid #8f04a6;
     opacity: 1;
     background: #f8fafd;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
-    transition: all 0.5s ease-in-out;
+    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
 
     &:hover {
-        // transform: translateY(-3px);
-        scale: (1.02);
+        scale: 1.05;
         box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.1);
     }
 

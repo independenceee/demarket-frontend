@@ -251,6 +251,24 @@
 }
 
 @media screen and (max-width: 768px) {
+    .background__wrapper {
+        .background__container {
+            .background__title {
+                font-size: 40px;
+            }
+
+            .background__description {
+                font-size: 16px;
+                max-width: 600px;
+            }
+        }
+    }
+
+    .founder__wrapper {
+        .founder__container {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
     .about__container {
         padding: 0;
 

@@ -9,6 +9,7 @@ const images = {
     noImage: require("./no-image.jpg"),
     logoblur: require("./logoblur.jpg"),
     background: require("./background.jpg"),
+    user: require("./user.jpg"),
 };
 
 export default images;
