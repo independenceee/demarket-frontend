@@ -99,6 +99,7 @@
 }
 
 .background__slider-container {
+    height: 100%;
     .background__slider-image {
         background: #ffffff;
         border-radius: 8px;
@@ -157,6 +158,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
+
     height: calc(100vh - 80px);
     padding: 0 10%;
     display: flex;

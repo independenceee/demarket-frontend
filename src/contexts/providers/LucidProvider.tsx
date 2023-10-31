@@ -2,6 +2,7 @@
 
 import {
     Blockfrost,
+    Constr,
     Data,
     Lucid,
     SpendingValidator,
@@ -15,7 +16,7 @@ import LucidContext from "../components/LucidContext";
 import React, { ReactNode, useEffect, useState } from "react";
 import sellAssetService from "@/services/sellAssetService";
 import buyAssetService from "@/services/buyAssetService";
-import * as cbor from "cbor";
+
 import demarketValidator from "@/libs";
 import axios from "axios";
 
@@ -145,7 +146,7 @@ const LucidProvider = function ({ children }: Props) {
 
             const tx = await lucid
                 .newTx()
-                .mintAssets({ [unit]: BigInt(-1) })
+                .mintAssets({ [unit]: BigInt(-1) }, Data.to(new Constr(0, [])))
 
                 .validTo(Date.now() + 200000)
                 .attachMintingPolicy(mintingPolicy!)
