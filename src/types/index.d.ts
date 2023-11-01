@@ -46,6 +46,15 @@ export type LucidContextType = {
         assetName: string;
         lucid: Lucid;
     }) => Promise<void>;
+    refundAssetService: ({
+        policyId,
+        assetName,
+        lucid,
+    }: {
+        policyId: string;
+        assetName: string;
+        lucid: Lucid;
+    }) => Promise<void>;
 
     burnNft: (policyId: string, assetName: string) => Promise<void>;
 };

@@ -15,7 +15,7 @@
         "@tippyjs/react": "^4.2.6",
         "aos": "^2.3.4",
         "axios": "^1.5.1",
-        "cbor": "^9.0.1",
+        "cbor-x": "^1.5.4",
         "classnames": "^2.3.2",
         "dotenv": "^16.3.1",
         "lucid-cardano": "^0.10.7",

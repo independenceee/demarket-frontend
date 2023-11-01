@@ -2,6 +2,7 @@
 
 import {
     Blockfrost,
+    Constr,
     Data,
     Lucid,
     SpendingValidator,
@@ -15,8 +16,7 @@ import LucidContext from "../components/LucidContext";
 import React, { ReactNode, useEffect, useState } from "react";
 import sellAssetService from "@/services/sellAssetService";
 import buyAssetService from "@/services/buyAssetService";
-import * as cbor from "cbor";
-import demarketValidator from "@/libs";
+import refundAssetService from "@/services/refundAssetService";
 import axios from "axios";
 
 function hexToString(hex: string) {
@@ -145,7 +145,7 @@ const LucidProvider = function ({ children }: Props) {
 
             const tx = await lucid
                 .newTx()
-                .mintAssets({ [unit]: BigInt(-1) })
+                .mintAssets({ [unit]: BigInt(-1) }, Data.to(new Constr(0, [])))
 
                 .validTo(Date.now() + 200000)
                 .attachMintingPolicy(mintingPolicy!)
@@ -224,6 +224,7 @@ const LucidProvider = function ({ children }: Props) {
                 mintNft,
                 sellAssetService,
                 buyAssetService,
+                refundAssetService,
                 burnNft,
             }}
         >

@@ -3,14 +3,15 @@ import {
     Data,
     Lucid,
     SpendingValidator,
-    TxHash,
     fromHex,
+    fromText,
     toHex,
+    C,
 } from "lucid-cardano";
-import * as cbor from "cbor";
-import demarketValidator from "@/libs";
+import * as cbor from "cbor-x";
+import demarketValidator, { contractAddress } from "@/libs";
 
-export const DatumList = Data.Object({
+export const DatumInitial = Data.Object({
     policyId: Data.Bytes(),
     assetName: Data.Bytes(),
     seller: Data.Bytes(),
@@ -18,8 +19,9 @@ export const DatumList = Data.Object({
     price: Data.Integer(),
     royalties: Data.Integer(),
 });
-export type Datum = Data.Static<typeof DatumList>;
-export const Datum = DatumList as unknown as Datum;
+
+export type Datum = Data.Static<typeof DatumInitial>;
+export const Datum = DatumInitial as unknown as Datum;
 
 const lucidService = async function (): Promise<Lucid> {
     const lucid = await Lucid.new(
@@ -34,6 +36,7 @@ const lucidService = async function (): Promise<Lucid> {
 
 const readValidator = async function (): Promise<SpendingValidator> {
     const validator = demarketValidator[0];
+
     return {
         type: "PlutusV2",
         script: toHex(cbor.encode(fromHex(validator.compiledCode))),
@@ -45,15 +48,13 @@ const listAssetsFromContract = async function () {
         const lucid = await lucidService();
         const validator = await readValidator();
         const addressContract = lucid.utils.validatorToAddress(validator);
-        const scriptAssets = await lucid.utxosAt(
-            "addr_test1wprcwf2qagr3dtlc895tyq06dx2nkyg7fwaujp6mkxrsl4qm79qyq",
-        );
+        const scriptAssets = await lucid.utxosAt(addressContract);
 
+        console.log(contractAddress);
         const assets = scriptAssets.map(function (asset: any, index) {
             const datum = Data.from<Datum>(asset.datum, Datum);
             return datum;
         });
-
         return assets;
     } catch (error) {
         console.log(error);

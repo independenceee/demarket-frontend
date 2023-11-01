@@ -1,8 +1,8 @@
 import { Data, Lucid, SpendingValidator, fromHex, toHex } from "lucid-cardano";
-import * as cbor from "cbor";
+import * as cbor from "cbor-x";
 import demarketValidator from "@/libs";
 
-const DatumInitial = Data.Object({
+export const DatumInitial = Data.Object({
     policyId: Data.Bytes(),
     assetName: Data.Bytes(),
     seller: Data.Bytes(),
@@ -11,8 +11,8 @@ const DatumInitial = Data.Object({
     royalties: Data.Integer(),
 });
 
-type Datum = Data.Static<typeof DatumInitial>;
-const Datum = DatumInitial as unknown as Datum;
+export type Datum = Data.Static<typeof DatumInitial>;
+export const Datum = DatumInitial as unknown as Datum;
 
 const readValidator = async function (): Promise<SpendingValidator> {
     const validator = demarketValidator[0];

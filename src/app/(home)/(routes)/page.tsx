@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Autoplay, Navigation, Pagination, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
@@ -108,12 +108,6 @@ const Home = function ({}: Props) {
                                     alt="slide_image"
                                 />
                             </SwiperSlide>
-
-                            <div className="slider-controler">
-                                {/* <div className="swiper-button-prev slider-arrow"></div>
-                                <div className="swiper-button-next slider-arrow"></div> */}
-                                {/* <div className="swiper-pagination"></div> */}
-                            </div>
                         </Swiper>
                     </div>
                 </section>
