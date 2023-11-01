@@ -1,122 +1,4 @@
-// import {
-//     Data,
-//     Lucid,
-//     SpendingValidator,
-//     fromHex,
-//     toHex,
-//     Redeemer,
-//     Constr,
-// } from "lucid-cardano";
-// import { encode } from "cbor";
-// import demarketValidator from "@/libs";
-
-// const DatumInitial = Data.Object({
-//     policyId: Data.Bytes(),
-//     assetName: Data.Bytes(),
-//     seller: Data.Bytes(),
-//     author: Data.Bytes(),
-//     price: Data.Integer(),
-//     royalties: Data.Integer(),
-// });
-
-// type Datum = Data.Static<typeof DatumInitial>;
-// const Datum = DatumInitial as unknown as Datum;
-
-// const redeemer: Redeemer = Data.void();
-
-// const readValidator = async function (): Promise<SpendingValidator> {
-//     const validator = demarketValidator[0];
-//     return {
-//         type: "PlutusV2",
-//         script: toHex(encode(fromHex(validator.compiledCode))),
-//     };
-// };
-
-// const buyAssetService = async function ({
-//     policyId,
-//     assetName,
-//     lucid,
-// }: {
-//     policyId: string;
-//     assetName: string;
-//     lucid: Lucid;
-// }) {
-//     const validator = await readValidator();
-//     const contractAddress = lucid.utils.validatorToAddress(validator);
-//     const assets = await lucid.utxosAt(contractAddress);
-//     let assetFilter: any;
-//     const filterAssets = assets.filter(function (asset: any, index: number) {
-//         try {
-//             const template = Data.from<Datum>(asset.datum, Datum);
-//             if (template.policyId == policyId && template.assetName == assetName) {
-//                 assetFilter = Data.from<Datum>(asset.datum, Datum);
-//                 return true;
-//             }
-//             return false;
-//         } catch (error) {
-//             return false;
-//         }
-//     });
-
-//     if (filterAssets.length === 0) {
-//         console.log("No redeemable utxo found. You need to wait a little longer...");
-//         process.exit(1);
-//     }
-
-//     const exchange_fee = BigInt((parseInt(assetFilter.price) * 1) / 100);
-
-//     console.log(redeemer);
-//     console.log(filterAssets);
-//     console.log(assetFilter);
-//     const tx = await lucid
-//         .newTx()
-//         .payToAddress(
-//             "addr_test1qqwxne57v0ahe04dy3jjpxqmp8ewmtaypx0tfu46c8h6wkg7659tg5e2hjvkapfq8pph66kau3vc06c04gu3drjcgnhshmzl0z",
-//             { lovelace: assetFilter.price },
-//         ) // Gui tien cho nguoi ban
-//         .payToAddress(
-//             "addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg",
-//             { lovelace: exchange_fee },
-//         ) // Phi san
-//         .payToAddress(
-//             "addr_test1qqwxne57v0ahe04dy3jjpxqmp8ewmtaypx0tfu46c8h6wkg7659tg5e2hjvkapfq8pph66kau3vc06c04gu3drjcgnhshmzl0z",
-//             {
-//                 lovelace: assetFilter.royalties,
-//             },
-//         ) // Gui tien cho nguoi mua
-
-//         .collectFrom(filterAssets, Data.to(new Constr(0, [])))
-//         .attachSpendingValidator(validator)
-//         // .addSigner("1c69e69e63fb7cbead246520981b09f2edafa4099eb4f2bac1efa759")
-//         .complete();
-
-//     const signedTx = await tx.sign().complete();
-//     console.log(signedTx);
-//     const txHash = await signedTx.submit();
-
-//     console.log(txHash);
-//     await lucid.awaitTx(txHash);
-
-//     try {
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-
-// export default buyAssetService;
-
-// import module tu cac thu vien
-import {
-    Blockfrost,
-    C,
-    Constr,
-    Data,
-    Lucid,
-    SpendingValidator,
-    TxHash,
-    fromHex,
-    toHex,
-} from "lucid-cardano";
+import { Data, Lucid, SpendingValidator, fromHex, toHex } from "lucid-cardano";
 import * as cbor from "cbor-x";
 import demarketValidator from "@/libs";
 
@@ -145,27 +27,7 @@ async function readValidator(): Promise<SpendingValidator> {
     };
 }
 
-/**
-   "validators": [
-        {
-            "title": "contract.contract",
-            "datum": {
-                "title": "datum",
-                "schema": {
-                    "$ref": "#/definitions/contract~1Datum"
-                }
-            },
-            "redeemer": {
-                "title": "_redeemer",
-                "schema": {
-                    "$ref": "#/definitions/Void"
-                }
-            },
-            "compiledCode": "59043b01000032323232323232323232322223253330093232323232323232323253330133370e9001000899299980a0018a511323232323232323232533301d0011533301d3371e6eb8cc064c06c0612004375c6603260360309003099191919299981099b8948010c00400c4c8cdc4a40046004002660080064660180026eb4cc078c080075200814a0600200244a6660480022900009919b8048008cc00c00c004c09c004cc00403894ccc07ccc020004c028dd71980d980e80d240082660120026eb4cc06cc074069200a14a044646600200200644a666048002297ae01323253330233005002133027002330040040011330040040013028002302600114a229414ccc0714ccc0714ccc070cdd7801a6103d87a800014a2266ebc00930103d87a800014a2266ebc00530103d87a800014a02944ccc00c02c01d300150d8799fd8799f581c3a4e6757f24d9dddb65c8aef60d0999957b3650453e5e7721fb4fd42ffd8799fd8799fd8799f581c32798960f1b4dc35be90add0d31aed0e3019ea0e47288296a5737e60ffffffff0033300200a375a6602c603002a900518029bae33016301801548018ccc004024dd69980a980b80a2401060086eb8cc054c05c0512004222323300100100422533302000114c0103d87a800013232533301f533301f3300900200613300800200514a0266e952000330230024bd70099802002000981200118110009119baf3301530173301530170024800120003301530170014800088cdc480099191919299980e19b874800800452000132375a60440026034004603400264a66603666e1d200200114c103d87a800013232323300100100222533302200114c103d87a800013232323253330233371e9110000213374a9000198139ba80014bd700998030030019bad3024003375c6044004604c00460480026eacc084004c064008c064004c8cc004004008894ccc078004530103d87a8000132323232533301f3371e9110000213374a9000198119ba60014bd700998030030019bab3020003375c603c004604400460400026eaccc050c058009200223374a90001980d19ba548000cc068dd4800a5eb80cc06930103d87a80004bd7019b833370490011bad33010301200f4802120c801301100714a0602200c646644646600200200644a66603200229404c8c94ccc060cdc78010028a51133004004001301d002375c60360026eb0cc038c0400212010001375c6601a601e01890021bac301500130150013014001300b00330110013011002300f0013007002149858c94ccc024cdc3a40000022646464646464646464646464a66603060360042930b1bad30190013019002375a602e002602e0046eb8c054004c054008dd7180980098098011bae30110013011002375c601e002600e0082c600e0066600200290001111199980399b8700100300c233330050053370000890011807000801001118029baa001230033754002ae6955ceaab9e5573eae815d0aba21",
-            "hash": "600cf113ded768e1a98a61f214a7ad0f9eb39d38ee8ac9ab4619d56a"
-        }
-    ],
- */
+
 
 const DatumInitial = Data.Object({
     policyId: Data.Bytes(),
@@ -241,7 +103,6 @@ const buyAssetService = async function ({
 
             const signedTx = await tx.sign().complete();
 
-            // Gui giao dich len onchain
             const txUnlock = await signedTx.submit();
             await lucid.awaitTx(txUnlock);
             console.log(txUnlock);

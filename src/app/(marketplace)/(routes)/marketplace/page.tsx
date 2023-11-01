@@ -17,15 +17,29 @@ const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
-    const { buyAssetService, burnNft, sellAssetService, lucid } =
+    const { buyAssetService, burnNft, sellAssetService, lucid, refundAssetService } =
         useContext<LucidContextType>(LucidContext);
     const handleBuyNft = async function () {
         try {
             if (lucid) {
                 const txHash = await buyAssetService({
                     lucid: lucid,
-                    policyId: "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44",
-                    assetName: "53746172",
+                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
+                    assetName: "4b6761",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRefurnAsset = async function () {
+        try {
+            if (lucid) {
+                const txHash = await refundAssetService({
+                    lucid: lucid,
+                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
+                    assetName: "4b6761",
                 });
             }
         } catch (error) {
@@ -37,8 +51,8 @@ const MarketplacePage = function ({}: Props) {
         try {
             if (lucid) {
                 const txHash = await sellAssetService({
-                    policyId: "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44",
-                    assetName: "53746172",
+                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
+                    assetName: "4b6761",
                     author: "1c69e69e63fb7cbead246520981b09f2edafa4099eb4f2bac1efa759",
                     lucid: lucid,
                     price: BigInt(100000000),
@@ -310,6 +324,7 @@ const MarketplacePage = function ({}: Props) {
 
             <button onClick={handleBuyNft}>Buy</button>
             <button onClick={handleSellNft}>Sell</button>
+            <button onClick={handleRefurnAsset}>Refurn</button>
             <button onClick={handleBurnNft}>Burn</button>
         </div>
     );

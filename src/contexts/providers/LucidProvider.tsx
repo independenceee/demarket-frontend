@@ -16,8 +16,7 @@ import LucidContext from "../components/LucidContext";
 import React, { ReactNode, useEffect, useState } from "react";
 import sellAssetService from "@/services/sellAssetService";
 import buyAssetService from "@/services/buyAssetService";
-
-import demarketValidator from "@/libs";
+import refundAssetService from "@/services/refundAssetService";
 import axios from "axios";
 
 function hexToString(hex: string) {
@@ -225,6 +224,7 @@ const LucidProvider = function ({ children }: Props) {
                 mintNft,
                 sellAssetService,
                 buyAssetService,
+                refundAssetService,
                 burnNft,
             }}
         >

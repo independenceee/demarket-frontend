@@ -4,7 +4,9 @@ import {
     Lucid,
     SpendingValidator,
     fromHex,
+    fromText,
     toHex,
+    C,
 } from "lucid-cardano";
 import * as cbor from "cbor-x";
 import demarketValidator, { contractAddress } from "@/libs";
