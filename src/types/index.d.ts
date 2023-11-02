@@ -1,32 +1,30 @@
 import { Lucid } from "lucid-cardano";
 
-export type LucidContextType = {
-    lucid: Lucid | undefined;
-    connectWallet: (walletApi: () => any) => Promise<void>;
-    setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
-    metadataFromAddress: any;
-    assetsFromAsset: Array<any>;
-    mintNft: ({
-        title,
-        description,
-        mediaType,
-        imagePath,
-        customMetadata,
+export type LucidContextType = {};
+
+export type DemarketContextType = {
+    buyAssetService: ({
+        lucid,
+        sellerAddress,
+        royaltiesAddress,
+        policyId,
+        assetName,
     }: {
-        title: string;
-        description: string;
-        mediaType: string;
-        imagePath: string;
-        customMetadata: any;
+        lucid: Lucid;
+        sellerAddress: string;
+        royaltiesAddress: string;
+        policyId: string;
+        assetName: string;
     }) => Promise<void>;
+
     sellAssetService: ({
         policyId,
         assetName,
-        author,
         seller,
+        author,
         price,
-        lucid,
         royalties,
+        lucid,
     }: {
         policyId: string;
         assetName: string;
@@ -37,26 +35,31 @@ export type LucidContextType = {
         lucid: Lucid;
     }) => Promise<void>;
 
-    buyAssetService: ({
-        policyId,
-        assetName,
-        lucid,
-    }: {
-        policyId: string;
-        assetName: string;
-        lucid: Lucid;
-    }) => Promise<void>;
     refundAssetService: ({
+        lucid,
         policyId,
         assetName,
-        lucid,
     }: {
+        lucid: Lucid;
         policyId: string;
         assetName: string;
-        lucid: Lucid;
     }) => Promise<void>;
 
-    burnNft: (policyId: string, assetName: string) => Promise<void>;
+    mintAssetService: ({
+        lucid,
+        title,
+        description,
+        imageUrl,
+        mediaType,
+        customMetadata,
+    }: {
+        lucid: Lucid;
+        title: string;
+        description: string;
+        mediaType: string;
+        imageUrl: string;
+        customMetadata: any;
+    }) => Promise<any>;
 };
 
 export type Statistic = {

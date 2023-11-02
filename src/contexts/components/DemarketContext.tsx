@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { LucidContextType } from "@/types";
+import { DemarketContextType } from "@/types";
 
-const DemarketContext = createContext<LucidContextType>(null!);
+const DemarketContext = createContext<DemarketContextType>(null!);
 
 export default DemarketContext;

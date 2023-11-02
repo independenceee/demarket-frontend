@@ -1,22 +1,9 @@
 "use client";
 
-import {
-    Blockfrost,
-    Constr,
-    Data,
-    Lucid,
-    SpendingValidator,
-    fromHex,
-    fromText,
-    toHex,
-} from "lucid-cardano";
+import { Blockfrost, Constr, Data, Lucid, fromText, C } from "lucid-cardano";
 
-import listAssetsFromContract from "@/services/listAssetsService";
 import LucidContext from "../components/LucidContext";
 import React, { ReactNode, useEffect, useState } from "react";
-import sellAssetService from "@/services/sellAssetService";
-import buyAssetService from "@/services/buyAssetService";
-import refundAssetService from "@/services/refundAssetService";
 import axios from "axios";
 
 function hexToString(hex: string) {
@@ -32,7 +19,6 @@ type Props = {
 };
 const LucidProvider = function ({ children }: Props) {
     const [lucid, setLucid] = useState<Lucid>();
-    const [assetsFromAsset, setAssetsFromAsset] = useState<any>();
     const [metadataFromAddress, setMetadataFromAddress] = useState<any>([]);
     const [address, setAddress] = useState<string>();
 
@@ -54,12 +40,16 @@ const LucidProvider = function ({ children }: Props) {
             const addressConnect = await lucid.wallet.address();
             setAddress(addressConnect);
 
-            const ownerPublicKeyHash =
-                lucid.utils.getAddressDetails(addressConnect).paymentCredential?.hash;
+            const ownerPublicKeyHash = lucid.utils.getAddressDetails(addressConnect).paymentCredential?.hash;
             console.log(ownerPublicKeyHash);
-            // const ownerPublicKeyHash = lucid.utils.getAddressDetails(
-            //     await lucid.wallet.address(),
-            // ).paymentCredential.hash;
+
+            const payment_credential = lucid.utils.getAddressDetails(await lucid.wallet.address()).paymentCredential;
+
+            const stake_credential = lucid.utils.getAddressDetails(await lucid.wallet.address()).stakeCredential;
+
+            let address = lucid.utils.credentialToAddress(payment_credential!, stake_credential);
+
+            console.log(address);
         } catch (error) {
             console.log(error);
         }
@@ -80,9 +70,7 @@ const LucidProvider = function ({ children }: Props) {
     }) {
         try {
             if (lucid) {
-                const { paymentCredential }: any = lucid?.utils.getAddressDetails(
-                    await lucid.wallet.address(),
-                );
+                const { paymentCredential }: any = lucid?.utils.getAddressDetails(await lucid.wallet.address());
                 const mintingPolicy = lucid?.utils.nativeScriptFromJson({
                     type: "all",
                     scripts: [
@@ -125,9 +113,7 @@ const LucidProvider = function ({ children }: Props) {
 
     const burnNft = async function (policyId: string, assetName: string) {
         if (lucid) {
-            const { paymentCredential }: any = lucid?.utils.getAddressDetails(
-                await lucid.wallet.address(),
-            );
+            const { paymentCredential }: any = lucid?.utils.getAddressDetails(await lucid.wallet.address());
             const mintingPolicy = lucid?.utils.nativeScriptFromJson({
                 type: "all",
                 scripts: [
@@ -173,28 +159,26 @@ const LucidProvider = function ({ children }: Props) {
 
                     const policyAssetArray: any = [];
 
-                    await response.data[0].asset_list.forEach(
-                        async ({ policy_id, asset_name }: any) => {
-                            const response = await axios.post(
-                                "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
-                                {
-                                    policyId: policy_id,
-                                    assetName: hexToString(asset_name),
-                                },
-                            );
+                    await response.data[0].asset_list.forEach(async ({ policy_id, asset_name }: any) => {
+                        const response = await axios.post(
+                            "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
+                            {
+                                policyId: policy_id,
+                                assetName: hexToString(asset_name),
+                            },
+                        );
 
-                            const data = await response.data.onchain_metadata;
+                        const data = await response.data.onchain_metadata;
 
-                            if (data) {
-                                policyAssetArray.push({
-                                    ...data,
-                                    policyId: policy_id,
-                                    assetName: asset_name,
-                                });
-                            }
-                            setMetadataFromAddress(policyAssetArray);
-                        },
-                    );
+                        if (data) {
+                            policyAssetArray.push({
+                                ...data,
+                                policyId: policy_id,
+                                assetName: asset_name,
+                            });
+                        }
+                        setMetadataFromAddress(policyAssetArray);
+                    });
                 } catch (error) {
                     console.log(error);
                 }
@@ -205,27 +189,11 @@ const LucidProvider = function ({ children }: Props) {
         [address],
     );
 
-    useEffect(function () {
-        const fetchAssetsFromContractAddress = async function () {
-            setAssetsFromAsset(await listAssetsFromContract());
-        };
-
-        fetchAssetsFromContractAddress();
-    }, []);
-    console.log(assetsFromAsset);
     return (
         <LucidContext.Provider
             value={{
                 metadataFromAddress,
                 lucid,
-                assetsFromAsset,
-                connectWallet,
-                setLucid,
-                mintNft,
-                sellAssetService,
-                buyAssetService,
-                refundAssetService,
-                burnNft,
             }}
         >
             {children}
