@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useState, useEffect } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
+import burnAssetService from "@/services/burnAssetService";
 import sellAssetService from "@/services/sellAssetService";
 import buyAssetService from "@/services/buyAssetService";
 import listAssetsService from "@/services/listAssetsService";
@@ -27,7 +28,9 @@ const DemarketProvider = function ({ children }: Props) {
 
     console.log(assetsFromSmartContract);
     return (
-        <DemarketContext.Provider value={{ sellAssetService, buyAssetService, mintAssetService, refundAssetService }}>
+        <DemarketContext.Provider
+            value={{ sellAssetService, buyAssetService, mintAssetService, refundAssetService, burnAssetService }}
+        >
             {children}
         </DemarketContext.Provider>
     );

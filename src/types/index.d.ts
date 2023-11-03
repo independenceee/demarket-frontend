@@ -60,6 +60,16 @@ export type DemarketContextType = {
         imageUrl: string;
         customMetadata: any;
     }) => Promise<any>;
+
+    burnAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
 };
 
 export type Statistic = {
