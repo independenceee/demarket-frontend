@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
@@ -15,20 +16,13 @@ type Props = {
     checkExistWallet: any;
     toggle: () => void;
 };
-const WalletItem = function ({
-    image,
-    name,
-    walletDownload,
-    checkExistWallet,
-    connect,
-    toggle,
-}: Props) {
-    const { connectWallet, mintNft } = useContext<LucidContextType>(LucidContext);
+const WalletItem = function ({ image, name, connect, toggle }: Props) {
+    const { connectWallet } = useContext<LucidContextType>(LucidContext);
     const handleConnectWallet = async function () {
         try {
             if (checkExistWallet) {
                 toggle();
-                await connectWallet(connect);
+                await connectWallet({});
             } else {
             }
         } catch (error) {}

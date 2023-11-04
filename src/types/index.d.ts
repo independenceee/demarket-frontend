@@ -1,8 +1,25 @@
 import { Lucid } from "lucid-cardano";
 
-export type LucidContextType = {};
+export type WalletType = {
+    price?: number;
+    name: string;
+    image?: string;
+    downloadApi: string;
+    api: () => Promise<void> | any;
+    checkApi: () => Promise<void> | any;
+};
+
+export type LucidContextType = {
+    lucid: Lucid;
+    walletAddress: string;
+    walletImage: any;
+    walletName: string;
+    walletBanlance: number;
+    connectWallet: ({ api, name, image }: WalletType) => Promise<void>;
+};
 
 export type DemarketContextType = {
+    listAssetsFromSmartContract: any;
     buyAssetService: ({
         lucid,
         sellerAddress,
@@ -70,6 +87,41 @@ export type DemarketContextType = {
         policyId: string;
         assetName: string;
     }) => Promise<any>;
+};
+
+export type AssetMetadata = {
+    title: string;
+    description: string;
+    mediaType: string;
+    description: string;
+    customMetadata: any;
+};
+
+export type Asset = {
+    policyId: string;
+    assetName: string;
+    authorAddress?: string;
+    sellergAddress?: string;
+    price?: bigint;
+    royalties?: bigint;
+    metadata?: AssetMetadata;
+};
+
+export type Account = {
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    policyId?: string;
+    address: string;
+    email?: string;
+    name?: string;
+    description?: string;
+    rating?: number | null;
+    cover?: string;
+    avatar?: string;
+    socialMediaUrl?: string[];
+    followed?: number | null;
+    validate?: boolean;
 };
 
 export type Statistic = {

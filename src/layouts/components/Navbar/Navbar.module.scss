@@ -1,60 +1,133 @@
-.wrapper {
-    .container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 40px;
-        height: 80px;
+.navbar {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    z-index: 3;
+}
 
-        .logo-container {
-            width: auto;
-            height: 70px;
-            display: inline-block;
-            font-size: 0;
+.logo__wrapper {
+    padding: 0;
+    width: 300px;
+    height: auto;
+    font-size: 0;
+    display: inline-block;
 
-            .logo {
-                width: 100%;
-                height: 100%;
-                display: block;
-            }
-        }
+    .logo__wrapper--image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 }
 
-.wallet-wrapper {
-    width: 448px;
-    z-index: 50;
-    background: #fff;
+.button__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 13px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+    border: 1px solid #7000ff;
+    border-radius: 8px;
+    transition: all 0.2s ease 0s;
+    cursor: pointer;
+
+    &:hover {
+        background: linear-gradient(
+            90deg,
+            #8f04a6 0%,
+            #c0f 0%,
+            #7000ff 39.36%,
+            rgba(44, 0, 219, 0.91) 63.12%,
+            rgba(4, 0, 203, 0.89) 79.64%,
+            #1400ff 99.32%
+        );
+        color: #fff;
+        border-color: transparent;
+    }
+}
+
+.wrapper__nowallet {
+    background-color: #fffff3;
     border-radius: 4px;
+    color: #000;
+    box-shadow: 0px 60px 24px rgba(23, 23, 20, 0.01), 0px 34px 20px rgba(21, 21, 18, 0.02),
+        0px 15px 15px rgba(26, 26, 22, 0.03), 0px 4px 8px rgba(20, 20, 16, 0.04), 0px 0px 0px rgba(32, 32, 27, 0.04);
 
-    .wallet-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    max-height: 85vh;
 
-        .wallet-title {
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .wallet-close {
-            font-weight: bold;
-            font-size: 20px;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
+    width: 90vw;
+    max-width: 710px;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
 
-            &:hover {
-                background: rgba(0, 0, 0, 0.06);
-            }
+    .nowallet__content {
+        padding: 32px 56px;
+
+        p {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 17px;
+            line-height: 175%;
+            color: #000;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
         }
     }
+    .nowallet__button {
+        align-items: center;
+        border-top: 1px solid #ccc;
+        bottom: 0;
+        display: flex;
+        gap: 16px;
+        height: auto;
+        justify-content: flex-end;
+        left: 0;
+        padding: 16px 56px;
+        position: sticky;
+        right: 0;
 
-    .wallet-list {
-        padding: 8px 24px 40px;
+        .button__ok {
+            display: flex;
+            align-items: center;
+            color: #000;
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px 24px;
+            height: 48px;
+            width: auto;
+
+            &:hover {
+                background: #ebebe0;
+            }
+        }
+
+        .button__cancel {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            background: #d02f2d;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px 24px;
+            height: 48px;
+            width: auto;
+
+            &:hover {
+                background: #ae2726;
+            }
+        }
     }
 }

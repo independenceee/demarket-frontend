@@ -7,13 +7,14 @@ type Props = {
     children: ReactNode;
     isShowing: boolean;
     toggle: () => void;
+    transparent?: boolean;
 };
 
-const Modal = function ({ isShowing, toggle, children }: Props) {
+const Modal = function ({ isShowing, toggle, children, transparent }: Props) {
     if (isShowing) {
         return (
             <main className={cx("wrapper")}>
-                <div className={cx("modal")} onClick={toggle}></div>
+                <section className={transparent ? cx("modal-transparent") : cx("modal")} onClick={toggle}></section>
                 {children}
             </main>
         );

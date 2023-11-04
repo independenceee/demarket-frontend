@@ -10,13 +10,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import images from "@/assets/images";
 import NftItem from "@/components/NftItem";
-import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType } from "@/types";
+import { DemarketContextType } from "@/types";
+import DemarketContext from "@/contexts/components/DemarketContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
+    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
+    console.log(listAssetsFromSmartContract);
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -80,9 +82,7 @@ const MarketplacePage = function ({}: Props) {
                             modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
                             className={cx("background__slider-container")}
                         >
-                            <SwiperSlide className={cx("background__slider-image")}>
-                                <NftItem value={[]} index={1} />
-                            </SwiperSlide>
+                            <SwiperSlide className={cx("background__slider-image")}></SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
                                 <Image className={cx("image")} src={images.eternlWallet} alt="slide_image" />
                             </SwiperSlide>
@@ -187,7 +187,7 @@ const MarketplacePage = function ({}: Props) {
                         </section>
                     </div>
                     <div className={cx("content__right")}>
-                        <NftContainer data={[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13]} itemsPerPage={12} />
+                        <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} />
                     </div>
                 </section>
             </div>

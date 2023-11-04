@@ -1,63 +1,75 @@
 import configs from "@/configs";
 import images from "@/assets/images";
+import { WalletType } from "@/types";
 
 declare const window: any;
 
-const wallets = [
+const wallets: Array<WalletType> = [
     {
         name: "Nami",
         image: images.namiWallet,
-        connect: async function () {
+        api: async function () {
             return await window.cardano.nami.enable();
         },
-        checkExistWallet: async function () {
+        checkApi: async function () {
             return await window.cardano.nami;
         },
-        walletDownload: configs.wallets.nami,
+        downloadApi: configs.wallets.nami,
     },
     {
         name: "Eternl",
         image: images.eternlWallet,
-        connect: async function () {
+        api: async function () {
             return window.cardano.eternl.enable();
         },
-        checkExistWallet: async function () {
+        checkApi: async function () {
             return await window.cardano.eternl;
         },
-        walletDownload: configs.wallets.eternl,
+        downloadApi: configs.wallets.eternl,
     },
     {
         name: "Flint",
         image: images.flintWallet,
-        connect: async function () {
+        api: async function () {
             return await window.cardano.flint.enable();
         },
-        checkExistWallet: async function () {
+        checkApi: async function () {
             return await window.cardano.flint;
         },
-        walletDownload: configs.wallets.flint,
+        downloadApi: configs.wallets.flint,
     },
     {
         name: "Gero",
         image: images.geroWallet,
-        connect: async function () {
+        api: async function () {
             return await window.cardano.gero.enable();
         },
-        checkExistWallet: async function () {
+        checkApi: async function () {
             return await window.cardano.gero;
         },
-        walletDownload: configs.wallets.gero,
+        downloadApi: configs.wallets.gero,
     },
     {
         name: "Typhon",
         image: images.typhonWallet,
-        connect: async function () {
+        api: async function () {
             return await window.cardano.typhon.enable();
         },
-        checkExistWallet: async function () {
+        checkApi: async function () {
             return await window.cardano.typhon;
         },
-        walletDownload: configs.wallets.typhon,
+        downloadApi: configs.wallets.typhon,
+    },
+    {
+        name: "Vespr",
+        image: images.vesprWallet,
+        api: async function () {
+            return await window.cardano.vespr.enable();
+        },
+        checkApi: async function () {
+            return await window.cardano.vespr;
+        },
+        downloadApi: configs.wallets.vespr,
     },
 ];
 

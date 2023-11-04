@@ -12,18 +12,15 @@ import Statistics from "@/components/Statistics";
 import images from "@/assets/images";
 import styles from "./Home.module.scss";
 import NftContainer from "@/components/NftContainer";
-import TopCollection from "@/components/TopCollection";
-import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType } from "@/types";
-import NftItem from "@/components/NftItem";
+import AccountItemSilder from "@/components/AccountItemSilder";
+import DemarketContext from "@/contexts/components/DemarketContext";
+import { DemarketContextType } from "@/types";
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { metadataFromAddress, assetsFromAsset } =
-        useContext<LucidContextType>(LucidContext);
-
+    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -35,18 +32,14 @@ const Home = function ({}: Props) {
                         data-aos-easing="ease-in-sine"
                     >
                         <h3 className={cx("background__content-title")}>Demarket</h3>
-                        <h3 className={cx("background__content-slug")}>
-                            Examples For Creating Solid UX Design
-                        </h3>
+                        <h3 className={cx("background__content-slug")}>Examples For Creating Solid UX Design</h3>
                         <p className={cx("background__content-description")}>
-                            The title The Power of the Ballot: Contributing to Democracy
-                            captures the essence of the crucial role voting plays in
-                            empowering democratic systems. It highlights the significance
-                            of individual voices and their impact through the act of
-                            casting a ballot. The title combines the political aspect with
-                            a profound understanding of the power of democracy,
-                            emphasizing the influence citizens hold in shaping the course
-                            of their nations through the act of voting.
+                            The title The Power of the Ballot: Contributing to Democracy captures the essence of the
+                            crucial role voting plays in empowering democratic systems. It highlights the significance
+                            of individual voices and their impact through the act of casting a ballot. The title
+                            combines the political aspect with a profound understanding of the power of democracy,
+                            emphasizing the influence citizens hold in shaping the course of their nations through the
+                            act of voting.
                         </p>
 
                         <div className={cx("button__wrapper")}>
@@ -91,22 +84,12 @@ const Home = function ({}: Props) {
                             modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
                             className={cx("background__slider-container")}
                         >
+                            <SwiperSlide className={cx("background__slider-image")}></SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
-                                <NftItem value={[]} index={1} />
+                                <Image className={cx("image")} src={images.eternlWallet} alt="slide_image" />
                             </SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
-                                <Image
-                                    className={cx("image")}
-                                    src={images.eternlWallet}
-                                    alt="slide_image"
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide className={cx("background__slider-image")}>
-                                <Image
-                                    className={cx("image")}
-                                    src={images.flintWallet}
-                                    alt="slide_image"
-                                />
+                                <Image className={cx("image")} src={images.flintWallet} alt="slide_image" />
                             </SwiperSlide>
                         </Swiper>
                     </div>
@@ -114,25 +97,25 @@ const Home = function ({}: Props) {
                 <section className={cx("title__wrapper")} data-aos="zoom-in">
                     <span className={cx("title__main")}>Home</span>
                 </section>
-                {/*  */}
                 <section className={cx("news__wrapper")}>
                     <header className={cx("header")}>
                         <h2 className={cx("title")}>New Items</h2>
                         <p className={cx("description")}>
-                            Beginning of the app and website design process, we know it is
-                            tempting to dive right into picking fonts.
+                            Beginning of the app and website design process, we know it is tempting to dive right into
+                            picking fonts.
                         </p>
                     </header>
 
-                    <NftContainer data={[1]} />
+                    <article className={cx("news_container")}>
+                        <NftContainer data={listAssetsFromSmartContract} />
+                    </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
                     <header className={cx("header")}>
                         <h2 className={cx("title")}>Trending Assets</h2>
                         <p className={cx("description")}>
-                            Here are the top assets that are currently trending on our
-                            exchange, which we evaluate based on the criteria of
-                            uniqueness and rarity.
+                            Here are the top assets that are currently trending on our exchange, which we evaluate based
+                            on the criteria of uniqueness and rarity.
                         </p>
                     </header>
 
@@ -142,11 +125,7 @@ const Home = function ({}: Props) {
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (value, index) {
                                     return (
                                         <li key={index} className={cx("slider__item")}>
-                                            <Image
-                                                className={cx("slider__image")}
-                                                src={images.background}
-                                                alt=""
-                                            />
+                                            <Image className={cx("slider__image")} src={images.background} alt="" />
                                         </li>
                                     );
                                 })}
@@ -157,11 +136,7 @@ const Home = function ({}: Props) {
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (value, index) {
                                     return (
                                         <li key={index} className={cx("slider__item")}>
-                                            <Image
-                                                className={cx("slider__image")}
-                                                src={images.background}
-                                                alt=""
-                                            />
+                                            <Image className={cx("slider__image")} src={images.background} alt="" />
                                         </li>
                                     );
                                 })}
@@ -169,26 +144,42 @@ const Home = function ({}: Props) {
                         </section>
                     </div>
                 </section>
-                <section className={cx("selling")}>
+                <section className={cx("news__wrapper")}>
                     <header className={cx("header")}>
-                        <h2 className={cx("title")}>Selling Item</h2>
+                        <h2 className={cx("title")}>SELLING ITEMS</h2>
                         <p className={cx("description")}>
-                            Beginning of the app and website design process, we know it is
-                            tempting to dive right into picking fonts.
+                            Beginning of the app and website design process, we know it is tempting to dive right into
+                            picking fonts.
                         </p>
                     </header>
-                    {/* <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]} /> */}
+
+                    <article className={cx("news_container")}>
+                        <NftContainer data={listAssetsFromSmartContract} />
+                    </article>
                 </section>
-                <section className={cx("collection")}>
+                <section className={cx("account__wrapper")}>
                     <header className={cx("header")}>
-                        <h2 className={cx("title")}>TOP COLLECTIONS</h2>
-                        <p className={cx("description")}>
-                            Beginning of the app and website design process.
-                        </p>
+                        <h2 className={cx("title")}>Top Account</h2>
+                        <p className={cx("description")}>Beginning of the app and website design process.</p>
                     </header>
-                    <div className={cx("content")}>
-                        <TopCollection />
-                    </div>
+                    <article className={cx("account__container")}>
+                        <section className={cx("account__list--left")}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
+                                return <AccountItemSilder />;
+                            })}
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
+                                return <AccountItemSilder />;
+                            })}
+                        </section>
+                        <section className={cx("account__list--right")}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
+                                return <AccountItemSilder />;
+                            })}
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
+                                return <AccountItemSilder />;
+                            })}
+                        </section>
+                    </article>
                 </section>
                 <section className={cx("statistics")}>
                     <Statistics />

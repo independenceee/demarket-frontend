@@ -8,16 +8,40 @@ import buyAssetService from "@/services/buyAssetService";
 import listAssetsService from "@/services/listAssetsService";
 import mintAssetService from "@/services/mintAssetService";
 import refundAssetService from "@/services/refundAssetService";
+import fetchAuthorAddressAndSellerAddress from "@/utils/fetchAuthorAddressAndSellerAddress";
+import { post } from "@/utils/httpRequest";
 
 type Props = {
     children: ReactNode;
 };
 
 const DemarketProvider = function ({ children }: Props) {
-    const [assetsFromSmartContract, setAssetsFromSmartContract] = useState<any>([]);
+    const [listAssetsFromSmartContract, setListAssetsFromSmartContract] = useState<any>([]);
     const fetchAssetsFromSmartContract = async function () {
         try {
-            setAssetsFromSmartContract(await listAssetsService());
+            const assets: any = await listAssetsService();
+            const convertAsset: any = [];
+
+            assets.forEach(async function (asset: any, index: number) {
+                const data = await post("/blockfrost/assets/information", {
+                    policyId: asset.policyId,
+                    assetName: asset.assetName,
+                });
+                const { authorAddress, sellerAddress } = await fetchAuthorAddressAndSellerAddress({
+                    policyId: asset.policyId,
+                    assetName: asset.assetName,
+                });
+                convertAsset.push({
+                    authorAddress,
+                    sellerAddress,
+                    policyId: asset.policyId,
+                    assetName: asset.assetName,
+                    ...data.onchain_metadata,
+                    price: asset.price,
+                    royalties: asset.royalties,
+                });
+                setListAssetsFromSmartContract(convertAsset);
+            });
         } catch (error) {
             console.log(error);
         }
@@ -26,10 +50,17 @@ const DemarketProvider = function ({ children }: Props) {
         fetchAssetsFromSmartContract();
     }, []);
 
-    console.log(assetsFromSmartContract);
+    console.log(listAssetsFromSmartContract);
     return (
         <DemarketContext.Provider
-            value={{ sellAssetService, buyAssetService, mintAssetService, refundAssetService, burnAssetService }}
+            value={{
+                sellAssetService,
+                buyAssetService,
+                mintAssetService,
+                refundAssetService,
+                burnAssetService,
+                listAssetsFromSmartContract,
+            }}
         >
             {children}
         </DemarketContext.Provider>

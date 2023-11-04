@@ -4,13 +4,7 @@ import classNames from "classnames/bind";
 import images from "@/assets/images";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
-import {
-    HorizonalIcon,
-    HeartIcon,
-    YoutubeIcon,
-    TwitterIcon,
-    LinkedinIcon,
-} from "@/components/Icons";
+import { HorizonalIcon, YoutubeIcon, TwitterIcon, LinkedinIcon } from "@/components/Icons";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -21,15 +15,11 @@ const Footer = function ({}: Props) {
             <div className={cx("container")}>
                 <section className={cx("footer__introduct")}>
                     <div className={cx("footer__introduct--logo")}>
-                        <Image
-                            src={images.logo}
-                            alt=""
-                            className={cx("footer__logo--image")}
-                        />
+                        <Image src={images.logo} alt="" className={cx("footer__logo--image")} />
                     </div>
                     <p className={cx("footer__introduct--description")}>
-                        Buy, sell and discover exclusive digital assets by the top artists
-                        of Design & Develop with by BlockAlpha
+                        Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with by
+                        BlockAlpha
                     </p>
                 </section>
 
@@ -76,22 +66,14 @@ const Footer = function ({}: Props) {
                 </section>
 
                 <section className={cx("footer__contact")}>
-                    <h2 className={cx("footer__contact--heading")}>
-                        Please give us some feedback
-                    </h2>
+                    <h2 className={cx("footer__contact--heading")}>Please give us some feedback</h2>
                     <div className={cx("footer__input")}>
-                        <input
-                            className={cx("footer__input--control")}
-                            type="text"
-                            placeholder="Your feedback"
-                        />
+                        <input className={cx("footer__input--control")} type="text" placeholder="Your feedback" />
                         <div className={cx("footer__input--icon")}>
                             <HorizonalIcon className={cx("icon")} />
                         </div>
                     </div>
-                    <h2 className={cx("footer__contact--heading")}>
-                        Contact With us here
-                    </h2>
+                    <h2 className={cx("footer__contact--heading")}>Contact With us here</h2>
                     <div className={cx("footer__list--icon")}>
                         <Link href="#" className={cx("icon-link")}>
                             <LinkedinIcon className={cx("icon")} />
