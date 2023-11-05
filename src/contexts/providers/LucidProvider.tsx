@@ -4,6 +4,7 @@ import React, { ReactNode, useState } from "react";
 import { Blockfrost, Lucid } from "lucid-cardano";
 import { post } from "@/utils/httpRequest";
 import LucidContext from "../components/LucidContext";
+import fetchStakeKeyFromAddress from "@/utils/fetchStakeKeyFromAddress";
 import { Account, WalletType } from "@/types";
 
 type Props = {
@@ -17,8 +18,7 @@ const LucidProvider = function ({ children }: Props) {
     const [walletImage, setWalletImage] = useState<any>();
     const [account, setAccount] = useState<Account>();
 
-    // const connectWallet = async function ({ api, image, name }: WalletType) {
-    const connectWallet = async function () {
+    const connectWallet = async function ({ api, image, name, checkApi }: WalletType) {
         try {
             const lucid = await Lucid.new(
                 new Blockfrost(
@@ -27,8 +27,7 @@ const LucidProvider = function ({ children }: Props) {
                 ),
                 "Preprod",
             );
-            lucid.selectWallet(await window.cardano.nami.enable());
-            // lucid.selectWallet(await api());
+            lucid.selectWallet(await api());
             const utxos = await lucid.wallet.getUtxos();
             const balance = utxos.reduce(function (acc, utxo) {
                 return acc + utxo.assets.lovelace;
@@ -36,29 +35,23 @@ const LucidProvider = function ({ children }: Props) {
             const address = await lucid.wallet.address();
 
             setLucid(lucid);
-            // setWalletName(name);
-            // setWalletAddress(address);
-            // setWalletImage(image);
-            // setWalletBalance(Number(balance) / 1000000);
+            setWalletName(name);
+            setWalletAddress(address);
+            setWalletImage(image);
+            setWalletBalance(Number(balance) / 1000000);
+            const stakeKey = await fetchStakeKeyFromAddress(address);
 
-            // const stakeKey = await post("/emurgo/stakekey/address", {
-            //     address: walletAddress,
-            // });
+            const account = await post("/account", {
+                address: walletAddress,
+                name: stakeKey,
+                email: stakeKey,
+            });
 
-            // const account = await post("/account", {
-            //     address: walletAddress,
-            //     name: stakeKey,
-            // });
-
-            // setAccount(account);
+            setAccount(account);
         } catch (error) {
             console.log(error);
         }
     };
-
-    console.log(account);
-
-    console.log(walletBanlance);
 
     return (
         <LucidContext.Provider value={{ connectWallet, walletAddress, walletImage, walletName, walletBanlance, lucid }}>

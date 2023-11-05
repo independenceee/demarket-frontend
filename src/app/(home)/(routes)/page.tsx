@@ -165,18 +165,18 @@ const Home = function ({}: Props) {
                     <article className={cx("account__container")}>
                         <section className={cx("account__list--left")}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder />;
+                                return <AccountItemSilder avatar="" key={index} />;
                             })}
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder />;
+                                return <AccountItemSilder avatar="" key={index} />;
                             })}
                         </section>
                         <section className={cx("account__list--right")}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder />;
+                                return <AccountItemSilder avatar="" key={index} />;
                             })}
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder />;
+                                return <AccountItemSilder avatar="" key={index} />;
                             })}
                         </section>
                     </article>

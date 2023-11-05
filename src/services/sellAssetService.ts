@@ -17,7 +17,7 @@ const sellAssetService = async function ({ policyId, assetName, author, price, l
         console.log(policyId, author, assetName, price, royalties);
         const validator = await readValidator();
         const contractAddress = lucid.utils.validatorToAddress(validator);
-        // const authorPublicKey = fetchPublicKeyFromAddress(author);
+        const authorPublicKey = fetchPublicKeyFromAddress(author);
         const sellerPublicKey: any = lucid.utils.getAddressDetails(await lucid.wallet.address()).paymentCredential
             ?.hash;
 
@@ -26,7 +26,7 @@ const sellAssetService = async function ({ policyId, assetName, author, price, l
                 policyId: policyId,
                 assetName: assetName,
                 seller: sellerPublicKey,
-                author: sellerPublicKey,
+                author: authorPublicKey,
                 price: price,
                 royalties: royalties,
             },

@@ -1,6 +1,7 @@
 import { Data, Lucid } from "lucid-cardano";
 import { Datum } from "@/constants/datum";
-import { Redeemer } from "@/constants/redeemer";
+import { redeemer } from "@/constants/redeemer";
+
 import readValidator from "@/utils/readValidator";
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 
 const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddress, royaltiesAddress }: Props) {
     try {
+        console.log(policyId, assetName, sellerAddress, royaltiesAddress);
         const validator = await readValidator();
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
@@ -31,18 +33,19 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
             console.log("utxo found");
             process.exit(1);
         }
+        console.log(existAsset);
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
 
         const tx = await lucid
             .newTx()
-            .payToAddress(sellerAddress, { lovelace: existAsset.price })
+            .payToAddress(sellerAddress, { lovelace: BigInt(existAsset.price) })
             .payToAddress(
                 "addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg",
                 { lovelace: exchange_fee },
             )
-            .payToAddress(royaltiesAddress, { lovelace: existAsset.royalties })
-            .collectFrom(utxos, Redeemer)
+            .payToAddress(royaltiesAddress, { lovelace: BigInt(existAsset.royalties) })
+            .collectFrom(utxos, redeemer)
             .attachSpendingValidator(validator)
             .complete();
 

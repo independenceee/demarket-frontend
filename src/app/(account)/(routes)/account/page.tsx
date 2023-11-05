@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import {
@@ -21,9 +21,12 @@ import customChars from "@/helpers/convertString";
 import AccountContainer from "@/components/AccountContainer";
 import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
+
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
 import axios from "axios";
+import { LucidContextType } from "@/types";
+import LucidContext from "@/contexts/components/LucidContext";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -41,50 +44,53 @@ const AccountPage = function ({}: Props) {
     const { isShowing = true, toggle } = useModal();
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [assetsFromAddress, setAssetsFromAddress] = useState<any>([]);
+    const { walletAddress } = useContext<LucidContextType>(LucidContext);
 
-    useEffect(function () {
-        const fetchMetadataFromAddress = async function () {
-            try {
-                const response = await axios.post(
-                    "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
-                    {
-                        _addresses: [
-                            "addr_test1qqwxne57v0ahe04dy3jjpxqmp8ewmtaypx0tfu46c8h6wkg7659tg5e2hjvkapfq8pph66kau3vc06c04gu3drjcgnhshmzl0z",
-                        ],
-                    },
-                );
+    useEffect(
+        function () {
+            const fetchMetadataFromAddress = async function () {
+                try {
+                    const response = await axios.post(
+                        "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
+                        {
+                            _addresses: [walletAddress],
+                        },
+                    );
 
-                const assetsFromAddress = await Promise.all(
-                    response.data[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
-                        const response = await axios.post(
-                            "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
-                            {
-                                policyId: policy_id,
-                                assetName: asset_name,
-                            },
-                        );
+                    const assetsFromAddress = await Promise.all(
+                        response.data[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
+                            const response = await axios.post(
+                                "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
+                                {
+                                    policyId: policy_id,
+                                    assetName: asset_name,
+                                },
+                            );
 
-                        const data = response.data.onchain_metadata;
+                            const data = response.data.onchain_metadata;
 
-                        if (data) {
-                            return {
-                                ...data,
-                                policyId: policy_id,
-                                assetName: asset_name,
-                            };
-                        }
-                        return null;
-                    }),
-                );
+                            if (data) {
+                                return {
+                                    ...data,
+                                    policyId: policy_id,
+                                    assetName: asset_name,
+                                };
+                            }
+                            return null;
+                        }),
+                    );
 
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-            } catch (error) {
-                console.log(error);
-            }
-        };
+                    setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+                } catch (error) {
+                    console.log(error);
+                }
+            };
 
-        fetchMetadataFromAddress();
-    }, []);
+            fetchMetadataFromAddress();
+            console.log(assetsFromAddress);
+        },
+        [walletAddress],
+    );
 
     return (
         <main className={cx("wrapper")}>

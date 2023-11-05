@@ -1,7 +1,7 @@
 import { Data, Lucid } from "lucid-cardano";
 import readValidator from "@/utils/readValidator";
 import { Datum } from "@/constants/datum";
-import { Redeemer } from "@/constants/redeemer";
+import { redeemer } from "@/constants/redeemer";
 
 type Props = {
     lucid: Lucid;
@@ -34,7 +34,7 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
         if (validator) {
             const tx = await lucid
                 .newTx()
-                .collectFrom(assets, Redeemer)
+                .collectFrom(assets, redeemer)
                 .addSigner(await lucid.wallet.address())
                 .attachSpendingValidator(validator)
                 .complete();

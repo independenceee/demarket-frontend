@@ -3,8 +3,8 @@ import { Lucid } from "lucid-cardano";
 export type WalletType = {
     price?: number;
     name: string;
-    image?: string;
-    downloadApi: string;
+    image: string;
+    downloadApi?: string;
     api: () => Promise<void> | any;
     checkApi: () => Promise<void> | any;
 };
@@ -20,6 +20,8 @@ export type LucidContextType = {
 
 export type DemarketContextType = {
     listAssetsFromSmartContract: any;
+    findAssetService: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
+
     buyAssetService: ({
         lucid,
         sellerAddress,

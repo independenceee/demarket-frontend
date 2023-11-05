@@ -131,3 +131,41 @@
         }
     }
 }
+
+.wallet-wrapper {
+    width: 448px;
+    z-index: 50;
+    background: #fff;
+    border-radius: 4px;
+
+    .wallet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+
+        .wallet-title {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .wallet-close {
+            font-weight: bold;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.06);
+            }
+        }
+    }
+
+    .wallet-list {
+        padding: 8px 24px 40px;
+    }
+}

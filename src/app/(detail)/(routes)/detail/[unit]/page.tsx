@@ -7,7 +7,7 @@ import classNames from "classnames/bind";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import DemarketContext from "@/contexts/components/DemarketContext";
-import { DemarketContextType } from "@/types";
+import { DemarketContextType, LucidContextType } from "@/types";
 import convertString from "@/helpers/convertString";
 import fetchMetadataFromPolicyIdAndAssetName from "@/utils/fetchMetadataFromPolicyIdAnsAssetName";
 import Image from "next/image";
@@ -17,13 +17,14 @@ import styles from "./Detail.module.scss";
 import checkMediaType from "@/helpers/checkMediaType";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import convertHexToString from "@/helpers/convertHexToString";
+import LucidContext from "@/contexts/components/LucidContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
-    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
+    const { listAssetsFromSmartContract, findAssetService } = useContext<DemarketContextType>(DemarketContext);
     const [policyId, setPolicyId] = useState<string>(unit.slice(0, 56));
     const [assetName, setAssetName] = useState<string>(unit.slice(56));
     const [toggleState, setToggleState] = useState<number>(1);
@@ -35,7 +36,8 @@ const DetailPage = function ({}: Props) {
     const renderMetadataFromPolicyIdAndAssetName = async function () {
         try {
             const assetInfomation = await fetchMetadataFromPolicyIdAndAssetName({ policyId, assetName });
-            setAsset(assetInfomation);
+            const checkSelling = await findAssetService({ policyId, assetName });
+            setAsset({ ...assetInfomation, ...checkSelling });
         } catch (error) {
             console.log(error);
         }
@@ -44,6 +46,43 @@ const DetailPage = function ({}: Props) {
     useEffect(function () {
         renderMetadataFromPolicyIdAndAssetName();
     }, []);
+
+    const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
+    const { sellAssetService, buyAssetService } = useContext<DemarketContextType>(DemarketContext);
+
+    const handleBuyNft = async function () {
+        try {
+            console.log("buy");
+            if (lucid) {
+                await buyAssetService({
+                    assetName: asset.assetName,
+                    policyId: asset.policyId,
+                    lucid: lucid,
+                    royaltiesAddress: asset.authorAddress,
+                    sellerAddress: asset.sellerAddress,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSellNft = async function () {
+        try {
+            if (lucid) {
+                await sellAssetService({
+                    assetName: asset.assetName,
+                    policyId: asset.policyId,
+                    author: asset.authorAddress,
+                    lucid: lucid,
+                    price: BigInt(10000000),
+                    royalties: BigInt(1000 / 10),
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     console.log(asset);
     return (
@@ -180,10 +219,36 @@ const DetailPage = function ({}: Props) {
                                     </section>
                                 </div>
                             </section>
-                            <section className={cx("detail__button")}>
-                                <button className={cx("detail__button--left")}>100 ADA</button>
-                                <button className={cx("detail__button--right")}>BUY</button>
-                            </section>
+                            {asset.price && (
+                                <section className={cx("detail__button")}>
+                                    <button className={cx("detail__button--left")}>
+                                        {Number(asset.price) / 1000000} ADA
+                                    </button>
+                                    <button onClick={handleBuyNft} className={cx("detail__button--right")}>
+                                        BUY
+                                    </button>
+                                </section>
+                            )}
+
+                            {asset.price && asset.currentAddress == walletAddress && (
+                                <section className={cx("detail__button")}>
+                                    <button className={cx("detail__button--left")}>
+                                        {Number(asset.price) / 1000000} ADA
+                                    </button>
+                                    <button className={cx("detail__button--right")}>royalties</button>
+                                </section>
+                            )}
+
+                            {asset.currentAddress == walletAddress && !asset.price ? (
+                                <section className={cx("detail__button")}>
+                                    <button className={cx("detail__button--left")}>
+                                        {Number(asset.price) / 1000000} ADA
+                                    </button>
+                                    <button onClick={handleSellNft} className={cx("detail__button--right")}>
+                                        SELL
+                                    </button>
+                                </section>
+                            ) : null}
                             <section className={cx("detail__transaction")}>
                                 <div className={cx("tab__box")}>
                                     <button

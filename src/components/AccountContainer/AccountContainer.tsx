@@ -46,11 +46,11 @@ const AccountContainer = function ({ itemsPerPage = 8, data }: Props) {
                 pageCount={pageCount}
                 renderOnZeroPageCount={null}
                 onPageChange={handlePageClick}
-                containerClassName={cx("pagination")}
-                pageLinkClassName={cx("page__num")}
-                previousLinkClassName={cx("page__num")}
-                nextLinkClassName={cx("page__num")}
-                activeLinkClassName={cx("active")}
+                containerClassName={"pagination"}
+                pageLinkClassName={"page-num"}
+                previousLinkClassName={"page-num"}
+                nextLinkClassName={"page-num"}
+                activeLinkClassName={"active"}
             />
         </div>
     );

@@ -1,4 +1,5 @@
 import fetchAuthorAddressAndSellerAddress from "./fetchAuthorAddressAndSellerAddress";
+import fetchCurrentAddressFromAsset from "./fetchCurentAddressFromAsset";
 import { post } from "@/utils/httpRequest";
 
 type Props = {
@@ -13,7 +14,7 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
         policyId: policyId,
         assetName: assetName,
     });
-    console.log(stakekeyAuthorAddress);
+    const currentAddress = await fetchCurrentAddressFromAsset({ policyId, assetName });
 
     return {
         policyId,
@@ -24,6 +25,7 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
         stakekeySellerAddress,
         fingerprint: metadata.fingerprint,
         metadata: metadata.onchain_metadata,
+        currentAddress,
     };
 };
 

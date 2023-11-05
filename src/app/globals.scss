@@ -50,3 +50,48 @@ a {
     --font_color_hover: opacity 0.5;
     --font_weight: 700;
 }
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 1.2rem;
+    gap: 5px;
+}
+
+.page-num {
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 400;
+    color: #7000ff;
+    list-style: none;
+
+    &:hover {
+        color: #fff;
+        background: linear-gradient(
+            90deg,
+            #8f04a6 0%,
+            #c0f 0%,
+            #7000ff 39.36%,
+            rgba(44, 0, 219, 0.91) 63.12%,
+            rgba(4, 0, 203, 0.89) 79.64%,
+            #1400ff 99.32%
+        );
+    }
+}
+
+.active {
+    color: #fff;
+    background: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
+}

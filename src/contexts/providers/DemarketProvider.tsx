@@ -8,6 +8,7 @@ import buyAssetService from "@/services/buyAssetService";
 import listAssetsService from "@/services/listAssetsService";
 import mintAssetService from "@/services/mintAssetService";
 import refundAssetService from "@/services/refundAssetService";
+import findAssetService from "@/services/findAssetService";
 import fetchAuthorAddressAndSellerAddress from "@/utils/fetchAuthorAddressAndSellerAddress";
 import { post } from "@/utils/httpRequest";
 
@@ -59,6 +60,7 @@ const DemarketProvider = function ({ children }: Props) {
                 mintAssetService,
                 refundAssetService,
                 burnAssetService,
+                findAssetService,
                 listAssetsFromSmartContract,
             }}
         >
