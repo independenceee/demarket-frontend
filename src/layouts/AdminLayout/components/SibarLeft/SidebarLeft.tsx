@@ -23,11 +23,7 @@ const Item = ({
     onClick,
 }: PropItem & { isActive: boolean; onClick: () => void }) => {
     return (
-        <Link
-            className={cx("item", `${isActive ? "active" : ""}`)}
-            href={link}
-            onClick={onClick}
-        >
+        <Link className={cx("item", `${isActive ? "active" : ""}`)} href={link} onClick={onClick}>
             <div className={cx("icon")}>
                 <Icon />
             </div>
@@ -55,7 +51,7 @@ const SidebarLeft = () => {
     return (
         <div className={cx("container")}>
             <div className={cx("logo")}>
-                <Image src={images.logoblur} alt="Logo" />
+                <Image src={images.logo} alt="Logo" />
             </div>
             <div className={cx("menu")}>
                 <div className={cx("menuTop")}>

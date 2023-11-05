@@ -1,44 +1,60 @@
 "use client";
+
 import React, { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import styles from "./WalletItem.module.scss";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types";
+import Modal from "@/components/Modal";
+import { useModal } from "@/hooks";
 
 const cx = classNames.bind(styles);
 type Props = {
     image: any;
     name: string;
-    walletDownload: any;
-    connect: () => void;
-    checkExistWallet: any;
-    toggle: () => void;
+    downloadApi?: any;
+    api: () => Promise<void>;
+    checkApi: () => Promise<boolean>;
+    toggleWalletFull: () => void;
+    toggleDownloadWallet: () => void;
+    setWalletName: React.Dispatch<React.SetStateAction<string>>;
+    setWalletDownload: React.Dispatch<React.SetStateAction<string>>;
 };
 const WalletItem = function ({
-    image,
     name,
-    walletDownload,
-    checkExistWallet,
-    connect,
-    toggle,
+    image,
+    checkApi,
+    downloadApi,
+    api,
+    toggleWalletFull,
+    toggleDownloadWallet,
+    setWalletName,
+    setWalletDownload,
 }: Props) {
-    const { connectWallet, mintNft } = useContext<LucidContextType>(LucidContext);
+    const { connectWallet } = useContext<LucidContextType>(LucidContext);
     const handleConnectWallet = async function () {
         try {
-            if (checkExistWallet) {
-                toggle();
-                await connectWallet(connect);
-            } else {
+            if (!(await checkApi())) {
+                setWalletName(name);
+                setWalletDownload(downloadApi);
+                toggleWalletFull();
+                toggleDownloadWallet();
+                return;
             }
+
+            connectWallet({ api, image, name, checkApi });
+            toggleWalletFull();
         } catch (error) {}
     };
 
     return (
         <div className={cx("wrapper")} onClick={handleConnectWallet}>
-            <Image src={image} alt="" className={cx("image")} />
-            <div className={cx("title")}>
-                {name} <span> WALLET</span>
+            <div className={cx("container")}>
+                <Image src={image} alt="" className={cx("image")} />
+                <div className={cx("title")}>
+                    {name} <span> WALLET</span>
+                </div>
             </div>
         </div>
     );

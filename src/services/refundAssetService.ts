@@ -1,78 +1,40 @@
-import {
-    Blockfrost,
-    C,
-    Constr,
-    Data,
-    Lucid,
-    SpendingValidator,
-    TxHash,
-    fromHex,
-    toHex,
-} from "lucid-cardano";
-import * as cbor from "cbor-x";
-import demarketValidator from "@/libs";
+import { Data, Lucid } from "lucid-cardano";
+import readValidator from "@/utils/readValidator";
+import { Datum } from "@/constants/datum";
+import { redeemer } from "@/constants/redeemer";
 
-async function readValidator(): Promise<SpendingValidator> {
-    const validator = demarketValidator[0];
-    return {
-        type: "PlutusV2",
-        script: toHex(cbor.encode(fromHex(validator.compiledCode))),
-    };
-}
-
-const DatumInitial = Data.Object({
-    policyId: Data.Bytes(),
-    assetName: Data.Bytes(),
-    seller: Data.Bytes(),
-    author: Data.Bytes(),
-    price: Data.Integer(),
-    royalties: Data.Integer(),
-});
-
-type Datum = Data.Static<typeof DatumInitial>;
-const Datum = DatumInitial as unknown as Datum;
-const redeemer = Data.void();
-
-const refundAssetService = async function ({
-    lucid,
-    policyId,
-    assetName,
-}: {
+type Props = {
     lucid: Lucid;
     policyId: string;
     assetName: string;
-}) {
+};
+
+const refundAssetService = async function ({ lucid, policyId, assetName }: Props) {
     try {
         const validator = await readValidator();
         const scriptAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(scriptAddress);
-        let UTOut: any;
+        let existAsset: any;
 
-        const utxos = scriptUtxos.filter((utxo: any, index: number) => {
-            try {
-                const temp = Data.from<Datum>(utxo.datum, Datum);
-                if (temp.policyId === policyId && temp.assetName === assetName) {
-                    UTOut = Data.from<Datum>(utxo.datum, Datum);
-                    return true;
-                }
-                return false;
-            } catch (error) {
-                return false;
+        const assets = scriptUtxos.filter((asset: any, index: number) => {
+            const checkAsset = Data.from<Datum>(asset.datum, Datum);
+            if (checkAsset.policyId === policyId && checkAsset.assetName === assetName) {
+                existAsset = Data.from<Datum>(asset.datum, Datum);
+                return true;
             }
+            return false;
         });
-        if (utxos.length === 0) {
-            console.log("No redeemable utxo found. You need to wait a little longer...");
+        if (assets.length === 0) {
+            console.log("utxo found.");
             process.exit(1);
         }
 
-        console.log(await lucid.wallet.address());
-        console.log(UTOut);
-        const exchange_fee = BigInt((parseInt(UTOut.price) * 1) / 100);
+        const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
         console.log(exchange_fee);
         if (validator) {
             const tx = await lucid
                 .newTx()
-                .collectFrom(utxos, Data.void())
+                .collectFrom(assets, redeemer)
                 .addSigner(await lucid.wallet.address())
                 .attachSpendingValidator(validator)
                 .complete();

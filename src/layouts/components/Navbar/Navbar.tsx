@@ -1,15 +1,15 @@
 "use client";
 
-import React, { lazy } from "react";
+import React, { lazy, useState } from "react";
 import classNames from "classnames/bind";
 import Image from "next/image";
-import Button from "@/components/Button";
-import Modal from "@/components/Modal";
-import images from "@/assets/images";
+import Link from "next/link";
 import { useModal } from "@/hooks";
-import { CloseIcon } from "@/components/Icons";
-import wallets from "@/constants/wallets";
+import images from "@/assets/images";
 import styles from "./Navbar.module.scss";
+import { CloseIcon, DownArrowIcon } from "@/components/Icons";
+import Modal from "@/components/Modal";
+import wallets from "@/constants/wallets";
 
 const WalletItem = lazy(() => import("@/components/WalletItem"));
 
@@ -18,58 +18,82 @@ const cx = classNames.bind(styles);
 type Props = {};
 
 const Navbar = function ({}: Props) {
-    const { toggle, isShowing } = useModal();
+    const { isShowing: isShowingWalletFull, toggle: toggleWalletFull } = useModal();
+    const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
+    const [walletName, setWalletName] = useState<string>("");
+    const [walletDownload, setWalletDownload] = useState<string>("");
+
     return (
-        <div className={cx("wrapper")}>
-            <div className={cx("container")}>
-                {/* logo-begin */}
-                <div className={cx("logo-container")}>
-                    <Image className={cx("logo")} src={images.logo} alt="" />
+        <nav className={cx("navbar")}>
+            <Link href={{ pathname: "/" }} className={cx("logo__wrapper")}>
+                <Image className={cx("logo__wrapper--image")} src={images.logo} alt="Logo Image" />
+            </Link>
+
+            <button onClick={toggleWalletFull} className={cx("button__wrapper")}>
+                <span>CONNECT WALLET</span>
+                <DownArrowIcon />
+            </button>
+
+            {/* connect wallet short begin */}
+            {/* connect wallet short end */}
+
+            {/* connect wallet full begin */}
+            <Modal isShowing={isShowingWalletFull} toggle={toggleWalletFull}>
+                <div className={cx("wallet-wrapper")}>
+                    <header className={cx("wallet-header")}>
+                        <h2 className={cx("wallet-title")}>Select wallet to connect</h2>
+                        <div className={cx("wallet-close")} onClick={toggleWalletFull}>
+                            <CloseIcon />
+                        </div>
+                    </header>
+                    <section className={cx("wallet-list")}>
+                        {wallets.map(function ({ name, image, api, checkApi, downloadApi }, index) {
+                            return (
+                                <WalletItem
+                                    key={index}
+                                    name={name}
+                                    image={image}
+                                    api={api}
+                                    checkApi={checkApi}
+                                    downloadApi={downloadApi}
+                                    toggleWalletFull={toggleWalletFull}
+                                    toggleDownloadWallet={toggleDownloadWallet}
+                                    setWalletName={setWalletName}
+                                    setWalletDownload={setWalletDownload}
+                                />
+                            );
+                        })}
+                    </section>
                 </div>
-                {/* logo-end */}
-                {/* connect wallet begin */}
-                <Button onClick={toggle}>
-                    Connect Wallet
-                </Button>
-                <Modal isShowing={isShowing} toggle={toggle}>
-                    <div className={cx("wallet-wrapper")}>
-                        <header className={cx("wallet-header")}>
-                            <h2 className={cx("wallet-title")}>
-                                Select wallet to connect
-                            </h2>
-                            <div className={cx("wallet-close")} onClick={toggle}>
-                                <CloseIcon />
-                            </div>
-                        </header>
-                        <section className={cx("wallet-list")}>
-                            {wallets.map(function (
-                                {
-                                    name,
-                                    image,
-                                    connect,
-                                    checkExistWallet,
-                                    walletDownload,
-                                },
-                                index,
-                            ) {
-                                return (
-                                    <WalletItem
-                                        name={name}
-                                        image={image}
-                                        key={index}
-                                        connect={connect}
-                                        checkExistWallet={checkExistWallet}
-                                        walletDownload={walletDownload}
-                                        toggle={toggle}
-                                    />
-                                );
-                            })}
-                        </section>
+            </Modal>
+            {/* connect wallet full end */}
+
+            {/* download wallet begin */}
+            <Modal isShowing={isShowingDownloadWallet} toggle={toggleDownloadWallet}>
+                <div className={cx("wrapper__nowallet")}>
+                    <section className={cx("nowallet__content")}>
+                        <p>
+                            The selected wallet ({walletName}) has not been installed. Do you want to visit Chrome Web
+                            Store and install it now?
+                        </p>
+                    </section>
+                    <div className={cx("nowallet__button")}>
+                        <button className={cx("button__ok")} onClick={toggleDownloadWallet}>
+                            CANCEL
+                        </button>
+                        <a
+                            target="_blank"
+                            href={walletDownload}
+                            className={cx("button__cancel")}
+                            rel="noopener noreferrer"
+                        >
+                            OK
+                        </a>
                     </div>
-                </Modal>
-                {/* connect wallet end */}
-            </div>
-        </div>
+                </div>
+            </Modal>
+            {/* download wallet end*/}
+        </nav>
     );
 };
 

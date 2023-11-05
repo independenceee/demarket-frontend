@@ -31,9 +31,7 @@ const MintPage = function ({}: Props) {
     // image
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
-    const [fileName, setFileName] = useState<string>(
-        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
-    );
+    const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
 
     const handleChangeFile = function (event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
@@ -86,10 +84,7 @@ const MintPage = function ({}: Props) {
         setMetadatas(deleteValue);
     };
 
-    const handleChangeMetadata = function (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-    ) {
+    const handleChangeMetadata = function (event: ChangeEvent<HTMLInputElement>, index: number) {
         if (event.target) {
             const value = event.target.value;
             const name = event.target.name;
@@ -98,8 +93,6 @@ const MintPage = function ({}: Props) {
             setMetadatas(onChangeValue);
         }
     };
-
-    const { mintNft } = useContext<LucidContextType>(LucidContext);
 
     const handleMintNft = async function () {
         try {
@@ -116,23 +109,11 @@ const MintPage = function ({}: Props) {
                 cidVersion: 0,
             });
             formData.append("pinataOptions", options);
-            const response = await axios.post(
-                "https://api.pinata.cloud/pinning/pinFileToIPFS",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": `multipart/form-data; boundary=${formData}`,
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkzN2QzNDU1MDA5MTg3MGQ2OGE2Iiwic2NvcGVkS2V5U2VjcmV0IjoiODcwODZmYTBmYjM2NWVkMzZmOTcwNmRiODAyNjRkNDVjYzA3NWExOGEyOTY3YWRhNGRlMmQyYmEzYTlmOTljYiIsImlhdCI6MTY5NzUxMDk1NX0.FqH3wlzhnRdKLatBtfQ04d6-PnCQu5hXZSHK9xFDJvE`,
-                    },
+            const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+                headers: {
+                    "Content-Type": `multipart/form-data; boundary=${formData}`,
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkzN2QzNDU1MDA5MTg3MGQ2OGE2Iiwic2NvcGVkS2V5U2VjcmV0IjoiODcwODZmYTBmYjM2NWVkMzZmOTcwNmRiODAyNjRkNDVjYzA3NWExOGEyOTY3YWRhNGRlMmQyYmEzYTlmOTljYiIsImlhdCI6MTY5NzUxMDk1NX0.FqH3wlzhnRdKLatBtfQ04d6-PnCQu5hXZSHK9xFDJvE`,
                 },
-            );
-
-            mintNft({
-                title,
-                description,
-                mediaType,
-                imagePath: "ipfs://" + response.data.IpfsHash,
-                customMetadata,
             });
         } catch (error) {
             console.log(error);
@@ -258,9 +239,7 @@ const MintPage = function ({}: Props) {
                                     <div className={cx("title")}>{title}</div>
                                 </section>
 
-                                <section className={cx("description")}>
-                                    {description}
-                                </section>
+                                <section className={cx("description")}>{description}</section>
                             </div>
                         </div>
                     </div>

@@ -10,75 +10,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import images from "@/assets/images";
 import NftItem from "@/components/NftItem";
-import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType } from "@/types";
+import { DemarketContextType } from "@/types";
+import DemarketContext from "@/contexts/components/DemarketContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
-    const { buyAssetService, burnNft, sellAssetService, lucid, refundAssetService } =
-        useContext<LucidContextType>(LucidContext);
-    const handleBuyNft = async function () {
-        try {
-            if (lucid) {
-                const txHash = await buyAssetService({
-                    lucid: lucid,
-                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
-                    assetName: "4b6761",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleRefurnAsset = async function () {
-        try {
-            if (lucid) {
-                const txHash = await refundAssetService({
-                    lucid: lucid,
-                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
-                    assetName: "4b6761",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleSellNft = async function () {
-        try {
-            if (lucid) {
-                const txHash = await sellAssetService({
-                    policyId: "a93f1620fc8bcdb4121cb6d589f6e178d77b747e21aeb1020cffb479",
-                    assetName: "4b6761",
-                    author: "1c69e69e63fb7cbead246520981b09f2edafa4099eb4f2bac1efa759",
-                    lucid: lucid,
-                    price: BigInt(100000000),
-                    royalties: BigInt(1000000),
-                    seller: "1c69e69e63fb7cbead246520981b09f2edafa4099eb4f2bac1efa759",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleBurnNft = async function () {
-        try {
-            if (lucid) {
-                const txHash = await buyAssetService({
-                    policyId: "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44",
-                    lucid: lucid,
-                    assetName: "416c6c6573",
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
+    console.log(listAssetsFromSmartContract);
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -90,18 +30,14 @@ const MarketplacePage = function ({}: Props) {
                         data-aos-easing="ease-in-sine"
                     >
                         <h3 className={cx("background__content-title")}>Demarket</h3>
-                        <h3 className={cx("background__content-slug")}>
-                            Examples For Creating Solid UX Design
-                        </h3>
+                        <h3 className={cx("background__content-slug")}>Examples For Creating Solid UX Design</h3>
                         <p className={cx("background__content-description")}>
-                            The title The Power of the Ballot: Contributing to Democracy
-                            captures the essence of the crucial role voting plays in
-                            empowering democratic systems. It highlights the significance
-                            of individual voices and their impact through the act of
-                            casting a ballot. The title combines the political aspect with
-                            a profound understanding of the power of democracy,
-                            emphasizing the influence citizens hold in shaping the course
-                            of their nations through the act of voting.
+                            The title The Power of the Ballot: Contributing to Democracy captures the essence of the
+                            crucial role voting plays in empowering democratic systems. It highlights the significance
+                            of individual voices and their impact through the act of casting a ballot. The title
+                            combines the political aspect with a profound understanding of the power of democracy,
+                            emphasizing the influence citizens hold in shaping the course of their nations through the
+                            act of voting.
                         </p>
 
                         <div className={cx("button__wrapper")}>
@@ -146,22 +82,12 @@ const MarketplacePage = function ({}: Props) {
                             modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
                             className={cx("background__slider-container")}
                         >
+                            <SwiperSlide className={cx("background__slider-image")}></SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
-                                <NftItem value={[]} index={1} />
+                                <Image className={cx("image")} src={images.eternlWallet} alt="slide_image" />
                             </SwiperSlide>
                             <SwiperSlide className={cx("background__slider-image")}>
-                                <Image
-                                    className={cx("image")}
-                                    src={images.eternlWallet}
-                                    alt="slide_image"
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide className={cx("background__slider-image")}>
-                                <Image
-                                    className={cx("image")}
-                                    src={images.flintWallet}
-                                    alt="slide_image"
-                                />
+                                <Image className={cx("image")} src={images.flintWallet} alt="slide_image" />
                             </SwiperSlide>
 
                             <div className="slider-controler">
@@ -180,15 +106,9 @@ const MarketplacePage = function ({}: Props) {
                 <section className={cx("content__wrapper")}>
                     <div className={cx("content__left")}>
                         <section className={cx("content__search")}>
-                            <header className={cx("content__search--header")}>
-                                Search
-                            </header>
+                            <header className={cx("content__search--header")}>Search</header>
                             <article className={cx("content__search--control")}>
-                                <input
-                                    type="text"
-                                    placeholder="Search"
-                                    className={cx("content__search--input")}
-                                />
+                                <input type="text" placeholder="Search" className={cx("content__search--input")} />
                                 <button className={cx("content__search--btn")}>
                                     <SearchIcon className={cx("content__search--icon")} />
                                 </button>
@@ -198,38 +118,24 @@ const MarketplacePage = function ({}: Props) {
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")}>
                                 <h3 className={cx("content__filter--title")}>Category</h3>
-                                <ArrowDropdownCircleIcon
-                                    className={cx("content__filter--icon")}
-                                />
+                                <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                             </header>
                             <article className={cx("content__filter--option")}>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                             </article>
                         </section>
@@ -237,53 +143,28 @@ const MarketplacePage = function ({}: Props) {
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")}>
                                 <h3 className={cx("content__filter--title")}>Sort buy</h3>
-                                <ArrowDropdownCircleIcon
-                                    className={cx("content__filter--icon")}
-                                />
+                                <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                             </header>
                             <article className={cx("content__filter--option")}>
                                 <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        Default
-                                    </h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <h4 className={cx("content__filter--name")}>Default</h4>
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>New</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        Trending
-                                    </h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <h4 className={cx("content__filter--name")}>Trending</h4>
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        Increment
-                                    </h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <h4 className={cx("content__filter--name")}>Increment</h4>
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        Decrement
-                                    </h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <h4 className={cx("content__filter--name")}>Decrement</h4>
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                             </article>
                         </section>
@@ -291,41 +172,25 @@ const MarketplacePage = function ({}: Props) {
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")}>
                                 <h3 className={cx("content__filter--title")}>Verify</h3>
-                                <ArrowDropdownCircleIcon
-                                    className={cx("content__filter--icon")}
-                                />
+                                <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                             </header>
                             <article className={cx("content__filter--option")}>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>Yes</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>No</h4>
-                                    <input
-                                        className={cx("content__filter--control")}
-                                        type="checkbox"
-                                    />
+                                    <input className={cx("content__filter--control")} type="checkbox" />
                                 </section>
                             </article>
                         </section>
                     </div>
                     <div className={cx("content__right")}>
-                        <NftContainer
-                            data={[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13]}
-                            itemsPerPage={12}
-                        />
+                        <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} />
                     </div>
                 </section>
             </div>
-
-            <button onClick={handleBuyNft}>Buy</button>
-            <button onClick={handleSellNft}>Sell</button>
-            <button onClick={handleRefurnAsset}>Refurn</button>
-            <button onClick={handleBurnNft}>Burn</button>
         </div>
     );
 };

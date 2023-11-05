@@ -1,12 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { CopyIcon, CheckIcon } from "@/components/Icons";
 import styles from "./NftItem.module.scss";
 import images from "@/assets/images";
-import { toast } from "react-toastify";
+import covertString from "@/helpers/convertString";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
+import checkMediaType from "@/helpers/checkMediaType";
+import convertHexToString from "@/helpers/convertHexToString";
+import CopyItem from "@/components/CopyItem";
+import DemarketContext from "@/contexts/components/DemarketContext";
+import LucidContext from "@/contexts/components/LucidContext";
+import { DemarketContextType, LucidContextType } from "@/types";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -14,33 +20,48 @@ type Props = {
     index: number;
 };
 
-function extractChars(inputStr: string) {
-    var firstChars = inputStr.slice(0, 4);
-    var lastChars = inputStr.slice(-6);
-    return firstChars + "..." + lastChars;
-}
-
 const NftItem = function ({ value, index }: Props) {
-    const [copied, setCopied] = useState<boolean>(false);
-    const handleCopyToClipboard = function () {
-        setCopied(true);
-        toast.success("Copy to clipboard!", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-        setTimeout(function () {
-            setCopied(false);
-        }, 1000);
+    const router = useRouter();
+    const { connectWallet, lucid } = useContext<LucidContextType>(LucidContext);
+    const { sellAssetService, buyAssetService } = useContext<DemarketContextType>(DemarketContext);
+
+    const handleBuyNft = async function () {
+        try {
+            connectWallet(null!);
+            if (lucid) {
+                await buyAssetService({
+                    assetName: value.assetName,
+                    policyId: value.policyId,
+                    lucid: lucid,
+                    royaltiesAddress: value.authorAddress,
+                    sellerAddress: value.sellerAddress,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
+    const handleSellNft = async function () {
+        try {
+            connectWallet(null!);
+            if (lucid) {
+                await sellAssetService({
+                    assetName: value.assetName,
+                    policyId: value.policyId,
+                    author: value.authorAddress,
+                    lucid: lucid,
+                    price: BigInt(10000000),
+                    royalties: BigInt(1000 / 10),
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div
+            onClick={() => router.push(`/detail/${value.policyId + value.assetName}`)}
             className={cx("wrapper")}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
@@ -48,44 +69,40 @@ const NftItem = function ({ value, index }: Props) {
         >
             <div className={cx("container")}>
                 <section className={cx("image__wrapper")}>
-                    <img
-                        className={cx("image")}
-                        src={`https://ipfs.io/ipfs/QmPgjREBxyeZXoSUPTr7ZfdcF9egM6DK55jRHkX6HuZQfD`}
-                        alt=""
-                    />
+                    {checkMediaType(value.mediaType, "image") && (
+                        <img className={cx("image")} src={String(convertIpfsAddressToUrl(value.image))} alt="" />
+                    )}
+                    {checkMediaType(value.mediaType, "video") && (
+                        <video autoPlay muted loop className={cx("image")}>
+                            <source src={String(convertIpfsAddressToUrl(value.image))} type="video/mp4" />
+                        </video>
+                    )}
+
+                    {checkMediaType(value.mediaType, "application") && (
+                        <iframe className={cx("image")} src={String(convertIpfsAddressToUrl(value.image))}></iframe>
+                    )}
+
+                    {checkMediaType(value.mediaType, "audio") && (
+                        <audio controls>
+                            <source src={String(convertIpfsAddressToUrl(value.image))} type="audio/mpeg" />
+                        </audio>
+                    )}
                 </section>
                 <section className={cx("content")}>
-                    <h3 className={cx("content__title")}>The Dark world</h3>
-                    <h3 className={cx("content__title")}>Art</h3>
+                    <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3>
+                    <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3>
                 </section>
                 <section className={cx("information")}>
                     <div className={cx("author")}>
-                        <Image className={cx("avatar")} src={images.background} alt="" />
+                        <Image className={cx("avatar")} src={images.user} alt="" />
                         <h3 className={cx("name")}>Creator</h3>
                     </div>
-                    <h3 className={cx("price")}>100 ADA</h3>
+                    {value.price && <h3 className={cx("price")}>{Number(value.price) / 1000000} ADA</h3>}
                 </section>
                 <section className={cx("policyId")}>
                     <h4 className={cx("policyId__name")}>PolicyID</h4>
-                    <p className={cx("policyId__value")}>
-                        {extractChars(
-                            "977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07",
-                        )}
-                    </p>
-                    <CopyToClipboard
-                        text={"977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07"}
-                        onCopy={() => handleCopyToClipboard()}
-                    >
-                        {copied ? (
-                            <div className={cx("icon__wrapper")}>
-                                <CheckIcon width={"16px"} height={"16"} />
-                            </div>
-                        ) : (
-                            <div className={cx("icon__wrapper")}>
-                                <CopyIcon width={"16px"} height={"16"} />
-                            </div>
-                        )}
-                    </CopyToClipboard>
+                    <p className={cx("policyId__value")}>{covertString({ inputString: String(value.policyId) })}</p>
+                    <CopyItem value={value.policyId} />
                 </section>
             </div>
         </div>

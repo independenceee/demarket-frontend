@@ -1,62 +1,127 @@
 import { Lucid } from "lucid-cardano";
 
+export type WalletType = {
+    price?: number;
+    name: string;
+    image: string;
+    downloadApi?: string;
+    api: () => Promise<void> | any;
+    checkApi: () => Promise<void> | any;
+};
+
 export type LucidContextType = {
-    lucid: Lucid | undefined;
-    connectWallet: (walletApi: () => any) => Promise<void>;
-    setLucid: React.Dispatch<React.SetStateAction<Lucid | undefined>>;
-    metadataFromAddress: any;
-    assetsFromAsset: Array<any>;
-    mintNft: ({
-        title,
-        description,
-        mediaType,
-        imagePath,
-        customMetadata,
+    lucid: Lucid;
+    walletAddress: string;
+    walletImage: any;
+    walletName: string;
+    walletBanlance: number;
+    connectWallet: ({ api, name, image }: WalletType) => Promise<void>;
+};
+
+export type DemarketContextType = {
+    listAssetsFromSmartContract: any;
+    findAssetService: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
+
+    buyAssetService: ({
+        lucid,
+        sellerAddress,
+        royaltiesAddress,
+        policyId,
+        assetName,
     }: {
-        title: string;
-        description: string;
-        mediaType: string;
-        imagePath: string;
-        customMetadata: any;
+        lucid: Lucid;
+        sellerAddress: string;
+        royaltiesAddress: string;
+        policyId: string;
+        assetName: string;
     }) => Promise<void>;
+
     sellAssetService: ({
         policyId,
         assetName,
         author,
-        seller,
         price,
-        lucid,
         royalties,
+        lucid,
     }: {
         policyId: string;
         assetName: string;
-        seller: string;
         author: string;
         price: bigint;
         royalties: bigint;
         lucid: Lucid;
     }) => Promise<void>;
 
-    buyAssetService: ({
-        policyId,
-        assetName,
-        lucid,
-    }: {
-        policyId: string;
-        assetName: string;
-        lucid: Lucid;
-    }) => Promise<void>;
     refundAssetService: ({
+        lucid,
         policyId,
         assetName,
-        lucid,
     }: {
+        lucid: Lucid;
         policyId: string;
         assetName: string;
-        lucid: Lucid;
     }) => Promise<void>;
 
-    burnNft: (policyId: string, assetName: string) => Promise<void>;
+    mintAssetService: ({
+        lucid,
+        title,
+        description,
+        imageUrl,
+        mediaType,
+        customMetadata,
+    }: {
+        lucid: Lucid;
+        title: string;
+        description: string;
+        mediaType: string;
+        imageUrl: string;
+        customMetadata: any;
+    }) => Promise<any>;
+
+    burnAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
+};
+
+export type AssetMetadata = {
+    title: string;
+    description: string;
+    mediaType: string;
+    description: string;
+    customMetadata: any;
+};
+
+export type Asset = {
+    policyId: string;
+    assetName: string;
+    authorAddress?: string;
+    sellergAddress?: string;
+    price?: bigint;
+    royalties?: bigint;
+    metadata?: AssetMetadata;
+};
+
+export type Account = {
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    policyId?: string;
+    address: string;
+    email?: string;
+    name?: string;
+    description?: string;
+    rating?: number | null;
+    cover?: string;
+    avatar?: string;
+    socialMediaUrl?: string[];
+    followed?: number | null;
+    validate?: boolean;
 };
 
 export type Statistic = {
