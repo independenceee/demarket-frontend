@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import styles from "./NftItem.module.scss";
@@ -7,9 +8,11 @@ import images from "@/assets/images";
 import covertString from "@/helpers/convertString";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import checkMediaType from "@/helpers/checkMediaType";
-import { toast } from "react-toastify";
 import convertHexToString from "@/helpers/convertHexToString";
-import CopyItem from "../CopyItem";
+import CopyItem from "@/components/CopyItem";
+import DemarketContext from "@/contexts/components/DemarketContext";
+import LucidContext from "@/contexts/components/LucidContext";
+import { DemarketContextType, LucidContextType } from "@/types";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -18,26 +21,47 @@ type Props = {
 };
 
 const NftItem = function ({ value, index }: Props) {
-    const [copied, setCopied] = useState<boolean>(false);
-    const handleCopyToClipboard = function () {
-        setCopied(true);
-        toast.success("Copy to clipboard!", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-        setTimeout(function () {
-            setCopied(false);
-        }, 1000);
+    const router = useRouter();
+    const { connectWallet, lucid } = useContext<LucidContextType>(LucidContext);
+    const { sellAssetService, buyAssetService } = useContext<DemarketContextType>(DemarketContext);
+
+    const handleBuyNft = async function () {
+        try {
+            connectWallet(null!);
+            if (lucid) {
+                await buyAssetService({
+                    assetName: value.assetName,
+                    policyId: value.policyId,
+                    lucid: lucid,
+                    royaltiesAddress: value.authorAddress,
+                    sellerAddress: value.sellerAddress,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
+    const handleSellNft = async function () {
+        try {
+            connectWallet(null!);
+            if (lucid) {
+                await sellAssetService({
+                    assetName: value.assetName,
+                    policyId: value.policyId,
+                    author: value.authorAddress,
+                    lucid: lucid,
+                    price: BigInt(10000000),
+                    royalties: BigInt(1000 / 10),
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div
+            onClick={() => router.push(`/detail/${value.policyId + value.assetName}`)}
             className={cx("wrapper")}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}

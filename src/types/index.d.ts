@@ -37,7 +37,6 @@ export type DemarketContextType = {
     sellAssetService: ({
         policyId,
         assetName,
-        seller,
         author,
         price,
         royalties,
@@ -45,7 +44,6 @@ export type DemarketContextType = {
     }: {
         policyId: string;
         assetName: string;
-        seller: string;
         author: string;
         price: bigint;
         royalties: bigint;

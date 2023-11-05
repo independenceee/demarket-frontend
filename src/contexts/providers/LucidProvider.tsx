@@ -17,7 +17,8 @@ const LucidProvider = function ({ children }: Props) {
     const [walletImage, setWalletImage] = useState<any>();
     const [account, setAccount] = useState<Account>();
 
-    const connectWallet = async function ({ api, image, name }: WalletType) {
+    // const connectWallet = async function ({ api, image, name }: WalletType) {
+    const connectWallet = async function () {
         try {
             const lucid = await Lucid.new(
                 new Blockfrost(
@@ -26,7 +27,8 @@ const LucidProvider = function ({ children }: Props) {
                 ),
                 "Preprod",
             );
-            lucid.selectWallet(await api());
+            lucid.selectWallet(await window.cardano.nami.enable());
+            // lucid.selectWallet(await api());
             const utxos = await lucid.wallet.getUtxos();
             const balance = utxos.reduce(function (acc, utxo) {
                 return acc + utxo.assets.lovelace;
@@ -34,26 +36,25 @@ const LucidProvider = function ({ children }: Props) {
             const address = await lucid.wallet.address();
 
             setLucid(lucid);
-            setWalletName(name);
-            setWalletAddress(address);
-            setWalletImage(image);
-            setWalletBalance(Number(balance) / 1000000);
+            // setWalletName(name);
+            // setWalletAddress(address);
+            // setWalletImage(image);
+            // setWalletBalance(Number(balance) / 1000000);
 
-            const stakeKey = await post("/emurgo/stakekey/address", {
-                address: walletAddress,
-            });
+            // const stakeKey = await post("/emurgo/stakekey/address", {
+            //     address: walletAddress,
+            // });
 
-            const account = await post("/account", {
-                address: walletAddress,
-                name: stakeKey,
-            });
+            // const account = await post("/account", {
+            //     address: walletAddress,
+            //     name: stakeKey,
+            // });
 
-            setAccount(account);
+            // setAccount(account);
         } catch (error) {
             console.log(error);
         }
     };
-
 
     console.log(account);
 

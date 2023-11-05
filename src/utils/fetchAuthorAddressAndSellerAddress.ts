@@ -1,3 +1,4 @@
+import fetchStakeKeyFromAddress from "./fetchStakeKeyFromAddress";
 import { post } from "@/utils/httpRequest";
 
 type Props = {
@@ -21,7 +22,10 @@ const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName
 
     const authorAddress = await fetchAddressFromTxHash(data[0].tx_hash);
     const sellerAddress = await fetchAddressFromTxHash(data[data.length - 1].tx_hash);
-    return { authorAddress, sellerAddress };
+    const stakekeyAuthorAddress = await fetchStakeKeyFromAddress(authorAddress);
+    const stakekeySellerAddress = await fetchStakeKeyFromAddress(sellerAddress);
+
+    return { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress };
 };
 
 export default fetchAuthorAddressAndSellerAddress;
