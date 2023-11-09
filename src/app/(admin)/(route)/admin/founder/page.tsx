@@ -7,7 +7,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { BiSearch } from "react-icons/bi";
 import Button from "@/components/Button";
-import { search } from "@/services/searchService";
+import { search } from "@/services/searchServices";
 import Pagination from "@/components/Paginate/Paginate";
 import Image from "next/image";
 import images from "@/assets/images";

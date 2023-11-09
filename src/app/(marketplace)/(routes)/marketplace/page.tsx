@@ -1,103 +1,22 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Marketplace.module.scss";
-import NftContainer from "@/components/NftContainer";
 import { ArrowDropdownCircleIcon, SearchIcon } from "@/components/Icons";
-import { Autoplay, Navigation, Pagination, EffectCoverflow } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Image from "next/image";
-import images from "@/assets/images";
-import NftItem from "@/components/NftItem";
-import { DemarketContextType } from "@/types";
-import DemarketContext from "@/contexts/components/DemarketContext";
+import Background from "@/components/Background";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
-    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
-    console.log(listAssetsFromSmartContract);
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
-                <section className={cx("backgound__wrapper")}>
-                    <div
-                        className={cx("background__content")}
-                        data-aos="fade-right"
-                        data-aos-offset="300"
-                        data-aos-easing="ease-in-sine"
-                    >
-                        <h3 className={cx("background__content-title")}>Demarket</h3>
-                        <h3 className={cx("background__content-slug")}>Examples For Creating Solid UX Design</h3>
-                        <p className={cx("background__content-description")}>
-                            The title The Power of the Ballot: Contributing to Democracy captures the essence of the
-                            crucial role voting plays in empowering democratic systems. It highlights the significance
-                            of individual voices and their impact through the act of casting a ballot. The title
-                            combines the political aspect with a profound understanding of the power of democracy,
-                            emphasizing the influence citizens hold in shaping the course of their nations through the
-                            act of voting.
-                        </p>
+                {/* Background begin */}
+                <Background />
+                {/* Background end */}
 
-                        <div className={cx("button__wrapper")}>
-                            <button className={cx("button")}>Explore</button>
-                            <button className={cx("button")}>Getting Started</button>
-                        </div>
-                    </div>
-                    <div
-                        className={cx("background__slider")}
-                        data-aos="fade-left"
-                        data-aos-offset="300"
-                        data-aos-easing="ease-in-sine"
-                    >
-                        <Swiper
-                            spaceBetween={1}
-                            slidesPerView={3}
-                            roundLengths={true}
-                            initialSlide={2}
-                            loopAdditionalSlides={30}
-                            effect={"coverflow"}
-                            grabCursor={true}
-                            centeredSlides={true}
-                            loop={true}
-                            autoplay={{
-                                delay: 3000,
-                                pauseOnMouseEnter: true,
-                                reverseDirection: true,
-                                disableOnInteraction: false,
-                            }}
-                            coverflowEffect={{
-                                rotate: 0,
-                                stretch: 0,
-                                depth: 200,
-                                modifier: 3,
-                            }}
-                            pagination={{ el: ".swiper-pagination", clickable: true }}
-                            navigation={{
-                                nextEl: ".swiper-button-next",
-                                prevEl: ".swiper-button-prev",
-                                hideOnClick: true,
-                            }}
-                            modules={[Autoplay, EffectCoverflow, Pagination, Navigation]}
-                            className={cx("background__slider-container")}
-                        >
-                            <SwiperSlide className={cx("background__slider-image")}></SwiperSlide>
-                            <SwiperSlide className={cx("background__slider-image")}>
-                                <Image className={cx("image")} src={images.eternlWallet} alt="slide_image" />
-                            </SwiperSlide>
-                            <SwiperSlide className={cx("background__slider-image")}>
-                                <Image className={cx("image")} src={images.flintWallet} alt="slide_image" />
-                            </SwiperSlide>
-
-                            <div className="slider-controler">
-                                {/* <div className="swiper-button-prev slider-arrow"></div>
-                                <div className="swiper-button-next slider-arrow"></div> */}
-                                {/* <div className="swiper-pagination"></div> */}
-                            </div>
-                        </Swiper>
-                    </div>
-                </section>
                 <section className={cx("title__wrapper")}>
                     <span className={cx("title__main")}>Home</span>
                     <span className={cx("title__middle")}></span>
@@ -187,7 +106,7 @@ const MarketplacePage = function ({}: Props) {
                         </section>
                     </div>
                     <div className={cx("content__right")}>
-                        <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} />
+                        {/* <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} /> */}
                     </div>
                 </section>
             </div>

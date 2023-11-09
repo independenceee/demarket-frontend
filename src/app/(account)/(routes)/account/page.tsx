@@ -349,7 +349,13 @@ const AccountPage = function ({}: Props) {
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>
                             <div className={cx("follower__container")}>
-                                <AccountContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} itemsPerPage={8} />
+                                <AccountContainer
+                                    data={[
+                                        1, 2, 3, 4, 5, 6, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                        1, 1, 1, 8, 9, 10,
+                                    ]}
+                                    itemsPerPage={8}
+                                />
                             </div>
                         </section>
                     </article>
