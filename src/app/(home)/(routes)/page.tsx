@@ -11,6 +11,8 @@ import AccountItemSilder from "@/components/AccountItemSilder";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { DemarketContextType } from "@/types";
 import Background from "@/components/Background";
+import Title from "@/components/Title";
+import SubTitle from "@/components/SubTitle";
 
 type Props = {};
 
@@ -21,35 +23,26 @@ const Home = function ({}: Props) {
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
-                {/* background begin */}
                 <Background />
-                {/* background end */}
-                <section className={cx("title__wrapper")} data-aos="zoom-in">
-                    <span className={cx("title__main")}>Home</span>
-                </section>
+                <Title main="HOME" />
+
                 <section className={cx("news__wrapper")}>
-                    <header className={cx("header")}>
-                        <h2 className={cx("title")}>New Items</h2>
-                        <p className={cx("description")}>
-                            Beginning of the app and website design process, we know it is tempting to dive right into
-                            picking fonts.
-                        </p>
-                    </header>
+                    <SubTitle
+                        title="New Items"
+                        description="Beginning of the app and website design process, we know it is tempting to dive right into
+                            picking fonts."
+                    />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={listAssetsFromSmartContract} />
-
-                        {/* <Pagination /> */}
+                        <NftContainer data={[1, 2, 3, 4, 5, 6, 8, 9]} />
                     </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
-                    <header className={cx("header")}>
-                        <h2 className={cx("title")}>Trending Assets</h2>
-                        <p className={cx("description")}>
-                            Here are the top assets that are currently trending on our exchange, which we evaluate based
-                            on the criteria of uniqueness and rarity.
-                        </p>
-                    </header>
+                    <SubTitle
+                        title="Trending Assets"
+                        description="Here are the top assets that are currently trending on our exchange, which we evaluate based
+                            on the criteria of uniqueness and rarity."
+                    />
 
                     <div className={cx("trending__container")}>
                         <section className={cx("slider__wrapper")}>
@@ -77,23 +70,18 @@ const Home = function ({}: Props) {
                     </div>
                 </section>
                 <section className={cx("news__wrapper")}>
-                    <header className={cx("header")}>
-                        <h2 className={cx("title")}>SELLING ITEMS</h2>
-                        <p className={cx("description")}>
-                            Beginning of the app and website design process, we know it is tempting to dive right into
-                            picking fonts.
-                        </p>
-                    </header>
+                    <SubTitle
+                        title="Selling Items"
+                        description="Beginning of the app and website design process, we know it is tempting to dive right into
+                        picking fonts."
+                    />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={listAssetsFromSmartContract} />
+                        <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
                     </article>
                 </section>
                 <section className={cx("account__wrapper")}>
-                    <header className={cx("header")}>
-                        <h2 className={cx("title")}>Top Account</h2>
-                        <p className={cx("description")}>Beginning of the app and website design process.</p>
-                    </header>
+                    <SubTitle title="Top Account" description="Beginning of the app and website design process." />
                     <article className={cx("account__container")}>
                         <section className={cx("account__list--left")}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {

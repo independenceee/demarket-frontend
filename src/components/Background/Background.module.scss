@@ -2,7 +2,7 @@
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
-    // background-position: center;
+
     backdrop-filter: blur(15px);
     overflow: hidden;
     transition: 0.5s;
@@ -121,7 +121,7 @@
     padding-bottom: 0.625rem;
 }
 
-.swiper-slide-active  div {
+.swiper-slide-active div {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

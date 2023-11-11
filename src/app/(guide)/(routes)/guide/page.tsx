@@ -7,6 +7,7 @@ import { get } from "@/utils/httpRequest";
 import GuideItem from "@/components/GuideItem";
 import styles from "./Guide.module.scss";
 import { Guide } from "@/types";
+import Title from "@/components/Title";
 type Props = {};
 
 const cx = classNames.bind(styles);
@@ -33,22 +34,16 @@ const GuidePage = function ({}: Props) {
                     <div className={cx("background__container")} data-aos="fade-down">
                         <h2 className={cx("background__title")}>Guide Center</h2>
                         <p className={cx("background__description")}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Laborum obcaecati dignissimos quae quo ad iste ipsum officiis
-                            deleniti asperiores sit.
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum obcaecati dignissimos quae
+                            quo ad iste ipsum officiis deleniti asperiores sit.
                         </p>
                     </div>
                 </section>
-                <section className={cx("title__wrapper")}>
-                    <span className={cx("title__main")}>Home</span>
-                    <span className={cx("title__middle")}></span>
-                    <span className={cx("title__slug")}>Guide</span>
-                </section>
+                <Title main="HOME" slug="GUIDE" />
                 <section className={cx("heading__wrapper")}>
                     <h2 className={cx("heading__title")}>How can I help You?</h2>
                     <p className={cx("heading__description")}>
-                        You dont Know how to use feature of pladform. Let me give you some
-                        Manual document.
+                        You dont Know how to use feature of pladform. Let me give you some Manual document.
                     </p>
                 </section>
                 <section className={cx("guide__wrapper")}>
