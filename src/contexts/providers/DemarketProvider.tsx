@@ -2,13 +2,13 @@
 
 import React, { ReactNode, useState, useEffect } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
-import burnAssetService from "@/services/burnAssetService";
-import sellAssetService from "@/services/sellAssetService";
-import buyAssetService from "@/services/buyAssetService";
-import listAssetsService from "@/services/listAssetsService";
-import mintAssetService from "@/services/mintAssetService";
-import refundAssetService from "@/services/refundAssetService";
-import findAssetService from "@/services/findAssetService";
+import burnAssetService from "@/services/contracts/burnAssetService";
+import sellAssetService from "@/services/contracts/sellAssetService";
+import buyAssetService from "@/services/contracts/buyAssetService";
+import listAssetsService from "@/services/contracts/listAssetsService";
+import mintAssetService from "@/services/contracts/mintAssetService";
+import refundAssetService from "@/services/contracts/refundAssetService";
+import findAssetService from "@/services/contracts/findAssetService";
 import fetchAuthorAddressAndSellerAddress from "@/utils/fetchAuthorAddressAndSellerAddress";
 import { post } from "@/utils/httpRequest";
 

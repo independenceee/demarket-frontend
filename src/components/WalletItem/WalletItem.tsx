@@ -6,8 +6,6 @@ import classNames from "classnames/bind";
 import styles from "./WalletItem.module.scss";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types";
-import Modal from "@/components/Modal";
-import { useModal } from "@/hooks";
 
 const cx = classNames.bind(styles);
 type Props = {

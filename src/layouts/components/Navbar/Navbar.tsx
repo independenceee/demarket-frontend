@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useModal } from "@/hooks";
 import images from "@/assets/images";
 import styles from "./Navbar.module.scss";
-import { CloseIcon, DownArrowIcon } from "@/components/Icons";
+import Search from "@/layouts/components/Search";
+import { BarIcon, CloseIcon, DownArrowIcon, SearchIcon } from "@/components/Icons";
 import Modal from "@/components/Modal";
 import wallets from "@/constants/wallets";
 

@@ -98,6 +98,33 @@ const AccountPage = function ({}: Props) {
                 <section className={cx("banner__wrapper")}>
                     <Image className={cx("banner__image")} src={images.background} alt="Background" />
                 </section>
+                <section className={cx("avatar__wrapper")}>
+                    <div className={cx("avatar__container")}>
+                        <div className={cx("avatar__image--container")}>
+                            <Image className={cx("avatar__image--image")} src={images.user} alt="User Avatar" />
+                        </div>
+                        <div></div>
+                        <div className={cx("follower")}>FOLLOW</div>
+                    </div>
+                    <div className={cx("avatar__infomation")}>
+                        <h4 className={cx("avatar__infomation--name")}>
+                            {" "}
+                            addr_test1qqwxne57v0ahe04dy3jjpxqmp8ewmtaypx0tfu46c8h6wkg7659tg5e2hjvkapfq8pph66kau3vc06c04gu3drjcgnhshmzl0z
+                        </h4>
+                        <h4 className={cx("avatar__infomation--description")}>Slogan</h4>
+                    </div>
+                    <div className={cx("avatar__social")}>
+                        <p>
+                            <NftIcon />
+                        </p>
+                        <p>
+                            <NftIcon />
+                        </p>
+                        <p>
+                            <NftIcon />
+                        </p>
+                    </div>
+                </section>
 
                 <section className={cx("content__wrapper")}>
                     {!isShowing && (
@@ -349,7 +376,13 @@ const AccountPage = function ({}: Props) {
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>
                             <div className={cx("follower__container")}>
-                                <AccountContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} itemsPerPage={8} />
+                                <AccountContainer
+                                    data={[
+                                        1, 2, 3, 4, 5, 6, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                        1, 1, 1, 8, 9, 10,
+                                    ]}
+                                    itemsPerPage={12}
+                                />
                             </div>
                         </section>
                     </article>

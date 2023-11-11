@@ -5,10 +5,7 @@ import CountUp from "react-countup";
 import classNames from "classnames/bind";
 import { Statistic } from "@/types";
 import styles from "./Statistics.module.scss";
-import Aos from "aos";
-import "aos/dist/aos.css";
 import { get } from "@/utils/httpRequest";
-import axios from "axios";
 const cx = classNames.bind(styles);
 
 type Props = {};
@@ -27,13 +24,6 @@ const Statistics = function ({}: Props) {
         },
         [statistics],
     );
-
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 150,
-        });
-    }, []);
 
     return (
         <div className={cx("wrapper")} data-aos="fade-up">

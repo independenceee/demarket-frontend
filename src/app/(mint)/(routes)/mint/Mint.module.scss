@@ -1,6 +1,9 @@
 // layout
 .wrapper {
-    padding: 90px 8%;
+    width: min(90rem, 90%);
+    margin: 0 auto;
+    position: relative;
+    padding: 90px 0;
 
     .container {
         display: flex;
@@ -126,6 +129,7 @@
 
     .title-control {
         width: 100%;
+        font-family: "Roboto", sans-serif;
         font-size: 16px;
         color: #3c3838;
         border-radius: 8px;
@@ -274,10 +278,9 @@
             }
 
             .type {
-                color: var(--secondary-color-10, rgba(124, 58, 237, 0.75));
-                text-align: right;
+                color: rgba(124, 58, 237, 0.75);
+                text-align: left;
                 font-size: 29px;
-                font-style: normal;
                 font-weight: 700;
                 line-height: 29px;
             }
@@ -286,7 +289,6 @@
         .description {
             color: #2b2b2b;
             font-size: 20px;
-            font-style: normal;
             font-weight: 600;
             line-height: 20px;
             max-width: 380px;
@@ -377,10 +379,11 @@
 
 .bill-section {
     margin-top: 50px;
-    width: 65%;
+    width: 100%;
 
     .wrapper {
         padding: 6px 17px;
+        width: 100%;
         flex-direction: column;
         display: flex;
         gap: 2px;
@@ -447,27 +450,14 @@
         }
     }
 
-    .checkbox-wrapper {
-        margin-top: 30px;
-        display: flex;
-        align-items: center;
-
-        input {
-            font-size: 30px;
-        }
-
-        h3 {
-            font-size: 14px;
-            font-weight: 700;
-            margin: 0;
-            margin-left: 8px;
-        }
-    }
-
     .mint {
         margin-top: 50px;
         text-align: center;
     }
+}
+
+.right-reponsive {
+    display: none;
 }
 
 @media only screen and (max-width: 968px) {
@@ -478,6 +468,9 @@
             .left {
                 width: 100%;
                 padding-right: 0;
+                .right-reponsive {
+                    display: block;
+                }
             }
 
             .right {

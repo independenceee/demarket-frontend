@@ -28,7 +28,6 @@ function convertMetadataToObj(metadataArray: any) {
 type Props = {};
 
 const MintPage = function ({}: Props) {
-    // image
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
@@ -220,6 +219,54 @@ const MintPage = function ({}: Props) {
                         </div>
                     </div>
                     {/* metadata-end */}
+                    <section className={cx("right-reponsive")}>
+                        <div className={cx("content")}>
+                            <div className={cx("nft-wrapper")}>
+                                <div className={cx("image-container")}>
+                                    <Image
+                                        width={100}
+                                        height={100}
+                                        src={imagePath ? imagePath : images.noImage}
+                                        alt=""
+                                        className={cx("image")}
+                                    />
+                                </div>
+                                <div className={cx("nft-container")}>
+                                    <section className={cx("content")}>
+                                        <div className={cx("title")}>{title}</div>
+                                    </section>
+
+                                    <section className={cx("description")}>{description}</section>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* bill-begin */}
+                    <div className={cx("bill-section")}>
+                        <div className={cx("wrapper")}>
+                            <div className={cx("container")}>
+                                <h2 className={cx("title")}>Fees</h2>
+                                <div className={cx("fee")}>
+                                    <p>Platform fee</p>
+                                    <span>0.0</span>
+                                </div>
+                                <div className={cx("fee")}>
+                                    <p>Estimated Gas Fee</p>
+                                    <span>0.2</span>
+                                </div>
+                                <div className={cx("fee-total")}>
+                                    <p>Estimated Gas Fee</p>
+                                    <span>0.2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={cx("mint")}>
+                            <Button onClick={handleMintNft}>Mint</Button>
+                        </div>
+                    </div>
+                    {/* bill-end */}
                 </section>
                 <section className={cx("right")}>
                     <div className={cx("content")}>
@@ -245,38 +292,6 @@ const MintPage = function ({}: Props) {
                     </div>
                 </section>
             </div>
-
-            {/* bill-begin */}
-            <div className={cx("bill-section")}>
-                <div className={cx("wrapper")}>
-                    <div className={cx("container")}>
-                        <h2 className={cx("title")}>Fees</h2>
-                        <div className={cx("fee")}>
-                            <p>Platform fee</p>
-                            <span>0.0</span>
-                        </div>
-                        <div className={cx("fee")}>
-                            <p>Estimated Gas Fee</p>
-                            <span>0.2</span>
-                        </div>
-                        <div className={cx("fee-total")}>
-                            <p>Estimated Gas Fee</p>
-                            <span>0.2</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={cx("checkbox-wrapper")}>
-                    <div className={cx("checkbox-input")}>
-                        <input type="checkbox" />
-                    </div>
-                    <h3>Are you sure want to mint Nft ?</h3>
-                </div>
-                <div className={cx("mint")}>
-                    <Button onClick={handleMintNft}>Mint</Button>
-                </div>
-            </div>
-            {/* bill-end */}
         </main>
     );
 };

@@ -11,6 +11,7 @@ import FounderItem from "@/components/FounderItem";
 import styles from "./About.module.scss";
 import { get } from "@/utils/httpRequest";
 import { Founder } from "@/types";
+import Title from "@/components/Title";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -41,18 +42,13 @@ const AboutPage = function ({}: Props) {
                     <div className={cx("background__container")} data-aos="fade-down">
                         <h2 className={cx("background__title")}>About Us</h2>
                         <p className={cx("background__description")}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Aliquam ullamcorper pulvinar imperdiet. Fusce rhoncus vel
-                            lacus vel tempor. Nullam eu magna congue, auctor nisl ac,
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper pulvinar
+                            imperdiet. Fusce rhoncus vel lacus vel tempor. Nullam eu magna congue, auctor nisl ac,
                             tristique urna. In blandit mattis massa.
                         </p>
                     </div>
                 </section>
-                <section className={cx("title__wrapper")} data-aos="zoom-in">
-                    <span className={cx("title__main")}>Home</span>
-                    <span className={cx("title__middle")}></span>
-                    <span className={cx("title__slug")}>About</span>
-                </section>
+                <Title main="HOME" slug="ABOUT" />
                 <section className={cx("heading__wrapper")}>
                     <h2 className={cx("heading__title")} data-aos="fade-up">
                         About Us
@@ -71,18 +67,14 @@ const AboutPage = function ({}: Props) {
                             <div className={cx("about__content")} data-aos="fade-left">
                                 <h2>Open Your Own Marketplace</h2>
                                 <p>
-                                    In hac habitasse platea dictumst. Integer arcu odio,
-                                    malesuada id eros vel, hendrerit consequat quam.
-                                    Pellentesque volutpat quis elit at tincidunt. Fusce
-                                    vel velit augue. Integer gravida justo nec mauris
-                                    congue, sit amet faucibus nisl dictum.
+                                    In hac habitasse platea dictumst. Integer arcu odio, malesuada id eros vel,
+                                    hendrerit consequat quam. Pellentesque volutpat quis elit at tincidunt. Fusce vel
+                                    velit augue. Integer gravida justo nec mauris congue, sit amet faucibus nisl dictum.
                                 </p>
                                 <p>
-                                    Integer ornare mauris id mauris semper, non fermentum
-                                    est vestibulum. Sed non laoreet ligula. Praesent
-                                    tempor scelerisque nulla, non tristique dolor rhoncus
-                                    ac. Nulla vitae ornare sapien. Quisque non massa ut
-                                    justo convallis blandit.
+                                    Integer ornare mauris id mauris semper, non fermentum est vestibulum. Sed non
+                                    laoreet ligula. Praesent tempor scelerisque nulla, non tristique dolor rhoncus ac.
+                                    Nulla vitae ornare sapien. Quisque non massa ut justo convallis blandit.
                                 </p>
 
                                 <div className={cx("about__button")}>
@@ -103,8 +95,8 @@ const AboutPage = function ({}: Props) {
                             Our Foundation
                         </h2>
                         <p className={cx("founder__description")} data-aos="fade-up">
-                            We are impartial and independent, and every day we create
-                            distinctive, world-class programmes and develop
+                            We are impartial and independent, and every day we create distinctive, world-class
+                            programmes and develop
                         </p>
                     </header>
                     <div className={cx("founder__container")}>

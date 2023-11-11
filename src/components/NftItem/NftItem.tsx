@@ -69,7 +69,7 @@ const NftItem = function ({ value, index }: Props) {
         >
             <div className={cx("container")}>
                 <section className={cx("image__wrapper")}>
-                    {checkMediaType(value.mediaType, "image") && (
+                    {/* {checkMediaType(value.mediaType, "image") && (
                         <img className={cx("image")} src={String(convertIpfsAddressToUrl(value.image))} alt="" />
                     )}
                     {checkMediaType(value.mediaType, "video") && (
@@ -86,11 +86,11 @@ const NftItem = function ({ value, index }: Props) {
                         <audio controls>
                             <source src={String(convertIpfsAddressToUrl(value.image))} type="audio/mpeg" />
                         </audio>
-                    )}
+                    )} */}
                 </section>
                 <section className={cx("content")}>
-                    <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3>
-                    <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3>
+                    {/* <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3> */}
+                    {/* <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3> */}
                 </section>
                 <section className={cx("information")}>
                     <div className={cx("author")}>

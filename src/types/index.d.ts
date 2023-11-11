@@ -89,6 +89,79 @@ export type DemarketContextType = {
     }) => Promise<any>;
 };
 
+export type WalletContextType = {};
+
+export type SmartContractType = {
+    listAssetsFromSmartContract: any;
+    findAssetService: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
+
+    buyAssetService: ({
+        lucid,
+        sellerAddress,
+        royaltiesAddress,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        sellerAddress: string;
+        royaltiesAddress: string;
+        policyId: string;
+        assetName: string;
+    }) => Promise<void>;
+
+    sellAssetService: ({
+        policyId,
+        assetName,
+        author,
+        price,
+        royalties,
+        lucid,
+    }: {
+        policyId: string;
+        assetName: string;
+        author: string;
+        price: bigint;
+        royalties: bigint;
+        lucid: Lucid;
+    }) => Promise<void>;
+
+    refundAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<void>;
+
+    mintAssetService: ({
+        lucid,
+        title,
+        description,
+        imageUrl,
+        mediaType,
+        customMetadata,
+    }: {
+        lucid: Lucid;
+        title: string;
+        description: string;
+        mediaType: string;
+        imageUrl: string;
+        customMetadata: any;
+    }) => Promise<any>;
+
+    burnAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
+};
+
 export type AssetMetadata = {
     title: string;
     description: string;
@@ -156,4 +229,12 @@ export type Guide = {
     title: string;
     updatedAt?: string;
     url: string;
+};
+
+export type Category = {
+    id?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    name?: string;
+    slug?: string;
 };

@@ -2,7 +2,7 @@
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { useParams } from "next/navigation";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
@@ -29,8 +29,14 @@ const DetailPage = function ({}: Props) {
     const [assetName, setAssetName] = useState<string>(unit.slice(56));
     const [toggleState, setToggleState] = useState<number>(1);
     const [asset, setAsset] = useState<any>();
+    const [price, setPrice] = useState<string>("");
     const toggleTab = function (index: number) {
         setToggleState(index);
+    };
+
+    const handleInputPrice = function (event: ChangeEvent<HTMLInputElement>) {
+        event.preventDefault();
+        setPrice(event.target.value);
     };
 
     const renderMetadataFromPolicyIdAndAssetName = async function () {
@@ -75,8 +81,8 @@ const DetailPage = function ({}: Props) {
                     policyId: asset.policyId,
                     author: asset.authorAddress,
                     lucid: lucid,
-                    price: BigInt(10000000),
-                    royalties: BigInt(1000 / 10),
+                    price: BigInt(Number(price) * 1000000),
+                    royalties: BigInt(Number(price) * 10000),
                 });
             }
         } catch (error) {
@@ -84,7 +90,64 @@ const DetailPage = function ({}: Props) {
         }
     };
 
-    console.log(asset);
+    const metadata = `{
+        {
+            "hash": "733c16802b3d84c065a875166233cbb6a76ca0a85e59f0b2bcea8b70e26d5539",
+            "inputs": [
+                {
+                    "address": "addr_test1qrxpzfwdwtq9dzu2swe2hlmn9dptmz7dmv8cfs64va29xa03y2thexqurrtyve545ssjqmeywq40wanpqgyl654h57pqqz9eyd",
+                    "amount": [
+                        {
+                            "unit": "lovelace",
+                            "quantity": "2984897366"
+                        }
+                    ],
+                    "tx_hash": "ec2115fec88468c57915b07e8616fa5f81c660a7d7eac6f249e402d98263f567",
+                    "output_index": 1,
+                    "data_hash": null,
+                    "inline_datum": null,
+                    "reference_script_hash": null,
+                    "collateral": false,
+                    "reference": false
+                }
+            ],
+            "outputs": [
+                {
+                    "address": "addr_test1qrxpzfwdwtq9dzu2swe2hlmn9dptmz7dmv8cfs64va29xa03y2thexqurrtyve545ssjqmeywq40wanpqgyl654h57pqqz9eyd",
+                    "amount": [
+                        {
+                            "unit": "lovelace",
+                            "quantity": "1163700"
+                        },
+                        {
+                            "unit": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444461696c7920436f696e",
+                            "quantity": "1"
+                        }
+                    ],
+                    "output_index": 0,
+                    "data_hash": null,
+                    "inline_datum": null,
+                    "collateral": false,
+                    "reference_script_hash": null
+                },
+                {
+                    "address": "addr_test1qrxpzfwdwtq9dzu2swe2hlmn9dptmz7dmv8cfs64va29xa03y2thexqurrtyve545ssjqmeywq40wanpqgyl654h57pqqz9eyd",
+                    "amount": [
+                        {
+                            "unit": "lovelace",
+                            "quantity": "2983549641"
+                        }
+                    ],
+                    "output_index": 1,
+                    "data_hash": null,
+                    "inline_datum": null,
+                    "collateral": false,
+                    "reference_script_hash": null
+                }
+            ]
+        }
+    }`;
+
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -235,15 +298,17 @@ const DetailPage = function ({}: Props) {
                                     <button className={cx("detail__button--left")}>
                                         {Number(asset.price) / 1000000} ADA
                                     </button>
-                                    <button className={cx("detail__button--right")}>royalties</button>
+                                    <button className={cx("detail__button--right")}>Refund</button>
                                 </section>
                             )}
 
                             {asset.currentAddress == walletAddress && !asset.price ? (
                                 <section className={cx("detail__button")}>
-                                    <button className={cx("detail__button--left")}>
-                                        {Number(asset.price) / 1000000} ADA
-                                    </button>
+                                    <input
+                                        type="text"
+                                        onChange={handleInputPrice}
+                                        className={cx("detail__button--left")}
+                                    />
                                     <button onClick={handleSellNft} className={cx("detail__button--right")}>
                                         SELL
                                     </button>
@@ -273,13 +338,13 @@ const DetailPage = function ({}: Props) {
                                 </div>
                                 <div className={cx("content__box")}>
                                     <div className={toggleState == 1 ? cx("content") : cx("hidden__content")}>
-                                        <h2>2</h2>
-                                        <p>
-                                            Slogan xuất hiện ở mọi nơi xung quanh ta, từ trên internet, quảng cáo cho
-                                            đến các biển hiệu ngoài trời. Vậy như thế nào là một slogan hay? Vietnix sẽ
-                                            gợi ý cho bạn hơn 50 câu slogan ý nghĩa phù hợp với lĩnh vực kinh doanh của
-                                            bạn qua bài viết dưới đây
-                                        </p>
+                                        <SyntaxHighlighter
+                                            className={cx("data__interview")}
+                                            language="json"
+                                            style={docco}
+                                        >
+                                            {metadata}
+                                        </SyntaxHighlighter>
                                     </div>
                                     <div className={toggleState == 2 ? cx("content") : cx("hidden__content")}>
                                         <SyntaxHighlighter
@@ -287,7 +352,7 @@ const DetailPage = function ({}: Props) {
                                             language="json"
                                             style={docco}
                                         >
-                                            1
+                                            {JSON.stringify(asset.metadata, null, 2)}
                                         </SyntaxHighlighter>
                                     </div>
                                     <div className={toggleState == 3 ? cx("content") : cx("hidden__content")}>
@@ -296,7 +361,120 @@ const DetailPage = function ({}: Props) {
                                             language="json"
                                             style={docco}
                                         >
-                                            1
+                                            {`[
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444d79626f6f6b",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44416e696d65",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4441694c615472696575506875",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444b68756e67206c6f6e67",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44456368",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44446f67",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af445431",
+        "quantity": "8"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44447265737365642063617477616c6b",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4450696b61636875206d75736963",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444f757477656172207061727479",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444f75746572776561723036",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444e69636520417274776f726b",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44417274776f726b2032",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44436c696d61746520467269656e646c79",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44437265617469766520417274776f726b",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44426967205269766572",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44546563686e6963616c205175657374696f6e73",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4444657363656e64616e7473204f66205468652053756e",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444d794356504850",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af446c6f676f486f6d65",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4444656d6f204e4654",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444e46542064656d6f",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af444461696c7920436f696e",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44416c6c6573",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4452756770756c6c",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af44426c6f636b66726f73742049636f6e",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af4453746172",
+        "quantity": "1"
+    },
+    {
+        "asset": "cb2e7bf1fef88c0f8d679a2bd6cf9167f175e106063d6a16e457af446c6f676f",
+        "quantity": "1"
+    }
+]`}
                                         </SyntaxHighlighter>
                                     </div>
                                 </div>
