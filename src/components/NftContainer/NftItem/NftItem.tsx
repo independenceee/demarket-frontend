@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
+import CountUp from "react-countup";
 import styles from "./NftItem.module.scss";
 import images from "@/assets/images";
 import covertString from "@/helpers/convertString";
@@ -97,7 +98,11 @@ const NftItem = function ({ value, index }: Props) {
                         <Image className={cx("avatar")} src={images.user} alt="" />
                         <h3 className={cx("name")}>Creator</h3>
                     </div>
-                    {value.price && <h3 className={cx("price")}>{Number(value.price) / 1000000} ADA</h3>}
+                    {value.price && (
+                        <h3 className={cx("price")}>
+                            <CountUp start={0} end={Number(value.price) / 1000000 || 0} duration={2} delay={0} /> ADA
+                        </h3>
+                    )}
                 </section>
                 <section className={cx("policyId")}>
                     <h4 className={cx("policyId__name")}>PolicyID</h4>

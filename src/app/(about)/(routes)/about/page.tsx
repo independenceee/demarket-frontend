@@ -12,6 +12,7 @@ import styles from "./About.module.scss";
 import { get } from "@/utils/httpRequest";
 import { Founder } from "@/types";
 import Title from "@/components/Title";
+import SubTitle from "@/components/SubTitle";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -90,15 +91,12 @@ const AboutPage = function ({}: Props) {
                     <Statistics />
                 </section>
                 <section className={cx("founder__wrapper")}>
-                    <header className={cx("founder__header")}>
-                        <h2 className={cx("founder__title")} data-aos="fade-up">
-                            Our Foundation
-                        </h2>
-                        <p className={cx("founder__description")} data-aos="fade-up">
-                            We are impartial and independent, and every day we create distinctive, world-class
-                            programmes and develop
-                        </p>
-                    </header>
+                    <SubTitle
+                        title="Our Foundation"
+                        description="We are impartial and independent, and every day we create distinctive, world-class
+                            programmes and develop"
+                    />
+
                     <div className={cx("founder__container")}>
                         {founders?.map(function (founder: Founder, index: number) {
                             return (

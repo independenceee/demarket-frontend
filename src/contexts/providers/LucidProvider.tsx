@@ -42,7 +42,7 @@ const LucidProvider = function ({ children }: Props) {
             const stakeKey = await fetchStakeKeyFromAddress(address);
 
             const account = await post("/account", {
-                address: walletAddress,
+                address: address,
                 name: stakeKey,
                 email: stakeKey,
             });
@@ -54,7 +54,9 @@ const LucidProvider = function ({ children }: Props) {
     };
 
     return (
-        <LucidContext.Provider value={{ connectWallet, walletAddress, walletImage, walletName, walletBanlance, lucid }}>
+        <LucidContext.Provider
+            value={{ connectWallet, walletAddress, walletImage, walletName, walletBanlance, lucid, account }}
+        >
             {children}
         </LucidContext.Provider>
     );

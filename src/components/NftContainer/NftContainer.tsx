@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import ReactPaginate from "react-paginate";
 import styles from "./NftContainer.module.scss";
-import NftItem from "../NftItem";
+import NftItem from "./NftItem";
 
 const cx = classNames.bind(styles);
 type Props = {

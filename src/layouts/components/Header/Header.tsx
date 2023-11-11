@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import classNames from "classnames/bind";
@@ -11,20 +12,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import wallets from "@/constants/wallets";
 import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType } from "@/types";
+import { CartContextType, LucidContextType } from "@/types";
 import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
 import Search from "@/layouts/components/Search";
+import CartContext from "@/contexts/components/CartContext";
 
 const cx = classNames.bind(styles);
 
 type Props = {};
 
 const Header = function ({}: Props) {
+    const router = useRouter();
+    const { totalQuantity } = useContext<CartContextType>(CartContext);
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
 
-    const { connectWallet } = useContext<LucidContextType>(LucidContext);
+    const { connectWallet, account } = useContext<LucidContextType>(LucidContext);
     const [selected, setSelected] = useState<string>("HOME");
     const [openConnectWallet, setOpenConnectWallet] = useState<boolean>(false);
 
@@ -79,10 +83,16 @@ const Header = function ({}: Props) {
                         </div>
                         <div className={cx("icon__container")}>
                             <FontAwesomeIcon icon={faCartShopping} />
+                            <span>{totalQuantity}</span>
                         </div>
-                        <div className={cx("account__wrapper")}>
-                            <Image className={cx("account__image")} src={images.user} alt="" />
-                        </div>
+                        {account && (
+                            <div
+                                className={cx("account__wrapper")}
+                                onClick={() => router.push(`/account/${account.address}`)}
+                            >
+                                <Image className={cx("account__image")} src={images.user} alt="" />
+                            </div>
+                        )}
                     </section>
 
                     <section className={cx("button__container")}>
