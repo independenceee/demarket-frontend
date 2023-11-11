@@ -8,18 +8,18 @@ import images from "@/assets/images";
 import styles from "./Home.module.scss";
 import NftContainer from "@/components/NftContainer";
 import AccountItemSilder from "@/components/AccountItemSilder";
-import DemarketContext from "@/contexts/components/DemarketContext";
-import { DemarketContextType } from "@/types";
+import { SmartContractType } from "@/types";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { listAssetsFromSmartContract } = useContext<DemarketContextType>(DemarketContext);
+    const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -34,7 +34,7 @@ const Home = function ({}: Props) {
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={[1, 2, 3, 4, 5, 6, 8, 9]} />
+                        <NftContainer data={listAssetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
@@ -77,7 +77,7 @@ const Home = function ({}: Props) {
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
+                        <NftContainer data={listAssetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("account__wrapper")}>

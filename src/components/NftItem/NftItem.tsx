@@ -10,9 +10,9 @@ import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import checkMediaType from "@/helpers/checkMediaType";
 import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
-import DemarketContext from "@/contexts/components/DemarketContext";
 import LucidContext from "@/contexts/components/LucidContext";
-import { DemarketContextType, LucidContextType } from "@/types";
+import { LucidContextType, SmartContractType } from "@/types";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
 const NftItem = function ({ value, index }: Props) {
     const router = useRouter();
     const { connectWallet, lucid } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService } = useContext<DemarketContextType>(DemarketContext);
+    const { sellAssetService, buyAssetService } = useContext<SmartContractType>(SmartContractContext);
 
     const handleBuyNft = async function () {
         try {
@@ -69,7 +69,7 @@ const NftItem = function ({ value, index }: Props) {
         >
             <div className={cx("container")}>
                 <section className={cx("image__wrapper")}>
-                    {/* {checkMediaType(value.mediaType, "image") && (
+                    {checkMediaType(value.mediaType, "image") && (
                         <img className={cx("image")} src={String(convertIpfsAddressToUrl(value.image))} alt="" />
                     )}
                     {checkMediaType(value.mediaType, "video") && (
@@ -86,11 +86,11 @@ const NftItem = function ({ value, index }: Props) {
                         <audio controls>
                             <source src={String(convertIpfsAddressToUrl(value.image))} type="audio/mpeg" />
                         </audio>
-                    )} */}
+                    )}
                 </section>
                 <section className={cx("content")}>
-                    {/* <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3> */}
-                    {/* <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3> */}
+                    <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3>
+                    <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3>
                 </section>
                 <section className={cx("information")}>
                     <div className={cx("author")}>

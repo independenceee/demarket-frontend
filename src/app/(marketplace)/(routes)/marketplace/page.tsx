@@ -1,29 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import classNames from "classnames/bind";
 import styles from "./Marketplace.module.scss";
 import { ArrowDropdownCircleIcon, SearchIcon } from "@/components/Icons";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import NftContainer from "@/components/NftContainer";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
+import { SmartContractType } from "@/types";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
+    const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
-                {/* Background begin */}
                 <Background />
-                {/* Background end */}
-
-                {/* title-begin */}
                 <Title main="HOME" slug="MARKETPLACE" />
-                {/* title-end */}
                 <section className={cx("content__wrapper")}>
-                    {/* left-begin */}
                     <div className={cx("content__left--wrapper")}>
                         <div className={cx("content__left-container")} data-aos="fade-right" data-aos-duration="1000">
                             <section className={cx("content__search")}>
@@ -108,9 +105,8 @@ const MarketplacePage = function ({}: Props) {
                             </section>
                         </div>
                     </div>
-                    {/* left-end */}
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
-                        <NftContainer data={[1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 0]} itemsPerPage={12} />
+                        <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} />
                     </div>
                 </section>
             </div>

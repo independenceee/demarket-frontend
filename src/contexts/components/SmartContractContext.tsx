@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { WalletContextType } from "@/types";
+import { SmartContractType } from "@/types";
 
-const SmartContractContext = createContext<WalletContextType>(null!);
+const SmartContractContext = createContext<SmartContractType>(null!);
 
 export default SmartContractContext;

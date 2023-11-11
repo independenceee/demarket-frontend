@@ -18,76 +18,7 @@ export type LucidContextType = {
     connectWallet: ({ api, name, image }: WalletType) => Promise<void>;
 };
 
-export type DemarketContextType = {
-    listAssetsFromSmartContract: any;
-    findAssetService: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
-
-    buyAssetService: ({
-        lucid,
-        sellerAddress,
-        royaltiesAddress,
-        policyId,
-        assetName,
-    }: {
-        lucid: Lucid;
-        sellerAddress: string;
-        royaltiesAddress: string;
-        policyId: string;
-        assetName: string;
-    }) => Promise<void>;
-
-    sellAssetService: ({
-        policyId,
-        assetName,
-        author,
-        price,
-        royalties,
-        lucid,
-    }: {
-        policyId: string;
-        assetName: string;
-        author: string;
-        price: bigint;
-        royalties: bigint;
-        lucid: Lucid;
-    }) => Promise<void>;
-
-    refundAssetService: ({
-        lucid,
-        policyId,
-        assetName,
-    }: {
-        lucid: Lucid;
-        policyId: string;
-        assetName: string;
-    }) => Promise<void>;
-
-    mintAssetService: ({
-        lucid,
-        title,
-        description,
-        imageUrl,
-        mediaType,
-        customMetadata,
-    }: {
-        lucid: Lucid;
-        title: string;
-        description: string;
-        mediaType: string;
-        imageUrl: string;
-        customMetadata: any;
-    }) => Promise<any>;
-
-    burnAssetService: ({
-        lucid,
-        policyId,
-        assetName,
-    }: {
-        lucid: Lucid;
-        policyId: string;
-        assetName: string;
-    }) => Promise<any>;
-};
+export type DemarketContextType = {};
 
 export type WalletContextType = {};
 
