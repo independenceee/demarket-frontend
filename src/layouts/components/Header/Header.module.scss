@@ -42,7 +42,7 @@
     .button__other {
         color: #000;
         background: #fff;
-        padding: 0.4rem 1rem;
+        padding: 0.6rem 1rem;
         text-decoration: none;
         text-transform: uppercase;
         border: 2px solid #c2c2c2;
@@ -55,6 +55,23 @@
         .icon__container {
             cursor: pointer;
             color: #00a4aa;
+            position: relative;
+            font-size: 18px;
+
+            span {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                top: -9px;
+                right: -5px;
+                background: rgb(32, 129, 226);
+                border-radius: 50%;
+                color: rgb(255, 255, 255);
+                height: 15px;
+                width: 15px;
+                font-size: 10px;
+            }
         }
     }
 }
@@ -80,7 +97,7 @@
     display: block;
     color: #717171;
     background: #fff;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     text-decoration: none;
     text-transform: uppercase;
     border: 2px solid #c2c2c2;
@@ -98,7 +115,7 @@
     width: 100%;
     background: #f8fafd;
     border-radius: 8px;
-    top: 34px;
+    top: 50px;
 
     .wallet__items {
         border-radius: 8px;

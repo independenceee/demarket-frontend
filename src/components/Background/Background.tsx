@@ -107,21 +107,41 @@ const Carousel = function ({}: Props) {
                         setBackground(slider[swiper.realIndex].url);
                     }}
                 >
-                    {slider.map((data, index: number) => (
-                        <SwiperSlide
-                            key={index}
-                            style={{ backgroundImage: `url(${data.url})` }}
-                            className={cx("myswiper-slider")}
-                        >
-                            <div>
-                                <h2>{data.title}</h2>
-                                <p>{data.description}</p>
-                                <a href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
-                                    explore
-                                </a>
-                            </div>
-                        </SwiperSlide>
-                    ))}
+                    {slider.map(function (data, index: number) {
+                        if (data.url === background) {
+                            return (
+                                <SwiperSlide
+                                    key={index}
+                                    style={{ backgroundImage: `url(${data.url})` }}
+                                    className={cx("myswiper-slider-active")}
+                                >
+                                    <div>
+                                        <h2>{data.title}</h2>
+                                        <p>{data.description}</p>
+                                        <a href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
+                                            explore
+                                        </a>
+                                    </div>
+                                </SwiperSlide>
+                            );
+                        }
+
+                        return (
+                            <SwiperSlide
+                                key={index}
+                                style={{ backgroundImage: `url(${data.url})` }}
+                                className={cx("myswiper-slider")}
+                            >
+                                <div>
+                                    <h2>{data.title}</h2>
+                                    <p>{data.description}</p>
+                                    <a href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
+                                        explore
+                                    </a>
+                                </div>
+                            </SwiperSlide>
+                        );
+                    })}
                 </Swiper>
 
                 <img src={require("../../assets/images/logo.jpg")} alt="bg image" className={cx("bgdonut1")} />

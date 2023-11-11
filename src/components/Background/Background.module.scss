@@ -107,6 +107,55 @@
     padding-top: 3.125rem;
 }
 
+.myswiper-slider-active {
+    border-radius: 8px;
+    width: 18.75rem;
+    height: 28.125rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.myswiper-slider-active div {
+    display: none;
+    opacity: 0;
+    padding-bottom: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+}
+
+.myswiper-slider-active div a {
+    align-self: flex-start;
+}
+
+.myswiper-slider-active h2 {
+    color: #fff;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin-bottom: 0.625rem;
+    padding: 0 0 0 1.563rem;
+    text-transform: uppercase;
+}
+
+.myswiper-slider-active p {
+    color: #dadada;
+    padding: 0 1.563rem;
+    line-height: 1.6;
+    font-size: 0.75rem;
+}
+
+.myswiper-slider-active a {
+    margin: 1.25rem 1.5rem 3.5rem;
+
+    &:hover {
+        color: #00a4aa;
+    }
+}
+
 .myswiper-slider {
     border-radius: 8px;
     width: 18.75rem;

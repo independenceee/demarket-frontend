@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import classNames from "classnames/bind";
 import styles from "./AccountContainer.module.scss";
-import AccountItem from "@/components/AccountItem";
+import AccountItem from "@/components/AccountContainer/AccountItem";
 
 const cx = classNames.bind(styles);
 

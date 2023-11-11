@@ -9,7 +9,15 @@ export type WalletType = {
     checkApi: () => Promise<void> | any;
 };
 
+export type CartContextType = {
+    itemsList: Array<any>;
+    totalQuantity: number;
+    showCart: boolean;
+    changed: boolean;
+};
+
 export type LucidContextType = {
+    account: any;
     lucid: Lucid;
     walletAddress: string;
     walletImage: any;
