@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import classNames from "classnames/bind";
-import Image from "next/image";
 import Link from "next/link";
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -22,16 +21,7 @@ type Props = {
     linkedin: string;
 };
 
-const FounderItem = function ({
-    index,
-    avatar,
-    company,
-    fistName,
-    lastName,
-    role,
-    twitter,
-    linkedin,
-}: Props) {
+const FounderItem = function ({ index, avatar, company, fistName, lastName, role, twitter, linkedin }: Props) {
     useEffect(function () {
         Aos.init({
             duration: 800,
@@ -46,13 +36,7 @@ const FounderItem = function ({
             data-aos-duration={`${1000 * (index + 4)}`}
         >
             <div className={cx("image__wrapper")}>
-                <Image
-                    width={100}
-                    height={100}
-                    className={cx("image")}
-                    src={avatar}
-                    alt="Avatar"
-                />
+                <img className={cx("image")} src={avatar} alt="Avatar" />
                 <div className={cx("social__icon")}>
                     {twitter && (
                         <Link className={cx("icon__link")} href={twitter}>
