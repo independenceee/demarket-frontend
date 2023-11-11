@@ -30,28 +30,7 @@ const mintAssetService = async function ({
             const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
             const uint = policyId + fromText(title);
 
-            if (Object.keys(customMetadata).length === 0) {
-                const tx = await lucid
-                    .newTx()
-                    .mintAssets({ [uint]: BigInt(1) })
-                    .attachMetadata(721, {
-                        [policyId]: {
-                            [title]: {
-                                name: title,
-                                description: description,
-                                image: imageUrl,
-                                mediaType: mediaType,
-                            },
-                        },
-                    })
-                    .validTo(Date.now() + 200000)
-                    .attachMintingPolicy(mintingPolicy)
-                    .complete();
-                const signedTx = await tx.sign().complete();
-                await signedTx.submit();
-
-                return true;
-            }
+            const cleanedData = Object.fromEntries(Object.entries(customMetadata).filter(([key, value]) => key !== ""));
 
             const tx = await lucid
                 .newTx()
@@ -63,7 +42,7 @@ const mintAssetService = async function ({
                             description: description,
                             image: imageUrl,
                             mediaType: mediaType,
-                            ...customMetadata,
+                            ...cleanedData,
                         },
                     },
                 })

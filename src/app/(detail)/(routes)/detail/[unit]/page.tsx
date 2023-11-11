@@ -6,8 +6,7 @@ import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
-import DemarketContext from "@/contexts/components/DemarketContext";
-import { DemarketContextType, LucidContextType } from "@/types";
+import { LucidContextType, SmartContractType } from "@/types";
 import convertString from "@/helpers/convertString";
 import fetchMetadataFromPolicyIdAndAssetName from "@/utils/fetchMetadataFromPolicyIdAnsAssetName";
 import Image from "next/image";
@@ -18,13 +17,14 @@ import checkMediaType from "@/helpers/checkMediaType";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import convertHexToString from "@/helpers/convertHexToString";
 import LucidContext from "@/contexts/components/LucidContext";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
-    const { listAssetsFromSmartContract, findAssetService } = useContext<DemarketContextType>(DemarketContext);
+    const { listAssetsFromSmartContract, findAssetService } = useContext<SmartContractType>(SmartContractContext);
     const [policyId, setPolicyId] = useState<string>(unit.slice(0, 56));
     const [assetName, setAssetName] = useState<string>(unit.slice(56));
     const [toggleState, setToggleState] = useState<number>(1);
@@ -54,7 +54,7 @@ const DetailPage = function ({}: Props) {
     }, []);
 
     const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService } = useContext<DemarketContextType>(DemarketContext);
+    const { sellAssetService, buyAssetService } = useContext<SmartContractType>(SmartContractContext);
 
     const handleBuyNft = async function () {
         try {

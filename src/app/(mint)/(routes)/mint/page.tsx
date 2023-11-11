@@ -8,9 +8,10 @@ import { TrashIcon, AddIcon } from "@/components/Icons";
 import styles from "./Mint.module.scss";
 import Image from "next/image";
 import axios from "axios";
-import { LucidContextType } from "@/types";
+import { LucidContextType, SmartContractType } from "@/types";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
-
+import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
@@ -28,6 +29,8 @@ function convertMetadataToObj(metadataArray: any) {
 type Props = {};
 
 const MintPage = function ({}: Props) {
+    const { lucid } = useContext<LucidContextType>(LucidContext);
+    const { mintAssetService } = useContext<SmartContractType>(SmartContractContext);
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
@@ -113,6 +116,26 @@ const MintPage = function ({}: Props) {
                     "Content-Type": `multipart/form-data; boundary=${formData}`,
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkzN2QzNDU1MDA5MTg3MGQ2OGE2Iiwic2NvcGVkS2V5U2VjcmV0IjoiODcwODZmYTBmYjM2NWVkMzZmOTcwNmRiODAyNjRkNDVjYzA3NWExOGEyOTY3YWRhNGRlMmQyYmEzYTlmOTljYiIsImlhdCI6MTY5NzUxMDk1NX0.FqH3wlzhnRdKLatBtfQ04d6-PnCQu5hXZSHK9xFDJvE`,
                 },
+            });
+
+            await mintAssetService({
+                lucid,
+                customMetadata,
+                description,
+                imageUrl: "ipfs://" + response.data.IpfsHash,
+                mediaType,
+                title,
+            });
+
+            toast.success("Mint asset successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
             });
         } catch (error) {
             console.log(error);

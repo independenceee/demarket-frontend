@@ -20,8 +20,8 @@ const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName
         assetName: assetName,
     });
 
-    const authorAddress = await fetchAddressFromTxHash(data[0].tx_hash);
-    const sellerAddress = await fetchAddressFromTxHash(data[data.length - 1].tx_hash);
+    const authorAddress = await fetchAddressFromTxHash(data.firstTransaction.tx_hash);
+    const sellerAddress = await fetchAddressFromTxHash(data.currentTransaction.tx_hash);
     const stakekeyAuthorAddress = await fetchStakeKeyFromAddress(authorAddress);
     const stakekeySellerAddress = await fetchStakeKeyFromAddress(sellerAddress);
 
