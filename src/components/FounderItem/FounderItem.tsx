@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames/bind";
 import Link from "next/link";
-import Aos from "aos";
-import "aos/dist/aos.css";
 import { LinkedinIcon, TelegramIcon } from "@/components/Icons";
 import styles from "./FounderItem.module.scss";
 
@@ -22,12 +20,6 @@ type Props = {
 };
 
 const FounderItem = function ({ index, avatar, company, fistName, lastName, role, twitter, linkedin }: Props) {
-    useEffect(function () {
-        Aos.init({
-            duration: 800,
-            offset: 50,
-        });
-    }, []);
     return (
         <div
             className={cx("wrapper")}
