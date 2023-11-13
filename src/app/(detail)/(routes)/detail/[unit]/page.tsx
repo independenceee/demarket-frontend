@@ -58,7 +58,6 @@ const DetailPage = function ({}: Props) {
 
     const handleBuyNft = async function () {
         try {
-            console.log("buy");
             if (lucid) {
                 await buyAssetService({
                     assetName: asset.assetName,
