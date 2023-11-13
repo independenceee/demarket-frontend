@@ -28,12 +28,12 @@ const Header = function ({}: Props) {
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
 
-    const { connectWallet, account } = useContext<LucidContextType>(LucidContext);
+    const { connectWallet, account, walletAddress } = useContext<LucidContextType>(LucidContext);
     const [selected, setSelected] = useState<string>("HOME");
     const [openConnectWallet, setOpenConnectWallet] = useState<boolean>(false);
 
     const [walletName, setWalletName] = useState<string>("");
-    const [walletDownload, setWalletDownload] = useState<string>("");
+    const [walletDownload, setWalletDownload] = useState<string | any>("");
 
     const HandleOpenConnectWallet = function () {
         setOpenConnectWallet(!openConnectWallet);
@@ -88,7 +88,7 @@ const Header = function ({}: Props) {
                         {account && (
                             <div
                                 className={cx("account__wrapper")}
-                                onClick={() => router.push(`/account/${account.address}`)}
+                                onClick={() => router.push(`/account/${walletAddress}`)}
                             >
                                 <Image className={cx("account__image")} src={images.user} alt="" />
                             </div>
@@ -105,6 +105,7 @@ const Header = function ({}: Props) {
                                     const handleConnectWallet = async function () {
                                         try {
                                             if (!(await checkApi())) {
+                                                setWalletDownload(downloadApi);
                                                 toggleDownloadWallet();
                                                 return;
                                             }

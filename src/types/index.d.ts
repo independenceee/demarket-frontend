@@ -26,12 +26,15 @@ export type LucidContextType = {
     connectWallet: ({ api, name, image }: WalletType) => Promise<void>;
 };
 
-export type DemarketContextType = {};
+export type DemarketContextType = {
+    categories: Array<Category>;
+};
 
 export type WalletContextType = {};
 
 export type SmartContractType = {
     listAssetsFromSmartContract: any;
+    loadingAssetsFromSmartContract: boolean;
     findAssetService: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
 
     buyAssetService: ({

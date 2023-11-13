@@ -7,6 +7,8 @@
     background: hsl(216, 56%, 98%);
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
     transition: all 250ms linear 0s;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
         box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.1);
@@ -138,4 +140,19 @@
     font-weight: 700;
     color: #7000ff;
     cursor: pointer;
+}
+
+.option__wrapper {
+    position: absolute;
+    bottom: -100%;
+    background: #000;
+    width: 100%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: 38px;
+    transition: all ease-in-out 0.3s;
+}
+
+.wrapper:hover .option__wrapper {
+    bottom: 0;
 }

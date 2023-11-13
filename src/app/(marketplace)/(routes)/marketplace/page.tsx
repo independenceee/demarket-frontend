@@ -1,20 +1,28 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Marketplace.module.scss";
-import { ArrowDropdownCircleIcon, SearchIcon } from "@/components/Icons";
+import { ArrowDropdownCircleIcon, SearchIcon, FillDashCircleFillIcon } from "@/components/Icons";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import NftContainer from "@/components/NftContainer";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { SmartContractType } from "@/types";
+import DemarketContext from "@/contexts/components/DemarketContext";
+import { SmartContractType, DemarketContextType, Category } from "@/types";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const MarketplacePage = function ({}: Props) {
-    const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+    const [openCategory, setOpenCategory] = useState<boolean>(false);
+    const [openSortBy, setOpenSortBy] = useState<boolean>(false);
+    const [openVerify, setOpenVerify] = useState<boolean>(false);
+    const { categories } = useContext<DemarketContextType>(DemarketContext);
+
+    const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
+        useContext<SmartContractType>(SmartContractContext);
+
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -33,28 +41,25 @@ const MarketplacePage = function ({}: Props) {
                                 </article>
                             </section>
 
-                            <section className={cx("content__filter")}>
+                            <section className={cx("content__filter")} onClick={() => setOpenCategory(!openCategory)}>
                                 <header className={cx("content__filter--header")}>
                                     <h3 className={cx("content__filter--title")}>Category</h3>
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
+                                    {!openCategory ? (
+                                        <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
+                                    ) : (
+                                        <FillDashCircleFillIcon className={cx("content__filter--icon")} />
+                                    )}
                                 </header>
+
                                 <article className={cx("content__filter--option")}>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
+                                    {categories.map(function (category: Category, index: number) {
+                                        return (
+                                            <section key={index} className={cx("content__filter--group")}>
+                                                <h4 className={cx("content__filter--name")}>{category.name}</h4>
+                                                <input className={cx("content__filter--control")} type="checkbox" />
+                                            </section>
+                                        );
+                                    })}
                                 </article>
                             </section>
 
@@ -106,7 +111,11 @@ const MarketplacePage = function ({}: Props) {
                         </div>
                     </div>
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
-                        <NftContainer data={listAssetsFromSmartContract} itemsPerPage={12} />
+                        <NftContainer
+                            data={listAssetsFromSmartContract}
+                            itemsPerPage={12}
+                            loading={loadingAssetsFromSmartContract}
+                        />
                     </div>
                 </section>
             </div>

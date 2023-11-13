@@ -19,7 +19,8 @@ type Props = {};
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+    const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
+        useContext<SmartContractType>(SmartContractContext);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -34,7 +35,7 @@ const Home = function ({}: Props) {
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={listAssetsFromSmartContract} />
+                        <NftContainer data={listAssetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
