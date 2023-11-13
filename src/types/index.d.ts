@@ -28,6 +28,10 @@ export type LucidContextType = {
 
 export type DemarketContextType = {
     categories: Array<Category>;
+    loadingCategories: boolean;
+
+    founders: Array<Founder>;
+    loadingFounders: boolean;
 };
 
 export type WalletContextType = {};

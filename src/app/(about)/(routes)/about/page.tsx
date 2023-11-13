@@ -1,41 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Aos from "aos";
-import "aos/dist/aos.css";
+import React, { useContext } from "react";
 import Link from "next/link";
 import ReactPlayer from "react-player/youtube";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
 import FounderItem from "@/components/FounderItem";
-import styles from "./About.module.scss";
-import { get } from "@/utils/httpRequest";
-import { Founder } from "@/types";
+import { DemarketContextType, Founder } from "@/types";
+import DemarketContext from "@/contexts/components/DemarketContext";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
+import styles from "./About.module.scss";
 
 type Props = {};
 const cx = classNames.bind(styles);
 
 const AboutPage = function ({}: Props) {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [founders, setFounders] = useState<Founder[]>();
-
-    const fetchFounder = async function () {
-        try {
-            setLoading(true);
-            const data = await get("/founder");
-            setFounders(data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(function () {
-        fetchFounder();
-    }, []);
-
+    const { founders, loadingFounders } = useContext<DemarketContextType>(DemarketContext);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")} data-aos="fade-down">
@@ -98,21 +79,23 @@ const AboutPage = function ({}: Props) {
                     />
 
                     <div className={cx("founder__container")}>
-                        {founders?.map(function (founder: Founder, index: number) {
-                            return (
-                                <FounderItem
-                                    index={index}
-                                    role={founder.role}
-                                    twitter={founder.twitter}
-                                    linkedin={founder.linkedin}
-                                    lastName={founder.lastName}
-                                    fistName={founder.fistName}
-                                    company={founder.company}
-                                    avatar={founder.avatar}
-                                    key={index}
-                                />
-                            );
-                        })}
+                        {loadingFounders
+                            ? null
+                            : founders.map(function (founder: Founder, index: number) {
+                                  return (
+                                      <FounderItem
+                                          index={index}
+                                          role={founder.role}
+                                          twitter={founder.twitter}
+                                          linkedin={founder.linkedin}
+                                          lastName={founder.lastName}
+                                          fistName={founder.fistName}
+                                          company={founder.company}
+                                          avatar={founder.avatar}
+                                          key={index}
+                                      />
+                                  );
+                              })}
                     </div>
                 </section>
             </div>
