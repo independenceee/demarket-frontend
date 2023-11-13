@@ -7,7 +7,7 @@ const fetchCurrentAddressFromAsset = async function ({ policyId, assetName }: { 
             assetName: assetName,
         });
 
-        return data[0].payment_address;
+        return data.address;
     } catch (error) {
         console.error(error);
     }

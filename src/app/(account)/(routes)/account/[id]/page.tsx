@@ -21,17 +21,20 @@ import customChars from "@/helpers/convertString";
 import AccountContainer from "@/components/AccountContainer";
 import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
-
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
 import axios from "axios";
-import { LucidContextType } from "@/types";
+import { LucidContextType, SmartContractType } from "@/types";
 import LucidContext from "@/contexts/components/LucidContext";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 
 type Props = {};
 const cx = classNames.bind(styles);
 
 const AccountPage = function ({}: Props) {
+    const { walletAddress } = useContext<LucidContextType>(LucidContext);
+    const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+
     const tabItems = [
         { name: "My assets", slug: "my assets" },
         { name: "Selling", slug: "selling" },
@@ -41,10 +44,12 @@ const AccountPage = function ({}: Props) {
         { name: "Follower", slug: "follower" },
         { name: "Like", slug: "like" },
     ];
-    const { isShowing = true, toggle } = useModal();
     const [activeTab, setActiveTab] = useState<string>("my assets");
+
+    const { isShowing = true, toggle } = useModal();
+
+    const [sellingAssets, setSellingAssets] = useState<any>([]);
     const [assetsFromAddress, setAssetsFromAddress] = useState<any>([]);
-    const { walletAddress } = useContext<LucidContextType>(LucidContext);
 
     useEffect(
         function () {
@@ -53,7 +58,7 @@ const AccountPage = function ({}: Props) {
                     const response = await axios.post(
                         "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
                         {
-                            _addresses: [walletAddress],
+                            address: walletAddress,
                         },
                     );
 
@@ -87,9 +92,23 @@ const AccountPage = function ({}: Props) {
             };
 
             fetchMetadataFromAddress();
-            console.log(assetsFromAddress);
         },
         [walletAddress],
+    );
+
+    useEffect(
+        function () {
+            const handleSelling = function () {
+                let sellingAssetsList = listAssetsFromSmartContract.filter(function (asset: any, index: number) {
+                    console.log(asset);
+                    return asset.sellerAddress === walletAddress;
+                });
+
+                setSellingAssets(sellingAssetsList);
+            };
+            handleSelling();
+        },
+        [walletAddress, listAssetsFromSmartContract],
     );
 
     return (
@@ -107,10 +126,7 @@ const AccountPage = function ({}: Props) {
                         <div className={cx("follower")}>FOLLOW</div>
                     </div>
                     <div className={cx("avatar__infomation")}>
-                        <h4 className={cx("avatar__infomation--name")}>
-                            {" "}
-                            addr_test1qqwxne57v0ahe04dy3jjpxqmp8ewmtaypx0tfu46c8h6wkg7659tg5e2hjvkapfq8pph66kau3vc06c04gu3drjcgnhshmzl0z
-                        </h4>
+                        <h4 className={cx("avatar__infomation--name")}>{walletAddress}</h4>
                         <h4 className={cx("avatar__infomation--description")}>Slogan</h4>
                     </div>
                     <div className={cx("avatar__social")}>
@@ -371,7 +387,13 @@ const AccountPage = function ({}: Props) {
                             </ul>
                         </nav>
                         <section>
-                            <NftContainer data={assetsFromAddress} />
+                            {activeTab === "my assets" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "selling" && <NftContainer data={sellingAssets} />}
+                            {activeTab === "created" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "collection" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "following" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "follower" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "like" && <NftContainer data={assetsFromAddress} />}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>

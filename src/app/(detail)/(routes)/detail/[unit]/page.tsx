@@ -42,6 +42,7 @@ const DetailPage = function ({}: Props) {
     const renderMetadataFromPolicyIdAndAssetName = async function () {
         try {
             const assetInfomation = await fetchMetadataFromPolicyIdAndAssetName({ policyId, assetName });
+
             const checkSelling = await findAssetService({ policyId, assetName });
             setAsset({ ...assetInfomation, ...checkSelling });
         } catch (error) {
@@ -54,7 +55,8 @@ const DetailPage = function ({}: Props) {
     }, []);
 
     const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { sellAssetService, buyAssetService, refundAssetService } =
+        useContext<SmartContractType>(SmartContractContext);
 
     const handleBuyNft = async function () {
         try {
@@ -82,6 +84,20 @@ const DetailPage = function ({}: Props) {
                     lucid: lucid,
                     price: BigInt(Number(price) * 1000000),
                     royalties: BigInt(Number(price) * 10000),
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRefundNft = async function () {
+        try {
+            if (lucid) {
+                await refundAssetService({
+                    assetName: asset.assetName,
+                    policyId: asset.policyId,
+                    lucid: lucid,
                 });
             }
         } catch (error) {
@@ -147,6 +163,7 @@ const DetailPage = function ({}: Props) {
         }
     }`;
 
+    console.log(asset);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -281,7 +298,7 @@ const DetailPage = function ({}: Props) {
                                     </section>
                                 </div>
                             </section>
-                            {asset.price && (
+                            {asset.price && asset.sellerAddress !== walletAddress && (
                                 <section className={cx("detail__button")}>
                                     <button className={cx("detail__button--left")}>
                                         {Number(asset.price) / 1000000} ADA
@@ -292,16 +309,18 @@ const DetailPage = function ({}: Props) {
                                 </section>
                             )}
 
-                            {asset.price && asset.currentAddress == walletAddress && (
+                            {asset.price && asset.sellerAddress === walletAddress && (
                                 <section className={cx("detail__button")}>
                                     <button className={cx("detail__button--left")}>
                                         {Number(asset.price) / 1000000} ADA
                                     </button>
-                                    <button className={cx("detail__button--right")}>Refund</button>
+                                    <button onClick={handleRefundNft} className={cx("detail__button--right")}>
+                                        Refund
+                                    </button>
                                 </section>
                             )}
 
-                            {asset.currentAddress == walletAddress && !asset.price ? (
+                            {asset.currentAddress === walletAddress && !asset.price ? (
                                 <section className={cx("detail__button")}>
                                     <input
                                         type="text"

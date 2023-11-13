@@ -62,13 +62,12 @@ const NftItem = function ({ value, index }: Props) {
     };
     return (
         <div
-            onClick={() => router.push(`/detail/${value.policyId + value.assetName}`)}
             className={cx("wrapper")}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}
         >
-            <div className={cx("container")}>
+            <div className={cx("container")} onClick={() => router.push(`/detail/${value.policyId + value.assetName}`)}>
                 <section className={cx("image__wrapper")}>
                     {checkMediaType(value.mediaType, "image") && (
                         <img className={cx("image")} src={String(convertIpfsAddressToUrl(value.image))} alt="" />
@@ -109,6 +108,10 @@ const NftItem = function ({ value, index }: Props) {
                     <p className={cx("policyId__value")}>{covertString({ inputString: String(value.policyId) })}</p>
                     <CopyItem value={value.policyId} />
                 </section>
+            </div>
+
+            <div className={cx("option__wrapper")}>
+                
             </div>
         </div>
     );

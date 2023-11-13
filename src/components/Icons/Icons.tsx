@@ -16,7 +16,7 @@ import { AiOutlineEyeInvisible as EyeVisibleIcon } from "react-icons/ai";
 import { IoIosArrowDropdownCircle as ArrowDropdownCircleIcon } from "react-icons/io";
 import { BiSolidDownArrow as DownArrowIcon } from "react-icons/bi";
 import { MdKeyboardArrowRight as ArrowRightIcon } from "react-icons/md";
-
+import { BsFillDashCircleFill as FillDashCircleFillIcon } from "react-icons/bs";
 // => OK
 import { HiBars3CenterLeft as BarIcon } from "react-icons/hi2";
 import { FaAngleLeft as LeftArrowIcon } from "react-icons/fa6";
@@ -417,6 +417,7 @@ export {
     EyeIcon,
     UnHeartIcon,
     ArrowDropdownCircleIcon,
+    FillDashCircleFillIcon,
     ArrowRightIcon,
     // OK
     BarIcon,

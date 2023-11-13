@@ -9,14 +9,15 @@ import listAssetsService from "@/services/contracts/listAssetsService";
 import mintAssetService from "@/services/contracts/mintAssetService";
 import refundAssetService from "@/services/contracts/refundAssetService";
 import findAssetService from "@/services/contracts/findAssetService";
-import { post } from "@/utils/httpRequest";
 import fetchAuthorAddressAndSellerAddress from "@/utils/fetchAuthorAddressAndSellerAddress";
+import { post } from "@/utils/httpRequest";
 
 type Props = {
     children: ReactNode;
 };
 
 const SmartContractProvider = function ({ children }: Props) {
+    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] = useState<boolean>(true);
     const [listAssetsFromSmartContract, setListAssetsFromSmartContract] = useState<any>([]);
     const fetchAssetsFromSmartContract = async function () {
         try {
@@ -43,6 +44,7 @@ const SmartContractProvider = function ({ children }: Props) {
                     royalties: asset.royalties,
                 });
                 setListAssetsFromSmartContract(convertAsset);
+                setLoadingAssetsFromSmartContract(false);
             });
         } catch (error) {
             console.log(error);
@@ -55,10 +57,11 @@ const SmartContractProvider = function ({ children }: Props) {
     return (
         <SmartContractContext.Provider
             value={{
+                listAssetsFromSmartContract,
+                loadingAssetsFromSmartContract,
                 burnAssetService,
                 buyAssetService,
                 findAssetService,
-                listAssetsFromSmartContract,
                 mintAssetService,
                 refundAssetService,
                 sellAssetService,
