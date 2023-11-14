@@ -17,6 +17,7 @@ import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
 import Search from "@/layouts/components/Search";
 import CartContext from "@/contexts/components/CartContext";
+import Cart from "@/components/Cart";
 
 const cx = classNames.bind(styles);
 
@@ -24,9 +25,11 @@ type Props = {};
 
 const Header = function ({}: Props) {
     const router = useRouter();
-    const { totalQuantity } = useContext<CartContextType>(CartContext);
+    const { cartState } = useContext<CartContextType>(CartContext);
+
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
+    const { isShowing: isShowingCart, toggle: toggleShowingCart } = useModal();
 
     const { connectWallet, account, walletAddress } = useContext<LucidContextType>(LucidContext);
     const [selected, setSelected] = useState<string>("HOME");
@@ -83,7 +86,7 @@ const Header = function ({}: Props) {
                         </div>
                         <div className={cx("icon__container")}>
                             <FontAwesomeIcon icon={faCartShopping} />
-                            <span>{totalQuantity}</span>
+                            <span>{cartState.totalQuantity}</span>
                         </div>
                         {account && (
                             <div
@@ -160,6 +163,12 @@ const Header = function ({}: Props) {
                 <Search />
             </Modal>
             {/* modal showing search end */}
+
+            {/* modal showing cart begin */}
+            <Modal isShowing={isShowingCart} toggle={toggleShowingCart}>
+                <Cart />
+            </Modal>
+            {/* modal showing cart end */}
         </header>
     );
 };

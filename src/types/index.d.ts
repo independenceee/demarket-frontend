@@ -10,10 +10,12 @@ export type WalletType = {
 };
 
 export type CartContextType = {
-    itemsList: Array<any>;
-    totalQuantity: number;
-    showCart: boolean;
-    changed: boolean;
+    cartState: {
+        itemsList: Array<any>;
+        totalQuantity: number;
+        showCart: boolean;
+        changed: boolean;
+    };
 };
 
 export type LucidContextType = {
@@ -28,6 +30,10 @@ export type LucidContextType = {
 
 export type DemarketContextType = {
     categories: Array<Category>;
+    loadingCategories: boolean;
+
+    founders: Array<Founder>;
+    loadingFounders: boolean;
 };
 
 export type WalletContextType = {};

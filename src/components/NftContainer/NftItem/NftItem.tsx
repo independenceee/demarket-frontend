@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { memo, useCallback, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
@@ -14,6 +14,8 @@ import CopyItem from "@/components/CopyItem";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType, SmartContractType } from "@/types";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -23,12 +25,13 @@ type Props = {
 
 const NftItem = function ({ value, index }: Props) {
     const router = useRouter();
-    const { connectWallet, lucid } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { connectWallet, lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
+    const { sellAssetService, buyAssetService, refundAssetService } =
+        useContext<SmartContractType>(SmartContractContext);
 
     const handleBuyNft = async function () {
+        console.log(value.authorAddress);
         try {
-            connectWallet(null!);
             if (lucid) {
                 await buyAssetService({
                     assetName: value.assetName,
@@ -44,8 +47,8 @@ const NftItem = function ({ value, index }: Props) {
     };
 
     const handleSellNft = async function () {
+        console.log(value.authorAddress);
         try {
-            connectWallet(null!);
             if (lucid) {
                 await sellAssetService({
                     assetName: value.assetName,
@@ -54,6 +57,20 @@ const NftItem = function ({ value, index }: Props) {
                     lucid: lucid,
                     price: BigInt(10000000),
                     royalties: BigInt(1000 / 10),
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRefundNft = async function () {
+        try {
+            if (lucid) {
+                await refundAssetService({
+                    assetName: value.assetName,
+                    lucid: lucid,
+                    policyId: value.policyId,
                 });
             }
         } catch (error) {
@@ -111,7 +128,26 @@ const NftItem = function ({ value, index }: Props) {
             </div>
 
             <div className={cx("option__wrapper")}>
-                
+                {value.sellerAddress === walletAddress && value.price && (
+                    <div onClick={handleRefundNft} className={cx("option__title")}>
+                        Refund Now
+                    </div>
+                )}
+                {value.sellerAddress !== walletAddress && value.price && (
+                    <div onClick={handleBuyNft} className={cx("option__title")}>
+                        Buy Now
+                    </div>
+                )}
+                {walletAddress && !value.price && (
+                    <div onClick={handleSellNft} className={cx("option__title")}>
+                        Selling Now
+                    </div>
+                )}
+                {value.price && (
+                    <div className={cx("option__icon")}>
+                        <FontAwesomeIcon icon={faCartShopping} />
+                    </div>
+                )}
             </div>
         </div>
     );
