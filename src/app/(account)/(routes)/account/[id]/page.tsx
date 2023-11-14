@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import {
@@ -23,15 +24,18 @@ import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
-import axios from "axios";
 import { LucidContextType, SmartContractType } from "@/types";
 import LucidContext from "@/contexts/components/LucidContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
+import { post } from "@/utils/httpRequest";
+import fetchInformationAsset from "@/utils/fetchInformationAsset";
 
 type Props = {};
 const cx = classNames.bind(styles);
 
 const AccountPage = function ({}: Props) {
+    const { id } = useParams();
+
     const { walletAddress } = useContext<LucidContextType>(LucidContext);
     const { listAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
 
@@ -48,67 +52,67 @@ const AccountPage = function ({}: Props) {
 
     const { isShowing = true, toggle } = useModal();
 
-    const [sellingAssets, setSellingAssets] = useState<any>([]);
     const [assetsFromAddress, setAssetsFromAddress] = useState<any>([]);
+    const fetchInformationFromAddress = async function () {
+        try {
+            const response = await post("/koios/assets/address-assets", {
+                address: walletAddress || id,
+            });
+
+            const assetsFromAddress = await Promise.all(
+                response[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
+                    const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
+                    if (data) {
+                        return { ...data };
+                    }
+                    return null;
+                }),
+            );
+
+            setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(
         function () {
-            const fetchMetadataFromAddress = async function () {
-                try {
-                    const response = await axios.post(
-                        "https://demarket-backend.vercel.app/api/v1/koios/assets/address-assets",
-                        {
-                            address: walletAddress,
-                        },
-                    );
-
-                    const assetsFromAddress = await Promise.all(
-                        response.data[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
-                            const response = await axios.post(
-                                "https://demarket-backend.vercel.app/api/v1/blockfrost/assets/information",
-                                {
-                                    policyId: policy_id,
-                                    assetName: asset_name,
-                                },
-                            );
-
-                            const data = response.data.onchain_metadata;
-
-                            if (data) {
-                                return {
-                                    ...data,
-                                    policyId: policy_id,
-                                    assetName: asset_name,
-                                };
-                            }
-                            return null;
-                        }),
-                    );
-
-                    setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-
-            fetchMetadataFromAddress();
+            fetchInformationFromAddress();
         },
-        [walletAddress],
+        [walletAddress, id],
     );
 
+    // ! Selling assets
+    const [sellingAssets, setSellingAssets] = useState<any>([]);
+    const handleSelling = function () {
+        const sellingAssetsList = listAssetsFromSmartContract.filter(function (asset: any, index: number) {
+            return asset.sellerAddress === walletAddress || asset.sellerAddress === id;
+        });
+
+        setSellingAssets(sellingAssetsList);
+    };
+
     useEffect(
         function () {
-            const handleSelling = function () {
-                let sellingAssetsList = listAssetsFromSmartContract.filter(function (asset: any, index: number) {
-                    console.log(asset);
-                    return asset.sellerAddress === walletAddress;
-                });
-
-                setSellingAssets(sellingAssetsList);
-            };
             handleSelling();
         },
-        [walletAddress, listAssetsFromSmartContract],
+        [walletAddress, listAssetsFromSmartContract, id],
+    );
+
+    // ! Created assets
+    const [createdAssets, setCreatedAssets] = useState<any>([]);
+    const handleCreated = function () {
+        const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
+            return asset.authorAddress === walletAddress || asset.authorAddress === id;
+        });
+
+        setCreatedAssets(createdAssetsList);
+    };
+    useEffect(
+        function () {
+            handleCreated();
+        },
+        [walletAddress, id, listAssetsFromSmartContract],
     );
 
     return (
@@ -389,7 +393,7 @@ const AccountPage = function ({}: Props) {
                         <section>
                             {activeTab === "my assets" && <NftContainer data={assetsFromAddress} />}
                             {activeTab === "selling" && <NftContainer data={sellingAssets} />}
-                            {activeTab === "created" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "created" && <NftContainer data={createdAssets} />}
                             {activeTab === "collection" && <NftContainer data={assetsFromAddress} />}
                             {activeTab === "following" && <NftContainer data={assetsFromAddress} />}
                             {activeTab === "follower" && <NftContainer data={assetsFromAddress} />}

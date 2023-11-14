@@ -10,10 +10,12 @@ export type WalletType = {
 };
 
 export type CartContextType = {
-    itemsList: Array<any>;
-    totalQuantity: number;
-    showCart: boolean;
-    changed: boolean;
+    cartState: {
+        itemsList: Array<any>;
+        totalQuantity: number;
+        showCart: boolean;
+        changed: boolean;
+    };
 };
 
 export type LucidContextType = {

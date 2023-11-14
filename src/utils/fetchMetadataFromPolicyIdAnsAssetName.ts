@@ -24,7 +24,7 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
         sellerAddress,
         stakekeySellerAddress,
         fingerprint: metadata.fingerprint,
-        metadata: metadata.onchain_metadata,
+        ...metadata.onchain_metadata,
         currentAddress,
     };
 };

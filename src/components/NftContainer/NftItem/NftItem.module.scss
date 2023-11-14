@@ -6,13 +6,13 @@
     opacity: 1;
     background: hsl(216, 56%, 98%);
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
-    transition: all 250ms linear 0s;
+    transition: all 550ms linear 0s;
     position: relative;
     overflow: hidden;
 
     &:hover {
         box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.1);
-        transform: scaleY(1.05);
+        scale: (0.98);
         cursor: pointer;
     }
 
@@ -145,12 +145,34 @@
 .option__wrapper {
     position: absolute;
     bottom: -100%;
-    background: #000;
+    background: #7000ff;
     width: 100%;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     height: 38px;
     transition: all ease-in-out 0.3s;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .option__title {
+        text-align: center;
+        flex: 1;
+        font-size: 17px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .option__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 100%;
+        color: #fff;
+        border-left: 1px solid #fff;
+    }
 }
 
 .wrapper:hover .option__wrapper {
