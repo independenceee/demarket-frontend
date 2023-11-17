@@ -33,7 +33,6 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
             console.log("utxo found");
             process.exit(1);
         }
-        console.log(existAsset);
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
 
@@ -50,8 +49,8 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
             .complete();
 
         const signedTx = await tx.sign().complete();
-        const txUnlock = await signedTx.submit();
-        await lucid.awaitTx(txUnlock);
+        const txHash = await signedTx.submit();
+        await lucid.awaitTx(txHash);
     } catch (error) {
         console.log(error);
     }

@@ -1,6 +1,6 @@
 "use client";
-import React, { memo, useCallback, useContext } from "react";
-import { useRouter } from "next/navigation";
+import React, { useContext } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import CountUp from "react-countup";
@@ -24,13 +24,14 @@ type Props = {
 };
 
 const NftItem = function ({ value, index }: Props) {
+    const { id } = useParams();
     const router = useRouter();
-    const { connectWallet, lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
+
+    const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
     const { sellAssetService, buyAssetService, refundAssetService } =
         useContext<SmartContractType>(SmartContractContext);
 
     const handleBuyNft = async function () {
-        console.log(value.authorAddress);
         try {
             if (lucid) {
                 await buyAssetService({
@@ -47,7 +48,6 @@ const NftItem = function ({ value, index }: Props) {
     };
 
     const handleSellNft = async function () {
-        console.log(value.authorAddress);
         try {
             if (lucid) {
                 await sellAssetService({
@@ -107,7 +107,7 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
                 <section className={cx("content")}>
                     <h3 className={cx("content__title")}>{convertHexToString(value.assetName) || images.background}</h3>
-                    <h3 className={cx("content__title")}>{value.mediaType.split("/").pop()}</h3>
+                    <h3 className={cx("content__title")}>{value.mediaType ? value.mediaType.split("/").pop() : ""}</h3>
                 </section>
                 <section className={cx("information")}>
                     <div className={cx("author")}>
@@ -127,28 +127,33 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
             </div>
 
-            <div className={cx("option__wrapper")}>
-                {value.sellerAddress === walletAddress && value.price && (
+            {value.sellerAddress === walletAddress && value.price && (
+                <div className={cx("option__wrapper")}>
                     <div onClick={handleRefundNft} className={cx("option__title")}>
                         Refund Now
                     </div>
-                )}
-                {value.sellerAddress !== walletAddress && value.price && (
-                    <div onClick={handleBuyNft} className={cx("option__title")}>
-                        Buy Now
-                    </div>
-                )}
-                {walletAddress && !value.price && (
-                    <div onClick={handleSellNft} className={cx("option__title")}>
-                        Selling Now
-                    </div>
-                )}
-                {value.price && (
                     <div className={cx("option__icon")}>
                         <FontAwesomeIcon icon={faCartShopping} />
                     </div>
-                )}
-            </div>
+                </div>
+            )}
+            {value.sellerAddress !== walletAddress && value.price && (
+                <div className={cx("option__wrapper")}>
+                    <div onClick={handleBuyNft} className={cx("option__title")}>
+                        Buy Now
+                    </div>
+                    <div className={cx("option__icon")}>
+                        <FontAwesomeIcon icon={faCartShopping} />
+                    </div>
+                </div>
+            )}
+            {!value.price && walletAddress === id && (
+                <div className={cx("option__wrapper")}>
+                    <div onClick={handleSellNft} className={cx("option__title")}>
+                        Selling Now
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

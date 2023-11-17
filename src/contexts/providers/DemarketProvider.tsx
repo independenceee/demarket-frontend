@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, ReactNode } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
-import { Category, Founder } from "@/types";
+import { Account, Category, Founder, Guide } from "@/types";
 import { get } from "@/utils/httpRequest";
 
 type Props = {
@@ -26,9 +26,27 @@ const DemarketProvider = function ({ children }: Props) {
         fetchCategories();
     }, []);
 
+    // guides
+
+    const [guides, setGuides] = useState<Guide[]>([]);
+    const [loadingGuides, setLoadingGuides] = useState<boolean>(true);
+
+    const fetchGuides = async function () {
+        try {
+            setGuides(await get("/guide"));
+            setLoadingGuides(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(function () {
+        fetchGuides();
+    }, []);
+
     // founder
     const [founders, setFounders] = useState<Founder[]>([]);
-    const [loadingFounders, setLoadingFounders] = useState<boolean>(false);
+    const [loadingFounders, setLoadingFounders] = useState<boolean>(true);
 
     const fetchFounders = async function () {
         try {
@@ -43,8 +61,34 @@ const DemarketProvider = function ({ children }: Props) {
         fetchFounders();
     }, []);
 
+    // account
+    const [accounts, setAccounts] = useState<Account[]>([]);
+    const [loadingAccounts, setLoadingAccounts] = useState<boolean>(true);
+    const fetchAccounts = async function () {
+        try {
+            setAccounts(await get("/account"));
+            setLoadingAccounts(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(function () {
+        fetchAccounts();
+    }, []);
+
     return (
-        <DemarketContext.Provider value={{ categories, loadingCategories, founders, loadingFounders }}>
+        <DemarketContext.Provider
+            value={{
+                categories,
+                loadingCategories,
+                founders,
+                loadingFounders,
+                accounts,
+                loadingAccounts,
+                guides,
+                loadingGuides,
+            }}
+        >
             {children}
         </DemarketContext.Provider>
     );

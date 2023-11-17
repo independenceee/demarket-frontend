@@ -40,9 +40,9 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
                 .complete();
 
             const signedTx = await tx.sign().complete();
-            const txUnlock = await signedTx.submit();
-            await lucid.awaitTx(txUnlock);
-            console.log(txUnlock);
+            const txHash = await signedTx.submit();
+            await lucid.awaitTx(txHash);
+            return txHash;
         }
     } catch (error) {
         console.log(error);

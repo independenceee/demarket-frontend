@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useContext } from "react";
-import Image from "next/image";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
-import images from "@/assets/images";
 import styles from "./Home.module.scss";
 import NftContainer from "@/components/NftContainer";
-import AccountItemSilder from "@/components/AccountItemSilder";
 import { SmartContractType } from "@/types";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
+import AccountItemSilder from "@/components/AccountContainer/AccountItemSilder";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
+import NftItemSlider from "@/components/NftContainer/NftItemSlider/NftItemSlider";
 
 type Props = {};
 
@@ -22,7 +21,7 @@ const Home = function ({}: Props) {
     const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
     return (
-        <main className={cx("wrapper")}>
+        <main className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
                 <Background />
                 <Title main="HOME" />
@@ -47,26 +46,18 @@ const Home = function ({}: Props) {
 
                     <div className={cx("trending__container")}>
                         <section className={cx("slider__wrapper")}>
-                            <ul className={cx("slider__list-left")}>
+                            <div className={cx("slider__list-left")}>
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (value, index) {
-                                    return (
-                                        <li key={index} className={cx("slider__item")}>
-                                            <Image className={cx("slider__image")} src={images.background} alt="" />
-                                        </li>
-                                    );
+                                    return <NftItemSlider key={index} index={index} />;
                                 })}
-                            </ul>
+                            </div>
                         </section>
                         <section className={cx("slider__wrapper")}>
-                            <ul className={cx("slider__list-right")}>
+                            <div className={cx("slider__list-right")}>
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (value, index) {
-                                    return (
-                                        <li key={index} className={cx("slider__item")}>
-                                            <Image className={cx("slider__image")} src={images.background} alt="" />
-                                        </li>
-                                    );
+                                    return <NftItemSlider key={index} index={index} />;
                                 })}
-                            </ul>
+                            </div>
                         </section>
                     </div>
                 </section>
@@ -78,7 +69,7 @@ const Home = function ({}: Props) {
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={listAssetsFromSmartContract} />
+                        <NftContainer loading={loadingAssetsFromSmartContract} data={listAssetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("account__wrapper")}>
@@ -86,18 +77,18 @@ const Home = function ({}: Props) {
                     <article className={cx("account__container")}>
                         <section className={cx("account__list--left")}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder avatar="" key={index} />;
+                                return <AccountItemSilder avatar="" key={index} index={index} />;
                             })}
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder avatar="" key={index} />;
+                                return <AccountItemSilder avatar="" key={index} index={index} />;
                             })}
                         </section>
                         <section className={cx("account__list--right")}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder avatar="" key={index} />;
+                                return <AccountItemSilder avatar="" key={index} index={index} />;
                             })}
                             {[1, 2, 3, 4, 5, 6, 7, 8].map(function (account, index) {
-                                return <AccountItemSilder avatar="" key={index} />;
+                                return <AccountItemSilder avatar="" key={index} index={index} />;
                             })}
                         </section>
                     </article>

@@ -40,6 +40,7 @@ const sellAssetService = async function ({ policyId, assetName, author, price, l
         const signedTx = await tx.sign().complete();
         const txHash = await signedTx.submit();
         await lucid.awaitTx(txHash);
+        return txHash;
     } catch (error) {
         console.log(error);
     }

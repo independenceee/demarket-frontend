@@ -12,7 +12,11 @@ const Title = function ({ main, slug }: Props) {
     return (
         <main className={cx("wrapper")}>
             <h2 className={cx("main")}>{main}</h2>
-            {slug && <div className={cx("flag")}>|</div>}
+            {slug && (
+                <div className={cx("flag")} data-aos="fade-down">
+                    |
+                </div>
+            )}
             {slug && <h2 className={cx("slug")}>{slug}</h2>}
         </main>
     );

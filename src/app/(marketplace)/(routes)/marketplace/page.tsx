@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Marketplace.module.scss";
 import { ArrowDropdownCircleIcon, SearchIcon, FillDashCircleFillIcon } from "@/components/Icons";
@@ -16,15 +16,33 @@ type Props = {};
 
 const MarketplacePage = function ({}: Props) {
     const [openCategory, setOpenCategory] = useState<boolean>(false);
-    const [openSortBy, setOpenSortBy] = useState<boolean>(false);
-    const [openVerify, setOpenVerify] = useState<boolean>(false);
+    const [optionFilter, setOptionFilter] = useState<string[]>([]);
     const { categories } = useContext<DemarketContextType>(DemarketContext);
 
     const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
 
+    const handleChangeFilter = function (event: ChangeEvent<HTMLInputElement>) {
+        event.preventDefault();
+        const selectedOption = event.target.value;
+
+        setOptionFilter(function (previous) {
+            if (selectedOption === "increment" || selectedOption === "decrement") {
+                console.log(`${selectedOption} action`);
+                return previous;
+            }
+            if (previous.includes(selectedOption)) {
+                return previous.filter((category) => category !== selectedOption);
+            }
+            return [...previous, selectedOption];
+        });
+    };
+
+    console.log(listAssetsFromSmartContract);
+
+    console.log(optionFilter);
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
                 <Background />
                 <Title main="HOME" slug="MARKETPLACE" />
@@ -56,7 +74,12 @@ const MarketplacePage = function ({}: Props) {
                                         return (
                                             <section key={index} className={cx("content__filter--group")}>
                                                 <h4 className={cx("content__filter--name")}>{category.name}</h4>
-                                                <input className={cx("content__filter--control")} type="checkbox" />
+                                                <input
+                                                    value={category.slug}
+                                                    className={cx("content__filter--control")}
+                                                    type="checkbox"
+                                                    onChange={handleChangeFilter}
+                                                />
                                             </section>
                                         );
                                     })}
@@ -71,23 +94,48 @@ const MarketplacePage = function ({}: Props) {
                                 <article className={cx("content__filter--option")}>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>Default</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"default"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>New</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"news"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>Trending</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"trending"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>Increment</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"increment"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>Decrement</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"decrement"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                 </article>
                             </section>
@@ -100,11 +148,21 @@ const MarketplacePage = function ({}: Props) {
                                 <article className={cx("content__filter--option")}>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>Yes</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"verify"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>No</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
+                                        <input
+                                            value={"noVerify"}
+                                            className={cx("content__filter--control")}
+                                            onChange={handleChangeFilter}
+                                            type="checkbox"
+                                        />
                                     </section>
                                 </article>
                             </section>

@@ -1,0 +1,12 @@
+.wrapper {
+    height: auto;
+    width: 310px;
+    border-radius: 8px;
+    margin-right: 10px;
+    .container {
+        border-radius: 8px;
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+    }
+}

@@ -236,6 +236,27 @@
     }
 }
 
+.connect__success {
+    color: #000;
+    background: #fff;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 2px solid #c2c2c2;
+    border-radius: 3.125rem;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .button__image--container {
+        .button__image--image {
+        }
+    }
+
+    .button__balance {
+    }
+}
+
 @media screen and (max-width: 1290px) {
     .navbar {
         display: none;

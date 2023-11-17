@@ -34,6 +34,12 @@ export type DemarketContextType = {
 
     founders: Array<Founder>;
     loadingFounders: boolean;
+
+    accounts: Array<Account>;
+    loadingAccounts: boolean;
+
+    guides: Array<Guides>;
+    loadingGuides: boolean;
 };
 
 export type WalletContextType = {};
@@ -176,7 +182,7 @@ export type Guide = {
     question: string;
     title: string;
     updatedAt?: string;
-    url: string;
+    videoUrl: string;
 };
 
 export type Category = {

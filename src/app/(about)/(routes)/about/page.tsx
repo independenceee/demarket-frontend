@@ -11,6 +11,7 @@ import DemarketContext from "@/contexts/components/DemarketContext";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
 import styles from "./About.module.scss";
+import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -80,7 +81,9 @@ const AboutPage = function ({}: Props) {
 
                     <div className={cx("founder__container")}>
                         {loadingFounders
-                            ? null
+                            ? new Array(6).fill(null).map(function (value: any, index: number) {
+                                  return <FounderItemSkeleton index={index} key={index} />;
+                              })
                             : founders.map(function (founder: Founder, index: number) {
                                   return (
                                       <FounderItem

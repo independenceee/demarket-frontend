@@ -50,9 +50,9 @@ const mintAssetService = async function ({
                 .attachMintingPolicy(mintingPolicy)
                 .complete();
             const signedTx = await tx.sign().complete();
-            await signedTx.submit();
+            const txHash = await signedTx.submit();
 
-            return true;
+            return txHash;
         }
     } catch (error) {
         console.error(error);

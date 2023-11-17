@@ -1,16 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import classNames from "classnames/bind";
 import styles from "./AccountContainer.module.scss";
 import AccountItem from "@/components/AccountContainer/AccountItem";
+import { Account } from "@/types";
+import { count } from "console";
 
 const cx = classNames.bind(styles);
 
 type Props = {
     itemsPerPage?: number;
-    data: any;
+    data: Account[];
 };
 
 const AccountContainer = function ({ itemsPerPage = 8, data }: Props) {
@@ -31,27 +34,21 @@ const AccountContainer = function ({ itemsPerPage = 8, data }: Props) {
         const newOffset = (event.selected * itemsPerPage) % data.length;
         setItemOffset(newOffset);
     };
+
+    const handleChangePage = function (event: any, value: number) {
+        setPageCount(value);
+    };
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 {currentItems.map(function (value: any, index: number) {
-                    return <AccountItem key={index} data={data} index={index} />;
+                    return <AccountItem key={index} value={value} index={index} />;
                 })}
             </div>
-            <ReactPaginate
-                pageRangeDisplayed={3}
-                breakLabel="..."
-                nextLabel=">"
-                previousLabel="<"
-                pageCount={pageCount}
-                renderOnZeroPageCount={null}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                pageLinkClassName={"page-num"}
-                previousLinkClassName={"page-num"}
-                nextLinkClassName={"page-num"}
-                activeLinkClassName={"active"}
-            />
+
+            <Stack spacing={2}>
+                <Pagination count={10} shape="rounded" page={pageCount} onChange={handleChangePage} />
+            </Stack>
         </div>
     );
 };

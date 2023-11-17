@@ -1,7 +1,6 @@
-// Header
-
 .trending__wrapper {
     margin: 20px 0;
+
     .trending__container {
         margin: 20px 0;
         display: flex;
@@ -12,6 +11,13 @@
             overflow-x: hidden;
         }
     }
+}
+
+.news_container {
+    width: min(90rem, 90%);
+    max-width: 840px;
+    position: relative;
+    margin: 0 auto;
 }
 
 .slider__list-left {
@@ -109,17 +115,10 @@
 
 // news begin
 
-.news_container {
-    width: min(90rem, 90%);
-    max-width: 840px;
-    position: relative;
-    margin: 0 auto;
-}
+// account
 
-// news end
-
-// account begin
 .account__wrapper {
+    margin-top: 30px;
 }
 
 .account__container {
@@ -161,5 +160,3 @@
         transform: translateX(-2320px);
     }
 }
-
-// account end
