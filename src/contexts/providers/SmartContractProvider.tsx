@@ -41,6 +41,8 @@ const SmartContractProvider = function ({ children }: Props) {
         fetchAssetsFromSmartContract();
     }, []);
 
+    console.log(listAssetsFromSmartContract);
+
     return (
         <SmartContractContext.Provider
             value={{

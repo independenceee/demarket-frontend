@@ -1,6 +1,6 @@
 .wrapper {
     display: flex;
-    background-color: #f4f4e6;
+    background-color: #f8fafd;
     padding: 12px;
     border-radius: 4px;
     gap: 12px;
@@ -9,7 +9,14 @@
     transition-property: background-color;
     transition-duration: 0.25s;
     text-decoration: none;
-    color: #000;
+    color: #474c4c;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    transition: all 350ms ease-in-out 0s;
+
+    &:hover {
+        box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.1);
+        scale: (1.03);
+    }
 }
 
 .avatar__wrapper {

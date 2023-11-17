@@ -19,9 +19,7 @@ const CollectionPage = function ({}: Props) {
     );
     const [imageItemFilePath, setImageItemFilePath] = useState<string>("");
     const [imageItemFile, setImageItemFile] = useState<File>(null!);
-    const [fileNameItemFile, setFileNameItemFile] = useState<string>(
-        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
-    );
+    const [fileNameItemFile, setFileNameItemFile] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Select Your Option");
@@ -88,7 +86,7 @@ const CollectionPage = function ({}: Props) {
     };
 
     return (
-        <main className={cx("wrapper")}>
+        <main className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
                 <section className={cx("left")}>
                     <header className={cx("header")}>Collections</header>
@@ -163,11 +161,7 @@ const CollectionPage = function ({}: Props) {
                     {/* title-begin */}
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>URL</h3>
-                        <input
-                            placeholder="Enter your title"
-                            type="text"
-                            className={cx("title-control")}
-                        />
+                        <input placeholder="Enter your title" type="text" className={cx("title-control")} />
                     </div>
                     {/* title-end */}
                     <div className={cx("content__wrapper-reponsive")}>
@@ -175,11 +169,7 @@ const CollectionPage = function ({}: Props) {
                             <Image
                                 width={100}
                                 height={100}
-                                src={
-                                    imageBackgroundPath
-                                        ? imageBackgroundPath
-                                        : images.noImage
-                                }
+                                src={imageBackgroundPath ? imageBackgroundPath : images.noImage}
                                 alt="Background"
                                 className={cx("content__background")}
                             />
@@ -189,11 +179,7 @@ const CollectionPage = function ({}: Props) {
                                     width={100}
                                     height={100}
                                     className={cx("image")}
-                                    src={
-                                        imageItemFilePath
-                                            ? imageItemFilePath
-                                            : images.noImage
-                                    }
+                                    src={imageItemFilePath ? imageItemFilePath : images.noImage}
                                     alt="Image"
                                 />
                             </div>
@@ -214,11 +200,7 @@ const CollectionPage = function ({}: Props) {
                                 <Image
                                     width={100}
                                     height={100}
-                                    src={
-                                        imageBackgroundPath
-                                            ? imageBackgroundPath
-                                            : images.noImage
-                                    }
+                                    src={imageBackgroundPath ? imageBackgroundPath : images.noImage}
                                     alt="Background"
                                     className={cx("content__background")}
                                 />
@@ -228,11 +210,7 @@ const CollectionPage = function ({}: Props) {
                                         width={100}
                                         height={100}
                                         className={cx("image")}
-                                        src={
-                                            imageItemFilePath
-                                                ? imageItemFilePath
-                                                : images.noImage
-                                        }
+                                        src={imageItemFilePath ? imageItemFilePath : images.noImage}
                                         alt="Image"
                                     />
                                 </div>

@@ -19,6 +19,7 @@ const LucidProvider = function ({ children }: Props) {
     const [account, setAccount] = useState<Account>();
 
     const connectWallet = async function ({ api, image, name, checkApi }: WalletType) {
+        console.log(image);
         try {
             const lucid = await Lucid.new(
                 new Blockfrost(
@@ -38,6 +39,7 @@ const LucidProvider = function ({ children }: Props) {
             setWalletName(name);
             setWalletAddress(address);
             setWalletImage(image);
+
             setWalletBalance(Number(balance) / 1000000);
             const stakeKey = await fetchStakeKeyFromAddress(address);
 

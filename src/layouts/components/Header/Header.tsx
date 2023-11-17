@@ -31,7 +31,10 @@ const Header = function ({}: Props) {
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
     const { isShowing: isShowingCart, toggle: toggleShowingCart } = useModal();
 
-    const { connectWallet, account, walletAddress } = useContext<LucidContextType>(LucidContext);
+    const { connectWallet, account, walletAddress, lucid, walletBanlance, walletImage } =
+        useContext<LucidContextType>(LucidContext);
+
+    console.log(walletImage);
     const [selected, setSelected] = useState<string>("HOME");
     const [openConnectWallet, setOpenConnectWallet] = useState<boolean>(false);
 
@@ -41,8 +44,9 @@ const Header = function ({}: Props) {
     const HandleOpenConnectWallet = function () {
         setOpenConnectWallet(!openConnectWallet);
     };
+
     return (
-        <header className={cx("wrapper")}>
+        <header className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
                 <Link href={"/"} className={cx("logo__wrapper")}>
                     <Image src={images.logo} alt="" className={cx("logo__image")} />
@@ -98,38 +102,51 @@ const Header = function ({}: Props) {
                         )}
                     </section>
 
-                    <section className={cx("button__container")}>
-                        <Link href="#" onClick={HandleOpenConnectWallet} className={cx("connect__button")}>
-                            Connect Wallet
-                        </Link>
-                        {openConnectWallet && (
-                            <div className={cx("wallet__item--short")}>
-                                {wallets.map(function ({ checkApi, api, image, name, downloadApi, price }, index) {
-                                    const handleConnectWallet = async function () {
-                                        try {
-                                            if (!(await checkApi())) {
-                                                setWalletDownload(downloadApi);
-                                                toggleDownloadWallet();
-                                                return;
-                                            }
+                    {!lucid ? (
+                        <section className={cx("button__container")}>
+                            <Link href="#" onClick={HandleOpenConnectWallet} className={cx("connect__button")}>
+                                Connect Wallet
+                            </Link>
+                            {openConnectWallet && (
+                                <div className={cx("wallet__item--short")}>
+                                    {wallets.map(function ({ checkApi, api, image, name, downloadApi, price }, index) {
+                                        const handleConnectWallet = async function () {
+                                            try {
+                                                if (!(await checkApi())) {
+                                                    setWalletDownload(downloadApi);
+                                                    toggleDownloadWallet();
+                                                    return;
+                                                }
 
-                                            connectWallet({ api, image, name, checkApi });
-                                        } catch (error) {
-                                            console.log(error);
-                                        }
-                                    };
-                                    return (
-                                        <div onClick={handleConnectWallet} key={index} className={cx("wallet__items")}>
-                                            <div className={cx("wallet__item")}>
-                                                <Image className={cx("wallet__item--image")} src={image} alt="" />
-                                                <span className={cx("wallet__item--name")}>{name}</span>
+                                                connectWallet({ api, image, name, checkApi });
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        };
+                                        return (
+                                            <div
+                                                onClick={handleConnectWallet}
+                                                key={index}
+                                                className={cx("wallet__items")}
+                                            >
+                                                <div className={cx("wallet__item")}>
+                                                    <Image className={cx("wallet__item--image")} src={image} alt="" />
+                                                    <span className={cx("wallet__item--name")}>{name}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </section>
+                    ) : (
+                        <section className={cx("connect__success")}>
+                            <div className={cx("button__image--container")}>
+                                <Image className={"button__image--image"} src={walletImage} alt="" />
                             </div>
-                        )}
-                    </section>
+                            <div className={cx("button__balance")}>{walletBanlance} ADA</div>
+                        </section>
+                    )}
                 </div>
             </div>
             {/* download wallet begin */}

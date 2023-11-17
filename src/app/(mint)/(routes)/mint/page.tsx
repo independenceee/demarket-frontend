@@ -143,7 +143,7 @@ const MintPage = function ({}: Props) {
     };
 
     return (
-        <main className={cx("wrapper")}>
+        <main className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
                 <section className={cx("left")}>
                     <header className={cx("header")}>Mint Your Asset</header>

@@ -120,15 +120,7 @@ html *::-webkit-scrollbar {
 
 html *::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background: linear-gradient(
-        90deg,
-        #8f04a6 0%,
-        #c0f 0%,
-        #7000ff 39.36%,
-        rgba(44, 0, 219, 0.91) 63.12%,
-        rgba(4, 0, 203, 0.89) 79.64%,
-        #1400ff 99.32%
-    );
+    background: #c2c2c2;
 }
 
 html *::-webkit-scrollbar-track {
@@ -165,4 +157,3 @@ body {
     }
 }
 // tippy-end
-
