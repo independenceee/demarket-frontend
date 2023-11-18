@@ -21,7 +21,7 @@ const Home = function ({}: Props) {
     const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
     return (
-        <main className={cx("wrapper")} data-aos="fade-down">
+        <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <Background />
                 <Title main="HOME" />

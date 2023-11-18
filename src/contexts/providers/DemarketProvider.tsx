@@ -3,13 +3,23 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { Account, Category, Founder, Guide } from "@/types";
-import { get } from "@/utils/httpRequest";
+import { get, post } from "@/utils/httpRequest";
 
 type Props = {
     children: ReactNode;
 };
 
 const DemarketProvider = function ({ children }: Props) {
+    // nft
+
+    const addNft = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
+        try {
+            await post("/nft", { policyId: policyId, assetName: assetName });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     // category
     const [categories, setCategories] = useState<Category[]>([]);
     const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
@@ -87,6 +97,7 @@ const DemarketProvider = function ({ children }: Props) {
                 loadingAccounts,
                 guides,
                 loadingGuides,
+                addNft,
             }}
         >
             {children}

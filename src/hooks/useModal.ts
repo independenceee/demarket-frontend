@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 const useModal = function () {
     const [isShowing, setIsShowing] = useState<boolean>(false);

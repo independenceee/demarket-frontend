@@ -10,14 +10,14 @@ import HeaderOption from "@/layouts/components/Header/HeaderOption";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import wallets from "@/constants/wallets";
-import LucidContext from "@/contexts/components/LucidContext";
-import { CartContextType, LucidContextType } from "@/types";
-import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
+import Modal from "@/components/Modal";
 import Search from "@/layouts/components/Search";
+import { CartContextType, LucidContextType } from "@/types";
+import LucidContext from "@/contexts/components/LucidContext";
 import CartContext from "@/contexts/components/CartContext";
 import Cart from "@/components/Cart";
+import wallets from "@/constants/wallets";
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,6 @@ const Header = function ({}: Props) {
     const { connectWallet, account, walletAddress, lucid, walletBanlance, walletImage } =
         useContext<LucidContextType>(LucidContext);
 
-    console.log(walletImage);
     const [selected, setSelected] = useState<string>("HOME");
     const [openConnectWallet, setOpenConnectWallet] = useState<boolean>(false);
 
@@ -46,7 +45,7 @@ const Header = function ({}: Props) {
     };
 
     return (
-        <header className={cx("wrapper")} data-aos="fade-down">
+        <header className={cx("wrapper")}>
             <div className={cx("container")}>
                 <Link href={"/"} className={cx("logo__wrapper")}>
                     <Image src={images.logo} alt="" className={cx("logo__image")} />
@@ -89,7 +88,7 @@ const Header = function ({}: Props) {
                             <FontAwesomeIcon icon={faMagnifyingGlass} onClick={toggleShowingSearch} />
                         </div>
                         <div className={cx("icon__container")}>
-                            <FontAwesomeIcon icon={faCartShopping} />
+                            <FontAwesomeIcon icon={faCartShopping} onClick={toggleShowingCart} />
                             <span>{cartState.totalQuantity}</span>
                         </div>
                         {account && (

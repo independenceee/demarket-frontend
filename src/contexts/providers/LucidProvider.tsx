@@ -55,6 +55,8 @@ const LucidProvider = function ({ children }: Props) {
         }
     };
 
+    console.log(account);
+
     return (
         <LucidContext.Provider
             value={{ connectWallet, walletAddress, walletImage, walletName, walletBanlance, lucid, account }}

@@ -12,10 +12,11 @@ import checkMediaType from "@/helpers/checkMediaType";
 import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
 import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType, SmartContractType } from "@/types";
+import { CartContextType, LucidContextType, SmartContractType } from "@/types";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import CartContext from "@/contexts/components/CartContext";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -30,6 +31,7 @@ const NftItem = function ({ value, index }: Props) {
     const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
     const { sellAssetService, buyAssetService, refundAssetService } =
         useContext<SmartContractType>(SmartContractContext);
+    const { addToCart } = useContext<CartContextType>(CartContext);
 
     const handleBuyNft = async function () {
         try {
@@ -77,6 +79,15 @@ const NftItem = function ({ value, index }: Props) {
             console.log(error);
         }
     };
+
+    const handleAddToCart = async function () {
+        try {
+            await addToCart(value);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div
             className={cx("wrapper")}
@@ -132,7 +143,7 @@ const NftItem = function ({ value, index }: Props) {
                     <div onClick={handleRefundNft} className={cx("option__title")}>
                         Refund Now
                     </div>
-                    <div className={cx("option__icon")}>
+                    <div className={cx("option__icon")} onClick={handleAddToCart}>
                         <FontAwesomeIcon icon={faCartShopping} />
                     </div>
                 </div>
@@ -142,7 +153,7 @@ const NftItem = function ({ value, index }: Props) {
                     <div onClick={handleBuyNft} className={cx("option__title")}>
                         Buy Now
                     </div>
-                    <div className={cx("option__icon")}>
+                    <div className={cx("option__icon")} onClick={handleAddToCart}>
                         <FontAwesomeIcon icon={faCartShopping} />
                     </div>
                 </div>
