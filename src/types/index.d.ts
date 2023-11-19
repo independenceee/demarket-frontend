@@ -5,17 +5,21 @@ export type WalletType = {
     name: string;
     image: string;
     downloadApi?: string;
-    api: () => Promise<void> | any;
-    checkApi: () => Promise<void> | any;
+    api: () => Promise<any> | any;
+    checkApi: () => Promise<any> | any;
 };
 
 export type CartContextType = {
     cartState: {
         itemsList: Array<any>;
         totalQuantity: number;
-        showCart: boolean;
+        totalPrice: number;
         changed: boolean;
     };
+
+    removeFromCart: ({ id, policyId, assetName }: { id: string; policyId: string; assetName: string }) => Promise<any>;
+    addToCart: (newItem: any) => Promise<any>;
+    clearCart: () => Promise<any>;
 };
 
 export type LucidContextType = {
@@ -25,7 +29,7 @@ export type LucidContextType = {
     walletImage: any;
     walletName: string;
     walletBanlance: number;
-    connectWallet: ({ api, name, image }: WalletType) => Promise<void>;
+    connectWallet: ({ api, name, image }: WalletType) => Promise<any>;
 };
 
 export type DemarketContextType = {
@@ -40,6 +44,8 @@ export type DemarketContextType = {
 
     guides: Array<Guides>;
     loadingGuides: boolean;
+
+    addNft: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
 };
 
 export type WalletContextType = {};
@@ -61,7 +67,7 @@ export type SmartContractType = {
         royaltiesAddress: string;
         policyId: string;
         assetName: string;
-    }) => Promise<void>;
+    }) => Promise<any>;
 
     sellAssetService: ({
         policyId,
@@ -77,7 +83,7 @@ export type SmartContractType = {
         price: bigint;
         royalties: bigint;
         lucid: Lucid;
-    }) => Promise<void>;
+    }) => Promise<any>;
 
     refundAssetService: ({
         lucid,
@@ -87,7 +93,7 @@ export type SmartContractType = {
         lucid: Lucid;
         policyId: string;
         assetName: string;
-    }) => Promise<void>;
+    }) => Promise<any>;
 
     mintAssetService: ({
         lucid,

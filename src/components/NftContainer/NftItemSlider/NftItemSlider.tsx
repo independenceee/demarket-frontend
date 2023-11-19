@@ -1,14 +1,14 @@
 import React from "react";
 import classNames from "classnames/bind";
 import styles from "./NftItemSlider.module.scss";
-import Image from "next/image";
-import images from "@/assets/images";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 const cx = classNames.bind(styles);
 
 type Props = {
     index: number;
+    value: any;
 };
-const NftItemSlider = function ({ index }: Props) {
+const NftItemSlider = function ({ value, index }: Props) {
     return (
         <div
             className={cx("wrapper")}
@@ -16,7 +16,7 @@ const NftItemSlider = function ({ index }: Props) {
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}
         >
-            <Image className={cx("container")} src={images.background} alt="" />
+            <img className={cx("container")} src={String(convertIpfsAddressToUrl(value.image))} alt="" />
         </div>
     );
 };

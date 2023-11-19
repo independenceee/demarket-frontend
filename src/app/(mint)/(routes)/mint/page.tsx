@@ -8,7 +8,8 @@ import { TrashIcon, AddIcon } from "@/components/Icons";
 import styles from "./Mint.module.scss";
 import Image from "next/image";
 import axios from "axios";
-import { LucidContextType, SmartContractType } from "@/types";
+import { LucidContextType, SmartContractType, DemarketContextType } from "@/types";
+import DemarketContext from "@/contexts/components/DemarketContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import { toast } from "react-toastify";
@@ -31,6 +32,7 @@ type Props = {};
 const MintPage = function ({}: Props) {
     const { lucid } = useContext<LucidContextType>(LucidContext);
     const { mintAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
@@ -49,7 +51,7 @@ const MintPage = function ({}: Props) {
         const fileImageElement: any = document.querySelector(".file__input");
         fileImageElement?.click();
     };
-    // title - description
+
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Select Your Option");
@@ -62,7 +64,6 @@ const MintPage = function ({}: Props) {
         setDescription(event.target.value);
     };
 
-    // Metadata
     const [metadatas, setMetadatas] = useState<any>([
         {
             property: "",
@@ -118,7 +119,7 @@ const MintPage = function ({}: Props) {
                 },
             });
 
-            await mintAssetService({
+            const { txHash, policyId, assetName } = await mintAssetService({
                 lucid,
                 customMetadata,
                 description,
@@ -127,7 +128,22 @@ const MintPage = function ({}: Props) {
                 title,
             });
 
-            toast.success("Mint asset successfully", {
+            if (txHash) {
+                toast.success("Mint asset successfully", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                await addNft({ policyId, assetName });
+
+                return;
+            }
+            toast.warning("Mint asset faild", {
                 position: "bottom-right",
                 autoClose: 1000,
                 hideProgressBar: true,

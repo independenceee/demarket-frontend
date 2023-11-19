@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useState } from "react";
 import CartContext from "@/contexts/components/CartContext";
+import { toast } from "react-toastify";
 
 type Props = {
     children: ReactNode;
@@ -12,56 +13,93 @@ const DemarketProvider = function ({ children }: Props) {
         itemsList: [],
         totalPrice: 0,
         totalQuantity: 0,
-        showCart: false,
         changed: false,
     });
 
-    const replaceData = function (data: any) {
-        setCartState((prev) => ({
-            ...prev,
-            totalQuantity: data.totalQuantity,
-            itemsList: data.itemsList,
-        }));
-    };
-
     const addToCart = async function (newItem: any) {
         setCartState((prev: any) => {
-            const existingItem = prev.itemsList.find((item: any) => item.id === newItem.id);
+            const existingItem = prev.itemsList.find(
+                (item: any) => item.assetName === newItem.assetName && item.policyId === newItem.policyId,
+            );
 
             if (existingItem) {
+                toast.warn("Asset already exits to cart", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 return { ...prev, changed: false };
             } else {
+                toast.success("Add to cart asset successfully", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 return {
                     ...prev,
-                    itemsList: [
-                        ...prev.itemsList,
-                        {
-                            id: newItem.id,
-                            price: newItem.price,
-                            name: newItem.name,
-                        },
-                    ],
+                    itemsList: [...prev.itemsList, newItem],
                     totalQuantity: prev.totalQuantity + 1,
+                    totalPrice: prev.totalPrice + Number(newItem.price) / 1000000,
                     changed: true,
                 };
             }
         });
     };
 
-    const removeFromCart = async function (idToRemove: any) {
+    const removeFromCart = async function ({
+        id,
+        policyId,
+        assetName,
+    }: {
+        id: string;
+        policyId: string;
+        assetName: string;
+    }) {
         setCartState((prev) => {
-            const updatedItemsList = prev.itemsList.filter((item: any) => item.id !== idToRemove);
+            const updatedItemsList: any = prev.itemsList.filter(
+                (item: any) => item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
+            );
+            const updatedTotalPrice = updatedItemsList.reduce(function (total: number, item: any) {
+                return total + Number(item.price);
+            }, 0);
 
             return {
                 ...prev,
                 itemsList: updatedItemsList,
+                totalPrice: updatedTotalPrice,
                 totalQuantity: updatedItemsList.length,
                 changed: true,
             };
         });
     };
 
-    return <CartContext.Provider value={{ cartState }}>{children}</CartContext.Provider>;
+    const clearCart = async function () {
+        setCartState((prev) => {
+            return {
+                ...prev,
+                itemsList: [],
+                totalPrice: 0,
+                totalQuantity: 0,
+                changed: true,
+            };
+        });
+    };
+
+    return (
+        <CartContext.Provider value={{ cartState, addToCart, removeFromCart, clearCart }}>
+            {children}
+        </CartContext.Provider>
+    );
 };
 
 export default DemarketProvider;

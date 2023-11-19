@@ -1,4 +1,4 @@
-import { post } from "./httpRequest";
+import { post, get } from "@/utils/httpRequest";
 
 type Props = {
     policyId: string;
@@ -62,6 +62,10 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
         fingerprint: metadata.fingerprint,
         metadata: metadata.onchain_metadata,
     };
+};
+
+const fetchInformationFromDemarket = async function ({ policyId, assetName }: Props) {
+    const data = await get("/nft");
 };
 
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
