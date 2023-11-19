@@ -13,7 +13,6 @@ const DemarketProvider = function ({ children }: Props) {
         itemsList: [],
         totalPrice: 0,
         totalQuantity: 0,
-
         changed: false,
     });
 
@@ -67,21 +66,40 @@ const DemarketProvider = function ({ children }: Props) {
         assetName: string;
     }) {
         setCartState((prev) => {
-            const updatedItemsList = prev.itemsList.filter(
+            const updatedItemsList: any = prev.itemsList.filter(
                 (item: any) => item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
             );
+            const updatedTotalPrice = updatedItemsList.reduce(function (total: number, item: any) {
+                return total + Number(item.price);
+            }, 0);
 
             return {
                 ...prev,
                 itemsList: updatedItemsList,
-
+                totalPrice: updatedTotalPrice,
                 totalQuantity: updatedItemsList.length,
                 changed: true,
             };
         });
     };
 
-    return <CartContext.Provider value={{ cartState, addToCart, removeFromCart }}>{children}</CartContext.Provider>;
+    const clearCart = async function () {
+        setCartState((prev) => {
+            return {
+                ...prev,
+                itemsList: [],
+                totalPrice: 0,
+                totalQuantity: 0,
+                changed: true,
+            };
+        });
+    };
+
+    return (
+        <CartContext.Provider value={{ cartState, addToCart, removeFromCart, clearCart }}>
+            {children}
+        </CartContext.Provider>
+    );
 };
 
 export default DemarketProvider;

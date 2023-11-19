@@ -1,26 +1,42 @@
-import React from "react";
+"use client";
+
+import React, { useContext } from "react";
 import classNames from "classnames/bind";
 import styles from "./CartItem.module.scss";
-import images from "@/assets/images";
-import Image from "next/image";
-
+import { TrashIcon } from "@/components/Icons";
+import convertHexToString from "@/helpers/convertHexToString";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
+import covertString from "@/helpers/convertString";
+import CartContext from "@/contexts/components/CartContext";
+import { CartContextType } from "@/types";
 const cx = classNames.bind(styles);
 
-type Props = {};
-const CartItem = function ({}: Props) {
+type Props = {
+    cartItem: any;
+};
+
+const CartItem = function ({ cartItem }: Props) {
+    const { removeFromCart } = useContext<CartContextType>(CartContext);
+
+    const handleRemoveFromCart = async function () {
+        await removeFromCart({ policyId: cartItem.policyId, assetName: cartItem.assetName, id: cartItem.id });
+    };
     return (
         <div className={cx("wrapper")}>
             <div className={cx("inner")}>
                 <div className={cx("image__wrapper")}>
-                    <Image className={cx("image")} src={images.background} alt="" />
+                    <img className={cx("image")} src={String(convertIpfsAddressToUrl(cartItem.image))} alt="" />
                 </div>
                 <div className={cx("information__wrapper")}>
-                    <div>policyId</div>
-                    <div>assetName</div>
-                    <div>Seller address</div>
+                    <div className={cx("name")}>{String(convertHexToString(cartItem.assetName))}</div>
+                    <div className={cx("policyId")}>{String(covertString({ inputString: cartItem.policyId }))}</div>
+                    <div className={cx("policyId")}>Selling</div>
                 </div>
             </div>
-            <div className={cx("price")}>100 ADA</div>
+            <div className={cx("price")}>{Number(cartItem.price) / 1000000} ADA</div>
+            <div className={cx("trash")} onClick={handleRemoveFromCart}>
+                <TrashIcon />
+            </div>
         </div>
     );
 };

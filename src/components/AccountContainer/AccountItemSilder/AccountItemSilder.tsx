@@ -11,9 +11,10 @@ const cx = classNames.bind(styles);
 type Props = {
     avatar: string;
     index: number;
+    name: string;
 };
 
-const AccountItemSilder = function ({ avatar, index }: Props) {
+const AccountItemSilder = function ({ name, avatar, index }: Props) {
     return (
         <Link
             href={{ pathname: "" }}
@@ -29,11 +30,11 @@ const AccountItemSilder = function ({ avatar, index }: Props) {
             </section>
             <section className={cx("content__wrapper")}>
                 <div className={cx("content__main")}>
-                    <h2 className={cx("content__main--name")}> Khanh</h2>
+                    <h2 className={cx("content__main--name")}> {name}</h2>
                     <VerifiedIcon className={cx("content__main--icon")} />
                 </div>
                 <div className={cx("content__information")}>
-                    21 Works <span>•</span> 35 Loves
+                    0 Works <span>•</span> 0 Loves
                 </div>
             </section>
         </Link>

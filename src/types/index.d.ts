@@ -19,6 +19,7 @@ export type CartContextType = {
 
     removeFromCart: ({ id, policyId, assetName }: { id: string; policyId: string; assetName: string }) => Promise<any>;
     addToCart: (newItem: any) => Promise<any>;
+    clearCart: () => Promise<any>;
 };
 
 export type LucidContextType = {
