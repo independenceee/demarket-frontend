@@ -236,7 +236,7 @@
 
 .nft-wrapper {
     display: flex;
-    align-items: center;
+    // align-items: center;
     flex-direction: column;
     justify-content: center;
     width: 404px;
@@ -248,6 +248,8 @@
     .image-container {
         width: 382px;
         height: 361px;
+        margin: 0 auto;
+        position: relative;
 
         border-radius: 12px;
         overflow: hidden;
@@ -264,13 +266,12 @@
 
         .content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
 
             .title {
-                color: var(--secondary-color-10, rgba(124, 58, 237, 0.75));
-                font-size: 40px;
+                color: rgba(124, 58, 237, 0.75);
+                font-size: 30px;
                 font-style: normal;
                 font-weight: 700;
                 line-height: 40px;
@@ -280,8 +281,7 @@
             .type {
                 color: rgba(124, 58, 237, 0.75);
                 text-align: left;
-                font-size: 29px;
-                font-weight: 700;
+                font-size: 20px;
                 line-height: 29px;
             }
         }
@@ -291,7 +291,9 @@
             font-size: 20px;
             font-weight: 600;
             line-height: 20px;
+            width: 100%;
             max-width: 380px;
+            text-align: left;
         }
     }
 }

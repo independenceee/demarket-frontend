@@ -24,7 +24,7 @@ import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
-import { DemarketContextType, LucidContextType, SmartContractType } from "@/types";
+import { Category, DemarketContextType, LucidContextType, SmartContractType } from "@/types";
 import LucidContext from "@/contexts/components/LucidContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { post } from "@/utils/httpRequest";
@@ -38,7 +38,7 @@ const AccountPage = function ({}: Props) {
     const { id } = useParams();
 
     const { walletAddress, account } = useContext<LucidContextType>(LucidContext);
-    const { accounts } = useContext<DemarketContextType>(DemarketContext);
+    const { accounts, categories } = useContext<DemarketContextType>(DemarketContext);
 
     const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
@@ -57,6 +57,7 @@ const AccountPage = function ({}: Props) {
     const { isShowing = true, toggle } = useModal();
 
     const [assetsFromAddress, setAssetsFromAddress] = useState<any>([]);
+    const [loadingAssetsFromAddress, setLoadingAssetsFromAddress] = useState<boolean>(true);
     const fetchInformationFromAddress = async function () {
         try {
             if (walletAddress === id) {
@@ -75,6 +76,7 @@ const AccountPage = function ({}: Props) {
                 );
 
                 setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+                setLoadingAssetsFromAddress(false);
             } else {
                 const response = await post("/koios/assets/address-assets", {
                     address: id,
@@ -91,6 +93,7 @@ const AccountPage = function ({}: Props) {
                 );
 
                 setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+                setLoadingAssetsFromAddress(false);
             }
         } catch (error) {
             console.log(error);
@@ -281,22 +284,14 @@ const AccountPage = function ({}: Props) {
                                     <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                                 </header>
                                 <article className={cx("content__filter--option")}>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>All</h4>
-                                        <input className={cx("content__filter--control")} type="checkbox" />
-                                    </section>
+                                    {categories.map(function (category: Category, index: number) {
+                                        return (
+                                            <section key={index} className={cx("content__filter--group")}>
+                                                <h4 className={cx("content__filter--name")}>{category.name}</h4>
+                                                <input className={cx("content__filter--control")} type="checkbox" />
+                                            </section>
+                                        );
+                                    })}
                                 </article>
                             </section>
                         </aside>
@@ -366,21 +361,21 @@ const AccountPage = function ({}: Props) {
                                         <FollowerIcon className={cx("content__filter--icon")} />
                                         <span>Followers:</span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}>123</h4>
+                                    <h4 className={cx("content__filter--value")}>0</h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
                                         <RatingIcon className={cx("content__filter--icon")} />
                                         <span>Rating</span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}>123</h4>
+                                    <h4 className={cx("content__filter--value")}>0</h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
                                         <CreatedAtIcon className={cx("content__filter--icon")} />
                                         <span>Joinned</span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}>123</h4>
+                                    <h4 className={cx("content__filter--value")}></h4>
                                 </section>
                             </article>
                         </section>
@@ -391,22 +386,14 @@ const AccountPage = function ({}: Props) {
                                 <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                             </header>
                             <article className={cx("content__filter--option")}>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input className={cx("content__filter--control")} type="checkbox" />
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input className={cx("content__filter--control")} type="checkbox" />
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input className={cx("content__filter--control")} type="checkbox" />
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>All</h4>
-                                    <input className={cx("content__filter--control")} type="checkbox" />
-                                </section>
+                                {categories.map(function (category: Category, index: number) {
+                                    return (
+                                        <section key={index} className={cx("content__filter--group")}>
+                                            <h4 className={cx("content__filter--name")}>{category.name}</h4>
+                                            <input className={cx("content__filter--control")} type="checkbox" />
+                                        </section>
+                                    );
+                                })}
                             </article>
                         </section>
                     </aside>
@@ -430,13 +417,13 @@ const AccountPage = function ({}: Props) {
                         </nav>
                         <section>
                             {activeTab === "my assets" && (
-                                <NftContainer data={assetsFromAddress} loading={loadingAssetsFromSmartContract} />
+                                <NftContainer data={assetsFromAddress} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "selling" && (
-                                <NftContainer data={sellingAssets} loading={loadingAssetsFromSmartContract} />
+                                <NftContainer data={sellingAssets} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "created" && (
-                                <NftContainer data={createdAssets} loading={loadingAssetsFromSmartContract} />
+                                <NftContainer data={createdAssets} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "collection" && <NftContainer data={assetsFromAddress} />}
                             {activeTab === "following" && <AccountContainer data={accounts} itemsPerPage={12} />}
