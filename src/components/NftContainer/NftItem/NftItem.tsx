@@ -123,7 +123,8 @@ const NftItem = function ({ value, index }: Props) {
                 <section className={cx("information")}>
                     <div className={cx("author")}>
                         <Image className={cx("avatar")} src={images.user} alt="" />
-                        <h3 className={cx("name")}>Creator</h3>
+                        {value.price && <h3 className={cx("name")}>{value.sellerAddress}</h3>}
+                        {!value.price && <h3 className={cx("name")}>{value.currentAddress}</h3>}
                     </div>
                     {value.price && (
                         <h3 className={cx("price")}>

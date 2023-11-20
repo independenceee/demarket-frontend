@@ -2,20 +2,17 @@
 
 import React, { useContext } from "react";
 import classNames from "classnames/bind";
-import GuideItem from "@/components/GuideItem";
 import styles from "./Guide.module.scss";
-import { DemarketContextType, Guide } from "@/types";
-import DemarketContext from "@/contexts/components/DemarketContext";
+import ReactPlayer from "react-player";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
+import { AddIcon } from "@/components/Icons";
 
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const GuidePage = function ({}: Props) {
-    const { guides } = useContext<DemarketContextType>(DemarketContext);
-
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")} data-aos="fade-down">
@@ -34,18 +31,56 @@ const GuidePage = function ({}: Props) {
                     description="You dont Know how to use feature of pladform. Let me give you some Manual document."
                 />
                 <section className={cx("guide__wrapper")}>
-                    {guides.map(function (guide: Guide, index: number) {
-                        return (
-                            <GuideItem
-                                key={index}
-                                index={index}
-                                url={guide.videoUrl}
-                                title={guide.title}
-                                question={guide.question}
-                                description={guide.description}
-                            />
-                        );
-                    })}
+                    <aside className={cx("guide__container")}>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>How to get started in DEMARKET?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>How to connect your wallet to the DEMARKET platform?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>How can I create an NFT?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>How does smart contract work on DEMARKET?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>A complete guide to sell your NFTs?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                        <section className={cx("guide__inner")}>
+                            <header className={cx("guide__header")}>
+                                <h3 className={cx("title")}>A complete guide to buy your NFTs?</h3>
+                                <span className={cx("icon")}>
+                                    <AddIcon />
+                                </span>
+                            </header>
+                        </section>
+                    </aside>
                 </section>
             </div>
         </main>
