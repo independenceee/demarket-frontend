@@ -2,6 +2,7 @@ import { Data, Lucid } from "lucid-cardano";
 import readValidator from "@/utils/readValidator";
 import { Datum } from "@/constants/datum";
 import { redeemer } from "@/constants/redeemer";
+import { toast } from "react-toastify";
 
 type Props = {
     lucid: Lucid;
@@ -30,7 +31,6 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
         }
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
-        console.log(exchange_fee);
         if (validator) {
             const tx = await lucid
                 .newTx()
@@ -42,7 +42,32 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
             const signedTx = await tx.sign().complete();
             const txHash = await signedTx.submit();
             await lucid.awaitTx(txHash);
-            return txHash;
+            if (txHash) {
+                toast.success("Refund asset successfully !", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+
+                return;
+            }
+
+            toast.error("Refund asset faild !", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
         }
     } catch (error) {
         console.log(error);

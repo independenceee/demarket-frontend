@@ -3,6 +3,7 @@ import { Datum } from "@/constants/datum";
 import { redeemer } from "@/constants/redeemer";
 
 import readValidator from "@/utils/readValidator";
+import { toast } from "react-toastify";
 
 type Props = {
     lucid: Lucid;
@@ -14,7 +15,7 @@ type Props = {
 
 const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddress, royaltiesAddress }: Props) {
     try {
-        console.log(policyId, assetName, sellerAddress, royaltiesAddress);
+
         const validator = await readValidator();
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
@@ -51,6 +52,34 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
         const signedTx = await tx.sign().complete();
         const txHash = await signedTx.submit();
         await lucid.awaitTx(txHash);
+
+        if (txHash) {
+            toast.success("Buy asset successfully !", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            return;
+        }
+
+        toast.error("Buy asset faild !", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+        return;
     } catch (error) {
         console.log(error);
     }

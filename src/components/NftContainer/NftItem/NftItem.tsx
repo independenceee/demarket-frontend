@@ -52,14 +52,7 @@ const NftItem = function ({ value, index }: Props) {
     const handleSellNft = async function () {
         try {
             if (lucid) {
-                await sellAssetService({
-                    assetName: value.assetName,
-                    policyId: value.policyId,
-                    author: value.authorAddress,
-                    lucid: lucid,
-                    price: BigInt(10000000),
-                    royalties: BigInt(1000 / 10),
-                });
+                router.push(`/detail/${value.policyId + value.assetName}`);
             }
         } catch (error) {
             console.log(error);

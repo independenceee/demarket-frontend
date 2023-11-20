@@ -2,6 +2,7 @@ import { Data, Lucid } from "lucid-cardano";
 import readValidator from "@/utils/readValidator";
 import fetchPublicKeyFromAddress from "@/utils/fetchPublicKeyFromAddress";
 import { Datum } from "@/constants/datum";
+import { toast } from "react-toastify";
 
 type Props = {
     policyId: string;
@@ -40,7 +41,33 @@ const sellAssetService = async function ({ policyId, assetName, author, price, l
         const signedTx = await tx.sign().complete();
         const txHash = await signedTx.submit();
         await lucid.awaitTx(txHash);
-        return txHash;
+        if (txHash) {
+            toast.success("Sell asset successfully !", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            return;
+        }
+
+        toast.error("Sell asset faild !", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+        return;
     } catch (error) {
         console.log(error);
     }
