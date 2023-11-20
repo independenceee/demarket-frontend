@@ -17,7 +17,7 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
 }
 .carousel {
     position: relative;
@@ -39,7 +39,7 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-size: 1rem;
-    color: #717171;
+    color: #1400ff;
 }
 
 .carousel-content h1 {
@@ -48,7 +48,15 @@
     font-size: 4rem;
     line-height: 1.1;
     background-color: #00a4aa;
-    background-image: linear-gradient(45deg, #00a4aa, #000);
+    background-image: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
     background-size: 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -56,7 +64,15 @@
 
 .carousel-content hr {
     display: block;
-    background: #00a4aa;
+    background: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
     height: 0.25rem;
     width: 6.25rem;
     border: none;
@@ -65,6 +81,7 @@
 
 .carousel-content p {
     line-height: 1.6;
+    color: #f6f6f6;
 }
 
 .slider-btn {
@@ -81,8 +98,9 @@
 }
 
 .slider-btn:hover {
-    border: 0.125rem solid #00a4aa;
-    color: #00a4aa;
+    border: 0.125rem solid #7000ff;
+    color: #7000ff;
+    background: #ccc;
 }
 
 .bgdonut1 {
@@ -152,7 +170,7 @@
     margin: 1.25rem 1.5rem 3.5rem;
 
     &:hover {
-        color: #00a4aa;
+        color: #7000ff;
     }
 }
 

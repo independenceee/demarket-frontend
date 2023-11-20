@@ -262,13 +262,15 @@ const MintPage = function ({}: Props) {
                         <div className={cx("content")}>
                             <div className={cx("nft-wrapper")}>
                                 <div className={cx("image-container")}>
-                                    <Image
-                                        width={100}
-                                        height={100}
-                                        src={imagePath ? imagePath : images.noImage}
-                                        alt=""
-                                        className={cx("image")}
-                                    />
+                                    {imagePath ? (
+                                        <img src={imagePath} alt="" className={cx("image")} />
+                                    ) : (
+                                        <img
+                                            src={require("../../../../assets/images/no-image.jpg")}
+                                            alt=""
+                                            className={cx("image")}
+                                        />
+                                    )}
                                 </div>
                                 <div className={cx("nft-container")}>
                                     <section className={cx("content")}>
