@@ -1,16 +1,10 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-html {
-    font-family: "Open Sans", sans-serif;
-}
+@import "normalize.css";
 
-a {
-    text-decoration: none;
-}
 :root {
+    --font-family: "Open Sans", sans-serif;
+    --text-color: #4c4747;
+
+    
     --backgroundcolor_60: #fff;
     --backgroundcolor_30: #f8fafd;
     --linearcolor_befor_hover: linear-gradient(
@@ -35,7 +29,6 @@ a {
     --color_purple: #8f04a6;
     --border_input: 0.1px solid #96999c;
     --border_hover: 0.2px solid #d900ff;
-    --hover_shadow: 4px 10px 4px 0px rgba(0, 0, 0, 0.25);
     --border_radius_30: 30x;
     --border_radius_20: 20px;
     --font_size_p: 14px;
@@ -51,65 +44,34 @@ a {
     --font_weight: 700;
 }
 
-.pagination {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    font-size: 1.2rem;
-    gap: 5px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.page-num {
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 8px;
-    font-weight: 400;
-    color: #7000ff;
-    list-style: none;
-
-    &:hover {
-        color: #fff;
-        background: linear-gradient(
-            90deg,
-            #8f04a6 0%,
-            #c0f 0%,
-            #7000ff 39.36%,
-            rgba(44, 0, 219, 0.91) 63.12%,
-            rgba(4, 0, 203, 0.89) 79.64%,
-            #1400ff 99.32%
-        );
-    }
+html {
+    font-family: var(--font-family);
 }
 
-.active {
-    color: #fff;
-    background: linear-gradient(
-        90deg,
-        #8f04a6 0%,
-        #c0f 0%,
-        #7000ff 39.36%,
-        rgba(44, 0, 219, 0.91) 63.12%,
-        rgba(4, 0, 203, 0.89) 79.64%,
-        #1400ff 99.32%
-    );
+body {
+    font-family: var(--font-family);
+    line-height: 1.5;
+    text-rendering: optimizespeed;
+    color: var(--text-color);
+    overflow-y: overlay;
 }
 
-// animations
-.skeleton {
-    opacity: 0.7;
-    animation: skeleton-loading 1s linear infinite alternate;
+a {
+    color: var(--text-color);
+    text-decoration: none;
 }
 
-@keyframes skeleton-loading {
-    0% {
-        background-color: hsl(200, 20%, 70%);
-    }
-
-    100% {
-        background-color: hsl(200, 20%, 95%);
-    }
+button,
+input,
+[tabindex] {
+    outline: none;
+    border: none;
 }
 
 // Scrollbar CSS Start
@@ -128,32 +90,3 @@ html *::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
 }
 // Scrollbar CSS End
-button,
-input,
-[tabindex] {
-    outline: none;
-    border: none;
-}
-// tippy-begin
-body {
-    .tippy-box {
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1.6rem;
-        line-height: 2.2rem;
-        background-color: rgba(84, 84, 84, 0.92);
-    }
-
-    .tippy-arrow {
-        color: rgba(84, 84, 84, 0.92);
-    }
-
-    .tippy-content {
-        padding: 8px 9px;
-    }
-
-    .tippy-box[data-placement^="bottom"] > .tippy-arrow:before {
-        top: -8px;
-    }
-}
-// tippy-end

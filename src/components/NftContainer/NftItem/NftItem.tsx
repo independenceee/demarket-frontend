@@ -29,8 +29,7 @@ const NftItem = function ({ value, index }: Props) {
     const router = useRouter();
 
     const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService, refundAssetService } =
-        useContext<SmartContractType>(SmartContractContext);
+    const { buyAssetService, refundAssetService } = useContext<SmartContractType>(SmartContractContext);
     const { addToCart } = useContext<CartContextType>(CartContext);
 
     const handleBuyNft = async function () {

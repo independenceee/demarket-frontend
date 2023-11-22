@@ -70,7 +70,16 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
             return;
         }
     } catch (error) {
-        console.log(error);
+        toast.error("Refund asset faild !", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
     }
 };
 

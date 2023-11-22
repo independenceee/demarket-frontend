@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import { Pagination, Stack } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./AccountContainer.module.scss";
 import AccountItem from "@/components/AccountContainer/AccountItem";
 import { Account } from "@/types";
-import { count } from "console";
 
 const cx = classNames.bind(styles);
 
@@ -18,25 +16,18 @@ type Props = {
 
 const AccountContainer = function ({ itemsPerPage = 8, data }: Props) {
     const [currentItems, setCurrentItems] = useState<any>([]);
-    const [pageCount, setPageCount] = useState<number>(0);
-    const [itemOffset, setItemOffset] = useState<number>(0);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
 
-    useEffect(
-        function () {
-            const endOffset = itemOffset + itemsPerPage;
-            setCurrentItems(data.slice(itemOffset, endOffset));
-            setPageCount(Math.ceil(data.length / itemsPerPage));
-        },
-        [itemOffset, itemsPerPage, data],
-    );
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        setCurrentItems(data.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(data.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage, data]);
 
-    const handlePageClick = function (event: any) {
-        const newOffset = (event.selected * itemsPerPage) % data.length;
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        const newOffset = (value - 1) * itemsPerPage;
         setItemOffset(newOffset);
-    };
-
-    const handleChangePage = function (event: any, value: number) {
-        setPageCount(value);
     };
     return (
         <div className={cx("wrapper")}>
@@ -47,7 +38,12 @@ const AccountContainer = function ({ itemsPerPage = 8, data }: Props) {
             </div>
 
             <Stack spacing={2}>
-                <Pagination count={10} shape="rounded" page={pageCount} onChange={handleChangePage} />
+                <Pagination
+                    count={pageCount}
+                    shape="rounded"
+                    page={Math.ceil(itemOffset / itemsPerPage) + 1}
+                    onChange={handlePageChange}
+                />
             </Stack>
         </div>
     );

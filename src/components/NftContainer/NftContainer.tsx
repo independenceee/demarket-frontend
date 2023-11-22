@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import classNames from "classnames/bind";
-import ReactPaginate from "react-paginate";
 import styles from "./NftContainer.module.scss";
 import NftItem from "./NftItem";
 import NftItemSkeleton from "./NftItem/NftItemSkeleton";

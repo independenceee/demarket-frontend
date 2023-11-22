@@ -15,7 +15,6 @@ type Props = {
 
 const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddress, royaltiesAddress }: Props) {
     try {
-
         const validator = await readValidator();
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
@@ -81,7 +80,16 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
 
         return;
     } catch (error) {
-        console.log(error);
+        toast.error("Buy asset faild !", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
     }
 };
 

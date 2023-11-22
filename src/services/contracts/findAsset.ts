@@ -1,5 +1,5 @@
 import { Data } from "lucid-cardano";
-import lucidService from "./lucidService";
+import lucidService from "./lucid";
 import readValidator from "@/utils/readValidator";
 import { Datum } from "@/constants/datum";
 

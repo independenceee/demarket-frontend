@@ -1,18 +1,18 @@
 "use client";
-
-import React, { ChangeEvent, useContext, useState } from "react";
-import images from "@/assets/images";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import Button from "@/components/Button";
 import { TrashIcon, AddIcon } from "@/components/Icons";
-import styles from "./Mint.module.scss";
-import Image from "next/image";
 import axios from "axios";
-import { LucidContextType, SmartContractType, DemarketContextType } from "@/types";
+import Image from "next/image";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
+import Button from "@/components/Button";
 import { toast } from "react-toastify";
+import { LucidContextType, SmartContractType, DemarketContextType } from "@/types";
+
+import images from "@/assets/images";
+import styles from "./Mint.module.scss";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
@@ -33,9 +33,24 @@ const MintPage = function ({}: Props) {
     const { lucid } = useContext<LucidContextType>(LucidContext);
     const { mintAssetService } = useContext<SmartContractType>(SmartContractContext);
     const { addNft } = useContext<DemarketContextType>(DemarketContext);
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [mediaType, setMediaType] = useState<string>("Select Your Option");
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
+    const [metadatas, setMetadatas] = useState<any>([
+        {
+            property: "",
+            value: "",
+        },
+    ]);
+
+    useEffect(() => {
+        return function () {
+            imagePath && URL.revokeObjectURL(imagePath);
+        };
+    }, [imagePath]);
 
     const handleChangeFile = function (event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
@@ -44,6 +59,7 @@ const MintPage = function ({}: Props) {
             setImagePath(URL.createObjectURL(event.target.files[0]));
             setFileName(event.target.files[0].name);
             setMediaType(event.target.files[0].type);
+            event.target.value = "";
         }
     };
 
@@ -52,10 +68,6 @@ const MintPage = function ({}: Props) {
         fileImageElement?.click();
     };
 
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [mediaType, setMediaType] = useState<string>("Select Your Option");
-
     const handleChangeTitle = function (event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value);
     };
@@ -63,13 +75,6 @@ const MintPage = function ({}: Props) {
     const handleChangeDescription = function (event: ChangeEvent<HTMLTextAreaElement>) {
         setDescription(event.target.value);
     };
-
-    const [metadatas, setMetadatas] = useState<any>([
-        {
-            property: "",
-            value: "",
-        },
-    ]);
 
     const handleAddMetadata = function () {
         setMetadatas([
@@ -101,16 +106,10 @@ const MintPage = function ({}: Props) {
         try {
             const formData = new FormData();
             formData.append("file", image);
-            const metadata = JSON.stringify({
-                name: "fileName",
-            });
-
+            const metadata = JSON.stringify({ name: "fileName" });
             const customMetadata = convertMetadataToObj(metadatas);
-
             formData.append("pinataMetadata", metadata);
-            const options = JSON.stringify({
-                cidVersion: 0,
-            });
+            const options = JSON.stringify({ cidVersion: 0 });
             formData.append("pinataOptions", options);
             const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
                 headers: {
@@ -262,15 +261,11 @@ const MintPage = function ({}: Props) {
                         <div className={cx("content")}>
                             <div className={cx("nft-wrapper")}>
                                 <div className={cx("image-container")}>
-                                    {imagePath ? (
-                                        <img src={imagePath} alt="" className={cx("image")} />
-                                    ) : (
-                                        <img
-                                            src={require("../../../../assets/images/no-image.jpg")}
-                                            alt=""
-                                            className={cx("image")}
-                                        />
-                                    )}
+                                    <Image
+                                        src={imagePath ? imagePath : images.noImage}
+                                        alt="NFT IMAGE"
+                                        className={cx("image")}
+                                    />
                                 </div>
                                 <div className={cx("nft-container")}>
                                     <section className={cx("content")}>
@@ -314,13 +309,7 @@ const MintPage = function ({}: Props) {
                         <header className={cx("preview")}>Preview</header>
                         <div className={cx("nft-wrapper")}>
                             <div className={cx("image-container")}>
-                                <Image
-                                    width={100}
-                                    height={100}
-                                    src={imagePath ? imagePath : images.noImage}
-                                    alt=""
-                                    className={cx("image")}
-                                />
+                                <Image src={imagePath ? imagePath : images.noImage} alt="" className={cx("image")} />
                             </div>
                             <div className={cx("nft-container")}>
                                 <section className={cx("content")}>
