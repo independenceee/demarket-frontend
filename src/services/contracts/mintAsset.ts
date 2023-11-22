@@ -57,7 +57,7 @@ const mintAssetService = async function ({
             };
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
     }
 };
 

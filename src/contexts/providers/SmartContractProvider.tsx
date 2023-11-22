@@ -2,13 +2,13 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import burnAssetService from "@/services/contracts/burnAssetService";
-import sellAssetService from "@/services/contracts/sellAssetService";
-import buyAssetService from "@/services/contracts/buyAssetService";
-import listAssetsService from "@/services/contracts/listAssetsService";
-import mintAssetService from "@/services/contracts/mintAssetService";
-import refundAssetService from "@/services/contracts/refundAssetService";
-import findAssetService from "@/services/contracts/findAssetService";
+import burnAssetService from "@/services/contracts/burnAsset";
+import sellAssetService from "@/services/contracts/sellAsset";
+import buyAssetService from "@/services/contracts/buyAsset";
+import listAssetsService from "@/services/contracts/listAssets";
+import mintAssetService from "@/services/contracts/mintAsset";
+import refundAssetService from "@/services/contracts/refundAsset";
+import findAssetService from "@/services/contracts/findAsset";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 
 type Props = {
@@ -30,6 +30,7 @@ const SmartContractProvider = function ({ children }: Props) {
                     price: asset.price,
                     royalties: asset.royalties,
                 });
+
                 setListAssetsFromSmartContract(convertAsset);
                 setLoadingAssetsFromSmartContract(false);
             });

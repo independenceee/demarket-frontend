@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
+import { useRouter } from "next/router";
 import classNames from "classnames/bind";
 import styles from "./CartItem.module.scss";
 import { TrashIcon } from "@/components/Icons";
@@ -16,13 +17,14 @@ type Props = {
 };
 
 const CartItem = function ({ cartItem }: Props) {
+    const router = useRouter();
     const { removeFromCart } = useContext<CartContextType>(CartContext);
 
     const handleRemoveFromCart = async function () {
         await removeFromCart({ policyId: cartItem.policyId, assetName: cartItem.assetName, id: cartItem.id });
     };
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper")} onClick={() => router.push(`/detail/${cartItem.policyId + cartItem.assetName}`)}>
             <div className={cx("inner")}>
                 <div className={cx("image__wrapper")}>
                     <img className={cx("image")} src={String(convertIpfsAddressToUrl(cartItem.image))} alt="" />
