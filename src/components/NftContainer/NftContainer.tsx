@@ -6,24 +6,25 @@ import styles from "./NftContainer.module.scss";
 import NftItem from "./NftItem";
 import NftItemSkeleton from "./NftItem/NftItemSkeleton";
 import { Pagination, Stack } from "@mui/material";
+import { NftItemType } from "@/types/GenericsType";
 
 const cx = classNames.bind(styles);
 type Props = {
-    data: Array<any>;
+    nfts: Array<NftItemType | any>;
     itemsPerPage?: number;
     loading?: boolean;
 };
 
-const NftContainer = function ({ data, itemsPerPage = 8, loading }: Props) {
+const NftContainer = function ({ nfts, itemsPerPage = 8, loading }: Props) {
     const [currentItems, setCurrentItems] = useState<any>([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0);
 
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
-        setCurrentItems(data.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(data.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage, data]);
+        setCurrentItems(nfts?.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(nfts?.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage, nfts]);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         const newOffset = (value - 1) * itemsPerPage;
@@ -36,7 +37,7 @@ const NftContainer = function ({ data, itemsPerPage = 8, loading }: Props) {
                     ? new Array(itemsPerPage).fill(null).map(function (value: any, index: number) {
                           return <NftItemSkeleton key={index} index={index} />;
                       })
-                    : currentItems.map(function (value: ChangeEvent<unknown>, index: number) {
+                    : currentItems?.map(function (value: ChangeEvent<unknown>, index: number) {
                           return <NftItem key={index} value={value} index={index} />;
                       })}
             </div>

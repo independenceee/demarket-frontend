@@ -5,22 +5,22 @@ import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
 import styles from "./Home.module.scss";
 import NftContainer from "@/components/NftContainer";
-import { SmartContractType, DemarketContextType } from "@/types";
+import { SmartContractType } from "@/types/SmartContextType";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
 import AccountItemSilder from "@/components/AccountContainer/AccountItemSilder";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import DemarketContext from "@/contexts/components/DemarketContext";
-
 import NftItemSlider from "@/components/NftContainer/NftItemSlider/NftItemSlider";
-
+import configs from "@/configs";
+import { DemarketContextType } from "@/types/DemarketContextType";
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
 
     const { accounts } = useContext<DemarketContextType>(DemarketContext);
@@ -28,17 +28,16 @@ const Home = function ({}: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <Background />
-                <Title main="HOME" />
+                <Title main={configs.titles.home.main} />
 
                 <section className={cx("news__wrapper")}>
                     <SubTitle
-                        title="New Items"
-                        description="Beginning of the app and website design process, we know it is tempting to dive right into
-                            picking fonts."
+                        title={configs.subTitles.home.newItems.title}
+                        description={configs.subTitles.home.newItems.description}
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer data={listAssetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
+                        <NftContainer nfts={assetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
@@ -51,14 +50,14 @@ const Home = function ({}: Props) {
                     <div className={cx("trending__container")}>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-left")}>
-                                {listAssetsFromSmartContract.map(function (value: any, index: number) {
+                                {assetsFromSmartContract.map(function (value: any, index: number) {
                                     return <NftItemSlider value={value} key={index} index={index} />;
                                 })}
                             </div>
                         </section>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-right")}>
-                                {listAssetsFromSmartContract.map(function (value: any, index: number) {
+                                {assetsFromSmartContract.map(function (value: any, index: number) {
                                     return <NftItemSlider value={value} key={index} index={index} />;
                                 })}
                             </div>
@@ -73,7 +72,7 @@ const Home = function ({}: Props) {
                     />
 
                     <article className={cx("news_container")}>
-                        <NftContainer loading={loadingAssetsFromSmartContract} data={listAssetsFromSmartContract} />
+                        <NftContainer loading={loadingAssetsFromSmartContract} nfts={assetsFromSmartContract} />
                     </article>
                 </section>
                 <section className={cx("account__wrapper")}>

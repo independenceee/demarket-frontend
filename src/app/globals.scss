@@ -4,7 +4,6 @@
     --font-family: "Open Sans", sans-serif;
     --text-color: #4c4747;
 
-    
     --backgroundcolor_60: #fff;
     --backgroundcolor_30: #f8fafd;
     --linearcolor_befor_hover: linear-gradient(
@@ -52,6 +51,7 @@
 
 html {
     font-family: var(--font-family);
+    scroll-behavior: smooth;
 }
 
 body {

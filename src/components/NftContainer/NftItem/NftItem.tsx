@@ -12,6 +12,7 @@ import checkMediaType from "@/helpers/checkMediaType";
 import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
 import LucidContext from "@/contexts/components/LucidContext";
+import { contractAddress } from "@/libs";
 import { CartContextType, LucidContextType, SmartContractType } from "@/types";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -131,7 +132,7 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
             </div>
 
-            {value.sellerAddress === walletAddress && value.price && (
+            {value.sellerAddress === walletAddress && value.currentAddress === contractAddress && (
                 <div className={cx("option__wrapper")}>
                     <div onClick={handleRefundNft} className={cx("option__title")}>
                         Refund Now

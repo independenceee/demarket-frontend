@@ -170,7 +170,7 @@ const MarketplacePage = function ({}: Props) {
                     </div>
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
                         <NftContainer
-                            data={listAssetsFromSmartContract}
+                            nfts={listAssetsFromSmartContract}
                             itemsPerPage={12}
                             loading={loadingAssetsFromSmartContract}
                         />

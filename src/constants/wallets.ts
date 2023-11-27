@@ -1,75 +1,75 @@
 import configs from "@/configs";
 import images from "@/assets/images";
-import { WalletType } from "@/types";
+import { WalletItemType } from "@/types/GenericsType";
 
 declare const window: any;
 
-const wallets: Array<WalletType> = [
+const wallets: Array<WalletItemType> = [
     {
-        name: "Nami",
-        image: images.namiWallet,
-        api: async function () {
+        walletName: "Nami",
+        walletImage: images.namiWallet,
+        walletApi: async function () {
             return await window.cardano.nami.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.nami;
         },
-        downloadApi: configs.wallets.nami,
+        walletDownloadApi: configs.wallets.nami,
     },
     {
-        name: "Eternl",
-        image: images.eternlWallet,
-        api: async function () {
+        walletName: "Eternl",
+        walletImage: images.eternlWallet,
+        walletApi: async function () {
             return window.cardano.eternl.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.eternl;
         },
-        downloadApi: configs.wallets.eternl,
+        walletDownloadApi: configs.wallets.eternl,
     },
     {
-        name: "Flint",
-        image: images.flintWallet,
-        api: async function () {
+        walletName: "Flint",
+        walletImage: images.flintWallet,
+        walletApi: async function () {
             return await window.cardano.flint.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.flint;
         },
-        downloadApi: configs.wallets.flint,
+        walletDownloadApi: configs.wallets.flint,
     },
     {
-        name: "Gero",
-        image: images.geroWallet,
-        api: async function () {
+        walletName: "Gero",
+        walletImage: images.geroWallet,
+        walletApi: async function () {
             return await window.cardano.gero.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.gero;
         },
-        downloadApi: configs.wallets.gero,
+        walletDownloadApi: configs.wallets.gero,
     },
     {
-        name: "Typhon",
-        image: images.typhonWallet,
-        api: async function () {
+        walletName: "Typhon",
+        walletImage: images.typhonWallet,
+        walletApi: async function () {
             return await window.cardano.typhon.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.typhon;
         },
-        downloadApi: configs.wallets.typhon,
+        walletDownloadApi: configs.wallets.typhon,
     },
     {
-        name: "Vespr",
-        image: images.vesprWallet,
-        api: async function () {
+        walletName: "Vespr",
+        walletImage: images.vesprWallet,
+        walletApi: async function () {
             return await window.cardano.vespr.enable();
         },
-        checkApi: async function () {
+        walletCheckApi: async function () {
             return await window.cardano.vespr;
         },
-        downloadApi: configs.wallets.vespr,
+        walletDownloadApi: configs.wallets.vespr,
     },
 ];
 

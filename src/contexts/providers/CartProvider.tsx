@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import CartContext from "@/contexts/components/CartContext";
 import { toast } from "react-toastify";
 
@@ -15,6 +15,11 @@ const DemarketProvider = function ({ children }: Props) {
         totalQuantity: 0,
         changed: false,
     });
+
+    const fetchCartFromAccount = async function () {};
+    useEffect(function() {
+
+    }, [])
 
     const addToCart = async function (newItem: any) {
         setCartState((prev: any) => {

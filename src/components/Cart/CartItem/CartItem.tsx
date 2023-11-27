@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 import styles from "./CartItem.module.scss";
 import { TrashIcon } from "@/components/Icons";
