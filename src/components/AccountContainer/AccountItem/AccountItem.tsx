@@ -6,12 +6,12 @@ import classNames from "classnames/bind";
 import styles from "./AccountItem.module.scss";
 import Image from "next/image";
 import images from "@/assets/images";
-import { Account, LucidContextType } from "@/types";
+import { AccountItemType } from "@/types/GenericsType";
 
 const cx = classNames.bind(styles);
 
 type Props = {
-    account: Account;
+    account: AccountItemType;
     index: number;
 };
 

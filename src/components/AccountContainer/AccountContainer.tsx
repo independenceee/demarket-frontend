@@ -5,7 +5,7 @@ import { Pagination, Stack } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./AccountContainer.module.scss";
 import AccountItem from "@/components/AccountContainer/AccountItem";
-import { Account } from "@/types";
+import { AccountItemType } from "@/types/GenericsType";
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +13,7 @@ type Props = {
     totalPagesAccounts: number;
     currentPageAccounts: number;
     loadingAccounts: boolean;
-    accounts: Account[];
+    accounts: AccountItemType[];
     setCurrentPageAccounts: React.Dispatch<React.SetStateAction<number>>;
 };
 

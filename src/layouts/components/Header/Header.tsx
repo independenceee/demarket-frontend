@@ -22,9 +22,9 @@ import { LucidContextType } from "@/types/LucidContextType";
 import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { WalletItemType } from "@/types/GenericsType";
+import configs from "@/configs";
 
 const cx = classNames.bind(styles);
-
 type Props = {};
 
 const Header = function ({}: Props) {
@@ -55,36 +55,17 @@ const Header = function ({}: Props) {
                     <Image src={images.logo} alt="" className={cx("logo__image")} />
                 </Link>
                 <nav className={cx("navbar")}>
-                    <HeaderOption
-                        text="HOME"
-                        redirect="/"
-                        isActive={Boolean(selected === "HOME")}
-                        setSelected={setSelected}
-                    />
-                    <HeaderOption
-                        text="MARKETPLACE"
-                        redirect="/marketplace"
-                        isActive={Boolean(selected === "MARKETPLACE")}
-                        setSelected={setSelected}
-                    />
-                    <HeaderOption
-                        text="MINT"
-                        redirect="/mint"
-                        isActive={Boolean(selected === "MINT")}
-                        setSelected={setSelected}
-                    />
-                    <HeaderOption
-                        text="ABOUT"
-                        redirect="/about"
-                        isActive={Boolean(selected === "ABOUT")}
-                        setSelected={setSelected}
-                    />
-                    <HeaderOption
-                        text="GUIDE"
-                        redirect="/guide"
-                        isActive={Boolean(selected === "GUIDE")}
-                        setSelected={setSelected}
-                    />
+                    {configs.headerOptions.map(function (headerOption, index: number) {
+                        return (
+                            <HeaderOption
+                                key={index}
+                                text={headerOption.text}
+                                redirect={headerOption.redirect}
+                                isActive={Boolean(selected === headerOption.text)}
+                                setSelected={setSelected}
+                            />
+                        );
+                    })}
                 </nav>
                 <div className={cx("button__wrapper")}>
                     <section className={cx("button__other")}>
@@ -123,9 +104,9 @@ const Header = function ({}: Props) {
 
                                                 connectWallet({
                                                     walletApi: wallet.walletApi,
-                                                    walletCheckApi: wallet.walletCheckApi,
-                                                    walletName: walletName,
-                                                    walletImage: wallet.walletImage,
+                                                    walletCheckApi: walletItem.walletCheckApi,
+                                                    walletName: walletItem.walletName,
+                                                    walletImage: walletItem.walletImage,
                                                 });
                                             } catch (error) {
                                                 console.log(error);

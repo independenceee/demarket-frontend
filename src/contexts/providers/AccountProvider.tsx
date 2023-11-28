@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
-import { AccountItem, NftItemType } from "@/types/GenericsType";
+import { AccountItemType, NftItemType } from "@/types/GenericsType";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
@@ -22,12 +22,12 @@ const AccountProvider = function ({ children }: Props) {
     /**
      * TODO: Get account infomation when connect wallet
      */
-    const [account, setAccount] = useState<AccountItem>(null!);
+    const [account, setAccount] = useState<AccountItemType>(null!);
     const [loadingAccount, setLoadingAccount] = useState<boolean>(true);
 
     const fetchAccountFromAddress = async function () {
         try {
-            const account: AccountItem = await post("/account", {
+            const account: AccountItemType = await post("/account", {
                 walletAddress: walletItem.walletAddress,
             });
             setAccount(account);
@@ -183,7 +183,7 @@ const AccountProvider = function ({ children }: Props) {
      * TODO: Get accounts follower from account
      */
 
-    const [followers, setFollowers] = useState<AccountItem[]>([]);
+    const [followers, setFollowers] = useState<AccountItemType[]>([]);
     const [currentPageFollowers, setCurrentPageFollowers] = useState<number>(1);
     const [totalPagesFollowers, setTotalPagesFollowers] = useState<number>(1);
     const [loadingFollowers, setLoadingFollowers] = useState<boolean>(true);
@@ -213,7 +213,7 @@ const AccountProvider = function ({ children }: Props) {
      *  TODO: Get accounts following from account
      */
 
-    const [followings, setFollowings] = useState<AccountItem[]>([]);
+    const [followings, setFollowings] = useState<AccountItemType[]>([]);
     const [currentPageFollowings, setCurrentPageFollowings] = useState<number>(1);
     const [totalPagesFollowings, setTotalPagesFollowings] = useState<number>(1);
     const [loadingFollowings, setLoadingFollowings] = useState<boolean>(true);

@@ -9,7 +9,8 @@ import convertHexToString from "@/helpers/convertHexToString";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import covertString from "@/helpers/convertString";
 import CartContext from "@/contexts/components/CartContext";
-import { CartContextType } from "@/types";
+import { CartContextType } from "@/types/CartContextType";
+
 const cx = classNames.bind(styles);
 
 type Props = {

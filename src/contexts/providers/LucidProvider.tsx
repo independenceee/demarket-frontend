@@ -8,15 +8,6 @@ import { WalletItemType } from "@/types/GenericsType";
 type Props = { children: ReactNode };
 
 const LucidProvider = function ({ children }: Props) {
-    const initialWalletState: WalletItemType = {
-        walletBalance: 0,
-        walletAddress: "",
-        walletName: "",
-        walletImage: "",
-        async walletCheckApi() {},
-        async walletApi() {},
-    };
-
     const [networkPlatform, setNetworkPlatform] = useState<string>("Preprod");
     const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
     const chooseLucidNetworkPlatform = async function () {
@@ -55,7 +46,16 @@ const LucidProvider = function ({ children }: Props) {
     );
 
     const [lucidWallet, setLucidWallet] = useState<Lucid>(null!);
-    const [walletItem, setWalletItem] = useState<WalletItemType>(initialWalletState);
+
+    const [walletItem, setWalletItem] = useState<WalletItemType>({
+        walletDownloadApi: "",
+        walletBalance: 0,
+        walletAddress: "",
+        walletName: "",
+        walletImage: "",
+        walletCheckApi: async function () {},
+        walletApi: async function () {},
+    });
 
     const connectWallet = async function ({ walletApi, walletName, walletImage, walletCheckApi }: WalletItemType) {
         try {
@@ -106,7 +106,15 @@ const LucidProvider = function ({ children }: Props) {
 
     const disconnectWallet = async function () {
         try {
-            setWalletItem(initialWalletState);
+            setWalletItem({
+                walletDownloadApi: "",
+                walletBalance: 0,
+                walletAddress: "",
+                walletName: "",
+                walletImage: "",
+                walletCheckApi: async function () {},
+                walletApi: async function () {},
+            });
         } catch (error) {
             console.log(error);
         }

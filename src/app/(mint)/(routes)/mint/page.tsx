@@ -9,10 +9,12 @@ import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
-import { LucidContextType, SmartContractType, DemarketContextType } from "@/types";
 
 import images from "@/assets/images";
 import styles from "./Mint.module.scss";
+import { LucidContextType } from "@/types/LucidContextType";
+import { SmartContractType } from "@/types/SmartContextType";
+import { DemarketContextType } from "@/types/DemarketContextType";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
@@ -30,8 +32,8 @@ function convertMetadataToObj(metadataArray: any) {
 type Props = {};
 
 const MintPage = function ({}: Props) {
-    const { lucid } = useContext<LucidContextType>(LucidContext);
-    const { mintAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { lucidWallet } = useContext<LucidContextType>(LucidContext);
+    const { mintAsset } = useContext<SmartContractType>(SmartContractContext);
     const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -118,8 +120,8 @@ const MintPage = function ({}: Props) {
                 },
             });
 
-            const { txHash, policyId, assetName } = await mintAssetService({
-                lucid,
+            const { txHash, policyId, assetName } = await mintAsset({
+                lucid: lucidWallet,
                 customMetadata,
                 description,
                 imageUrl: "ipfs://" + response.data.IpfsHash,

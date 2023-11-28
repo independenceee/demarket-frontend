@@ -21,7 +21,7 @@ export type NftItemType = {
     validate?: boolean;
 };
 
-export type AccountItem = {
+export type AccountItemType = {
     id: string;
     createdAt: string;
     updatedAt: string;

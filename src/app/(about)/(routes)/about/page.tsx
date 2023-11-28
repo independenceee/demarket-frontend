@@ -6,12 +6,13 @@ import ReactPlayer from "react-player/youtube";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
 import FounderItem from "@/components/FounderItem";
-import { DemarketContextType, Founder } from "@/types";
+import { FounderItemType } from "@/types/GenericsType";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
 import styles from "./About.module.scss";
 import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
+import { DemarketContextType } from "@/types/DemarketContextType";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -84,7 +85,7 @@ const AboutPage = function ({}: Props) {
                             ? new Array(6).fill(null).map(function (value: any, index: number) {
                                   return <FounderItemSkeleton index={index} key={index} />;
                               })
-                            : founders.map(function (founder: Founder, index: number) {
+                            : founders.map(function (founder: FounderItemType, index: number) {
                                   return (
                                       <FounderItem
                                           index={index}

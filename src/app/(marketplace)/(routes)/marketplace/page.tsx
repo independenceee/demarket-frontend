@@ -9,7 +9,9 @@ import Title from "@/components/Title";
 import NftContainer from "@/components/NftContainer";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import DemarketContext from "@/contexts/components/DemarketContext";
-import { SmartContractType, DemarketContextType, Category } from "@/types";
+import { DemarketContextType } from "@/types/DemarketContextType";
+import { SmartContractType } from "@/types/SmartContextType";
+import { CategoryItemType } from "@/types/GenericsType";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -19,7 +21,7 @@ const MarketplacePage = function ({}: Props) {
     const [optionFilter, setOptionFilter] = useState<string[]>([]);
     const { categories } = useContext<DemarketContextType>(DemarketContext);
 
-    const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
 
     const handleChangeFilter = function (event: ChangeEvent<HTMLInputElement>) {
@@ -38,9 +40,6 @@ const MarketplacePage = function ({}: Props) {
         });
     };
 
-    console.log(listAssetsFromSmartContract);
-
-    console.log(optionFilter);
     return (
         <div className={cx("wrapper")} data-aos="fade-down">
             <div className={cx("container")}>
@@ -70,7 +69,7 @@ const MarketplacePage = function ({}: Props) {
                                 </header>
 
                                 <article className={cx("content__filter--option")}>
-                                    {categories.map(function (category: Category, index: number) {
+                                    {categories.map(function (category: CategoryItemType, index: number) {
                                         return (
                                             <section key={index} className={cx("content__filter--group")}>
                                                 <h4 className={cx("content__filter--name")}>{category.name}</h4>
@@ -170,7 +169,7 @@ const MarketplacePage = function ({}: Props) {
                     </div>
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
                         <NftContainer
-                            nfts={listAssetsFromSmartContract}
+                            nfts={assetsFromSmartContract}
                             itemsPerPage={12}
                             loading={loadingAssetsFromSmartContract}
                         />
