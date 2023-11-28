@@ -52,33 +52,7 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
         const txHash = await signedTx.submit();
         await lucid.awaitTx(txHash);
 
-        if (txHash) {
-            toast.success("Buy asset successfully !", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
-            return;
-        }
-
-        toast.error("Buy asset faild !", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-
-        return;
+        return { txHash, policyId, assetName };
     } catch (error) {
         toast.error("Buy asset faild !", {
             position: "bottom-right",

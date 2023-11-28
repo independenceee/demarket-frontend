@@ -5,7 +5,6 @@ import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
-import { LucidContextType, SmartContractType } from "@/types";
 import convertString from "@/helpers/convertString";
 import Image from "next/image";
 import images from "@/assets/images";
@@ -17,13 +16,18 @@ import convertHexToString from "@/helpers/convertHexToString";
 import LucidContext from "@/contexts/components/LucidContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
+import { SmartContractType } from "@/types/SmartContextType";
+import { LucidContextType } from "@/types/LucidContextType";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
-    const { listAssetsFromSmartContract, findAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { assetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
+        useContext<SmartContractType>(SmartContractContext);
+    const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+
     const [policyId, setPolicyId] = useState<string>(unit.slice(0, 56));
     const [assetName, setAssetName] = useState<string>(unit.slice(56));
     const [toggleState, setToggleState] = useState<number>(1);
@@ -41,7 +45,7 @@ const DetailPage = function ({}: Props) {
     const fetchInformationFromPolicyIdAndAssetName = async function () {
         try {
             const informationAsset = await fetchInformationAsset({ policyId, assetName });
-            const informationContract = await findAssetService({ policyId, assetName });
+            const informationContract = await findAsset({ policyId, assetName });
             console.log(informationContract);
             setAsset({ ...informationAsset, ...informationContract });
         } catch (error) {
@@ -54,17 +58,13 @@ const DetailPage = function ({}: Props) {
         fetchInformationFromPolicyIdAndAssetName();
     }, []);
 
-    const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
-    const { sellAssetService, buyAssetService, refundAssetService } =
-        useContext<SmartContractType>(SmartContractContext);
-
     const handleBuyNft = async function () {
         try {
-            if (lucid) {
-                await buyAssetService({
+            if (lucidWallet) {
+                await buyAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
-                    lucid: lucid,
+                    lucid: lucidWallet,
                     royaltiesAddress: asset.authorAddress,
                     sellerAddress: asset.sellerAddress,
                 });
@@ -76,12 +76,12 @@ const DetailPage = function ({}: Props) {
 
     const handleSellNft = async function () {
         try {
-            if (lucid) {
-                await sellAssetService({
+            if (lucidWallet) {
+                await sellAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     author: asset.authorAddress,
-                    lucid: lucid,
+                    lucid: lucidWallet,
                     price: BigInt(Number(price) * 1000000),
                     royalties: BigInt(Number(price) * 10000),
                 });
@@ -93,11 +93,11 @@ const DetailPage = function ({}: Props) {
 
     const handleRefundNft = async function () {
         try {
-            if (lucid) {
-                await refundAssetService({
+            if (lucidWallet) {
+                await refundAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
-                    lucid: lucid,
+                    lucid: lucidWallet,
                 });
             }
         } catch (error) {
@@ -233,7 +233,7 @@ const DetailPage = function ({}: Props) {
                                     </section>
                                 </div>
                             </section>
-                            {asset.price && asset.sellerAddress !== walletAddress && (
+                            {asset.price && asset.sellerAddress !== walletItem.walletAddress && (
                                 <section className={cx("detail__button")}>
                                     <button className={cx("detail__button--left")}>
                                         {Number(asset.price) / 1000000} ADA
@@ -244,7 +244,7 @@ const DetailPage = function ({}: Props) {
                                 </section>
                             )}
 
-                            {asset.price && asset.sellerAddress === walletAddress && (
+                            {asset.price && asset.sellerAddress === walletItem.walletAddress && (
                                 <section className={cx("detail__button")}>
                                     <button className={cx("detail__button--left")}>
                                         {Number(asset.price) / 1000000} ADA
@@ -255,7 +255,7 @@ const DetailPage = function ({}: Props) {
                                 </section>
                             )}
 
-                            {asset.currentAddress === walletAddress && !asset.price ? (
+                            {asset.currentAddress === walletItem.walletAddress && !asset.price ? (
                                 <section className={cx("detail__button")}>
                                     <input
                                         type="text"
@@ -299,7 +299,7 @@ const DetailPage = function ({}: Props) {
                 ) : null}
                 <section className={cx("other__wrapper")}>
                     <header className={cx("other__header")}>More Item</header>
-                    <NftContainer data={listAssetsFromSmartContract} />
+                    <NftContainer nfts={assetsFromSmartContract} />
                 </section>
             </div>
         </main>

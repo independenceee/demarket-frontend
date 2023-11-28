@@ -12,11 +12,15 @@ import checkMediaType from "@/helpers/checkMediaType";
 import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
 import LucidContext from "@/contexts/components/LucidContext";
-import { CartContextType, LucidContextType, SmartContractType } from "@/types";
+import { contractAddress } from "@/libs";
+
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import CartContext from "@/contexts/components/CartContext";
+import { LucidContextType } from "@/types/LucidContextType";
+import { SmartContractType } from "@/types/SmartContextType";
+import { CartContextType } from "@/types/CartContextType";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -28,17 +32,17 @@ const NftItem = function ({ value, index }: Props) {
     const { id } = useParams();
     const router = useRouter();
 
-    const { lucid, walletAddress } = useContext<LucidContextType>(LucidContext);
-    const { buyAssetService, refundAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
+    const { buyAsset, refundAsset } = useContext<SmartContractType>(SmartContractContext);
     const { addToCart } = useContext<CartContextType>(CartContext);
 
     const handleBuyNft = async function () {
         try {
-            if (lucid) {
-                await buyAssetService({
+            if (lucidWallet) {
+                await buyAsset({
                     assetName: value.assetName,
                     policyId: value.policyId,
-                    lucid: lucid,
+                    lucid: lucidWallet,
                     royaltiesAddress: value.authorAddress,
                     sellerAddress: value.sellerAddress,
                 });
@@ -50,7 +54,7 @@ const NftItem = function ({ value, index }: Props) {
 
     const handleSellNft = async function () {
         try {
-            if (lucid) {
+            if (lucidWallet) {
                 router.push(`/detail/${value.policyId + value.assetName}`);
             }
         } catch (error) {
@@ -60,10 +64,10 @@ const NftItem = function ({ value, index }: Props) {
 
     const handleRefundNft = async function () {
         try {
-            if (lucid) {
-                await refundAssetService({
+            if (lucidWallet) {
+                await refundAsset({
                     assetName: value.assetName,
-                    lucid: lucid,
+                    lucid: lucidWallet,
                     policyId: value.policyId,
                 });
             }
@@ -131,7 +135,7 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
             </div>
 
-            {value.sellerAddress === walletAddress && value.price && (
+            {value.sellerAddress === walletItem.walletAddress && value.currentAddress === contractAddress && (
                 <div className={cx("option__wrapper")}>
                     <div onClick={handleRefundNft} className={cx("option__title")}>
                         Refund Now
@@ -141,7 +145,7 @@ const NftItem = function ({ value, index }: Props) {
                     </div>
                 </div>
             )}
-            {value.sellerAddress !== walletAddress && value.price && (
+            {value.sellerAddress !== walletItem.walletAddress && value.price && (
                 <div className={cx("option__wrapper")}>
                     <div onClick={handleBuyNft} className={cx("option__title")}>
                         Buy Now
@@ -151,7 +155,7 @@ const NftItem = function ({ value, index }: Props) {
                     </div>
                 </div>
             )}
-            {!value.price && walletAddress === id && (
+            {!value.price && walletItem.walletAddress === id && (
                 <div className={cx("option__wrapper")}>
                     <div onClick={handleSellNft} className={cx("option__title")}>
                         Selling Now

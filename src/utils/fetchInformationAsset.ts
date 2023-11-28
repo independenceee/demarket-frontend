@@ -65,7 +65,7 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
 };
 
 const fetchInformationFromDemarket = async function ({ policyId, assetName }: Props) {
-    const data = await get(`/nft/policyId-assetName?policyId=${policyId}&assetName=${assetName}`);
+    const data = await get(`/nft/policyId_assetName?policyId=${policyId}&assetName=${assetName}`);
     console.log(data);
 
     return { ...data };

@@ -6,12 +6,13 @@ import ReactPlayer from "react-player/youtube";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
 import FounderItem from "@/components/FounderItem";
-import { DemarketContextType, Founder } from "@/types";
+import { FounderItemType } from "@/types/GenericsType";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
 import styles from "./About.module.scss";
 import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
+import { DemarketContextType } from "@/types/DemarketContextType";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -33,9 +34,9 @@ const AboutPage = function ({}: Props) {
                 </section>
                 <Title main="HOME" slug="ABOUT" />
                 <section className={cx("heading__wrapper")}>
-                    <h2 className={cx("heading__title")} data-aos="fade-up">
+                    <a className={cx("heading__title")} data-aos="fade-up" href="founder__contact">
                         About Us
-                    </h2>
+                    </a>
                 </section>
                 <section className={cx("about__wrapper")}>
                     <div className={cx("about__container")}>
@@ -79,12 +80,12 @@ const AboutPage = function ({}: Props) {
                             programmes and develop"
                     />
 
-                    <div className={cx("founder__container")}>
+                    <div id="founder__contact" className={cx("founder__container")}>
                         {loadingFounders
                             ? new Array(6).fill(null).map(function (value: any, index: number) {
                                   return <FounderItemSkeleton index={index} key={index} />;
                               })
-                            : founders.map(function (founder: Founder, index: number) {
+                            : founders.map(function (founder: FounderItemType, index: number) {
                                   return (
                                       <FounderItem
                                           index={index}

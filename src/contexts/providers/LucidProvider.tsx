@@ -1,65 +1,137 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Blockfrost, Lucid } from "lucid-cardano";
-import { post } from "@/utils/httpRequest";
-import LucidContext from "../components/LucidContext";
-import fetchStakeKeyFromAddress from "@/utils/fetchStakeKeyFromAddress";
-import { Account, WalletType } from "@/types";
+import LucidContext from "@/contexts/components/LucidContext";
+import { WalletItemType } from "@/types/GenericsType";
 
-type Props = {
-    children: ReactNode;
-};
+type Props = { children: ReactNode };
+
 const LucidProvider = function ({ children }: Props) {
-    const [lucid, setLucid] = useState<Lucid>(null!);
-    const [walletBanlance, setWalletBalance] = useState<number>(0);
-    const [walletAddress, setWalletAddress] = useState<string>("");
-    const [walletName, setWalletName] = useState<string>("");
-    const [walletImage, setWalletImage] = useState<any>();
-    const [account, setAccount] = useState<Account>();
+    const [networkPlatform, setNetworkPlatform] = useState<string>("Preprod");
+    const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
+    const chooseLucidNetworkPlatform = async function () {
+        let lucid: Lucid;
+        switch (networkPlatform) {
+            case "Preprod":
+                lucid = await Lucid.new(
+                    new Blockfrost(
+                        "https://cardano-preprod.blockfrost.io/api/v0",
+                        "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                    ),
+                    networkPlatform,
+                );
 
-    const connectWallet = async function ({ api, image, name, checkApi }: WalletType) {
-        console.log(image);
+                break;
+            case "Preview":
+                lucid = await Lucid.new(
+                    new Blockfrost(
+                        "https://cardano-preprod.blockfrost.io/api/v0",
+                        "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                    ),
+                    networkPlatform,
+                );
+                break;
+            default:
+                throw new Error("Invalid networkPlatform");
+        }
+
+        setLucidNeworkPlatform(lucid);
+    };
+    useEffect(
+        function () {
+            chooseLucidNetworkPlatform();
+        },
+        [networkPlatform],
+    );
+
+    const [lucidWallet, setLucidWallet] = useState<Lucid>(null!);
+
+    const [walletItem, setWalletItem] = useState<WalletItemType>({
+        walletDownloadApi: "",
+        walletBalance: 0,
+        walletAddress: "",
+        walletName: "",
+        walletImage: "",
+        walletCheckApi: async function () {},
+        walletApi: async function () {},
+    });
+
+    const connectWallet = async function ({ walletApi, walletName, walletImage, walletCheckApi }: WalletItemType) {
         try {
-            const lucid = await Lucid.new(
-                new Blockfrost(
-                    "https://cardano-preprod.blockfrost.io/api/v0",
-                    "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
-                ),
-                "Preprod",
-            );
-            lucid.selectWallet(await api());
+            let lucid: Lucid;
+            switch (networkPlatform) {
+                case "Preprod":
+                    lucid = await Lucid.new(
+                        new Blockfrost(
+                            "https://cardano-preprod.blockfrost.io/api/v0",
+                            "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                        ),
+                        networkPlatform,
+                    );
+
+                    break;
+                case "Preview":
+                    lucid = await Lucid.new(
+                        new Blockfrost(
+                            "https://cardano-preprod.blockfrost.io/api/v0",
+                            "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                        ),
+                        networkPlatform,
+                    );
+                    break;
+                default:
+                    throw new Error("Invalid networkPlatform");
+            }
+            lucid.selectWallet(await walletApi());
             const utxos = await lucid.wallet.getUtxos();
-            const balance = utxos.reduce(function (acc, utxo) {
-                return acc + utxo.assets.lovelace;
+            const walletBanlance = utxos.reduce(function (balance, utxo) {
+                return balance + utxo.assets.lovelace;
             }, BigInt(0));
-            const address = await lucid.wallet.address();
-
-            setLucid(lucid);
-            setWalletName(name);
-            setWalletAddress(address);
-            setWalletImage(image);
-
-            setWalletBalance(Number(balance) / 1000000);
-            const stakeKey = await fetchStakeKeyFromAddress(address);
-
-            const account = await post("/account", {
-                address: address,
-                name: stakeKey,
-                email: stakeKey,
+            const walletAddress = await lucid.wallet.address();
+            setLucidWallet(lucid);
+            setWalletItem(function (prevous: WalletItemType) {
+                return {
+                    ...prevous,
+                    walletAddress: walletAddress,
+                    walletBanlance: Number(walletBanlance) / 1000000,
+                    walletName: walletName,
+                    walletImage: walletImage,
+                };
             });
-
-            setAccount(account);
         } catch (error) {
             console.log(error);
         }
     };
 
-    console.log(account);
+    const disconnectWallet = async function () {
+        try {
+            setWalletItem({
+                walletDownloadApi: "",
+                walletBalance: 0,
+                walletAddress: "",
+                walletName: "",
+                walletImage: "",
+                walletCheckApi: async function () {},
+                walletApi: async function () {},
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <LucidContext.Provider
-            value={{ connectWallet, walletAddress, walletImage, walletName, walletBanlance, lucid, account }}
+            value={{
+                networkPlatform,
+                disconnectWallet,
+                connectWallet,
+                lucidWallet,
+                walletItem,
+                lucidNeworkPlatform,
+                setLucidNeworkPlatform,
+                setNetworkPlatform,
+            }}
         >
             {children}
         </LucidContext.Provider>

@@ -6,7 +6,7 @@ type Props = {
     assetName: string;
 };
 
-const burnAssetService = async function ({ lucid, policyId, assetName }: Props) {
+const burnAsset = async function ({ lucid, policyId, assetName }: Props) {
     try {
         if (lucid) {
             const { paymentCredential } = lucid.utils.getAddressDetails(await lucid.wallet.address());
@@ -27,10 +27,12 @@ const burnAssetService = async function ({ lucid, policyId, assetName }: Props) 
                 .complete();
             const signedTx = await tx.sign().complete();
             const txHash = await signedTx.submit();
+
+            return { txHash, policyId, assetName };
         }
     } catch (error) {
         console.error(error);
     }
 };
 
-export default burnAssetService;
+export default burnAsset;

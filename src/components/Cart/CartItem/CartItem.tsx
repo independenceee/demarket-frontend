@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 import styles from "./CartItem.module.scss";
 import { TrashIcon } from "@/components/Icons";
@@ -9,7 +9,8 @@ import convertHexToString from "@/helpers/convertHexToString";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import covertString from "@/helpers/convertString";
 import CartContext from "@/contexts/components/CartContext";
-import { CartContextType } from "@/types";
+import { CartContextType } from "@/types/CartContextType";
+
 const cx = classNames.bind(styles);
 
 type Props = {

@@ -11,8 +11,9 @@ import Search from "@/layouts/components/Search";
 import { BarIcon, CloseIcon, DownArrowIcon, SearchIcon } from "@/components/Icons";
 import Modal from "@/components/Modal";
 import wallets from "@/constants/wallets";
+import { WalletItemType } from "@/types/GenericsType";
 
-const WalletItem = lazy(() => import("@/components/WalletItem"));
+const WalletItem = lazy(() => import("@/components/WalletContainer/WalletItem"));
 
 const cx = classNames.bind(styles);
 
@@ -48,19 +49,13 @@ const Navbar = function ({}: Props) {
                         </div>
                     </header>
                     <section className={cx("wallet-list")}>
-                        {wallets.map(function ({ name, image, api, checkApi, downloadApi }, index) {
+                        {wallets.map(function (walletItem: WalletItemType, index) {
                             return (
                                 <WalletItem
                                     key={index}
-                                    name={name}
-                                    image={image}
-                                    api={api}
-                                    checkApi={checkApi}
-                                    downloadApi={downloadApi}
+                                    walletItem={walletItem}
                                     toggleWalletFull={toggleWalletFull}
                                     toggleDownloadWallet={toggleDownloadWallet}
-                                    setWalletName={setWalletName}
-                                    setWalletDownload={setWalletDownload}
                                 />
                             );
                         })}

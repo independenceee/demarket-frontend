@@ -42,32 +42,7 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
             const signedTx = await tx.sign().complete();
             const txHash = await signedTx.submit();
             await lucid.awaitTx(txHash);
-            if (txHash) {
-                toast.success("Refund asset successfully !", {
-                    position: "bottom-right",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-
-                return;
-            }
-
-            toast.error("Refund asset faild !", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            return;
+            return { txHash, policyId, assetName };
         }
     } catch (error) {
         toast.error("Refund asset faild !", {

@@ -5,9 +5,10 @@ import styles from "./Cart.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { CartContextType } from "@/types";
+
 import CartContext from "@/contexts/components/CartContext";
 import CartItem from "@/components/Cart/CartItem";
+import { CartContextType } from "@/types/CartContextType";
 
 const cx = classNames.bind(styles);
 type Props = {};

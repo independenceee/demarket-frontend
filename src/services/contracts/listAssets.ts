@@ -1,23 +1,27 @@
-import { Data } from "lucid-cardano";
-import lucidService from "./lucid";
+import { Data, Lucid, Script, UTxO } from "lucid-cardano";
 import readValidator from "@/utils/readValidator";
 import { Datum } from "@/constants/datum";
+import { NftItemType } from "@/types/GenericsType";
 
-const listAssetsService = async function () {
+type Props = {
+    lucid: Lucid;
+};
+const listAssets = async function ({ lucid }: Props): Promise<NftItemType[] | any> {
     try {
-        const lucid = await lucidService();
-        const validator = await readValidator();
-        const contractAddress = lucid.utils.validatorToAddress(validator);
-        const scriptAssets = await lucid.utxosAt(contractAddress);
+        if (lucid) {
+            const validator: Script = await readValidator();
+            const contractAddress: string = lucid.utils.validatorToAddress(validator);
+            const scriptAssets: UTxO[] = await lucid.utxosAt(contractAddress);
+            const assets: NftItemType[] = scriptAssets.map(function (asset: any, index: number) {
+                const datum = Data.from<Datum>(asset.datum, Datum);
+                return datum;
+            });
 
-        const assets = scriptAssets.map(function (asset: any, index: number) {
-            const datum = Data.from<Datum>(asset.datum, Datum);
-            return datum;
-        });
-        return assets;
+            return assets;
+        }
     } catch (error) {
         console.log(error);
     }
 };
 
-export default listAssetsService;
+export default listAssets;

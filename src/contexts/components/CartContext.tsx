@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { CartContextType } from "@/types";
+import { CartContextType } from "@/types/CartContextType";
 
 const CartContext = createContext<CartContextType>(null!);
 

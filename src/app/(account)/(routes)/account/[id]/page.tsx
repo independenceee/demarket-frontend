@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import {
@@ -24,24 +23,71 @@ import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
-import { Category, DemarketContextType, LucidContextType, SmartContractType } from "@/types";
+import { CategoryItemType } from "@/types/GenericsType";
 import LucidContext from "@/contexts/components/LucidContext";
-import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { post } from "@/utils/httpRequest";
-import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import DemarketContext from "@/contexts/components/DemarketContext";
+import { LucidContextType } from "@/types/LucidContextType";
+import { DemarketContextType } from "@/types/DemarketContextType";
+import AccountContext from "@/contexts/components/AccountContext";
+import { AccountContextType } from "@/types/AccountContextType";
 
 type Props = {};
 const cx = classNames.bind(styles);
 
 const AccountPage = function ({}: Props) {
-    const { id } = useParams();
+    const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
+    const { accounts, categories, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
+        useContext<DemarketContextType>(DemarketContext);
 
-    const { walletAddress, account } = useContext<LucidContextType>(LucidContext);
-    const { accounts, categories } = useContext<DemarketContextType>(DemarketContext);
+    const {
+        account,
+        loadingAccount,
 
-    const { listAssetsFromSmartContract, loadingAssetsFromSmartContract } =
-        useContext<SmartContractType>(SmartContractContext);
+        assetsFromAddress,
+        setAssetsFromAddress,
+        currentPageAssetsFromAddress,
+        setCurrentPageAssetsFromAddress,
+        totalPagesAssetsFromAddress,
+        setTotalPagesAssetsFromAddress,
+        loadingAssetsFromAddress,
+        setLoadingAssetsFromAddress,
+
+        createdAssetsFromAddress,
+        setCreatedAssetsFromAddress,
+        currentPageCreatedAssetsFromAddress,
+        setCurrentPageCreatedAssetsFromAddress,
+        totalPagesCreatedAssetsFromAddress,
+        setTotalPagesCreatedAssetsFromAddress,
+        loadingCreatedAssetsFromAddress,
+        setLoadingCreatedAssetsFromAddress,
+
+        sellingAssetsFromAddress,
+        setSellingAssetsFromAddress,
+        currentPageSellingAssetsFromAddress,
+        setCurrentPageSellingAssetsFromAddress,
+        totalPagesSellingAssetsFromAddress,
+        setTotalPagesSellingAssetsFromAddress,
+        loadingSellingAssetsFromAddress,
+        setLoadingSellingAssetsFromAddress,
+
+        followers,
+        setFollowers,
+        currentPageFollowers,
+        setCurrentPageFollowers,
+        loadingFollowers,
+        setLoadingFollowers,
+        totalPagesFollowers,
+        setTotalPagesFollowers,
+
+        followings,
+        setFollowings,
+        loadingFollowings,
+        setLoadingFollowings,
+        currentPageFollowings,
+        setCurrentPageFollowings,
+        totalPagesFollowings,
+        setTotalPagesFollowings,
+    } = useContext<AccountContextType>(AccountContext);
 
     const tabItems = [
         { name: "My assets", slug: "my assets" },
@@ -53,108 +99,7 @@ const AccountPage = function ({}: Props) {
         { name: "Like", slug: "like" },
     ];
     const [activeTab, setActiveTab] = useState<string>("my assets");
-
     const { isShowing = true, toggle } = useModal();
-
-    const [assetsFromAddress, setAssetsFromAddress] = useState<any>([]);
-    const [loadingAssetsFromAddress, setLoadingAssetsFromAddress] = useState<boolean>(true);
-    const fetchInformationFromAddress = async function () {
-        try {
-            if (walletAddress === id) {
-                const response = await post("/koios/assets/address-assets", {
-                    address: walletAddress || id,
-                });
-
-                const assetsFromAddress = await Promise.all(
-                    response[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
-                        const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                        if (data) {
-                            return { ...data };
-                        }
-                        return null;
-                    }),
-                );
-
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                setLoadingAssetsFromAddress(false);
-            } else {
-                const response = await post("/koios/assets/address-assets", {
-                    address: id,
-                });
-
-                const assetsFromAddress = await Promise.all(
-                    response[0].asset_list.map(async ({ policy_id, asset_name }: any) => {
-                        const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                        if (data) {
-                            return { ...data };
-                        }
-                        return null;
-                    }),
-                );
-
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                setLoadingAssetsFromAddress(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(
-        function () {
-            fetchInformationFromAddress();
-        },
-        [walletAddress, id],
-    );
-
-    // ! Selling assets
-    const [sellingAssets, setSellingAssets] = useState<any>([]);
-    const handleSelling = function () {
-        if (walletAddress === id) {
-            const sellingAssetsList = listAssetsFromSmartContract.filter(function (asset: any, index: number) {
-                return asset.sellerAddress === id || asset.authorAddress === walletAddress;
-            });
-
-            setSellingAssets(sellingAssetsList);
-        } else {
-            const sellingAssetsList = listAssetsFromSmartContract.filter(function (asset: any, index: number) {
-                return asset.sellerAddress === id;
-            });
-
-            setSellingAssets(sellingAssetsList);
-        }
-    };
-
-    useEffect(
-        function () {
-            handleSelling();
-        },
-        [walletAddress, listAssetsFromSmartContract, id],
-    );
-
-    // ! Created assets
-    const [createdAssets, setCreatedAssets] = useState<any>([]);
-    const handleCreated = function () {
-        if (walletAddress === id) {
-            const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
-                return asset.authorAddress === walletAddress || asset.authorAddress === id;
-            });
-
-            setCreatedAssets(createdAssetsList);
-        } else {
-            const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
-                return asset.authorAddress === id;
-            });
-
-            setCreatedAssets(createdAssetsList);
-        }
-    };
-    useEffect(
-        function () {
-            handleCreated();
-        },
-        [walletAddress, id, assetsFromAddress],
-    );
 
     return (
         <main className={cx("wrapper")}>
@@ -171,7 +116,7 @@ const AccountPage = function ({}: Props) {
                         <div className={cx("follower")}>FOLLOW</div>
                     </div>
                     <div className={cx("avatar__infomation")}>
-                        <h4 className={cx("avatar__infomation--name")}>{walletAddress}</h4>
+                        <h4 className={cx("avatar__infomation--name")}>{}</h4>
                         <h4 className={cx("avatar__infomation--description")}>Slogan</h4>
                     </div>
                     <div className={cx("avatar__social")}>
@@ -245,14 +190,14 @@ const AccountPage = function ({}: Props) {
                                             <NftIcon />
                                             <span>NFTs: </span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}>{assetsFromAddress.length}</h4>
+                                        <h4 className={cx("content__filter--value")}></h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <SelledIcon className={cx("content__filter--icon")} />
                                             <span>NFTs selling:</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}>{sellingAssets.length}</h4>
+                                        <h4 className={cx("content__filter--value")}></h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -284,7 +229,7 @@ const AccountPage = function ({}: Props) {
                                     <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                                 </header>
                                 <article className={cx("content__filter--option")}>
-                                    {categories.map(function (category: Category, index: number) {
+                                    {categories.map(function (category: CategoryItemType, index: number) {
                                         return (
                                             <section key={index} className={cx("content__filter--group")}>
                                                 <h4 className={cx("content__filter--name")}>{category.name}</h4>
@@ -347,14 +292,14 @@ const AccountPage = function ({}: Props) {
                                         <NftIcon />
                                         <span>NFTs: </span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}>{assetsFromAddress.length}</h4>
+                                    <h4 className={cx("content__filter--value")}></h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
                                         <SelledIcon className={cx("content__filter--icon")} />
                                         <span>NFTs selling:</span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}>{sellingAssets.length}</h4>
+                                    <h4 className={cx("content__filter--value")}></h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
@@ -386,7 +331,7 @@ const AccountPage = function ({}: Props) {
                                 <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                             </header>
                             <article className={cx("content__filter--option")}>
-                                {categories.map(function (category: Category, index: number) {
+                                {categories.map(function (category: CategoryItemType, index: number) {
                                     return (
                                         <section key={index} className={cx("content__filter--group")}>
                                             <h4 className={cx("content__filter--name")}>{category.name}</h4>
@@ -417,23 +362,45 @@ const AccountPage = function ({}: Props) {
                         </nav>
                         <section>
                             {activeTab === "my assets" && (
-                                <NftContainer data={assetsFromAddress} loading={loadingAssetsFromAddress} />
+                                <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "selling" && (
-                                <NftContainer data={sellingAssets} loading={loadingAssetsFromAddress} />
+                                <NftContainer nfts={sellingAssetsFromAddress} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "created" && (
-                                <NftContainer data={createdAssets} loading={loadingAssetsFromAddress} />
+                                <NftContainer nfts={createdAssetsFromAddress} loading={loadingAssetsFromAddress} />
                             )}
-                            {activeTab === "collection" && <NftContainer data={assetsFromAddress} />}
-                            {activeTab === "following" && <AccountContainer data={accounts} itemsPerPage={12} />}
-                            {activeTab === "follower" && <AccountContainer data={accounts} itemsPerPage={12} />}
-                            {activeTab === "like" && <NftContainer data={assetsFromAddress} />}
+                            {activeTab === "collection" && <NftContainer nfts={assetsFromAddress} />}
+                            {activeTab === "following" && (
+                                <AccountContainer
+                                    accounts={followings}
+                                    currentPageAccounts={currentPageFollowings}
+                                    totalPagesAccounts={totalPagesFollowings}
+                                    loadingAccounts={loadingFollowings}
+                                    setCurrentPageAccounts={setCurrentPageFollowings}
+                                />
+                            )}
+                            {activeTab === "follower" && (
+                                <AccountContainer
+                                    accounts={followers}
+                                    currentPageAccounts={currentPageFollowers}
+                                    totalPagesAccounts={totalPagesFollowers}
+                                    loadingAccounts={loadingFollowers}
+                                    setCurrentPageAccounts={setCurrentPageFollowers}
+                                />
+                            )}
+                            {activeTab === "like" && <NftContainer nfts={assetsFromAddress} />}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>
                             <div className={cx("follower__container")}>
-                                <AccountContainer data={accounts} itemsPerPage={12} />
+                                <AccountContainer
+                                    accounts={accounts}
+                                    currentPageAccounts={currentPageAccounts}
+                                    totalPagesAccounts={totalPagesAccounts}
+                                    loadingAccounts={loadingAccounts}
+                                    setCurrentPageAccounts={setCurrentPageAccounts}
+                                />
                             </div>
                         </section>
                     </article>

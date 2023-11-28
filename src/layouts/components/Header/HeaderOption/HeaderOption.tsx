@@ -1,7 +1,7 @@
 "use client";
 
-import React, { Dispatch, SetStateAction } from "react";
-import { useRouter } from "next/navigation";
+import React, { memo, Dispatch, SetStateAction, useEffect, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
 import classNames from "classnames/bind";
@@ -10,19 +10,24 @@ const cx = classNames.bind(styles);
 type Props = {
     text: string;
     isActive?: boolean;
-    setSelected?: Dispatch<SetStateAction<string>>;
     redirect: string;
+    setSelected?: Dispatch<SetStateAction<string>>;
 };
 const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props) {
     const router = useRouter();
-    const handleClick = function (content = text) {
-        if (setSelected && redirect) {
-            setSelected(content);
-            router.push(redirect);
-        } else {
-            return;
-        }
-    };
+
+    const handleClick = useCallback(
+        function (content = text) {
+            if (setSelected && redirect) {
+                setSelected(content);
+                router.push(redirect);
+            } else {
+                return;
+            }
+        },
+        [redirect],
+    );
+
     return (
         <Link
             href={redirect}
@@ -36,4 +41,4 @@ const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props)
     );
 };
 
-export default HeaderOption;
+export default memo(HeaderOption);
