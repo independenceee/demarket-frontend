@@ -85,16 +85,19 @@ const LucidProvider = function ({ children }: Props) {
             }
             lucid.selectWallet(await walletApi());
             const utxos = await lucid.wallet.getUtxos();
-            const walletBanlance = utxos.reduce(function (balance, utxo) {
-                return balance + utxo.assets.lovelace;
-            }, BigInt(0));
+            const walletBalance =
+                Number(
+                    utxos.reduce(function (balance, utxo) {
+                        return balance + utxo.assets.lovelace;
+                    }, BigInt(0)),
+                ) / 1000000;
             const walletAddress = await lucid.wallet.address();
             setLucidWallet(lucid);
             setWalletItem(function (prevous: WalletItemType) {
                 return {
                     ...prevous,
                     walletAddress: walletAddress,
-                    walletBanlance: Number(walletBanlance) / 1000000,
+                    walletBalance: walletBalance,
                     walletName: walletName,
                     walletImage: walletImage,
                 };
@@ -115,6 +118,7 @@ const LucidProvider = function ({ children }: Props) {
                 walletCheckApi: async function () {},
                 walletApi: async function () {},
             });
+            setLucidWallet(null!);
         } catch (error) {
             console.log(error);
         }
@@ -129,6 +133,7 @@ const LucidProvider = function ({ children }: Props) {
                 lucidWallet,
                 walletItem,
                 lucidNeworkPlatform,
+                setWalletItem,
                 setLucidNeworkPlatform,
                 setNetworkPlatform,
             }}

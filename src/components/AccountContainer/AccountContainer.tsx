@@ -25,6 +25,7 @@ const AccountContainer = function ({
     setCurrentPageAccounts,
 }: Props) {
     const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
+        
         setCurrentPageAccounts(page);
     };
     return (

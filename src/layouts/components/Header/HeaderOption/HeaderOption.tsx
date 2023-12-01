@@ -1,9 +1,8 @@
 "use client";
 
-import React, { memo, Dispatch, SetStateAction, useEffect, useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React, { memo, Dispatch, SetStateAction, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 import classNames from "classnames/bind";
 import styles from "./HeaderOption.module.scss";
 const cx = classNames.bind(styles);

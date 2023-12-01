@@ -81,9 +81,6 @@ const AccountProvider = function ({ children }: Props) {
                     { address: walletAddressParams },
                 );
 
-                console.log(totalPage);
-                console.log(paginatedData);
-
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {
                         const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
@@ -123,7 +120,7 @@ const AccountProvider = function ({ children }: Props) {
     const fetchCreatedAssetsFromAddress = async function () {
         try {
             if (walletItem.walletAddress === walletAddressParams) {
-                const createdAssetsList = assetsFromAddress.filter(function (asset: any, indexn: number) {
+                const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
                     return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressParams;
                 });
                 setCreatedAssetsFromAddress(createdAssetsList);

@@ -1,28 +1,42 @@
 "use client";
 
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode, useState, useEffect, useContext } from "react";
 import CartContext from "@/contexts/components/CartContext";
+import AccountContext from "@/contexts/components/AccountContext";
+import { AccountContextType } from "@/types/AccountContextType";
 import { toast } from "react-toastify";
+import { NftItemType } from "@/types/GenericsType";
+import { get } from "@/utils/httpRequest";
 
 type Props = {
     children: ReactNode;
 };
 
 const DemarketProvider = function ({ children }: Props) {
-    const [cartState, setCartState] = useState({
+    const { account } = useContext<AccountContextType>(AccountContext);
+
+    const [cartItem, setCartItem] = useState({
         itemsList: [],
         totalPrice: 0,
         totalQuantity: 0,
-        changed: false,
+        changed: true,
     });
 
-    const fetchCartFromAccount = async function () {};
-    useEffect(function() {
-
-    }, [])
+    useEffect(() => {
+        const fetchAssetsCartFromAccount = async function () {
+            try {
+                if (account) {
+                    const data = await get("/nft/nft_cart", { walletAddress: account.walletAddress, page: 1 });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchAssetsCartFromAccount();
+    }, [account]);
 
     const addToCart = async function (newItem: any) {
-        setCartState((prev: any) => {
+        setCartItem((prev: any) => {
             const existingItem = prev.itemsList.find(
                 (item: any) => item.assetName === newItem.assetName && item.policyId === newItem.policyId,
             );
@@ -61,16 +75,8 @@ const DemarketProvider = function ({ children }: Props) {
         });
     };
 
-    const removeFromCart = async function ({
-        id,
-        policyId,
-        assetName,
-    }: {
-        id: string;
-        policyId: string;
-        assetName: string;
-    }) {
-        setCartState((prev) => {
+    const removeFromCart = async function ({ id, policyId, assetName }: NftItemType) {
+        setCartItem((prev) => {
             const updatedItemsList: any = prev.itemsList.filter(
                 (item: any) => item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
             );
@@ -89,7 +95,7 @@ const DemarketProvider = function ({ children }: Props) {
     };
 
     const clearCart = async function () {
-        setCartState((prev) => {
+        setCartItem((prev) => {
             return {
                 ...prev,
                 itemsList: [],
@@ -101,7 +107,7 @@ const DemarketProvider = function ({ children }: Props) {
     };
 
     return (
-        <CartContext.Provider value={{ cartState, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ cartItem, addToCart, removeFromCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );

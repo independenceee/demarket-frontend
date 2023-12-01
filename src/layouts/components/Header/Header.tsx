@@ -22,27 +22,26 @@ import { LucidContextType } from "@/types/LucidContextType";
 import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { WalletItemType } from "@/types/GenericsType";
-import configs from "@/configs";
+import { publicRouters } from "@/routes";
 
 const cx = classNames.bind(styles);
-type Props = {};
+type Props = {
+    selectedRouter: string;
+    setSelectedRouter: React.Dispatch<React.SetStateAction<string>>;
+};
 
-const Header = function ({}: Props) {
+const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
     const router = useRouter();
+
+    const { cartItem } = useContext<CartContextType>(CartContext);
     const { account } = useContext<AccountContextType>(AccountContext);
-    const { cartState } = useContext<CartContextType>(CartContext);
+    const { connectWallet, lucidWallet, disconnectWallet, walletItem, setWalletItem } = useContext<LucidContextType>(LucidContext);
 
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
     const { isShowing: isShowingCart, toggle: toggleShowingCart } = useModal();
 
-    const { connectWallet, lucidWallet, disconnectWallet, walletItem } = useContext<LucidContextType>(LucidContext);
-
-    const [selected, setSelected] = useState<string>("HOME");
     const [openConnectWallet, setOpenConnectWallet] = useState<boolean>(false);
-
-    const [walletName, setWalletName] = useState<string>("");
-    const [walletDownload, setWalletDownload] = useState<string | any>("");
 
     const HandleOpenConnectWallet = function () {
         setOpenConnectWallet(!openConnectWallet);
@@ -55,14 +54,14 @@ const Header = function ({}: Props) {
                     <Image src={images.logo} alt="" className={cx("logo__image")} />
                 </Link>
                 <nav className={cx("navbar")}>
-                    {configs.headerOptions.map(function (headerOption, index: number) {
+                    {publicRouters.map(function (publicRouter, index: number) {
                         return (
                             <HeaderOption
                                 key={index}
-                                text={headerOption.text}
-                                redirect={headerOption.redirect}
-                                isActive={Boolean(selected === headerOption.text)}
-                                setSelected={setSelected}
+                                text={publicRouter.name}
+                                redirect={publicRouter.redirect}
+                                isActive={Boolean(selectedRouter === publicRouter.name)}
+                                setSelected={setSelectedRouter}
                             />
                         );
                     })}
@@ -74,13 +73,10 @@ const Header = function ({}: Props) {
                         </div>
                         <div className={cx("icon__container")}>
                             <FontAwesomeIcon icon={faCartShopping} onClick={toggleShowingCart} />
-                            <span>{cartState.totalQuantity}</span>
+                            <span>{cartItem.totalQuantity}</span>
                         </div>
                         {account && (
-                            <div
-                                className={cx("account__wrapper")}
-                                onClick={() => router.push(`/account/${walletItem.walletAddress}`)}
-                            >
+                            <div className={cx("account__wrapper")} onClick={() => router.push(`/account/${walletItem.walletAddress}`)}>
                                 <Image className={cx("account__image")} src={images.user} alt="" />
                             </div>
                         )}
@@ -97,36 +93,32 @@ const Header = function ({}: Props) {
                                         const handleConnectWallet = async function () {
                                             try {
                                                 if (!(await wallet.walletCheckApi())) {
-                                                    setWalletDownload(walletDownload);
+                                                    setWalletItem(function (walletPrevious: WalletItemType) {
+                                                        return {
+                                                            ...walletPrevious,
+                                                            walletDownloadApi: wallet.walletDownloadApi,
+                                                            walletName: wallet.walletName,
+                                                        };
+                                                    });
                                                     toggleDownloadWallet();
                                                     return;
                                                 }
 
                                                 connectWallet({
                                                     walletApi: wallet.walletApi,
-                                                    walletCheckApi: walletItem.walletCheckApi,
-                                                    walletName: walletItem.walletName,
-                                                    walletImage: walletItem.walletImage,
+                                                    walletCheckApi: wallet.walletCheckApi,
+                                                    walletName: wallet.walletName,
+                                                    walletImage: wallet.walletImage,
                                                 });
                                             } catch (error) {
                                                 console.log(error);
                                             }
                                         };
                                         return (
-                                            <div
-                                                onClick={handleConnectWallet}
-                                                key={index}
-                                                className={cx("wallet__items")}
-                                            >
+                                            <div onClick={handleConnectWallet} key={index} className={cx("wallet__items")}>
                                                 <div className={cx("wallet__item")}>
-                                                    <Image
-                                                        className={cx("wallet__item--image")}
-                                                        src={wallet.walletImage}
-                                                        alt=""
-                                                    />
-                                                    <span className={cx("wallet__item--name")}>
-                                                        {wallet.walletName}
-                                                    </span>
+                                                    <Image className={cx("wallet__item--image")} src={wallet.walletImage} alt="" />
+                                                    <span className={cx("wallet__item--name")}>{wallet.walletName}</span>
                                                 </div>
                                             </div>
                                         );
@@ -148,21 +140,13 @@ const Header = function ({}: Props) {
             <Modal isShowing={isShowingDownloadWallet} toggle={toggleDownloadWallet}>
                 <div className={cx("wrapper__nowallet")}>
                     <section className={cx("nowallet__content")}>
-                        <p>
-                            The selected wallet ({walletName}) has not been installed. Do you want to visit Chrome Web
-                            Store and install it now?
-                        </p>
+                        <p>The selected wallet ( {walletItem.walletName} ) has not been installed. Do you want to visit Chrome Web Store and install it now?</p>
                     </section>
                     <div className={cx("nowallet__button")}>
                         <button className={cx("button__ok")} onClick={toggleDownloadWallet}>
                             CANCEL
                         </button>
-                        <a
-                            target="_blank"
-                            href={walletDownload}
-                            className={cx("button__cancel")}
-                            rel="noopener noreferrer"
-                        >
+                        <a target="_blank" href={walletItem.walletDownloadApi} className={cx("button__cancel")} rel="noopener noreferrer">
                             OK
                         </a>
                     </div>

@@ -5,6 +5,7 @@ export type LucidContextType = {
     networkPlatform: string;
     lucidWallet: Lucid;
     walletItem: WalletItemType;
+    setWalletItem: React.Dispatch<React.SetStateAction<WalletItemType>>;
     connectWallet: ({ walletApi, walletName, walletImage, walletCheckApi }: WalletItemType) => Promise<any>;
     disconnectWallet: () => Promise<any>;
     lucidNeworkPlatform: Lucid;
