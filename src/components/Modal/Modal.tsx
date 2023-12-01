@@ -10,7 +10,7 @@ type Props = {
     transparent?: boolean;
 };
 
-const Modal = function ({ isShowing, toggle, children, transparent }: Props) {
+const Modal: React.FC<Props> = function ({ isShowing, toggle, children, transparent }: Props) {
     if (isShowing) {
         return (
             <main className={cx("wrapper")}>

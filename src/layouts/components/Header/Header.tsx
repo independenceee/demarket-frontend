@@ -17,12 +17,11 @@ import { CartContextType } from "@/types/CartContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import CartContext from "@/contexts/components/CartContext";
 import Cart from "@/components/Cart";
-import wallets from "@/constants/wallets";
-import { LucidContextType } from "@/types/LucidContextType";
 import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
-import { WalletItemType } from "@/types/GenericsType";
 import { publicRouters } from "@/routes";
+import Logo from "@/components/Logo";
+import ConnectWallet from "./ConnectWallet/ConnectWallet";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -35,7 +34,6 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
 
     const { cartItem } = useContext<CartContextType>(CartContext);
     const { account } = useContext<AccountContextType>(AccountContext);
-    const { connectWallet, lucidWallet, disconnectWallet, walletItem, setWalletItem } = useContext<LucidContextType>(LucidContext);
 
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
@@ -50,9 +48,7 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
     return (
         <header className={cx("wrapper")}>
             <div className={cx("container")}>
-                <Link href={"/"} className={cx("logo__wrapper")}>
-                    <Image src={images.logo} alt="" className={cx("logo__image")} />
-                </Link>
+                <Logo />
                 <nav className={cx("navbar")}>
                     {publicRouters.map(function (publicRouter, index: number) {
                         return (
@@ -82,58 +78,7 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
                         )}
                     </section>
 
-                    {!lucidWallet ? (
-                        <section className={cx("button__container")}>
-                            <Link href="#" onClick={HandleOpenConnectWallet} className={cx("connect__button")}>
-                                Connect Wallet
-                            </Link>
-                            {openConnectWallet && (
-                                <div className={cx("wallet__item--short")}>
-                                    {wallets.map(function (wallet: WalletItemType, index: number) {
-                                        const handleConnectWallet = async function () {
-                                            try {
-                                                if (!(await wallet.walletCheckApi())) {
-                                                    setWalletItem(function (walletPrevious: WalletItemType) {
-                                                        return {
-                                                            ...walletPrevious,
-                                                            walletDownloadApi: wallet.walletDownloadApi,
-                                                            walletName: wallet.walletName,
-                                                        };
-                                                    });
-                                                    toggleDownloadWallet();
-                                                    return;
-                                                }
-
-                                                connectWallet({
-                                                    walletApi: wallet.walletApi,
-                                                    walletCheckApi: wallet.walletCheckApi,
-                                                    walletName: wallet.walletName,
-                                                    walletImage: wallet.walletImage,
-                                                });
-                                            } catch (error) {
-                                                console.log(error);
-                                            }
-                                        };
-                                        return (
-                                            <div onClick={handleConnectWallet} key={index} className={cx("wallet__items")}>
-                                                <div className={cx("wallet__item")}>
-                                                    <Image className={cx("wallet__item--image")} src={wallet.walletImage} alt="" />
-                                                    <span className={cx("wallet__item--name")}>{wallet.walletName}</span>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </section>
-                    ) : (
-                        <section className={cx("connect__success")}>
-                            <div className={cx("button__image--container")}>
-                                <Image className={"button__image--image"} src={walletItem.walletImage} alt="" />
-                            </div>
-                            <div className={cx("button__balance")}>{walletItem.walletBalance} ADA</div>
-                        </section>
-                    )}
+                    <ConnectWallet />
                 </div>
             </div>
             {/* download wallet begin */}

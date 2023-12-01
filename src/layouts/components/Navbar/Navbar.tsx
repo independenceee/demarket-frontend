@@ -13,7 +13,7 @@ import Modal from "@/components/Modal";
 import wallets from "@/constants/wallets";
 import { WalletItemType } from "@/types/GenericsType";
 
-const WalletItem = lazy(() => import("@/components/WalletContainer/WalletItem"));
+const WalletItem = lazy(() => import("@/components/WalletContainer/WalletItemLong"));
 
 const cx = classNames.bind(styles);
 

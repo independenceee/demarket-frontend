@@ -1,10 +1,9 @@
 import React from "react";
-import Image from "next/image";
 import classNames from "classnames/bind";
-import images from "@/assets/images";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 import { HorizonalIcon, YoutubeIcon, TwitterIcon, LinkedinIcon } from "@/components/Icons";
+import Logo from "@/components/Logo";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -14,13 +13,8 @@ const Footer = function ({}: Props) {
         <footer className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("footer__introduct")}>
-                    <div className={cx("footer__introduct--logo")}>
-                        <Image src={images.logo} alt="" className={cx("footer__logo--image")} />
-                    </div>
-                    <p className={cx("footer__introduct--description")}>
-                        Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with by
-                        BlockAlpha
-                    </p>
+                    <Logo />
+                    <p className={cx("footer__introduct--description")}>Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with by BlockAlpha</p>
                 </section>
 
                 <section className={cx("footer__content")}>

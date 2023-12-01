@@ -4,7 +4,7 @@ import React, { ReactNode, lazy } from "react";
 
 const LucidProvider = lazy(() => import("@/contexts/providers/LucidProvider"));
 const DemarketProvider = lazy(() => import("@/contexts/providers/DemarketProvider"));
-const WalletProvider = lazy(() => import("@/contexts/providers/WalletProvider"));
+const ModalProvider = lazy(() => import("@/contexts/providers/ModalProvider"));
 const SmartContractProvider = lazy(() => import("@/contexts/providers/SmartContractProvider"));
 const CartProvider = lazy(() => import("@/contexts/providers/CartProvider"));
 const AccountProvider = lazy(() => import("@/contexts/providers/AccountProvider"));
@@ -20,7 +20,7 @@ const ContextProvider = function ({ children }: Props) {
                 <DemarketProvider>
                     <AccountProvider>
                         <CartProvider>
-                            <WalletProvider>{children}</WalletProvider>
+                            <ModalProvider>{children}</ModalProvider>
                         </CartProvider>
                     </AccountProvider>
                 </DemarketProvider>

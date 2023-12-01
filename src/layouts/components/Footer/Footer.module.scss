@@ -3,7 +3,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
     margin-top: 100px;
     border-top: 1px solid #8f04a6;
 
@@ -21,17 +20,7 @@
 
 .footer__introduct {
     padding: 0 30px;
-    .footer__introduct--logo {
-        width: 300px;
-        height: auto;
 
-        .footer__logo--image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-    }
     .footer__introduct--description {
         margin-top: 20px;
         max-width: 300px;
