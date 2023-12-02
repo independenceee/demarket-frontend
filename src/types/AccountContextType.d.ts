@@ -1,7 +1,7 @@
-import { AccountItem, NftItemType } from "@/types/GenericsType";
+import { AccountItemType, AccountItemTypeType, NftItemType } from "@/types/GenericsType";
 
 export type AccountContextType = {
-    account: AccountItem;
+    account: AccountItemType;
     loadingAccount: boolean;
 
     assetsFromAddress: NftItemType[];
@@ -31,8 +31,8 @@ export type AccountContextType = {
     loadingSellingAssetsFromAddress: boolean;
     setLoadingSellingAssetsFromAddress: React.Dispatch<React.SetStateAction<boolean>>;
 
-    followings: AccountItem[];
-    setFollowings: React.Dispatch<React.SetStateAction<AccountItem[]>>;
+    followings: AccountItemType[];
+    setFollowings: React.Dispatch<React.SetStateAction<AccountItemType[]>>;
     loadingFollowings: boolean;
     setLoadingFollowings: React.Dispatch<React.SetStateAction<boolean>>;
     currentPageFollowings: number;
@@ -40,8 +40,8 @@ export type AccountContextType = {
     totalPagesFollowings: number;
     setTotalPagesFollowings: React.Dispatch<React.SetStateAction<number>>;
 
-    followers: AccountItem[];
-    setFollowers: React.Dispatch<React.SetStateAction<AccountItem[]>>;
+    followers: AccountItemType[];
+    setFollowers: React.Dispatch<React.SetStateAction<AccountItemType[]>>;
     currentPageFollowers: number;
     setCurrentPageFollowers: React.Dispatch<React.SetStateAction<number>>;
     totalPagesFollowers: number;

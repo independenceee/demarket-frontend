@@ -1,4 +1,5 @@
 "use client";
+
 import React, { ReactNode, useState, useContext, useEffect } from "react";
 import { useParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
@@ -57,10 +58,9 @@ const AccountProvider = function ({ children }: Props) {
     const fetchAssetsFromAddress = async function () {
         try {
             if (walletItem.walletAddress === walletAddressParams) {
-                const { paginatedData, totalPage } = await post(
-                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
-                    { address: walletItem.walletAddress || walletAddressParams },
-                );
+                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
+                    address: walletItem.walletAddress || walletAddressParams,
+                });
 
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {
@@ -76,13 +76,7 @@ const AccountProvider = function ({ children }: Props) {
                 setTotalPagesAssetsFromAddress(totalPage);
                 setLoadingAssetsFromAddress(false);
             } else {
-                const { paginatedData, totalPage } = await post(
-                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
-                    { address: walletAddressParams },
-                );
-
-                console.log(totalPage);
-                console.log(paginatedData);
+                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`, { address: walletAddressParams });
 
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {
@@ -123,7 +117,7 @@ const AccountProvider = function ({ children }: Props) {
     const fetchCreatedAssetsFromAddress = async function () {
         try {
             if (walletItem.walletAddress === walletAddressParams) {
-                const createdAssetsList = assetsFromAddress.filter(function (asset: any, indexn: number) {
+                const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
                     return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressParams;
                 });
                 setCreatedAssetsFromAddress(createdAssetsList);

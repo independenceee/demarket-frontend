@@ -1,12 +1,13 @@
+import { NftItemType } from "./GenericsType";
+
 export type CartContextType = {
-    cartState: {
-        itemsList: Array<any>;
+    cartItem: {
+        itemsList: Array<NftItemType>;
         totalQuantity: number;
         totalPrice: number;
-        changed: boolean;
     };
 
-    removeFromCart: ({ id, policyId, assetName }: { id: string; policyId: string; assetName: string }) => Promise<any>;
-    addToCart: (newItem: any) => Promise<any>;
+    removeFromCart: ({ id, policyId, assetName }: NftItemType) => Promise<any>;
+    addToCart: (newItem: NftItemType) => Promise<any>;
     clearCart: () => Promise<any>;
 };

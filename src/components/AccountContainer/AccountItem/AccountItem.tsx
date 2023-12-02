@@ -24,7 +24,7 @@ const AccountItem = function ({ account, index }: Props) {
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}
-            onClick={() => router.push(`/account/${account.address}`)}
+            onClick={() => router.push(`/account/${account.walletAddress}`)}
         >
             <div className={cx("container")}>
                 <header className={cx("header")}>
@@ -41,7 +41,7 @@ const AccountItem = function ({ account, index }: Props) {
                 </header>
                 <section className={cx("content")}>
                     <div className={cx("content__left")}>
-                        <h3 className={cx("content__left--name")}>{account.name}</h3>
+                        <h3 className={cx("content__left--name")}>{account.userName}</h3>
                         <p className={cx("content__left--amount")}>{account.rating}</p>
                     </div>
                     <div className={cx("content_right")}>

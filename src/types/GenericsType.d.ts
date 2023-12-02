@@ -25,10 +25,10 @@ export type AccountItemType = {
     id: string;
     createdAt: string;
     updatedAt: string;
-    address: string;
+    walletAddress: string;
     stakeKey: null;
     email: string;
-    name: string;
+    userName: string;
     description: string;
     rating: string;
     cover: string;
