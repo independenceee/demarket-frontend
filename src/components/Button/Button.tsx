@@ -20,8 +20,8 @@ type Props = {
     large?: boolean;
     children?: ReactNode;
     className?: any;
-    LeftIcon?: IconType | any;
-    RightIcon?: IconType | any;
+    LeftIcon?: any;
+    RightIcon?: any;
     onClick?: () => any;
 };
 

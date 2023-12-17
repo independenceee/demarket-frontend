@@ -1,89 +1,92 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import classNames from "classnames/bind";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
-import { HorizonalIcon, YoutubeIcon, TwitterIcon, LinkedinIcon } from "@/components/Icons";
 import Logo from "@/components/Logo";
+import { publicRouters } from "@/routes";
+import Image from "next/image";
+import images from "@/assets/images";
 
 const cx = classNames.bind(styles);
-type Props = {};
+type Props = {
+    selectedRouter: string;
+    setSelectedRouter: React.Dispatch<SetStateAction<string>>;
+};
 
-const Footer = function ({}: Props) {
+const Footer = function ({ selectedRouter, setSelectedRouter }: Props) {
     return (
-        <footer className={cx("wrapper")}>
+        <footer className={cx("footer")}>
             <div className={cx("container")}>
-                <section className={cx("footer__introduct")}>
-                    <Logo />
-                    <p className={cx("footer__introduct--description")}>Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with by BlockAlpha</p>
-                </section>
-
-                <section className={cx("footer__content")}>
-                    <h2 className={cx("footer__content--heading")}>Main Page</h2>
-                    <ul className={cx("footer__content--list")}>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Home</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Transaction</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>History</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Mint</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Assets</Link>
-                        </li>
-                    </ul>
-                </section>
-
-                <section className={cx("footer__content")}>
-                    <h2 className={cx("footer__content--heading")}>Useful Page</h2>
-                    <ul className={cx("footer__content--list")}>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Home</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Transaction</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>History</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Mint</Link>
-                        </li>
-                        <li className={cx("footer__content--item")}>
-                            <Link href={""}>Assets</Link>
-                        </li>
-                    </ul>
-                </section>
-
-                <section className={cx("footer__contact")}>
-                    <h2 className={cx("footer__contact--heading")}>Please give us some feedback</h2>
-                    <div className={cx("footer__input")}>
-                        <input className={cx("footer__input--control")} type="text" placeholder="Your feedback" />
-                        <div className={cx("footer__input--icon")}>
-                            <HorizonalIcon className={cx("icon")} />
+                <div className={cx("row")}>
+                    <div className={cx("footer-col")}>
+                        <Logo />
+                        <p>
+                            Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with
+                            by BlockAlpha
+                        </p>
+                        <div className={cx("social-links")}>
+                            <Link href="#">
+                                <Image src={images.meta} alt="" />
+                            </Link>
+                            <Link href="#">
+                                <Image src={images.linkedin} alt="" />
+                            </Link>
+                            <Link href="#">
+                                <Image src={images.youtube} alt="" />
+                            </Link>
+                            <Link href="#">
+                                <Image src={images.twitter} alt="" />
+                            </Link>
                         </div>
                     </div>
-                    <h2 className={cx("footer__contact--heading")}>Contact With us here</h2>
-                    <div className={cx("footer__list--icon")}>
-                        <Link href="#" className={cx("icon-link")}>
-                            <LinkedinIcon className={cx("icon")} />
-                        </Link>
-                        <Link href="#" className={cx("icon-link")}>
-                            <YoutubeIcon className={cx("icon")} />
-                        </Link>
-                        <Link href="#" className={cx("icon-link")}>
-                            <TwitterIcon className={cx("icon")} />
-                        </Link>
+                    <div className={cx("footer-col")}>
+                        <h4>Main page</h4>
+                        <ul>
+                            <li>
+                                <Link href="#">FAQ</Link>
+                            </li>
+                            <li>
+                                <Link href="#">shipping</Link>
+                            </li>
+                            <li>
+                                <Link href="#">returns</Link>
+                            </li>
+                            <li>
+                                <Link href="#">order status</Link>
+                            </li>
+                            <li>
+                                <Link href="#">payment options</Link>
+                            </li>
+                        </ul>
                     </div>
-                </section>
+                    <div className={cx("footer-col")}>
+                        <h4>Useful page</h4>
+                        <ul>
+                            <li>
+                                <Link href="#">watch</Link>
+                            </li>
+                            <li>
+                                <Link href="#">bag</Link>
+                            </li>
+                            <li>
+                                <Link href="#">shoes</Link>
+                            </li>
+                            <li>
+                                <Link href="#">dress</Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className={cx("footer-col")}>
+                        <h4>Feed back</h4>
+                        <div className={cx("social-links")}>
+                            <input />
+                            <textarea />
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div className={cx("footer__origin")}>
-                <p>{`© ${new Date().getFullYear()} Marketplace. Design & Develop with by BlockAlpha`}</p>
+            <div className={cx("origin")}>
+                
             </div>
         </footer>
     );

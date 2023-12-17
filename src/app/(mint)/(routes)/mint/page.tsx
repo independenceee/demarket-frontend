@@ -9,12 +9,12 @@ import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
-
 import images from "@/assets/images";
-import styles from "./Mint.module.scss";
+
 import { LucidContextType } from "@/types/LucidContextType";
 import { SmartContractType } from "@/types/SmartContextType";
 import { DemarketContextType } from "@/types/DemarketContextType";
+import styles from "./Mint.module.scss";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
@@ -130,31 +130,13 @@ const MintPage = function ({}: Props) {
             });
 
             if (txHash) {
-                toast.success("Mint asset successfully", {
-                    position: "bottom-right",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success("Mint asset successfully");
                 await addNft({ policyId, assetName });
-
                 return;
             }
-            toast.warning("Mint asset faild", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warning("Mint asset faild");
         } catch (error) {
+            toast.warning("Mint asset faild");
             console.log(error);
         }
     };

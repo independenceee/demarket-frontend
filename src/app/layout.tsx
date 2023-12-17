@@ -1,7 +1,7 @@
 import "./globals.scss";
+import "tippy.js/dist/tippy.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import React, { ReactNode } from "react";
 import type { Metadata } from "next";
 import Aos from "@/components/Aos";

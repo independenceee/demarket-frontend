@@ -13,7 +13,6 @@ import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
 import LucidContext from "@/contexts/components/LucidContext";
 import { contractAddress } from "@/libs";
-
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -130,7 +129,10 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
                 <section className={cx("policyId")}>
                     <h4 className={cx("policyId__name")}>PolicyID</h4>
-                    <p className={cx("policyId__value")}>{covertString({ inputString: String(value.policyId) })}</p>
+                    <p className={cx("policyId__value")}>
+                        <span className={cx("policyId__convert")}>{value.policyId}</span>{" "}
+                        <span>{value.policyId.slice(-5)}</span>
+                    </p>
                     <CopyItem value={value.policyId} />
                 </section>
             </div>

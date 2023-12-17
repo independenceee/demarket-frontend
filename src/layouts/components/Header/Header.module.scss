@@ -12,8 +12,6 @@
     align-items: center;
 }
 
-
-
 .navbar {
     display: flex;
     gap: 15px;
@@ -31,11 +29,11 @@
     .button__other {
         color: #000;
         background: #fff;
-        padding: 0.6rem 1rem;
+        padding: 0.4rem 1rem;
         text-decoration: none;
         text-transform: uppercase;
         border: 2px solid #c2c2c2;
-        border-radius: 3.125rem;
+        border-radius: var(--border-radius-4);
         transition: 0.3s ease-in-out;
         display: flex;
         align-items: center;
@@ -52,8 +50,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                top: -9px;
-                right: -5px;
+                top: -6px;
+                right: -6px;
                 background: rgb(32, 129, 226);
                 border-radius: 50%;
                 color: rgb(255, 255, 255);
@@ -62,187 +60,6 @@
                 font-size: 10px;
             }
         }
-    }
-}
-
-.account__wrapper {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    overflow: hidden;
-
-    .account__image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-
-        &:hover {
-            scale: 1.05;
-        }
-    }
-}
-
-.connect__button {
-    display: block;
-    color: #717171;
-    background: #fff;
-    padding: 0.6rem 1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    border: 2px solid #c2c2c2;
-    border-radius: 3.125rem;
-    transition: 0.3s ease-in-out;
-
-    &:hover {
-        border: 0.125rem solid #00a4aa;
-        color: #00a4aa;
-    }
-}
-
-.wallet__item--short {
-    position: absolute;
-    width: 100%;
-    background: #f8fafd;
-    border-radius: 8px;
-    top: 50px;
-
-    .wallet__items {
-        border-radius: 8px;
-        align-items: center;
-        border-bottom: 1px solid #ccc;
-        box-sizing: border-box;
-        color: #000;
-        cursor: pointer;
-        display: flex;
-        filter: brightness(1);
-        font-size: 14px;
-        font-weight: 600;
-        justify-content: flex-start;
-        line-height: 150%;
-        min-height: 64px;
-        outline: none;
-        padding: 8px 24px;
-        text-overflow: ellipsis;
-        transition-duration: 125ms;
-        transition-property: background-color, color, filter;
-
-        &:hover {
-            background: #ccc;
-        }
-
-        .wallet__item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            .wallet__item--image {
-                width: 30px;
-                height: 30px;
-                object-fit: cover;
-            }
-        }
-    }
-}
-
-.wrapper__nowallet {
-    background-color: #fffff3;
-    border-radius: 4px;
-    color: #000;
-    box-shadow: 0px 60px 24px rgba(23, 23, 20, 0.01), 0px 34px 20px rgba(21, 21, 18, 0.02),
-        0px 15px 15px rgba(26, 26, 22, 0.03), 0px 4px 8px rgba(20, 20, 16, 0.04), 0px 0px 0px rgba(32, 32, 27, 0.04);
-
-    display: flex;
-    flex-direction: column;
-    left: 50%;
-    max-height: 85vh;
-
-    width: 90vw;
-    max-width: 710px;
-    overflow: hidden;
-    position: fixed;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    .nowallet__content {
-        padding: 32px 56px;
-
-        p {
-            font-style: normal;
-            font-weight: 500;
-            font-size: 17px;
-            line-height: 175%;
-            color: #000;
-            overflow-wrap: anywhere;
-            white-space: pre-wrap;
-        }
-    }
-    .nowallet__button {
-        align-items: center;
-        border-top: 1px solid #ccc;
-        bottom: 0;
-        display: flex;
-        gap: 16px;
-        height: auto;
-        justify-content: flex-end;
-        left: 0;
-        padding: 16px 56px;
-        position: sticky;
-        right: 0;
-
-        .button__ok {
-            display: flex;
-            align-items: center;
-            color: #000;
-            background: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.16);
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 4px 24px;
-            height: 48px;
-            width: auto;
-
-            &:hover {
-                background: #ebebe0;
-            }
-        }
-
-        .button__cancel {
-            display: flex;
-            align-items: center;
-            color: #fff;
-            background: #d02f2d;
-            border: 1px solid rgba(0, 0, 0, 0.16);
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 4px 24px;
-            height: 48px;
-            width: auto;
-
-            &:hover {
-                background: #ae2726;
-            }
-        }
-    }
-}
-
-.connect__success {
-    color: #000;
-    background: #fff;
-    padding: 0.6rem 1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    border: 2px solid #c2c2c2;
-    border-radius: 3.125rem;
-    transition: 0.3s ease-in-out;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    .button__image--container {
-        .button__image--image {
-        }
-    }
-
-    .button__balance {
     }
 }
 
