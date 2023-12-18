@@ -1,8 +1,10 @@
 "use client";
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import { TrashIcon, AddIcon } from "@/components/Icons";
 import axios from "axios";
+import { Multiselect } from "multiselect-react-dropdown";
+
+import { TrashIcon, AddIcon } from "@/components/Icons";
 import Image from "next/image";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
@@ -34,7 +36,7 @@ type Props = {};
 const MintPage = function ({}: Props) {
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
     const { mintAsset } = useContext<SmartContractType>(SmartContractContext);
-    const { addNft } = useContext<DemarketContextType>(DemarketContext);
+    const { addNft, categories } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Select Your Option");
@@ -182,6 +184,16 @@ const MintPage = function ({}: Props) {
                                 <span className={cx("button-text")}>{mediaType}</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div className={cx("select-wrapper")}>
+                        <h3 className={cx("label")}>Category</h3>
+                        <Multiselect
+                            placeholder="Select category ..."
+                            className={cx("title-control")}
+                            options={categories}
+                            displayValue="name"
+                        />
                     </div>
 
                     {/* select-end */}

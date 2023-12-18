@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import classNames from "classnames/bind";
 import styles from "./Guide.module.scss";
 import ReactPlayer from "react-player";
@@ -39,6 +39,16 @@ const GuidePage = function ({}: Props) {
                                     <AddIcon />
                                 </span>
                             </header>
+                            <aside className={cx("guide__content")}>
+                                <section className="guide__video">
+                                    <ReactPlayer
+                                        controls
+                                        width={"100%"}
+                                        url={"https://www.youtube.com/watch?v=9qJmCOXk028"}
+                                    />
+                                </section>
+                                <h2>Buying an NFT on Demarket</h2>
+                            </aside>
                         </section>
                         <section className={cx("guide__inner")}>
                             <header className={cx("guide__header")}>
@@ -55,6 +65,16 @@ const GuidePage = function ({}: Props) {
                                     <AddIcon />
                                 </span>
                             </header>
+                            <aside className={cx("guide__content")}>
+                                <section className="guide__video">
+                                    <ReactPlayer
+                                        controls
+                                        width={"100%"}
+                                        url={"https://www.youtube.com/watch?v=9qJmCOXk028"}
+                                    />
+                                </section>
+                                <h2>Buying an NFT on Demarket</h2>
+                            </aside>
                         </section>
                         <section className={cx("guide__inner")}>
                             <header className={cx("guide__header")}>
@@ -63,6 +83,12 @@ const GuidePage = function ({}: Props) {
                                     <AddIcon />
                                 </span>
                             </header>
+                            <aside className={cx("guide__content")}>
+                                <section className="guide__video">
+                                    <ReactPlayer width={"100%"} url={"https://www.youtube.com/watch?v=9qJmCOXk028"} />
+                                </section>
+                                <h2>Buying an NFT on Demarket</h2>
+                            </aside>
                         </section>
                         <section className={cx("guide__inner")}>
                             <header className={cx("guide__header")}>
@@ -71,6 +97,15 @@ const GuidePage = function ({}: Props) {
                                     <AddIcon />
                                 </span>
                             </header>
+                            <aside className={cx("guide__content")}>
+                                <section className="guide__video">
+                                    <ReactPlayer width={"100%"} url={"https://www.youtube.com/watch?v=9qJmCOXk028"} />
+                                </section>
+                                <h2>Buying an NFT on Demarket</h2>
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </aside>
                         </section>
                         <section className={cx("guide__inner")}>
                             <header className={cx("guide__header")}>
@@ -79,6 +114,16 @@ const GuidePage = function ({}: Props) {
                                     <AddIcon />
                                 </span>
                             </header>
+                            <aside className={cx("guide__content")}>
+                                <section className="guide__video">
+                                    <ReactPlayer
+                                        controls
+                                        width={"100%"}
+                                        url={"https://www.youtube.com/watch?v=9qJmCOXk028"}
+                                    />
+                                </section>
+                                <h2>Buying an NFT on Demarket</h2>
+                            </aside>
                         </section>
                     </aside>
                 </section>

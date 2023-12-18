@@ -9,10 +9,12 @@ import { SearchIcon } from "@/components/Icons";
 import styles from "./Search.module.scss";
 
 const cx = classNames.bind(styles);
-type Props = {};
+type Props = {
+    searchValue: string;
+    setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+};
 
-const Search = function ({}: Props) {
-    const [searchValue, setSearchValue] = useState<string>("");
+const Search = function ({ searchValue, setSearchValue }: Props) {
     const [loading, setLoading] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null!);
@@ -24,16 +26,15 @@ const Search = function ({}: Props) {
                 return;
             }
 
-            const fetchApi = function () {
+            const handleSearchData = function () {
                 try {
                     setLoading(true);
-                    setLoading(false);
                 } catch (error) {
                     setLoading(false);
                 }
             };
 
-            fetchApi();
+            handleSearchData();
         },
         [debouncedValue],
     );

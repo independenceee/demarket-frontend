@@ -138,7 +138,11 @@ const ConnectWallet = function ({}: Props) {
                     <section className={cx("wallet__long--list")}>
                         {wallets.map(function (wallet: WalletItemType, index: number) {
                             return (
-                                <div className={cx("wallet__long--item")} onClick={() => handleConnectWallet(wallet)}>
+                                <div
+                                    key={index}
+                                    className={cx("wallet__long--item")}
+                                    onClick={() => handleConnectWallet(wallet)}
+                                >
                                     <div className={cx("wallet__long--content")}>
                                         <Image src={wallet.walletImage} alt="" className={cx("wallet__long--image")} />
                                         <div className={cx("wallet__long--name")}>

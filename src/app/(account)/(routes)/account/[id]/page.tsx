@@ -30,6 +30,7 @@ import { LucidContextType } from "@/types/LucidContextType";
 import { DemarketContextType } from "@/types/DemarketContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
+import Search from "@/components/Search";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -141,15 +142,7 @@ const AccountPage = function ({}: Props) {
 
                     <Modal isShowing={isShowing} toggle={toggle}>
                         <aside className={cx("content__left--reponsive")}>
-                            <section className={cx("content__search")}>
-                                <h4 className={cx("content__search--header")}>Search</h4>
-                                <article className={cx("content__search--control")}>
-                                    <input type="text" placeholder="Search" className={cx("content__search--input")} />
-                                    <button className={cx("content__search--btn")}>
-                                        <SearchIcon className={cx("content__search--icon")} />
-                                    </button>
-                                </article>
-                            </section>
+                            {/* <Search /> */}
 
                             <section className={cx("content__filter")}>
                                 <header className={cx("content__filter--header")}>
@@ -243,15 +236,7 @@ const AccountPage = function ({}: Props) {
                     </Modal>
 
                     <aside className={cx("content__left")}>
-                        <section className={cx("content__search")}>
-                            <h4 className={cx("content__search--header")}>Search</h4>
-                            <article className={cx("content__search--control")}>
-                                <input type="text" placeholder="Search" className={cx("content__search--input")} />
-                                <button className={cx("content__search--btn")}>
-                                    <SearchIcon className={cx("content__search--icon")} />
-                                </button>
-                            </article>
-                        </section>
+                        {/* <Search /> */}
 
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")}>

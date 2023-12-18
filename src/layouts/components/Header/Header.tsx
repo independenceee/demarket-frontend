@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import NavbarItem from "@/layouts/components/Header/HeaderOption";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faCartShopping, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCartShopping, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Search from "@/layouts/components/Search";
 import { CartContextType } from "@/types/CartContextType";
@@ -19,7 +19,6 @@ import ConnectWallet from "../ConnectWallet/ConnectWallet";
 import Avatar from "@/components/Avatar";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import { FaBars } from "react-icons/fa";
 import Button from "@/components/Button";
 const cx = classNames.bind(styles);
 type Props = {
@@ -65,6 +64,7 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
 
                     <Button>
                         <FontAwesomeIcon icon={faBars} />
+                        {/* <FontAwesomeIcon icon={faXmark} /> */}
                     </Button>
                 </div>
             </div>
