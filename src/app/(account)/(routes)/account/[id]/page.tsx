@@ -3,6 +3,8 @@
 import React, { useContext, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
+import { FaFacebookMessenger, FaShare } from "react-icons/fa6";
+import { CiHeart } from "react-icons/ci";
 import {
     ArrowDropdownCircleIcon,
     CreatedAtIcon,
@@ -10,14 +12,12 @@ import {
     NftIcon,
     PolicyIdIcon,
     RatingIcon,
-    SearchIcon,
     SelledIcon,
     StakekeyIcon,
     ArrowRightIcon,
 } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import CopyItem from "@/components/CopyItem";
-import customChars from "@/helpers/convertString";
 import AccountContainer from "@/components/AccountContainer";
 import Modal from "@/components/Modal";
 import { useModal } from "@/hooks";
@@ -31,6 +31,8 @@ import { DemarketContextType } from "@/types/DemarketContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import Search from "@/components/Search";
+import Category from "@/components/Category";
+import Link from "next/link";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -100,6 +102,7 @@ const AccountPage = function ({}: Props) {
         { name: "Like", slug: "like" },
     ];
     const [activeTab, setActiveTab] = useState<string>("my assets");
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
     const { isShowing = true, toggle } = useModal();
 
     return (
@@ -108,28 +111,52 @@ const AccountPage = function ({}: Props) {
                 <section className={cx("banner__wrapper")}>
                     <Image className={cx("banner__image")} src={images.background} alt="Background" />
                 </section>
-                <section className={cx("avatar__wrapper")}>
-                    <div className={cx("avatar__container")}>
-                        <div className={cx("avatar__image--container")}>
-                            <Image className={cx("avatar__image--image")} src={images.user} alt="User Avatar" />
+
+                <section className={cx("account__wrapper")}>
+                    <div className={cx("account__container")}>
+                        <div className={cx("account__image")}>
+                            <Image src={images.user} alt="User" className={cx("image")} />
                         </div>
-                        <div></div>
-                        <div className={cx("follower")}>FOLLOW</div>
+                        <button className={cx("account__button")}>Edit profile</button>
                     </div>
-                    <div className={cx("avatar__infomation")}>
-                        <h4 className={cx("avatar__infomation--name")}>{}</h4>
-                        <h4 className={cx("avatar__infomation--description")}>Slogan</h4>
-                    </div>
-                    <div className={cx("avatar__social")}>
-                        <p>
-                            <NftIcon />
-                        </p>
-                        <p>
-                            <NftIcon />
-                        </p>
-                        <p>
-                            <NftIcon />
-                        </p>
+
+                    <div className={cx("account__content")}>
+                        <div className={cx("account__infomation")}>
+                            <h3>The name of member Demarket</h3>
+                            <p>Youtube & Blogger</p>
+                        </div>
+                        <div className={cx("account__media")}>
+                            <div className={cx("social__links")}>
+                                <Link href="#">
+                                    <Image src={images.meta} alt="" />
+                                </Link>
+                                <Link href="#">
+                                    <Image src={images.linkedin} alt="" />
+                                </Link>
+                                <Link href="#">
+                                    <Image src={images.youtube} alt="" />
+                                </Link>
+                                <Link href="#">
+                                    <Image src={images.twitter} alt="" />
+                                </Link>
+                            </div>
+
+                            <div className={cx("analytics")}>
+                                <div className={cx("data")}>
+                                    <CiHeart className={cx("icon")} />
+                                    <span className={cx("number")}>60K</span>
+                                </div>
+                                <div className={cx("data")}>
+                                    <FaFacebookMessenger className={cx("icon")} />
+                                    <span className={cx("number")}>60K</span>
+                                </div>
+
+                                <div className={cx("data")}>
+                                    <FaShare className={cx("icon")} />
+                                    <span className={cx("number")}>60K</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -153,14 +180,10 @@ const AccountPage = function ({}: Props) {
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <PolicyIdIcon />
-                                            <span>PolicyId:</span>
+                                            <span>Address: </span>
                                         </h4>
                                         <p className={cx("content__filter--description")}>
-                                            {customChars({
-                                                inputString: "977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07",
-                                                numberOfFirstChar: 8,
-                                                numberOfLastChar: -8,
-                                            })}
+                                            addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
                                         </p>
                                         <CopyItem value="123" />
                                     </section>
@@ -170,11 +193,7 @@ const AccountPage = function ({}: Props) {
                                             <span>Stake key: </span>
                                         </h4>
                                         <p className={cx("content__filter--description")}>
-                                            {customChars({
-                                                inputString: "977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07",
-                                                numberOfFirstChar: 8,
-                                                numberOfLastChar: -7,
-                                            })}
+                                            addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
                                         </p>
                                         <CopyItem value="123" />
                                     </section>
@@ -250,11 +269,7 @@ const AccountPage = function ({}: Props) {
                                         <span>PolicyId:</span>
                                     </h4>
                                     <p className={cx("content__filter--description")}>
-                                        {customChars({
-                                            inputString: "977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07",
-                                            numberOfFirstChar: 8,
-                                            numberOfLastChar: -8,
-                                        })}
+                                        addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
                                     </p>
                                     <CopyItem value="123" />
                                 </section>
@@ -264,11 +279,7 @@ const AccountPage = function ({}: Props) {
                                         <span>Stake key: </span>
                                     </h4>
                                     <p className={cx("content__filter--description")}>
-                                        {customChars({
-                                            inputString: "977173d6324267b6bb5dbf574694bfd9349f60cdbc547b87978abc07",
-                                            numberOfFirstChar: 8,
-                                            numberOfLastChar: -7,
-                                        })}
+                                        addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
                                     </p>
                                     <CopyItem value="123" />
                                 </section>
@@ -310,22 +321,7 @@ const AccountPage = function ({}: Props) {
                             </article>
                         </section>
 
-                        <section className={cx("content__filter")}>
-                            <header className={cx("content__filter--header")}>
-                                <h3 className={cx("content__filter--title")}>Category</h3>
-                                <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                            </header>
-                            <article className={cx("content__filter--option")}>
-                                {categories.map(function (category: CategoryItemType, index: number) {
-                                    return (
-                                        <section key={index} className={cx("content__filter--group")}>
-                                            <h4 className={cx("content__filter--name")}>{category.name}</h4>
-                                            <input className={cx("content__filter--control")} type="checkbox" />
-                                        </section>
-                                    );
-                                })}
-                            </article>
-                        </section>
+                        <Category setSelectedCategory={setSelectedCategory} />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>

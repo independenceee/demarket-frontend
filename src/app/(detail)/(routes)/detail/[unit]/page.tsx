@@ -27,9 +27,8 @@ const DetailPage = function ({}: Props) {
     const { assetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
         useContext<SmartContractType>(SmartContractContext);
     const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
-
-    const [policyId, setPolicyId] = useState<string>(unit.slice(0, 56));
-    const [assetName, setAssetName] = useState<string>(unit.slice(56));
+    const [policyId] = useState<string>(unit.slice(0, 56));
+    const [assetName] = useState<string>(unit.slice(56));
     const [toggleState, setToggleState] = useState<number>(1);
     const [asset, setAsset] = useState<any>();
     const [price, setPrice] = useState<string>("");

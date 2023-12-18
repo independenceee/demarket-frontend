@@ -42,28 +42,10 @@ const DemarketProvider = function ({ children }: Props) {
             );
 
             if (existingItem) {
-                toast.warn("Asset already exits to cart", {
-                    position: "bottom-right",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.warn("Asset already exits to cart");
                 return { ...prev, changed: false };
             } else {
-                toast.success("Add to cart asset successfully", {
-                    position: "bottom-right",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success("Add to cart asset successfully");
                 return {
                     ...prev,
                     itemsList: [...prev.itemsList, newItem],
