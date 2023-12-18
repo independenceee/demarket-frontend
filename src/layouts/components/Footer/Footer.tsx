@@ -107,7 +107,7 @@ const Footer = function ({ selectedRouter, setSelectedRouter }: Props) {
                     </div>
                     <div className={cx("column")}>
                         <h4>Feed back</h4>
-                        <div className={cx("social-links")}>
+                        <div className={cx("feedback")}>
                             <textarea
                                 ref={textareaRef}
                                 className={cx("form-input")}

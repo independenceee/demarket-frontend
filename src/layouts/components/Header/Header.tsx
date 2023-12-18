@@ -6,7 +6,7 @@ import NavbarItem from "@/layouts/components/Header/HeaderOption";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faCartShopping, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
-
+import { ClipLoader } from "react-spinners";
 import Search from "@/layouts/components/Search";
 import { CartContextType } from "@/types/CartContextType";
 import CartContext from "@/contexts/components/CartContext";
@@ -20,6 +20,7 @@ import Avatar from "@/components/Avatar";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
 const cx = classNames.bind(styles);
 type Props = {
     selectedRouter: string;
@@ -28,8 +29,9 @@ type Props = {
 
 const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
     const { cartItem } = useContext<CartContextType>(CartContext);
-    const { account } = useContext<AccountContextType>(AccountContext);
-    const { toggleShowingSearch, toggleShowingCart } = useContext<ModalContextType>(ModalContext);
+    const { account, loadingAccount } = useContext<AccountContextType>(AccountContext);
+    const { isShowingCart, isShowingSearch, toggleShowingSearch, toggleShowingCart } =
+        useContext<ModalContextType>(ModalContext);
 
     return (
         <header className={cx("wrapper")}>
@@ -57,17 +59,28 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
                             <FontAwesomeIcon icon={faCartShopping} onClick={toggleShowingCart} />
                             <span>{cartItem.totalQuantity}</span>
                         </div>
-                        <Avatar />
+                        {loadingAccount && (
+                            <ClipLoader size={20} color="#36d7b7" loading={loadingAccount} speedMultiplier={1} />
+                        )}
+                        {account && <Avatar account={account} />}
                     </div>
 
                     <ConnectWallet />
 
-                    <Button>
+                    {/* <Button>
                         <FontAwesomeIcon icon={faBars} />
                         {/* <FontAwesomeIcon icon={faXmark} /> */}
-                    </Button>
+                    {/* </Button> */}
                 </div>
             </div>
+
+            <Modal isShowing={isShowingSearch} toggle={toggleShowingSearch}>
+                <Search />
+            </Modal>
+
+            <Modal isShowing={isShowingCart} toggle={toggleShowingCart}>
+                <Cart />
+            </Modal>
         </header>
     );
 };

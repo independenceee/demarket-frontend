@@ -24,22 +24,21 @@ const AccountProvider = function ({ children }: Props) {
      * TODO: Get account infomation when connect wallet
      */
     const [account, setAccount] = useState<AccountItemType>(null!);
-    const [loadingAccount, setLoadingAccount] = useState<boolean>(true);
-
-    const fetchAccountFromAddress = async function () {
-        try {
-            const account: AccountItemType = await post("/account", {
-                walletAddress: walletItem.walletAddress,
-            });
-            setAccount(account);
-            setLoadingAccount(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+    const [loadingAccount, setLoadingAccount] = useState<boolean>(false);
     useEffect(
         function () {
+            const fetchAccountFromAddress = async function () {
+                try {
+                    setLoadingAccount(true);
+                    const account: AccountItemType = await post("/account", {
+                        walletAddress: walletItem.walletAddress,
+                    });
+                    setAccount(account);
+                    setLoadingAccount(false);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
             if (walletItem.walletAddress) {
                 fetchAccountFromAddress();
             }
@@ -58,9 +57,12 @@ const AccountProvider = function ({ children }: Props) {
     const fetchAssetsFromAddress = async function () {
         try {
             if (walletItem.walletAddress === walletAddressParams) {
-                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
-                    address: walletItem.walletAddress || walletAddressParams,
-                });
+                const { paginatedData, totalPage } = await post(
+                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
+                    {
+                        address: walletItem.walletAddress || walletAddressParams,
+                    },
+                );
 
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {
@@ -76,7 +78,10 @@ const AccountProvider = function ({ children }: Props) {
                 setTotalPagesAssetsFromAddress(totalPage);
                 setLoadingAssetsFromAddress(false);
             } else {
-                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`, { address: walletAddressParams });
+                const { paginatedData, totalPage } = await post(
+                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
+                    { address: walletAddressParams },
+                );
 
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {

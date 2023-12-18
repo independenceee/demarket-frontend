@@ -41,7 +41,7 @@ const NftContainer = function ({ nfts, itemsPerPage = 8, loading }: Props) {
                           return <NftItem key={index} value={value} index={index} />;
                       })}
             </div>
-            {!loading && (
+            {!loading && nfts.length !== 0 && (
                 <Stack spacing={2}>
                     <Pagination
                         count={pageCount}

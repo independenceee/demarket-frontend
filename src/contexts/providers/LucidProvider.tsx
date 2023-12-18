@@ -8,6 +8,7 @@ import { WalletItemType } from "@/types/GenericsType";
 type Props = { children: ReactNode };
 
 const LucidProvider = function ({ children }: Props) {
+    const [loadingConnectWallet, setLoadingConnectWallet] = useState<boolean>(false);
     const [networkPlatform, setNetworkPlatform] = useState<string>("Preprod");
     const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
     const chooseLucidNetworkPlatform = async function () {
@@ -17,7 +18,7 @@ const LucidProvider = function ({ children }: Props) {
                 lucid = await Lucid.new(
                     new Blockfrost(
                         "https://cardano-preprod.blockfrost.io/api/v0",
-                        "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                        "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o",
                     ),
                     networkPlatform,
                 );
@@ -27,7 +28,7 @@ const LucidProvider = function ({ children }: Props) {
                 lucid = await Lucid.new(
                     new Blockfrost(
                         "https://cardano-preprod.blockfrost.io/api/v0",
-                        "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                        "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o",
                     ),
                     networkPlatform,
                 );
@@ -59,13 +60,14 @@ const LucidProvider = function ({ children }: Props) {
 
     const connectWallet = async function ({ walletApi, walletName, walletImage, walletCheckApi }: WalletItemType) {
         try {
+            setLoadingConnectWallet(true);
             let lucid: Lucid;
             switch (networkPlatform) {
                 case "Preprod":
                     lucid = await Lucid.new(
                         new Blockfrost(
                             "https://cardano-preprod.blockfrost.io/api/v0",
-                            "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                            "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o",
                         ),
                         networkPlatform,
                     );
@@ -75,7 +77,7 @@ const LucidProvider = function ({ children }: Props) {
                     lucid = await Lucid.new(
                         new Blockfrost(
                             "https://cardano-preprod.blockfrost.io/api/v0",
-                            "preprodaXBLgbqqCAo5wMCdB77sUusgmx2RcgtH",
+                            "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o",
                         ),
                         networkPlatform,
                     );
@@ -102,6 +104,7 @@ const LucidProvider = function ({ children }: Props) {
                     walletImage: walletImage,
                 };
             });
+            setLoadingConnectWallet(false);
         } catch (error) {
             console.log(error);
         }
@@ -136,6 +139,7 @@ const LucidProvider = function ({ children }: Props) {
                 setWalletItem,
                 setLucidNeworkPlatform,
                 setNetworkPlatform,
+                loadingConnectWallet,
             }}
         >
             {children}

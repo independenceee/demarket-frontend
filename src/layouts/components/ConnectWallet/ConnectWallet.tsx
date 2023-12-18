@@ -21,7 +21,7 @@ const cx = classNames.bind(styles);
 type Props = {};
 
 const ConnectWallet = function ({}: Props) {
-    const { connectWallet, lucidWallet, disconnectWallet, walletItem, setWalletItem } =
+    const { connectWallet, lucidWallet, disconnectWallet, walletItem, setWalletItem, loadingConnectWallet } =
         useContext<LucidContextType>(LucidContext);
     const {
         isShowingWalletShort,
@@ -196,10 +196,10 @@ const ConnectWallet = function ({}: Props) {
                             <span className={cx("wallet__short--name")}>Refresh</span>
                         </div>
                     </section>
-                    <section className={cx("wallet__short--container")} onClick={disconnectWallet}>
+                    <section className={cx("wallet__short--container")} onClick={handleDisconnecWallet}>
                         <div className={cx("wallet__short--item")}>
                             <CiLogout className={cx("wallet__short--image")} />
-                            <span className={cx("wallet__short--name")}>Refresh</span>
+                            <span className={cx("wallet__short--name")}>Disconnect Wallet</span>
                         </div>
                     </section>
                 </div>
