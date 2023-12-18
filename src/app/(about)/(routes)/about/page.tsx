@@ -45,6 +45,8 @@ const AboutPage = function ({}: Props) {
                                 <ReactPlayer
                                     className={cx("about__video--control")}
                                     controls
+                                    width={"100%"}
+                                    height={"auto"}
                                     url="https://www.youtube.com/watch?v=Zzn9-ATB9aU"
                                 />
                             </div>

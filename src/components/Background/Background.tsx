@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import classNames from "classnames/bind";
 import styles from "./Background.module.scss";
+import images from "@/assets/images";
 const cx = classNames.bind(styles);
 const slider = [
     {
@@ -127,8 +128,8 @@ const Carousel = function ({}: Props) {
                     })}
                 </Swiper>
 
-                <img src={require("../../assets/images/logo.jpg")} alt="bg image" className={cx("bgdonut1")} />
-                <img src={require("../../assets/images/logo.jpg")} alt="bg image" className={cx("bgdonut2")} />
+                <img src={images.logo} alt="bg image" className={cx("bgdonut1")} />
+                <img src={images.logo} alt="bg image" className={cx("bgdonut2")} />
             </div>
         </div>
     );

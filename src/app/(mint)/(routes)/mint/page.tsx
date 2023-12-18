@@ -1,20 +1,22 @@
 "use client";
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import { TrashIcon, AddIcon } from "@/components/Icons";
 import axios from "axios";
+import { Multiselect } from "multiselect-react-dropdown";
+
+import { TrashIcon, AddIcon } from "@/components/Icons";
 import Image from "next/image";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
-
 import images from "@/assets/images";
-import styles from "./Mint.module.scss";
+
 import { LucidContextType } from "@/types/LucidContextType";
 import { SmartContractType } from "@/types/SmartContextType";
 import { DemarketContextType } from "@/types/DemarketContextType";
+import styles from "./Mint.module.scss";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
@@ -34,7 +36,7 @@ type Props = {};
 const MintPage = function ({}: Props) {
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
     const { mintAsset } = useContext<SmartContractType>(SmartContractContext);
-    const { addNft } = useContext<DemarketContextType>(DemarketContext);
+    const { addNft, categories } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Select Your Option");
@@ -130,31 +132,13 @@ const MintPage = function ({}: Props) {
             });
 
             if (txHash) {
-                toast.success("Mint asset successfully", {
-                    position: "bottom-right",
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success("Mint asset successfully");
                 await addNft({ policyId, assetName });
-
                 return;
             }
-            toast.warning("Mint asset faild", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warning("Mint asset faild");
         } catch (error) {
+            toast.warning("Mint asset faild");
             console.log(error);
         }
     };
@@ -200,6 +184,16 @@ const MintPage = function ({}: Props) {
                                 <span className={cx("button-text")}>{mediaType}</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div className={cx("select-wrapper")}>
+                        <h3 className={cx("label")}>Category</h3>
+                        <Multiselect
+                            placeholder="Select category ..."
+                            className={cx("title-control")}
+                            options={categories}
+                            displayValue="name"
+                        />
                     </div>
 
                     {/* select-end */}
