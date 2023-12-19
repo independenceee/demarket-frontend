@@ -33,15 +33,16 @@ const Footer = function ({ selectedRouter, setSelectedRouter }: Props) {
             });
 
             toast.success(data);
-
-            textareaRef.current.focus();
         } catch (error) {
             toast.warning("Send feedback failed !");
         }
+        setFeedback("");
+        textareaRef.current.focus();
     };
 
     const handleClear = function () {
         setFeedback("");
+        textareaRef.current.focus();
     };
     return (
         <footer className={cx("footer")}>

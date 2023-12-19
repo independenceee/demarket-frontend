@@ -73,7 +73,7 @@ const MarketplacePage = function ({}: Props) {
                 <Title main="HOME" slug="MARKETPLACE" />
                 <section className={cx("content__wrapper")}>
                     <div className={cx("content__left--wrapper")}>
-                        <div className={cx("content__left-container")} data-aos="fade-right" data-aos-duration="1000">
+                        <div className={cx("content__left--container")} data-aos="fade-right" data-aos-duration="1000">
                             <Search searchValue={searchValue} setSearchValue={setSearchValue} />
                             <Category setSelectedCategory={setSelectedCategory} />
                             <section className={cx("content__filter")}>

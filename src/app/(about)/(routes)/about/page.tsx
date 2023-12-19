@@ -46,7 +46,7 @@ const AboutPage = function ({}: Props) {
                                     className={cx("about__video--control")}
                                     controls
                                     width={"100%"}
-                                    height={"auto"}
+                                    height={"350px"}
                                     url="https://www.youtube.com/watch?v=Zzn9-ATB9aU"
                                 />
                             </div>
