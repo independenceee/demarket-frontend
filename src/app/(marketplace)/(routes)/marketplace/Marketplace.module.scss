@@ -9,24 +9,24 @@
     gap: 50px;
     position: relative;
     margin: 0 auto;
+}
 
-    .content__left--wrapper {
-        display: flex;
-        flex: 0.3;
-        width: 100%;
-        padding-bottom: 20px;
-        top: 0;
-        .content__left-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
-    }
+.content__left--wrapper {
+    display: flex;
+    flex: 0.3;
+    width: 100%;
+    padding-bottom: 20px;
+    top: 0;
+}
+.content__left--container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
 
-    .content__right {
-        flex: 0.7;
-    }
+.content__right {
+    flex: 0.7;
 }
 
 .content__filter {

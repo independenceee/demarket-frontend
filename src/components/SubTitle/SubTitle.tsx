@@ -6,13 +6,13 @@ const cx = classNames.bind(styles);
 
 type Props = {
     title: string;
-    description: string;
+    description?: string;
 };
 const SubTitle = function ({ title, description }: Props) {
     return (
         <header className={cx("wrapper")}>
             <h3 className={cx("title")}>{title}</h3>
-            <p className={cx("description")}>{description}</p>
+            {description && <p className={cx("description")}>{description}</p>}
         </header>
     );
 };
