@@ -60,7 +60,7 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
                             <span>{cartItem.totalQuantity}</span>
                         </div>
                         {loadingAccount && (
-                            <ClipLoader size={20} color="#36d7b7" loading={loadingAccount} speedMultiplier={1} />
+                            <ClipLoader size={20} color="#7000ff" loading={loadingAccount} speedMultiplier={1} />
                         )}
                         {account && <Avatar account={account} />}
                     </div>

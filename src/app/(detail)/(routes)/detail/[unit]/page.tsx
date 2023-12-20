@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { useState, useEffect, useContext, ChangeEvent } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent, useRef } from "react";
 import classNames from "classnames/bind";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
@@ -21,6 +21,7 @@ import { SmartContractType } from "@/types/SmartContextType";
 import { LucidContextType } from "@/types/LucidContextType";
 import SubTitle from "@/components/SubTitle";
 import { post } from "@/utils/httpRequest";
+import Button from "@/components/Button";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -35,6 +36,8 @@ const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
+
+    const inputRef = useRef<HTMLInputElement>(null!);
 
     const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
         useContext<SmartContractType>(SmartContractContext);
@@ -136,11 +139,181 @@ const DetailPage = function ({}: Props) {
             <div className={cx("container")}>
                 {asset ? (
                     <main className={cx("content__wrapper")}>
-                        <section className={cx("content__left")}>1</section>
+                        <section className={cx("content__left")}>
+                            <div className={cx("content__image")}>
+                                {checkMediaType(String(asset.mediaType), "image") && (
+                                    <img
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                        alt=""
+                                    />
+                                )}
+                                {checkMediaType(String(asset.mediaType), "video") && (
+                                    <video autoPlay muted loop className={cx("content__image--image")}>
+                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="video/mp4" />
+                                    </video>
+                                )}
+
+                                {checkMediaType(String(asset.mediaType), "application") && (
+                                    <iframe
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                    ></iframe>
+                                )}
+
+                                {checkMediaType(String(asset.mediaType), "audio") && (
+                                    <audio controls>
+                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="audio/mpeg" />
+                                    </audio>
+                                )}
+                                <div className={cx("content__image--left")}>
+                                    <EyeIcon className={cx("icon")} />
+                                </div>
+                                <div className={cx("content__image--right")}>
+                                    <UnHeartIcon className={cx("icon")} />
+                                </div>
+                            </div>
+                        </section>
 
                         <section className={cx("content__right")}>
-                            <section className={cx("content__content")}>2</section>
-                            <section className={cx("content__price")}>3</section>
+                            <section className={cx("detail__content")}>
+                                <h2 className={cx("asset__name")}>{convertHexToString(asset.assetName)}</h2>
+                                <div className={cx("description")}>
+                                    <span>Type:</span> {asset.mediaType.split("/").pop()}
+                                </div>
+                                <div className={cx("description")}>
+                                    <span>PolicyId:</span>
+                                    {convertString({
+                                        inputString: String(asset.policyId),
+                                        numberOfFirstChar: 20,
+                                        numberOfLastChar: -10,
+                                    })}
+                                    <CopyItem value={asset.policyId} />
+                                </div>
+                                <div className={cx("description")}>
+                                    <span>Fingerprint:</span>
+                                    {convertString({
+                                        inputString: String(asset.fingerprint),
+                                        numberOfFirstChar: 20,
+                                        numberOfLastChar: -10,
+                                    })}
+                                </div>
+                                <div className={cx("people__wrapper")}>
+                                    <section className={cx("peple__container")}>
+                                        <header className={cx("people__header")}>Owner</header>
+                                        <div className={cx("people__content")}>
+                                            <div className={cx("people__avatar")}>
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className={cx("people__information")}>
+                                                <h3 className={cx("people__name")}>
+                                                    {convertString({
+                                                        inputString: String(asset.stakekeySellerAddress),
+                                                        numberOfFirstChar: 9,
+                                                        numberOfLastChar: -6,
+                                                    })}
+                                                </h3>
+                                                <div className={cx("people__address")}>
+                                                    <p>
+                                                        {convertString({
+                                                            inputString: String(asset.sellerAddress),
+                                                            numberOfFirstChar: 9,
+                                                            numberOfLastChar: -6,
+                                                        })}
+                                                    </p>
+                                                    <CopyItem value={asset.sellerAddress} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section className={cx("peple__container")}>
+                                        <header className={cx("people__header")}>Author</header>
+                                        <div className={cx("people__content")}>
+                                            <div className={cx("people__avatar")}>
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className={cx("people__information")}>
+                                                <h3 className={cx("people__name")}>
+                                                    {convertString({
+                                                        inputString: String(asset.stakekeyAuthorAddress),
+                                                        numberOfFirstChar: 9,
+                                                        numberOfLastChar: -6,
+                                                    })}
+                                                </h3>
+                                                <div className={cx("people__address")}>
+                                                    <p>
+                                                        {convertString({
+                                                            inputString: String(asset.authorAddress),
+                                                            numberOfFirstChar: 9,
+                                                            numberOfLastChar: -6,
+                                                        })}
+                                                    </p>
+                                                    <CopyItem value={asset.sellerAddress} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </section>
+                            {asset.price && asset.sellerAddress !== walletItem.walletAddress && (
+                                <section className={cx("price__wrapper")}>
+                                    <header className={cx("price__header")}>
+                                        Price: {Number(asset.price) / 1000000} &nbsp;₳
+                                    </header>
+                                    <article className={cx("price__container")}>
+                                        <Button className={cx("search-btn")} onClick={handleBuyNft}>
+                                            Buy asset
+                                        </Button>
+                                        <Button className={cx("search-btn")} onClick={handleBuyNft}>
+                                            Add to cart
+                                        </Button>
+                                    </article>
+                                </section>
+                            )}
+
+                            {asset.price && asset.sellerAddress === walletItem.walletAddress && (
+                                <section className={cx("price__wrapper")}>
+                                    <header className={cx("price__header")}>
+                                        Price: {Number(asset.price) / 1000000} &nbsp;₳
+                                    </header>
+                                    <article className={cx("price__container")}>
+                                        <Button className={cx("search-btn")} onClick={handleRefundNft}>
+                                            Refund asset
+                                        </Button>
+                                        <Button className={cx("search-btn")} onClick={handleBuyNft}>
+                                            Add to cart
+                                        </Button>
+                                    </article>
+                                </section>
+                            )}
+
+                            {asset.currentAddress === walletItem.walletAddress && !asset.price ? (
+                                <section className={cx("price__wrapper")}>
+                                    <header className={cx("price__header")}>Enter the price</header>
+                                    <article className={cx("price__container")}>
+                                        <input
+                                            ref={inputRef}
+                                            value={price}
+                                            spellCheck={false}
+                                            type="text"
+                                            onChange={handleInputPrice}
+                                            placeholder="Price ..."
+                                        />
+
+                                        <Button className={cx("search-btn")} onClick={handleSellNft}>
+                                            Sell asset
+                                        </Button>
+                                    </article>
+                                </section>
+                            ) : null}
                             <section className={cx("content__infomation")}>
                                 <div className={cx("tabs")}>
                                     {tabItems.map(function ({ id, name }, index) {
@@ -199,7 +372,7 @@ const DetailPage = function ({}: Props) {
                         </section>
                     </main>
                 ) : (
-                    <main className={cx("content__wrapper--skeleton")}>
+                    <main className={cx("content__wrapper")}>
                         <section className={cx("content__left--skeleton")}>
                             <Skeleton className={cx("skeleton__item--skeleton")} />
                         </section>

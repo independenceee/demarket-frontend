@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
+import CountUp from "react-countup";
 import classNames from "classnames/bind";
 import { FaFacebookMessenger, FaShare } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
@@ -31,6 +33,7 @@ import { DemarketContextType } from "@/types/DemarketContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import Search from "@/components/Search";
+import fetchStakeKeyFromAddress from "@/utils/fetchStakeKeyFromAddress";
 import Category from "@/components/Category";
 import Link from "next/link";
 
@@ -38,6 +41,7 @@ type Props = {};
 const cx = classNames.bind(styles);
 
 const AccountPage = function ({}: Props) {
+    const { id } = useParams();
     const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
     const { accounts, categories, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
         useContext<DemarketContextType>(DemarketContext);
@@ -182,9 +186,7 @@ const AccountPage = function ({}: Props) {
                                             <PolicyIdIcon />
                                             <span>Address: </span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>
-                                            addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
-                                        </p>
+                                        <p className={cx("content__filter--description")}>{id}</p>
                                         <CopyItem value="123" />
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -192,9 +194,7 @@ const AccountPage = function ({}: Props) {
                                             <StakekeyIcon />
                                             <span>Stake key: </span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>
-                                            addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
-                                        </p>
+                                        <p className={cx("content__filter--description")}></p>
                                         <CopyItem value="123" />
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -202,7 +202,7 @@ const AccountPage = function ({}: Props) {
                                             <NftIcon />
                                             <span>NFTs: </span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}></h4>
+                                        <h4 className={cx("content__filter--value")}>{assetsFromAddress.length}</h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -266,11 +266,9 @@ const AccountPage = function ({}: Props) {
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
                                         <PolicyIdIcon />
-                                        <span>PolicyId:</span>
+                                        <span>Address:</span>
                                     </h4>
-                                    <p className={cx("content__filter--description")}>
-                                        addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
-                                    </p>
+                                    <p className={cx("content__filter--description")}>{id}</p>
                                     <CopyItem value="123" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
@@ -278,9 +276,7 @@ const AccountPage = function ({}: Props) {
                                         <StakekeyIcon />
                                         <span>Stake key: </span>
                                     </h4>
-                                    <p className={cx("content__filter--description")}>
-                                        addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs
-                                    </p>
+                                    <p className={cx("content__filter--description")}></p>
                                     <CopyItem value="123" />
                                 </section>
                                 <section className={cx("content__filter--group")}>
@@ -288,14 +284,18 @@ const AccountPage = function ({}: Props) {
                                         <NftIcon />
                                         <span>NFTs: </span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}></h4>
+                                    <h4 className={cx("content__filter--value")}>
+                                        <CountUp start={0} end={assetsFromAddress.length} />
+                                    </h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>
                                         <SelledIcon className={cx("content__filter--icon")} />
                                         <span>NFTs selling:</span>
                                     </h4>
-                                    <h4 className={cx("content__filter--value")}></h4>
+                                    <h4 className={cx("content__filter--value")}>
+                                        <CountUp start={0} end={sellingAssetsFromAddress.length} />
+                                    </h4>
                                 </section>
                                 <section className={cx("content__filter--group")}>
                                     <h4 className={cx("content__filter--name")}>

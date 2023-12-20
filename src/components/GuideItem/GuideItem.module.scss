@@ -20,9 +20,16 @@
     font-weight: bold;
     padding: 10px 16px;
     margin-right: 16px;
-}
-
-.title {
+    background: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
+    color: var(--white-color);
 }
 
 .description {

@@ -15,6 +15,8 @@ import { CloseIcon, CopyIcon } from "@/components/Icons";
 import Tippy from "@tippyjs/react";
 import { LuRefreshCw } from "react-icons/lu";
 import { CiLogout } from "react-icons/ci";
+import { AccountContextType } from "@/types/AccountContextType";
+import AccountContext from "@/contexts/components/AccountContext";
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +26,8 @@ const ConnectWallet = function ({}: Props) {
     const { connectWallet, lucidWallet, disconnectWallet, walletItem, setWalletItem, loadingConnectWallet } =
         useContext<LucidContextType>(LucidContext);
     const {
+        isShowingNotificationConnectWallet,
+        toggleNotificationConnectWallet,
         isShowingWalletShort,
         toggleShowingWalletShort,
         isShowingDownloadWallet,
@@ -33,6 +37,8 @@ const ConnectWallet = function ({}: Props) {
         isShowingInfomationAccount,
         toggleShowingInfomationAccount,
     } = useContext<ModalContextType>(ModalContext);
+
+    const { setAccount } = useContext<AccountContextType>(AccountContext);
 
     const handleConnectWallet = async function (wallet: WalletItemType) {
         try {
@@ -72,7 +78,7 @@ const ConnectWallet = function ({}: Props) {
             if (isShowingInfomationAccount) {
                 toggleShowingInfomationAccount();
             }
-
+            setAccount(null!);
             await disconnectWallet();
         } catch (error) {
             console.log(error);
@@ -94,7 +100,7 @@ const ConnectWallet = function ({}: Props) {
                 ) : (
                     <Button onClick={toggleShowingInfomationAccount} RightIcon={IoIosArrowDown}>
                         <div className={cx("wallet")}>
-                            <Image src={walletItem.walletImage} alt="Wallet Image" />
+                            <Image className={cx("image")} src={walletItem.walletImage} alt="Wallet Image" />
                             <Tippy content={`${walletItem.walletBalance} lovelace`}>
                                 <span>{walletItem.walletBalance}&nbsp;₳</span>
                             </Tippy>
@@ -156,6 +162,31 @@ const ConnectWallet = function ({}: Props) {
                 </div>
             </Modal>
 
+            <Modal isShowing={isShowingNotificationConnectWallet} toggle={toggleNotificationConnectWallet}>
+                <div className={cx("wallet_download")}>
+                    <section className={cx("nowallet__content")}>
+                        <p>
+                            You must connect a wallet to make a transaction. Chrome Web Store and install it now , if
+                            you dont have one yet?
+                        </p>
+                    </section>
+                    <div className={cx("nowallet__button")}>
+                        <button className={cx("button__ok")} onClick={toggleNotificationConnectWallet}>
+                            CANCEL
+                        </button>
+                        <button
+                            onClick={() => {
+                                toggleShowingWalletShort();
+                                toggleNotificationConnectWallet();
+                            }}
+                            className={cx("button__cancel")}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
             <Modal isShowing={isShowingDownloadWallet} toggle={toggleDownloadWallet}>
                 <div className={cx("wallet_download")}>
                     <section className={cx("nowallet__content")}>
@@ -180,7 +211,7 @@ const ConnectWallet = function ({}: Props) {
                 </div>
             </Modal>
 
-            <Modal isShowing={isShowingInfomationAccount} toggle={toggleShowingInfomationAccount}>
+            <Modal transparent isShowing={isShowingInfomationAccount} toggle={toggleShowingInfomationAccount}>
                 <div className={cx("wallet__infomation--wrapper")}>
                     <section className={cx("wallet__short--container")}>
                         <div className={cx("wallet__short--item")}>

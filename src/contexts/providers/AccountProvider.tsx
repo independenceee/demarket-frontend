@@ -64,6 +64,8 @@ const AccountProvider = function ({ children }: Props) {
                     },
                 );
 
+                console.log(paginatedData);
+
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name }: any) => {
                         const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
@@ -243,6 +245,7 @@ const AccountProvider = function ({ children }: Props) {
             value={{
                 account,
                 loadingAccount,
+                setAccount,
 
                 assetsFromAddress,
                 setAssetsFromAddress,

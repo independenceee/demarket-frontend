@@ -9,6 +9,7 @@ type Props = {
 };
 
 const ModalProvider = function ({ children }: Props) {
+    const { isShowing: isShowingNotificationConnectWallet, toggle: toggleNotificationConnectWallet } = useModal();
     const { isShowing: isShowingDownloadWallet, toggle: toggleDownloadWallet } = useModal();
     const { isShowing: isShowingSearch, toggle: toggleShowingSearch } = useModal();
     const { isShowing: isShowingCart, toggle: toggleShowingCart } = useModal();
@@ -19,6 +20,8 @@ const ModalProvider = function ({ children }: Props) {
     return (
         <ModalContext.Provider
             value={{
+                isShowingNotificationConnectWallet,
+                toggleNotificationConnectWallet,
                 isShowingDownloadWallet,
                 toggleDownloadWallet,
                 isShowingSearch,
