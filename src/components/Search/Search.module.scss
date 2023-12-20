@@ -10,7 +10,7 @@
 }
 
 .header {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 700;
     color: #4c4747;
 }
@@ -95,4 +95,10 @@
     &:active {
         background-color: rgba(22, 24, 35, 0.06);
     }
+}
+
+.search-icon {
+    font-size: 25px;
+    width: 25px;
+    height: 25px;
 }

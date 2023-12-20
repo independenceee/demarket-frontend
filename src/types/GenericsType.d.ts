@@ -58,7 +58,7 @@ export type Statistic = {
     totalProduct: number;
     totalCollection: number;
     totalTrending: number;
-    totalAuthor: number;
+    totalAccount: number;
 };
 
 export type FounderItemType = {
@@ -72,16 +72,6 @@ export type FounderItemType = {
     twitter: string;
     linkedin: string;
     updatedAt?: string;
-};
-
-export type GuideItemType = {
-    createdAt?: string;
-    description: string;
-    id?: string;
-    question: string;
-    title: string;
-    updatedAt?: string;
-    videoUrl: string;
 };
 
 export type CategoryItemType = {

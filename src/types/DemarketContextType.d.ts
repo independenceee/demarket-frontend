@@ -12,9 +12,6 @@ export type DemarketContextType = {
     currentPageAccounts: number;
     totalPagesAccounts: number;
     setCurrentPageAccounts: React.Dispatch<React.SetStateAction<number>>;
-    
-    guides: Array<GuideItemType>;
-    loadingGuides: boolean;
 
     addNft: ({ policyId, assetName }: NftItemType) => Promise<any>;
 };
