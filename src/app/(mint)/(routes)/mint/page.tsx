@@ -2,8 +2,6 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import axios from "axios";
-import { Multiselect } from "multiselect-react-dropdown";
-
 import { TrashIcon, AddIcon } from "@/components/Icons";
 import Image from "next/image";
 import DemarketContext from "@/contexts/components/DemarketContext";
@@ -12,16 +10,15 @@ import LucidContext from "@/contexts/components/LucidContext";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 import images from "@/assets/images";
-
 import { LucidContextType } from "@/types/LucidContextType";
 import { SmartContractType } from "@/types/SmartContextType";
 import { DemarketContextType } from "@/types/DemarketContextType";
+import Select from "react-select";
 import styles from "./Mint.module.scss";
 const cx = classNames.bind(styles);
 
 function convertMetadataToObj(metadataArray: any) {
     const resultObj: any = {};
-
     for (const item of metadataArray) {
         if (item.hasOwnProperty("property") && item.hasOwnProperty("value")) {
             resultObj[item.property] = item.value;
@@ -39,7 +36,7 @@ const MintPage = function ({}: Props) {
     const { addNft, categories } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [mediaType, setMediaType] = useState<string>("Select Your Option");
+    const [mediaType, setMediaType] = useState<string>("Media type asset");
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
@@ -118,7 +115,7 @@ const MintPage = function ({}: Props) {
             const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
                 headers: {
                     "Content-Type": `multipart/form-data; boundary=${formData}`,
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkzN2QzNDU1MDA5MTg3MGQ2OGE2Iiwic2NvcGVkS2V5U2VjcmV0IjoiODcwODZmYTBmYjM2NWVkMzZmOTcwNmRiODAyNjRkNDVjYzA3NWExOGEyOTY3YWRhNGRlMmQyYmEzYTlmOTljYiIsImlhdCI6MTY5NzUxMDk1NX0.FqH3wlzhnRdKLatBtfQ04d6-PnCQu5hXZSHK9xFDJvE`,
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
                 },
             });
 
@@ -132,11 +129,17 @@ const MintPage = function ({}: Props) {
             });
 
             if (txHash) {
-                toast.success("Mint asset successfully");
-                await addNft({ policyId, assetName });
+                toast.warning("Mint asset faild");
                 return;
             }
-            toast.warning("Mint asset faild");
+
+            toast.success("Mint asset successfully");
+            setTitle("");
+            setDescription("");
+            setImagePath("");
+            setMetadatas([]);
+            setMediaType("");
+            await addNft({ policyId, assetName });
         } catch (error) {
             toast.warning("Mint asset faild");
             console.log(error);
@@ -188,11 +191,15 @@ const MintPage = function ({}: Props) {
 
                     <div className={cx("select-wrapper")}>
                         <h3 className={cx("label")}>Category</h3>
-                        <Multiselect
+
+                        <Select
                             placeholder="Select category ..."
+                            isMulti
                             className={cx("title-control")}
-                            options={categories}
-                            displayValue="name"
+                            options={categories.map(function (category) {
+                                return { value: category.id, label: category.name };
+                            })}
+                            onChange={console.log}
                         />
                     </div>
 

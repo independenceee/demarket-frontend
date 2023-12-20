@@ -17,7 +17,7 @@ type Props = {
 const AccountItemSilder = function ({ account, index }: Props) {
     return (
         <Link
-            href={{ pathname: "" }}
+            href={{ pathname: `account/${account.walletAddress}` }}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}

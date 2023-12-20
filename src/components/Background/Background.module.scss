@@ -2,7 +2,6 @@
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
-
     backdrop-filter: blur(15px);
     overflow: hidden;
     transition: 0.5s;
@@ -85,14 +84,22 @@
 }
 
 .slider-btn {
+    font-weight: 550;
     display: inline-block;
-    color: #717171;
-    background: #fff;
+    background: linear-gradient(
+        90deg,
+        #8f04a6 0%,
+        #c0f 0%,
+        #7000ff 39.36%,
+        rgba(44, 0, 219, 0.91) 63.12%,
+        rgba(4, 0, 203, 0.89) 79.64%,
+        #1400ff 99.32%
+    );
+    color: var(--white-color);
     padding: 0.625rem 1.875rem;
     margin-top: 2.125rem;
     text-decoration: none;
-    text-transform: uppercase;
-    border: 2px solid #c2c2c2;
+    border: 2px solid #7000ff;
     border-radius: 3.125rem;
     transition: 0.3s ease-in-out;
 }
@@ -100,7 +107,7 @@
 .slider-btn:hover {
     border: 0.125rem solid #7000ff;
     color: #7000ff;
-    background: #ccc;
+    background: var(--white-color);
 }
 
 .bgdonut1 {
@@ -126,7 +133,7 @@
 }
 
 .myswiper-slider-active {
-    border-radius: 8px;
+    border-radius: 4px;
     width: 18.75rem;
     height: 28.125rem;
     background-size: cover;
@@ -134,6 +141,7 @@
 }
 
 .myswiper-slider-active div {
+    border-radius: 4px;
     display: none;
     opacity: 0;
     padding-bottom: 0.625rem;

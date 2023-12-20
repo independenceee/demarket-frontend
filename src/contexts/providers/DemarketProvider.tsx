@@ -38,7 +38,7 @@ const DemarketProvider = function ({ children }: Props) {
 
     const fetchGuides = async function () {
         try {
-            setGuides(await get("/guide"));
+            setGuides(await get("/guides"));
             setLoadingGuides(false);
         } catch (error) {
             console.log(error);

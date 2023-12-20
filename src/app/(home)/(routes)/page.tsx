@@ -31,10 +31,7 @@ const Home = function ({}: Props) {
                 <Title main={configs.titles.home.main} />
 
                 <section className={cx("news__wrapper")}>
-                    <SubTitle
-                        title={configs.subTitles.home.newItems.title}
-                        description={configs.subTitles.home.newItems.description}
-                    />
+                    <SubTitle title={"New Items"} description={"Explore our new products and find your favorites."} />
 
                     <article className={cx("news_container")}>
                         <NftContainer nfts={assetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
@@ -42,9 +39,8 @@ const Home = function ({}: Props) {
                 </section>
                 <section className={cx("trending__wrapper")}>
                     <SubTitle
-                        title="Trending Assets"
-                        description="Here are the top assets that are currently trending on our exchange, which we evaluate based
-                            on the criteria of uniqueness and rarity."
+                        title="Trending Items"
+                        description="The trending tech products of 2024. Let’s shop now for the hottest products."
                     />
 
                     <div className={cx("trending__container")}>
@@ -67,8 +63,7 @@ const Home = function ({}: Props) {
                 <section className={cx("news__wrapper")}>
                     <SubTitle
                         title="Selling Items"
-                        description="Beginning of the app and website design process, we know it is tempting to dive right into
-                        picking fonts."
+                        description="Find amazing works from a variety of artists on our platform."
                     />
 
                     <article className={cx("news_container")}>
@@ -76,7 +71,10 @@ const Home = function ({}: Props) {
                     </article>
                 </section>
                 <section className={cx("account__wrapper")}>
-                    <SubTitle title="Top Account" description="Beginning of the app and website design process." />
+                    <SubTitle
+                        title="Top Accounts"
+                        description="Explore our most featured accounts and find the creators, entrepreneurs, and influencers you love."
+                    />
                     <article className={cx("account__container")}>
                         <section className={cx("account__list--left")}>
                             {accounts.map(function (account, index) {

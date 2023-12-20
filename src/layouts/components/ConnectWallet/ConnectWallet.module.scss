@@ -1,14 +1,7 @@
-.wrapper {
-}
-
-.container {
-}
-
 .wallet__short--wrapper {
     position: absolute;
-    width: 206px;
+    width: 175px;
     background: #f8fafd;
-
     top: 70px;
     right: 5%;
     border-radius: var(--border-radius-4);
@@ -66,7 +59,6 @@
     flex-direction: column;
     left: 50%;
     max-height: 85vh;
-
     width: 90vw;
     max-width: 710px;
     overflow: hidden;

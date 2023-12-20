@@ -15,7 +15,7 @@ const Search = function ({}: Props) {
     return (
         <div className={cx("search-bar-container")}>
             <SearchFeild setResults={setResults} />
-            {results && results.length > 0 && <SearchResultList results={results} />}
+            {results && results.length > 0 ? <SearchResultList results={results} /> : <SearchResultList />}
         </div>
     );
 };

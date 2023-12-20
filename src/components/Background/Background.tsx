@@ -12,44 +12,55 @@ import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import classNames from "classnames/bind";
 import styles from "./Background.module.scss";
 import images from "@/assets/images";
+import Link from "next/link";
 const cx = classNames.bind(styles);
 const slider = [
     {
-        title: "Donut 1",
+        policyId: "",
+        assetName: "",
+        title: "Traditional Girl",
         description:
-            "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://images.unsplash.com/photo-1612240498936-65f5101365d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+            "Traditional Girl wears time-honored couture, where each stitch and embellishment narrate a story of cultural pride and timeless fashion.",
+        url: "https://ipfs.io/ipfs/QmSJ2rUwoFaz3rgVqeRR1x7UqcN4ZSQ4JFHuz1gG1GTx57",
     },
     {
-        title: "Donut 2",
+        policyId: "",
+        assetName: "",
+        title: "Robot Girl",
         description:
-            "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+            "Amidst the sweat and exertion, she exudes endorphin elegance, a portrait of the invigorating joy that comes with a physically active life.",
+        url: "https://ipfs.io/ipfs/QmUuGirnzkGxc6sSXdGJLuBoBzFyiarvDqSC9CVkg6GEM5",
     },
     {
-        title: "Donut 3",
+        policyId: "",
+        assetName: "",
+        title: "Style Girl",
         description:
-            "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://images.unsplash.com/photo-1646615077267-97c6088b74d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80",
+            "With couture confidence, Style Girl wears her individuality like a badge, turning heads with every curated ensemble.",
+        url: "https://ipfs.io/ipfs/QmXc8b37Q6eyN21AkfPJ3ZFr19EYNZfXrtLLEVMsvEfwgs",
     },
 
     {
+        policyId: "",
+        assetName: "",
         title: "Donut 4",
         description:
             "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://images.unsplash.com/photo-1631397833242-fc6213046352?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        url: "https://ipfs.io/ipfs/QmP5smfeXGucyvEs5QDbsvdKSbYm1KuhZdmDNEHXcrtvHS",
     },
     {
+        policyId: "",
+        assetName: "",
         title: "Donut 5",
         description:
             "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://images.unsplash.com/photo-1533137138-ba67dc90d752?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        url: "https://ipfs.io/ipfs/QmZw33dHzvmx9uz1rr5FLhugsRe4F3xqtef4ojpMcteNNT",
     },
 ];
 type Props = {};
 const Carousel = function ({}: Props) {
     const [background, setBackground] = useState<string>(
-        "https://images.unsplash.com/photo-1533137138-ba67dc90d752?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "https://ipfs.io/ipfs/QmZw33dHzvmx9uz1rr5FLhugsRe4F3xqtef4ojpMcteNNT",
     );
 
     return (
@@ -57,16 +68,15 @@ const Carousel = function ({}: Props) {
             <div className={cx("carousel")}>
                 <div data-aos="fade-left">
                     <div className={cx("carousel-content")}>
-                        <span>discover</span>
-                        <h1>Sweet Donut Heaven</h1>
+                        <span>Discover</span>
+                        <h1>Make WEB3 Popular with Humans</h1>
                         <hr />
                         <p>
-                            Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every
-                            Craving and Occasion.
+                            DEMARKET is a decentralized NFT exchange on the Cardano Blockchain platform from BLOCKALPHA.
                         </p>
-                        <a href="#" className={cx("slider-btn")}>
-                            download app
-                        </a>
+                        <Link href="/marketplace" className={cx("slider-btn")}>
+                            Enter NFT Marketplace
+                        </Link>
                     </div>
                 </div>
 
@@ -102,9 +112,9 @@ const Carousel = function ({}: Props) {
                                     <div>
                                         <h2>{data.title}</h2>
                                         <p>{data.description}</p>
-                                        <a href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
-                                            explore
-                                        </a>
+                                        <Link href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
+                                            Explore asset
+                                        </Link>
                                     </div>
                                 </SwiperSlide>
                             );

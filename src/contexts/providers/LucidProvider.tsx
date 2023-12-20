@@ -122,6 +122,7 @@ const LucidProvider = function ({ children }: Props) {
                 walletApi: async function () {},
             });
             setLucidWallet(null!);
+            
         } catch (error) {
             console.log(error);
         }

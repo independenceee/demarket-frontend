@@ -1,4 +1,6 @@
 export type ModalContextType = {
+    isShowingNotificationConnectWallet: boolean;
+    toggleNotificationConnectWallet: () => void;
     isShowingDownloadWallet: boolean;
     toggleDownloadWallet: () => void;
     isShowingSearch: boolean;

@@ -2,6 +2,7 @@ import { AccountItemType, AccountItemTypeType, NftItemType } from "@/types/Gener
 
 export type AccountContextType = {
     account: AccountItemType;
+    setAccount: React.Dispatch<React.SetStateAction<AccountItemType>>;
     loadingAccount: boolean;
 
     assetsFromAddress: NftItemType[];

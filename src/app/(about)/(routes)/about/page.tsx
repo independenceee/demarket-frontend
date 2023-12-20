@@ -13,6 +13,7 @@ import SubTitle from "@/components/SubTitle";
 import styles from "./About.module.scss";
 import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
 import { DemarketContextType } from "@/types/DemarketContextType";
+import Button from "@/components/Button";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -26,9 +27,10 @@ const AboutPage = function ({}: Props) {
                     <div className={cx("background__container")} data-aos="fade-down">
                         <h2 className={cx("background__title")}>About Us</h2>
                         <p className={cx("background__description")}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper pulvinar
-                            imperdiet. Fusce rhoncus vel lacus vel tempor. Nullam eu magna congue, auctor nisl ac,
-                            tristique urna. In blandit mattis massa.
+                            Blockalpha brings an exciting solution to access the WEB3 platform for everyone, with the
+                            ultimate goal of transforming the model from WEB2 to WEB3. We provide technologies to
+                            address issues related to transparency, information security, and eliminate third-party
+                            interference.
                         </p>
                     </div>
                 </section>
@@ -47,26 +49,28 @@ const AboutPage = function ({}: Props) {
                                     controls
                                     width={"100%"}
                                     height={"350px"}
-                                    url="https://www.youtube.com/watch?v=Zzn9-ATB9aU"
+                                    url="https://www.youtube.com/watch?v=icX1mgKkrS0"
                                 />
                             </div>
                             <div className={cx("about__content")} data-aos="fade-left">
                                 <h2>Open Your Own Marketplace</h2>
                                 <p>
-                                    In hac habitasse platea dictumst. Integer arcu odio, malesuada id eros vel,
-                                    hendrerit consequat quam. Pellentesque volutpat quis elit at tincidunt. Fusce vel
-                                    velit augue. Integer gravida justo nec mauris congue, sit amet faucibus nisl dictum.
+                                    In the era of digital transformation with the rise of digital art, NFT has gradually
+                                    changed the concept of ownership and created a revolution connecting with digital
+                                    assets. demarket, a decentralized NFT exchange on the Cardano Blockchain platform
+                                    from BlockAlpha.
                                 </p>
                                 <p>
-                                    Integer ornare mauris id mauris semper, non fermentum est vestibulum. Sed non
-                                    laoreet ligula. Praesent tempor scelerisque nulla, non tristique dolor rhoncus ac.
-                                    Nulla vitae ornare sapien. Quisque non massa ut justo convallis blandit.
+                                    Demarket is a decentralized NFT exchange project developed by the BlockAlpha team.
+                                    The project has received high ratings from the review (CR) community with a score of
+                                    4.61, and ranked 2nd in the ranking in the Startup & Onboarding for Students
+                                    category of Project Catalyst Fund 10.
                                 </p>
 
                                 <div className={cx("about__button")}>
-                                    <Link className={cx("button")} href={""}>
-                                        Contact Us
-                                    </Link>
+                                    <Button className={cx("button")} href={""}>
+                                        Contact us
+                                    </Button>
                                 </div>
                             </div>
                         </div>
