@@ -52,60 +52,63 @@ const AccountProvider = function ({ children }: Props) {
     const [assetsFromAddress, setAssetsFromAddress] = useState<NftItemType[]>([]);
     const [currentPageAssetsFromAddress, setCurrentPageAssetsFromAddress] = useState<number>(1);
     const [totalPagesAssetsFromAddress, setTotalPagesAssetsFromAddress] = useState<number>(1);
-    const [loadingAssetsFromAddress, setLoadingAssetsFromAddress] = useState<boolean>(true);
-
-    const fetchAssetsFromAddress = async function () {
-        try {
-            if (walletItem.walletAddress === walletAddressParams) {
-                const { paginatedData, totalPage } = await post(
-                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
-                    {
-                        address: walletItem.walletAddress || walletAddressParams,
-                    },
-                );
-
-                console.log(paginatedData);
-
-                const assetsFromAddress = await Promise.all(
-                    paginatedData.map(async ({ policy_id, asset_name }: any) => {
-                        const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                        if (data) {
-                            return { ...data };
-                        }
-                        return null;
-                    }),
-                );
-
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                setTotalPagesAssetsFromAddress(totalPage);
-                setLoadingAssetsFromAddress(false);
-            } else {
-                const { paginatedData, totalPage } = await post(
-                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
-                    { address: walletAddressParams },
-                );
-
-                const assetsFromAddress = await Promise.all(
-                    paginatedData.map(async ({ policy_id, asset_name }: any) => {
-                        const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                        if (data) {
-                            return { ...data };
-                        }
-                        return null;
-                    }),
-                );
-
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                setTotalPagesAssetsFromAddress(totalPage);
-                setLoadingAssetsFromAddress(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const [loadingAssetsFromAddress, setLoadingAssetsFromAddress] = useState<boolean>(false);
 
     useEffect(
         function () {
+            const fetchAssetsFromAddress = async function () {
+                try {
+                    setLoadingAssetsFromAddress(true);
+                    if (walletItem.walletAddress === walletAddressParams) {
+                        const { paginatedData, totalPage } = await post(
+                            `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
+                            {
+                                address: walletItem.walletAddress || walletAddressParams,
+                            },
+                        );
+
+                        const assetsFromAddress = await Promise.all(
+                            paginatedData.map(async ({ policy_id, asset_name }: any) => {
+                                const data = await fetchInformationAsset({
+                                    policyId: policy_id,
+                                    assetName: asset_name,
+                                });
+                                if (data) {
+                                    return { ...data };
+                                }
+                                return null;
+                            }),
+                        );
+
+                        setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+                        setTotalPagesAssetsFromAddress(totalPage);
+                    } else {
+                        const { paginatedData, totalPage } = await post(
+                            `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
+                            { address: walletAddressParams },
+                        );
+
+                        const assetsFromAddress = await Promise.all(
+                            paginatedData.map(async ({ policy_id, asset_name }: any) => {
+                                const data = await fetchInformationAsset({
+                                    policyId: policy_id,
+                                    assetName: asset_name,
+                                });
+                                if (data) {
+                                    return { ...data };
+                                }
+                                return null;
+                            }),
+                        );
+
+                        setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+                        setTotalPagesAssetsFromAddress(totalPage);
+                    }
+                    setLoadingAssetsFromAddress(false);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
             if (walletAddressParams) {
                 fetchAssetsFromAddress();
             }
@@ -118,29 +121,34 @@ const AccountProvider = function ({ children }: Props) {
      */
 
     const [createdAssetsFromAddress, setCreatedAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] = useState<boolean>(true);
+    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] = useState<boolean>(false);
     const [totalPagesCreatedAssetsFromAddress, setTotalPagesCreatedAssetsFromAddress] = useState<number>(1);
     const [currentPageCreatedAssetsFromAddress, setCurrentPageCreatedAssetsFromAddress] = useState<number>(1);
-    const fetchCreatedAssetsFromAddress = async function () {
-        try {
-            if (walletItem.walletAddress === walletAddressParams) {
-                const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
-                    return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressParams;
-                });
-                setCreatedAssetsFromAddress(createdAssetsList);
-            } else {
-                const createdAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
-                    return asset.authorAddress === walletAddressParams;
-                });
-                setCreatedAssetsFromAddress(createdAssetsList);
-            }
-            setLoadingCreatedAssetsFromAddress(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+
     useEffect(
         function () {
+            const fetchCreatedAssetsFromAddress = async function () {
+                try {
+                    setLoadingCreatedAssetsFromAddress(true);
+                    if (walletItem.walletAddress === walletAddressParams) {
+                        const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
+                            return (
+                                asset.authorAddress === walletAddressParams
+                                // walletItem.walletAddress === walletAddressParams
+                            );
+                        });
+                        setCreatedAssetsFromAddress(createdAssetsList);
+                    } else {
+                        const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
+                            return asset.authorAddress === walletAddressParams;
+                        });
+                        setCreatedAssetsFromAddress(createdAssetsList);
+                    }
+                    setLoadingCreatedAssetsFromAddress(false);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
             if (walletAddressParams) {
                 fetchCreatedAssetsFromAddress();
             }
@@ -157,24 +165,25 @@ const AccountProvider = function ({ children }: Props) {
     const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] = useState<boolean>(true);
     const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] = useState<number>(1);
 
-    const fetchSellingsAsset = function () {
-        if (walletItem.walletAddress === walletAddressParams) {
-            const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType, index: number) {
-                return asset.sellerAddress === walletAddressParams || asset.authorAddress === walletItem.walletAddress;
-            });
-
-            setSellingAssetsFromAddress(sellingAssetsList);
-        } else {
-            const sellingAssetsList = assetsFromAddress.filter(function (asset: any, index: number) {
-                return asset.sellerAddress === walletAddressParams;
-            });
-
-            setSellingAssetsFromAddress(sellingAssetsList);
-        }
-    };
-
     useEffect(
         function () {
+            const fetchSellingsAsset = function () {
+                if (walletItem.walletAddress === walletAddressParams) {
+                    const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
+                        return (
+                            asset.sellerAddress === walletAddressParams ||
+                            asset.authorAddress === walletItem.walletAddress
+                        );
+                    });
+
+                    setSellingAssetsFromAddress(sellingAssetsList);
+                } else {
+                    const sellingAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
+                        return asset.sellerAddress === walletAddressParams;
+                    });
+                    setSellingAssetsFromAddress(sellingAssetsList);
+                }
+            };
             fetchSellingsAsset();
         },
         [walletItem.walletAddress, walletAddressParams, assetsFromSmartContract],

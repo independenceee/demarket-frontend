@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, ReactNode } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
-import { GuideItemType, FounderItemType, CategoryItemType, AccountItemType } from "@/types/GenericsType";
+import { FounderItemType, CategoryItemType, AccountItemType } from "@/types/GenericsType";
 import { get, post } from "@/utils/httpRequest";
 
 type Props = {
@@ -31,22 +31,6 @@ const DemarketProvider = function ({ children }: Props) {
     };
     useEffect(function () {
         fetchCategories();
-    }, []);
-
-    const [guides, setGuides] = useState<GuideItemType[]>([]);
-    const [loadingGuides, setLoadingGuides] = useState<boolean>(true);
-
-    const fetchGuides = async function () {
-        try {
-            setGuides(await get("/guides"));
-            setLoadingGuides(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(function () {
-        fetchGuides();
     }, []);
 
     const [founders, setFounders] = useState<FounderItemType[]>([]);
@@ -96,9 +80,6 @@ const DemarketProvider = function ({ children }: Props) {
 
                 founders,
                 loadingFounders,
-
-                guides,
-                loadingGuides,
 
                 accounts,
                 loadingAccounts,

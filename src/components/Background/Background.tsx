@@ -16,51 +16,51 @@ import Link from "next/link";
 const cx = classNames.bind(styles);
 const slider = [
     {
-        policyId: "",
-        assetName: "",
-        title: "Traditional Girl",
+        policyId: "8a5ba3c58a8aafd562f4330a5a87ef84b8bd73dfa7d3da87ea52d66e",
+        assetName: "436f6c6f72204769726c",
+        title: "Color Girl",
         description:
-            "Traditional Girl wears time-honored couture, where each stitch and embellishment narrate a story of cultural pride and timeless fashion.",
-        url: "https://ipfs.io/ipfs/QmSJ2rUwoFaz3rgVqeRR1x7UqcN4ZSQ4JFHuz1gG1GTx57",
+            "Every curve on Color Girl's body is a flow of positive energy, bringing vibrancy and motivation to the observer.",
+        url: "https://ipfs.io/ipfs/QmZw33dHzvmx9uz1rr5FLhugsRe4F3xqtef4ojpMcteNNT",
     },
     {
-        policyId: "",
-        assetName: "",
+        policyId: "37f2f90bf92c42b1f1c244581d13b29d66e7a329803e9b727099d8fb",
+        assetName: "526f626f74204769726c",
         title: "Robot Girl",
         description:
-            "Amidst the sweat and exertion, she exudes endorphin elegance, a portrait of the invigorating joy that comes with a physically active life.",
-        url: "https://ipfs.io/ipfs/QmUuGirnzkGxc6sSXdGJLuBoBzFyiarvDqSC9CVkg6GEM5",
-    },
-    {
-        policyId: "",
-        assetName: "",
-        title: "Style Girl",
-        description:
-            "With couture confidence, Style Girl wears her individuality like a badge, turning heads with every curated ensemble.",
-        url: "https://ipfs.io/ipfs/QmXc8b37Q6eyN21AkfPJ3ZFr19EYNZfXrtLLEVMsvEfwgs",
-    },
-
-    {
-        policyId: "",
-        assetName: "",
-        title: "Donut 4",
-        description:
-            "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
+            "In every movement, there's a sense of mechanical grace, an otherworldly ballet performed with precision.",
         url: "https://ipfs.io/ipfs/QmP5smfeXGucyvEs5QDbsvdKSbYm1KuhZdmDNEHXcrtvHS",
     },
     {
-        policyId: "",
-        assetName: "",
-        title: "Donut 5",
+        policyId: "55a241019f91cfa8344760c6309e55a666904e03fcfaec7d8d3dead7",
+        assetName: "5374796c65204769726c",
+        title: "Style Girl",
         description:
-            "Our Donut Collection Offers a Mouthwatering Array of Flavors, Toppings, and Shapes for Every Craving and Occasion.",
-        url: "https://ipfs.io/ipfs/QmZw33dHzvmx9uz1rr5FLhugsRe4F3xqtef4ojpMcteNNT",
+            "With couture confidence, Style Girl wears her individuality like a badge, turning heads with every curated ensemble.",
+        url: "https://ipfs.io/ipfs/QmPoZDmtznuzFLhEnMfiNeRGoGXnGQ4XWWyzjpr5sdzv4d",
+    },
+
+    {
+        policyId: "76ace6d07fe89d100bb9b125dd23b984a59ca38c1ff2f8ba96f004ec",
+        assetName: "53706f7274204769726c",
+        title: "Sport Girl",
+        description:
+            "Amidst the sweat and exertion, she exudes endorphin elegance, a portrait of the invigorating joy that comes with a physically active life.",
+        url: "https://ipfs.io/ipfs/QmSjdrfbozvaL5FX3qr3pmZbrPdRdkb2G3rpw4KbgBdXt4",
+    },
+    {
+        policyId: "202f25645f5ae1a64dcdd4f952218dcfd93d829f66527bf248fca806",
+        assetName: "547261646974696f6e616c204769726c",
+        title: "Traditional Girl",
+        description:
+            " Traditional Girl wears time-honored couture, where each stitch and embellishment narrate a story of cultural pride and timeless fashion.",
+        url: "https://ipfs.io/ipfs/QmU8cdX4AWSAiAg5hagnBhyZ3vibM2QYmtJFgCSPCHFHW1",
     },
 ];
 type Props = {};
 const Carousel = function ({}: Props) {
     const [background, setBackground] = useState<string>(
-        "https://ipfs.io/ipfs/QmZw33dHzvmx9uz1rr5FLhugsRe4F3xqtef4ojpMcteNNT",
+        "https://ipfs.io/ipfs/QmU8cdX4AWSAiAg5hagnBhyZ3vibM2QYmtJFgCSPCHFHW1",
     );
 
     return (
@@ -112,7 +112,10 @@ const Carousel = function ({}: Props) {
                                     <div>
                                         <h2>{data.title}</h2>
                                         <p>{data.description}</p>
-                                        <Link href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
+                                        <Link
+                                            href={`/detail/${data.policyId + data.assetName}`}
+                                            className={cx("slider-btn")}
+                                        >
                                             Explore asset
                                         </Link>
                                     </div>
@@ -129,9 +132,12 @@ const Carousel = function ({}: Props) {
                                 <div>
                                     <h2>{data.title}</h2>
                                     <p>{data.description}</p>
-                                    <a href={`${data.url}`} target="_blank" className={cx("slider-btn")}>
+                                    <Link
+                                        href={`/detail/${data.policyId + data.assetName}`}
+                                        className={cx("slider-btn")}
+                                    >
                                         explore
-                                    </a>
+                                    </Link>
                                 </div>
                             </SwiperSlide>
                         );

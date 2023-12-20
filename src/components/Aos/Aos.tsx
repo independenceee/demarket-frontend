@@ -8,7 +8,7 @@ const Aos = function ({}: Props) {
     useEffect(function () {
         AOS.init({
             duration: 1000,
-            offset: 90,
+            offset: 150,
             easing: "ease-out-cubic",
             once: true,
         });

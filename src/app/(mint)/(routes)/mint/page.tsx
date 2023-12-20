@@ -128,7 +128,7 @@ const MintPage = function ({}: Props) {
                 title,
             });
 
-            if (txHash) {
+            if (!txHash) {
                 toast.warning("Mint asset faild");
                 return;
             }

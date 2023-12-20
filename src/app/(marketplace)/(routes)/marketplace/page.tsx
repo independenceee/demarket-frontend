@@ -3,7 +3,7 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Marketplace.module.scss";
-import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Icons";
+import { ArrowDropdownCircleIcon, FillDashCircleFillIcon, VerifiedIcon } from "@/components/Icons";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import NftContainer from "@/components/NftContainer";
@@ -12,6 +12,8 @@ import { SmartContractType } from "@/types/SmartContextType";
 import { NftItemType } from "@/types/GenericsType";
 import Search from "@/components/Search/Search";
 import Category from "@/components/Category";
+import Verify from "@/components/Verify";
+import SortBy from "@/components/SortBy";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -31,12 +33,13 @@ const MarketplacePage = function ({}: Props) {
     }, []);
 
     const [searchValue, setSearchValue] = useState<string>("");
-    const [sortFilter, setSortFilter] = useState<string>("");
+    const [sortBy, setSortBy] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [verify, setVerify] = useState<string>("");
     const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
 
     const handleChangeFilter = function (event: ChangeEvent<HTMLInputElement>) {
-        setSortFilter(event.target.value);
+        setSortBy(event.target.value);
     };
 
     useEffect(
@@ -48,9 +51,9 @@ const MarketplacePage = function ({}: Props) {
                 });
             }
 
-            if (sortFilter) {
+            if (sortBy) {
                 assetsFilterTemp = assetsFilter.sort(function (previous: NftItemType, next: NftItemType): any {
-                    switch (sortFilter) {
+                    switch (sortBy) {
                         // case "news":
                         //     return new Date(next.createdAt).getTime() - new Date(previous.createdAt).getTime();
                         case "news":
@@ -63,7 +66,7 @@ const MarketplacePage = function ({}: Props) {
 
             setAssetsFilter(assetsFilterTemp);
         },
-        [searchValue, sortFilter, assetsFromSmartContract],
+        [searchValue, sortBy, assetsFromSmartContract],
     );
 
     return (
@@ -76,91 +79,8 @@ const MarketplacePage = function ({}: Props) {
                         <div className={cx("content__left--container")} data-aos="fade-right" data-aos-duration="1000">
                             <Search searchValue={searchValue} setSearchValue={setSearchValue} />
                             <Category setSelectedCategory={setSelectedCategory} />
-                            <section className={cx("content__filter")}>
-                                <header className={cx("content__filter--header")}>
-                                    <h3 className={cx("content__filter--title")}>Sort buy</h3>
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                                </header>
-                                <form className={cx("content__filter--option")}>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>Default</h4>
-                                        <input
-                                            name="filter"
-                                            value={"default"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>New</h4>
-                                        <input
-                                            name="filter"
-                                            value={"news"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>Trending</h4>
-                                        <input
-                                            name="filter"
-                                            value={"trending"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>Increment</h4>
-                                        <input
-                                            name="filter"
-                                            value={"increment"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>Decrement</h4>
-                                        <input
-                                            name="filter"
-                                            value={"decrement"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                </form>
-                            </section>
-
-                            <section className={cx("content__filter")}>
-                                <header className={cx("content__filter--header")}>
-                                    <h3 className={cx("content__filter--title")}>Verify</h3>
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                                </header>
-                                <article className={cx("content__filter--option")}>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>Yes</h4>
-                                        <input
-                                            value={"verify"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                    <section className={cx("content__filter--group")}>
-                                        <h4 className={cx("content__filter--name")}>No</h4>
-                                        <input
-                                            value={"noVerify"}
-                                            className={cx("content__filter--control")}
-                                            onChange={handleChangeFilter}
-                                            type="radio"
-                                        />
-                                    </section>
-                                </article>
-                            </section>
+                            <SortBy setSortBy={setSortBy} />
+                            <Verify setVerify={setVerify} />
                         </div>
                     </div>
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">

@@ -25,7 +25,6 @@ const Search = function ({ searchValue, setSearchValue }: Props) {
             if (!debouncedValue.trim()) {
                 return;
             }
-
             const handleSearchData = function () {
                 try {
                     setLoading(true);
@@ -72,7 +71,7 @@ const Search = function ({ searchValue, setSearchValue }: Props) {
                 {loading && <FontAwesomeIcon className={cx("loading")} icon={faSpinner} />}
 
                 <button className={cx("search-btn")} onMouseDown={(e) => e.preventDefault()}>
-                    <SearchIcon />
+                    <SearchIcon className={"search-icon"} width="2rem" height="2rem" />
                 </button>
             </article>
         </section>

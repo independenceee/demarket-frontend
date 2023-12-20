@@ -40,6 +40,16 @@ import Link from "next/link";
 type Props = {};
 const cx = classNames.bind(styles);
 
+const tabItems = [
+    { name: "My assets", slug: "my assets" },
+    { name: "Selling", slug: "selling" },
+    { name: "Created", slug: "created" },
+    { name: "Collection", slug: "collection" },
+    { name: "Following", slug: "following" },
+    { name: "Follower", slug: "follower" },
+    { name: "Like", slug: "like" },
+];
+
 const AccountPage = function ({}: Props) {
     const { id } = useParams();
     const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
@@ -96,18 +106,11 @@ const AccountPage = function ({}: Props) {
         setTotalPagesFollowings,
     } = useContext<AccountContextType>(AccountContext);
 
-    const tabItems = [
-        { name: "My assets", slug: "my assets" },
-        { name: "Selling", slug: "selling" },
-        { name: "Created", slug: "created" },
-        { name: "Collection", slug: "collection" },
-        { name: "Following", slug: "following" },
-        { name: "Follower", slug: "follower" },
-        { name: "Like", slug: "like" },
-    ];
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const { isShowing = true, toggle } = useModal();
+
+    const [searchValue, setSearchValue] = useState<string>("");
 
     return (
         <main className={cx("wrapper")}>
@@ -173,7 +176,7 @@ const AccountPage = function ({}: Props) {
 
                     <Modal isShowing={isShowing} toggle={toggle}>
                         <aside className={cx("content__left--reponsive")}>
-                            {/* <Search /> */}
+                            <Search searchValue="" setSearchValue={setSearchValue} />
 
                             <section className={cx("content__filter")}>
                                 <header className={cx("content__filter--header")}>
@@ -255,7 +258,7 @@ const AccountPage = function ({}: Props) {
                     </Modal>
 
                     <aside className={cx("content__left")}>
-                        {/* <Search /> */}
+                        <Search searchValue="" setSearchValue={setSearchValue} />
 
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")}>

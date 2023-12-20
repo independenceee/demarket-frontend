@@ -18,12 +18,9 @@ const Statistics = function ({}: Props) {
             console.log(error);
         }
     };
-    useEffect(
-        function () {
-            fetchStatistics();
-        },
-        [statistics],
-    );
+    useEffect(function () {
+        fetchStatistics();
+    }, []);
 
     return (
         <div className={cx("wrapper")} data-aos="fade-up">
@@ -39,7 +36,7 @@ const Statistics = function ({}: Props) {
                         <h2>
                             <CountUp start={0} end={statistics?.totalTransaction || 0} duration={2} delay={0} />
                         </h2>
-                        <p>COLLECTION</p>
+                        <p>TRANSACTION</p>
                     </li>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="1500">
                         <h2>
@@ -49,7 +46,7 @@ const Statistics = function ({}: Props) {
                     </li>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="2000">
                         <h2>
-                            <CountUp start={0} end={statistics?.totalAuthor || 0} duration={2} delay={0} />
+                            <CountUp start={0} end={statistics?.totalAccount || 0} duration={2} delay={0} />
                         </h2>
                         <p>AUTHOR</p>
                     </li>

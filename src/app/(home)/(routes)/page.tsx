@@ -13,7 +13,6 @@ import AccountItemSilder from "@/components/AccountContainer/AccountItemSilder";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import NftItemSlider from "@/components/NftContainer/NftItemSlider/NftItemSlider";
-import configs from "@/configs";
 import { DemarketContextType } from "@/types/DemarketContextType";
 type Props = {};
 
@@ -28,11 +27,10 @@ const Home = function ({}: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <Background />
-                <Title main={configs.titles.home.main} />
+                <Title main={"HOME"} />
 
                 <section className={cx("news__wrapper")}>
                     <SubTitle title={"New Items"} description={"Explore our new products and find your favorites."} />
-
                     <article className={cx("news_container")}>
                         <NftContainer nfts={assetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
                     </article>
@@ -40,7 +38,7 @@ const Home = function ({}: Props) {
                 <section className={cx("trending__wrapper")}>
                     <SubTitle
                         title="Trending Items"
-                        description="The trending tech products of 2024. Let’s shop now for the hottest products."
+                        description="The trending tech products of 2024. Let's shop now for the hottest products."
                     />
 
                     <div className={cx("trending__container")}>
