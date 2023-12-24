@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import React, { useState, useEffect, useContext, ChangeEvent, useRef } from "react";
 import classNames from "classnames/bind";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import convertString from "@/helpers/convertString";
@@ -25,6 +25,9 @@ import HistoryContainer from "@/components/HistoryContainer";
 import MetadataContainer from "@/components/MetadataContainer";
 import { CartContextType } from "@/types/CartContextType";
 import CartContext from "@/contexts/components/CartContext";
+import { toast } from "react-toastify";
+import { ModalContextType } from "@/types/ModalContextType";
+import ModalContext from "@/contexts/components/ModalContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -36,13 +39,15 @@ const tabItems = [
 ];
 
 const DetailPage = function ({}: Props) {
+    const [isActive, setIsActive] = useState<boolean>(false);
     const { unit }: any = useParams();
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
+    const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
 
     const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
         useContext<SmartContractType>(SmartContractContext);
-    const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+    const { lucidWallet, walletItem, revalidate, setRevalidate } = useContext<LucidContextType>(LucidContext);
     const { addToCart } = useContext<CartContextType>(CartContext);
 
     const [toggleTabState, setToggleTabState] = useState<number>(1);
@@ -57,19 +62,22 @@ const DetailPage = function ({}: Props) {
         setPrice(event.target.value);
     };
 
-    useEffect(function () {
-        const fetchInformationFromPolicyIdAndAssetName = async function () {
-            try {
-                const informationAsset = await fetchInformationAsset({ policyId, assetName });
-                const informationContract = await findAsset({ policyId, assetName });
+    useEffect(
+        function () {
+            const fetchInformationFromPolicyIdAndAssetName = async function () {
+                try {
+                    const informationAsset = await fetchInformationAsset({ policyId, assetName });
+                    const informationContract = await findAsset({ policyId, assetName });
 
-                setAsset({ ...informationAsset, ...informationContract });
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchInformationFromPolicyIdAndAssetName();
-    }, []);
+                    setAsset({ ...informationAsset, ...informationContract });
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            fetchInformationFromPolicyIdAndAssetName();
+        },
+        [revalidate],
+    );
 
     const handleAddtoCart = async function () {
         try {
@@ -81,24 +89,34 @@ const DetailPage = function ({}: Props) {
 
     const handleBuyNft = async function () {
         try {
+            setIsActive(true);
             if (lucidWallet) {
-                await buyAsset({
+                const { txHash } = await buyAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     lucid: lucidWallet,
                     royaltiesAddress: asset.authorAddress,
                     sellerAddress: asset.sellerAddress,
                 });
+                if (txHash) {
+                    setRevalidate(!revalidate);
+                    toast.success("Buy asset successfully.");
+                }
+            } else {
+                toggleNotificationConnectWallet();
             }
         } catch (error) {
-            console.log(error);
+            toast.error(String(error));
+        } finally {
+            setIsActive(false);
         }
     };
 
     const handleSellNft = async function () {
         try {
+            setIsActive(true);
             if (lucidWallet) {
-                await sellAsset({
+                const { txHash } = await sellAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     author: asset.authorAddress,
@@ -106,24 +124,41 @@ const DetailPage = function ({}: Props) {
                     price: BigInt(Number(price) * 1000000),
                     royalties: BigInt(Number(price) * 10000),
                 });
+                if (txHash) {
+                    setRevalidate(!revalidate);
+                    toast.success("Selling asset successfully.");
+                }
             } else {
+                toggleNotificationConnectWallet();
             }
         } catch (error) {
-            console.log(error);
+            toast.error(String(error));
+        } finally {
+            setIsActive(false);
         }
     };
 
     const handleRefundNft = async function () {
         try {
+            setIsActive(true);
             if (lucidWallet) {
-                await refundAsset({
+                const { txHash } = await refundAsset({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     lucid: lucidWallet,
                 });
+
+                if (txHash) {
+                    setRevalidate(!revalidate);
+                    toast.success("Refund asset successfully.");
+                }
+            } else {
+                toggleNotificationConnectWallet();
             }
         } catch (error) {
-            console.log(error);
+            toast.error(String(error));
+        } finally {
+            setIsActive(false);
         }
     };
 

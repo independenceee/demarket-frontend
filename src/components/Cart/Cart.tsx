@@ -16,7 +16,7 @@ import { ModalContextType } from "@/types/ModalContextType";
 const cx = classNames.bind(styles);
 type Props = {};
 const Cart = function ({}: Props) {
-    const { isShowingCart, toggleShowingCart } = useContext<ModalContextType>(ModalContext);
+    const { toggleShowingCart } = useContext<ModalContextType>(ModalContext);
     const { cartItem, clearCart, completePurchase } = useContext<CartContextType>(CartContext);
 
     return (

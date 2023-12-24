@@ -11,14 +11,17 @@ import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "../components/SmartContractContext";
+import { ModalContextType } from "@/types/ModalContextType";
+import ModalContext from "../components/ModalContext";
 
 type Props = {
     children: ReactNode;
 };
 
 const CartProvider = function ({ children }: Props) {
+    const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { account } = useContext<AccountContextType>(AccountContext);
-    const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+    const { lucidWallet } = useContext<LucidContextType>(LucidContext);
     const { buyAsset } = useContext<SmartContractType>(SmartContractContext);
 
     const [cartItem, setCartItem] = useState<{
@@ -37,7 +40,6 @@ const CartProvider = function ({ children }: Props) {
         const fetchAssetsCartFromAccount = async function () {
             try {
                 const data = await get("/nft/nft_cart", { walletAddress: account.walletAddress, page: 1 });
-                // setCartItem();
             } catch (error) {
                 console.log(error);
             }
@@ -102,9 +104,9 @@ const CartProvider = function ({ children }: Props) {
 
     const completePurchase = async function () {
         try {
-            cartItem.itemsList.forEach(async function (item: NftItemType) {
-                try {
-                    if (lucidWallet) {
+            if (lucidWallet) {
+                cartItem.itemsList.forEach(async function (item: NftItemType) {
+                    try {
                         await buyAsset({
                             assetName: item.assetName,
                             policyId: item.policyId,
@@ -112,11 +114,13 @@ const CartProvider = function ({ children }: Props) {
                             royaltiesAddress: String(item.authorAddress),
                             sellerAddress: String(item.sellerAddress),
                         });
+                    } catch (error) {
+                        console.log(error);
                     }
-                } catch (error) {
-                    console.log(error);
-                }
-            });
+                });
+            } else {
+                toggleNotificationConnectWallet();
+            }
         } catch (error) {
             console.log(error);
         }

@@ -31,7 +31,7 @@ const MarketplacePage = function ({}: Props) {
     }, []);
 
     const [searchValue, setSearchValue] = useState<string>("");
-    const [sortBy, setSortBy] = useState<string>("");
+    const [sortBy, setSortBy] = useState<string>("default");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [verify, setVerify] = useState<string>("");
     const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
@@ -53,13 +53,17 @@ const MarketplacePage = function ({}: Props) {
                 assetsFilterTemp = assetsFilterTemp.sort(function (previous: NftItemType, next: NftItemType): any {
                     switch (sortBy) {
                         case "default":
-                            return Number(next?.price || 0) - Number(previous?.price || 0);
+                            return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
+                        case "news":
+                            return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
                         case "increment":
                             return Number(next?.price || 0) - Number(previous?.price || 0);
                         case "decrement":
                             return Number(previous?.price || 0) - Number(next?.price || 0);
+                        case "trending":
+                            return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
                         default:
-                            return 0; // Default case to avoid sorting issues
+                            return 0;
                     }
                 });
             }

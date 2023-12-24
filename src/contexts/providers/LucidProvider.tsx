@@ -8,6 +8,7 @@ import { WalletItemType } from "@/types/GenericsType";
 type Props = { children: ReactNode };
 
 const LucidProvider = function ({ children }: Props) {
+    const [revalidate, setRevalidate] = useState<boolean>(false);
     const [loadingConnectWallet, setLoadingConnectWallet] = useState<boolean>(false);
     const [networkPlatform, setNetworkPlatform] = useState<string>("Preprod");
     const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
@@ -122,7 +123,6 @@ const LucidProvider = function ({ children }: Props) {
                 walletApi: async function () {},
             });
             setLucidWallet(null!);
-            
         } catch (error) {
             console.log(error);
         }
@@ -131,6 +131,8 @@ const LucidProvider = function ({ children }: Props) {
     return (
         <LucidContext.Provider
             value={{
+                revalidate,
+                setRevalidate,
                 networkPlatform,
                 disconnectWallet,
                 connectWallet,

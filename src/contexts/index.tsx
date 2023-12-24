@@ -15,17 +15,17 @@ type Props = {
 
 const ContextProvider = function ({ children }: Props) {
     return (
-        <LucidProvider>
-            <SmartContractProvider>
-                <DemarketProvider>
-                    <AccountProvider>
-                        <CartProvider>
-                            <ModalProvider>{children}</ModalProvider>
-                        </CartProvider>
-                    </AccountProvider>
-                </DemarketProvider>
-            </SmartContractProvider>
-        </LucidProvider>
+        <ModalProvider>
+            <LucidProvider>
+                <SmartContractProvider>
+                    <DemarketProvider>
+                        <AccountProvider>
+                            <CartProvider>{children}</CartProvider>
+                        </AccountProvider>
+                    </DemarketProvider>
+                </SmartContractProvider>
+            </LucidProvider>
+        </ModalProvider>
     );
 };
 
