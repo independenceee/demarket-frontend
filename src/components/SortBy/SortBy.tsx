@@ -10,7 +10,6 @@ type Props = {
 
 const SortBy = function ({ setSortBy }: Props) {
     const [openSortBy, setOpenSortBy] = useState<boolean>(true);
-
     const handleOpenSortBy = function () {
         setOpenSortBy(!openSortBy);
     };
@@ -23,7 +22,7 @@ const SortBy = function ({ setSortBy }: Props) {
     return (
         <section className={cx("content__filter")}>
             <header className={cx("content__filter--header")} onClick={handleOpenSortBy}>
-                <h3 className={cx("content__filter--title")}>Category</h3>
+                <h3 className={cx("content__filter--title")}>Sort by</h3>
                 {!openSortBy ? (
                     <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                 ) : (

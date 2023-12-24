@@ -2,19 +2,17 @@
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import styles from "./Marketplace.module.scss";
-import { ArrowDropdownCircleIcon, FillDashCircleFillIcon, VerifiedIcon } from "@/components/Icons";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
 import NftContainer from "@/components/NftContainer";
-import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { SmartContractType } from "@/types/SmartContextType";
-import { NftItemType } from "@/types/GenericsType";
 import Search from "@/components/Search/Search";
 import Category from "@/components/Category";
 import Verify from "@/components/Verify";
 import SortBy from "@/components/SortBy";
-
+import SmartContractContext from "@/contexts/components/SmartContractContext";
+import { NftItemType } from "@/types/GenericsType";
+import { SmartContractType } from "@/types/SmartContextType";
+import styles from "./Marketplace.module.scss";
 const cx = classNames.bind(styles);
 type Props = {};
 
@@ -52,16 +50,21 @@ const MarketplacePage = function ({}: Props) {
             }
 
             if (sortBy) {
-                assetsFilterTemp = assetsFilter.sort(function (previous: NftItemType, next: NftItemType): any {
+                assetsFilterTemp = assetsFilterTemp.sort(function (previous: NftItemType, next: NftItemType): any {
                     switch (sortBy) {
-                        // case "news":
-                        //     return new Date(next.createdAt).getTime() - new Date(previous.createdAt).getTime();
-                        case "news":
+                        case "default":
                             return Number(next?.price || 0) - Number(previous?.price || 0);
+                        case "increment":
+                            return Number(next?.price || 0) - Number(previous?.price || 0);
+                        case "decrement":
+                            return Number(previous?.price || 0) - Number(next?.price || 0);
                         default:
-                            return;
+                            return 0; // Default case to avoid sorting issues
                     }
                 });
+            }
+
+            if (verify) {
             }
 
             setAssetsFilter(assetsFilterTemp);
@@ -71,6 +74,7 @@ const MarketplacePage = function ({}: Props) {
 
     return (
         <div className={cx("wrapper")} data-aos="fade-down">
+            <title>Marketplace - Demarket</title>
             <div className={cx("container")}>
                 <Background />
                 <Title main="HOME" slug="MARKETPLACE" />

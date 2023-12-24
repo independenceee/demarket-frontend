@@ -27,7 +27,7 @@
 }
 
 .image__wrapper {
-    border-radius: var(--border-radius-4);
+    border-radius: 4px;
     height: 200px;
     width: 100%;
     overflow: hidden;
@@ -57,7 +57,8 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 50px;
+    gap: 10px;
+
     .content__title {
         text-align: center;
         font-size: 12px;
@@ -71,7 +72,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: var(--border-radius-4);
+    border-radius: 4px;
     background: #e4eeef;
     padding: 6.5px 0px;
 

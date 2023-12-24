@@ -12,6 +12,7 @@ const images = {
     meta: require("./social-media/meta.svg"),
     youtube: require("./social-media/youtube.svg"),
     linkedin: require("./social-media/linkedin.svg"),
+    emailLink: require("./social-media/email.svg"),
     // social media image end
     filter: require("./generate/filter.svg"),
     logo: require("./generate/logo.jpg"),
@@ -20,6 +21,7 @@ const images = {
     user: require("./generate/user.jpg"),
     cart: require("./generate/cart.svg"),
     search: require("./generate/search.svg"),
+    mp3: require("./generate/file-audio-regular.svg"),
 };
 
 export default images;

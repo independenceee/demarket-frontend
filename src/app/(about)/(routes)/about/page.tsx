@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext } from "react";
-import Link from "next/link";
 import ReactPlayer from "react-player/youtube";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
@@ -91,7 +90,8 @@ const AboutPage = function ({}: Props) {
                             ? new Array(6).fill(null).map(function (value: any, index: number) {
                                   return <FounderItemSkeleton index={index} key={index} />;
                               })
-                            : founders.map(function (founder: FounderItemType, index: number) {
+                            : founders?.map(function (founder: FounderItemType, index: number) {
+                                  console.log(founder);
                                   return (
                                       <FounderItem
                                           index={index}
@@ -99,7 +99,7 @@ const AboutPage = function ({}: Props) {
                                           twitter={founder.twitter}
                                           linkedin={founder.linkedin}
                                           lastName={founder.lastName}
-                                          fistName={founder.fistName}
+                                          firstName={founder.firstName}
                                           company={founder.company}
                                           avatar={founder.avatar}
                                           key={index}

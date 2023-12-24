@@ -65,8 +65,8 @@ const Carousel = function ({}: Props) {
 
     return (
         <div style={{ backgroundImage: `url(${background})` }} className={cx("wrapper")}>
-            <div className={cx("carousel")}>
-                <div data-aos="fade-left">
+            <div className={cx("carousel")} data-aos="fade-left">
+                <div>
                     <div className={cx("carousel-content")}>
                         <span>Discover</span>
                         <h1>Make WEB3 Popular with Humans</h1>

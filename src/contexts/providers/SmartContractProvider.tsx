@@ -26,7 +26,7 @@ const SmartContractProvider = function ({ children }: Props) {
         try {
             const assets: NftItemType[] = await listAssets({ lucid: lucidNeworkPlatform });
             if (assets) {
-                const assetPromises = assets.map(async function (asset: NftItemType) {
+                const assetPromises = assets.reverse().map(async function (asset: NftItemType) {
                     const response: NftItemType = await fetchInformationAsset({
                         policyId: asset.policyId,
                         assetName: asset.assetName,

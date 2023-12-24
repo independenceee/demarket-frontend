@@ -16,7 +16,6 @@ const listAssets = async function ({ lucid }: Props): Promise<NftItemType[] | an
                 const datum = Data.from<Datum>(asset.datum, Datum);
                 return datum;
             });
-
             return assets;
         }
     } catch (error) {

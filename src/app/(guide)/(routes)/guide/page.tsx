@@ -21,7 +21,7 @@ type Props = {};
 const cx = classNames.bind(styles);
 
 const GuidePage = function ({}: Props) {
-    const [active, setActive] = useState<number>(1);
+    const [active, setActive] = useState<number>(0);
     const handleChangeActive = function (num: number) {
         if (active == num) {
             setActive(0);
@@ -31,6 +31,7 @@ const GuidePage = function ({}: Props) {
     };
     return (
         <main className={cx("wrapper")}>
+            <title>Guide - Demarket</title>
             <div className={cx("container")} data-aos="fade-down">
                 <section className={cx("background__wrapper")}>
                     <div className={cx("background__container")} data-aos="fade-down">
@@ -75,6 +76,7 @@ const GuidePage = function ({}: Props) {
                                             { id, description, title, description2, bonus },
                                             index,
                                         ) {
+                                            
                                             return (
                                                 <GuideItem
                                                     key={index}

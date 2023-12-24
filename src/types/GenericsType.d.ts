@@ -51,12 +51,8 @@ export type WalletItemType = {
 };
 
 export type Statistic = {
-    id?: string;
-    createdAt?: string;
-    updatedAt?: string;
     totalTransaction: number;
     totalProduct: number;
-    totalCollection: number;
     totalTrending: number;
     totalAccount: number;
 };
@@ -65,7 +61,7 @@ export type FounderItemType = {
     avatar: string;
     company: string;
     createdAt?: string;
-    fistName: string;
+    firstName: string;
     id?: string;
     lastName: string;
     role: string;

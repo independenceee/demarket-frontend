@@ -7,15 +7,26 @@ import { AccountContextType } from "@/types/AccountContextType";
 import { toast } from "react-toastify";
 import { NftItemType } from "@/types/GenericsType";
 import { get } from "@/utils/httpRequest";
+import { LucidContextType } from "@/types/LucidContextType";
+import LucidContext from "@/contexts/components/LucidContext";
+import { SmartContractType } from "@/types/SmartContextType";
+import SmartContractContext from "../components/SmartContractContext";
 
 type Props = {
     children: ReactNode;
 };
 
-const DemarketProvider = function ({ children }: Props) {
+const CartProvider = function ({ children }: Props) {
     const { account } = useContext<AccountContextType>(AccountContext);
+    const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+    const { buyAsset } = useContext<SmartContractType>(SmartContractContext);
 
-    const [cartItem, setCartItem] = useState({
+    const [cartItem, setCartItem] = useState<{
+        itemsList: NftItemType[];
+        totalPrice: number;
+        totalQuantity: number;
+        changed: boolean;
+    }>({
         itemsList: [],
         totalPrice: 0,
         totalQuantity: 0,
@@ -25,20 +36,21 @@ const DemarketProvider = function ({ children }: Props) {
     useEffect(() => {
         const fetchAssetsCartFromAccount = async function () {
             try {
-                if (account) {
-                    const data = await get("/nft/nft_cart", { walletAddress: account.walletAddress, page: 1 });
-                }
+                const data = await get("/nft/nft_cart", { walletAddress: account.walletAddress, page: 1 });
+                // setCartItem();
             } catch (error) {
                 console.log(error);
             }
         };
-        fetchAssetsCartFromAccount();
+        if (account) {
+            fetchAssetsCartFromAccount();
+        }
     }, [account]);
 
-    const addToCart = async function (newItem: any) {
+    const addToCart = async function (newItem: NftItemType) {
         setCartItem((prev: any) => {
-            const existingItem = prev.itemsList.find(
-                (item: any) => item.assetName === newItem.assetName && item.policyId === newItem.policyId,
+            const existingItem: NftItemType[] = prev.itemsList.find(
+                (item: NftItemType) => item.assetName === newItem.assetName && item.policyId === newItem.policyId,
             );
 
             if (existingItem) {
@@ -58,8 +70,8 @@ const DemarketProvider = function ({ children }: Props) {
     };
 
     const removeFromCart = async function ({ id, policyId, assetName }: NftItemType) {
-        setCartItem((prev) => {
-            const updatedItemsList: any = prev.itemsList.filter(
+        setCartItem((prev: any) => {
+            const updatedItemsList: NftItemType[] = prev.itemsList.filter(
                 (item: any) => item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
             );
             const updatedTotalPrice = updatedItemsList.reduce(function (total: number, item: any) {
@@ -88,11 +100,33 @@ const DemarketProvider = function ({ children }: Props) {
         });
     };
 
+    const completePurchase = async function () {
+        try {
+            cartItem.itemsList.forEach(async function (item: NftItemType) {
+                try {
+                    if (lucidWallet) {
+                        await buyAsset({
+                            assetName: item.assetName,
+                            policyId: item.policyId,
+                            lucid: lucidWallet,
+                            royaltiesAddress: String(item.authorAddress),
+                            sellerAddress: String(item.sellerAddress),
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
-        <CartContext.Provider value={{ cartItem, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ completePurchase, cartItem, addToCart, removeFromCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );
 };
 
-export default DemarketProvider;
+export default CartProvider;

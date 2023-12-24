@@ -4,7 +4,6 @@ import React, { ReactNode } from "react";
 import classNames from "classnames/bind";
 import Link from "next/link";
 import styles from "./Button.module.scss";
-import { IconType } from "react-icons";
 
 const cx = classNames.bind(styles);
 

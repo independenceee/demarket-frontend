@@ -12,14 +12,15 @@ type Props = {
     index: number;
     avatar: string;
     company: string;
-    fistName: string;
+    firstName: string;
     lastName: string;
     role: string;
     twitter: string;
     linkedin: string;
 };
 
-const FounderItem = function ({ index, avatar, company, fistName, lastName, role, twitter, linkedin }: Props) {
+const FounderItem = function ({ index, avatar, company, firstName, lastName, role, twitter, linkedin }: Props) {
+    console.log(firstName);
     return (
         <div
             className={cx("wrapper")}
@@ -43,7 +44,7 @@ const FounderItem = function ({ index, avatar, company, fistName, lastName, role
                 </div>
             </div>
             <div className={cx("container")}>
-                <div className={cx("name")}>{fistName + " " + lastName} </div>
+                <div className={cx("name")}>{firstName + " " + lastName} </div>
                 <div className={cx("role")}>{role}</div>
             </div>
         </div>

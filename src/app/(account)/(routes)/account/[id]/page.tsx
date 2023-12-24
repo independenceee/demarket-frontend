@@ -17,15 +17,13 @@ import {
     SelledIcon,
     StakekeyIcon,
     ArrowRightIcon,
+    FillDashCircleFillIcon,
 } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import CopyItem from "@/components/CopyItem";
 import AccountContainer from "@/components/AccountContainer";
-import Modal from "@/components/Modal";
-import { useModal } from "@/hooks";
 import styles from "./Account.module.scss";
 import images from "@/assets/images";
-import { CategoryItemType } from "@/types/GenericsType";
 import LucidContext from "@/contexts/components/LucidContext";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { LucidContextType } from "@/types/LucidContextType";
@@ -36,6 +34,8 @@ import Search from "@/components/Search";
 import fetchStakeKeyFromAddress from "@/utils/fetchStakeKeyFromAddress";
 import Category from "@/components/Category";
 import Link from "next/link";
+import { AccountItemType } from "@/types/GenericsType";
+import { post } from "@/utils/httpRequest";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -51,9 +51,26 @@ const tabItems = [
 ];
 
 const AccountPage = function ({}: Props) {
-    const { id } = useParams();
+    const { id: walletAddressPath } = useParams();
+
+    const [stakeKey, setStakeKey] = useState<string>("");
+    const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
+    const handleOpenIntroduct = function () {
+        setOpenIntroduce(!openIntroduce);
+    };
+
+    useEffect(
+        function () {
+            const fetchStakeKey = async function () {
+                setStakeKey(await fetchStakeKeyFromAddress(String(walletAddressPath)));
+            };
+            fetchStakeKey();
+        },
+        [walletAddressPath],
+    );
+
     const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
-    const { accounts, categories, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
+    const { accounts, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
         useContext<DemarketContextType>(DemarketContext);
 
     const {
@@ -106,9 +123,28 @@ const AccountPage = function ({}: Props) {
         setTotalPagesFollowings,
     } = useContext<AccountContextType>(AccountContext);
 
+    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(null!);
+
+    useEffect(
+        function () {
+            const fetchAccountFromAddress = async function () {
+                try {
+                    const account: AccountItemType = await post("/account", {
+                        walletAddress: walletItem.walletAddress,
+                    });
+                    setAccountWalletAddressParams(account);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            if (walletItem.walletAddress) {
+                fetchAccountFromAddress();
+            }
+        },
+        [walletItem.walletAddress],
+    );
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const { isShowing = true, toggle } = useModal();
 
     const [searchValue, setSearchValue] = useState<string>("");
 
@@ -124,72 +160,61 @@ const AccountPage = function ({}: Props) {
                         <div className={cx("account__image")}>
                             <Image src={images.user} alt="User" className={cx("image")} />
                         </div>
-                        <button className={cx("account__button")}>Edit profile</button>
+                        {walletItem.walletAddress === walletAddressPath ? (
+                            <Link href={`/account/${walletItem.walletAddress}/edit`} className={cx("account__button")}>
+                                Edit profile
+                            </Link>
+                        ) : (
+                            <Link href={`#`} className={cx("account__button")}>
+                                Follow Account
+                            </Link>
+                        )}
                     </div>
 
                     <div className={cx("account__content")}>
                         <div className={cx("account__infomation")}>
-                            <h3>The name of member Demarket</h3>
-                            <p>Youtube & Blogger</p>
+                            <h3>{accountWalletAddressParams ? account.userName : stakeKey}</h3>
+                            <p>{accountWalletAddressParams && account.description}</p>
                         </div>
                         <div className={cx("account__media")}>
                             <div className={cx("social__links")}>
-                                <Link href="#">
+                                <Link href={"#"}>
                                     <Image src={images.meta} alt="" />
                                 </Link>
-                                <Link href="#">
+                                <Link href={""}>
                                     <Image src={images.linkedin} alt="" />
                                 </Link>
-                                <Link href="#">
+                                <Link href={""}>
                                     <Image src={images.youtube} alt="" />
                                 </Link>
-                                <Link href="#">
+                                <Link href={""}>
                                     <Image src={images.twitter} alt="" />
                                 </Link>
-                            </div>
-
-                            <div className={cx("analytics")}>
-                                <div className={cx("data")}>
-                                    <CiHeart className={cx("icon")} />
-                                    <span className={cx("number")}>60K</span>
-                                </div>
-                                <div className={cx("data")}>
-                                    <FaFacebookMessenger className={cx("icon")} />
-                                    <span className={cx("number")}>60K</span>
-                                </div>
-
-                                <div className={cx("data")}>
-                                    <FaShare className={cx("icon")} />
-                                    <span className={cx("number")}>60K</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <section className={cx("content__wrapper")}>
-                    {!isShowing && (
-                        <div onClick={toggle} className={cx("content__icon")}>
-                            <ArrowRightIcon className={cx("icon")} />
-                        </div>
-                    )}
-
-                    <Modal isShowing={isShowing} toggle={toggle}>
-                        <aside className={cx("content__left--reponsive")}>
-                            <Search searchValue="" setSearchValue={setSearchValue} />
-
-                            <section className={cx("content__filter")}>
-                                <header className={cx("content__filter--header")}>
-                                    <h3 className={cx("content__filter--title")}>Introduce</h3>
+                    <aside className={cx("content__left")}>
+                        <Search searchValue="" setSearchValue={setSearchValue} />
+                        <section className={cx("content__filter")}>
+                            <header className={cx("content__filter--header")} onClick={handleOpenIntroduct}>
+                                <h3 className={cx("content__filter--title")}>Introduce</h3>
+                                {!openIntroduce ? (
                                     <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                                </header>
+                                ) : (
+                                    <FillDashCircleFillIcon className={cx("content__filter--icon")} />
+                                )}
+                            </header>
+                            {openIntroduce && (
                                 <article className={cx("content__filter--option")}>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <PolicyIdIcon />
-                                            <span>Address: </span>
+                                            <span>Address:</span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>{id}</p>
+                                        <p className={cx("content__filter--description")}>{walletAddressPath}</p>
                                         <CopyItem value="123" />
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -197,7 +222,7 @@ const AccountPage = function ({}: Props) {
                                             <StakekeyIcon />
                                             <span>Stake key: </span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}></p>
+                                        <p className={cx("content__filter--description")}>{stakeKey}</p>
                                         <CopyItem value="123" />
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -205,28 +230,32 @@ const AccountPage = function ({}: Props) {
                                             <NftIcon />
                                             <span>NFTs: </span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}>{assetsFromAddress.length}</h4>
+                                        <h4 className={cx("content__filter--value")}>
+                                            <CountUp start={0} end={assetsFromAddress.length} />
+                                        </h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <SelledIcon className={cx("content__filter--icon")} />
                                             <span>NFTs selling:</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}></h4>
+                                        <h4 className={cx("content__filter--value")}>
+                                            <CountUp start={0} end={sellingAssetsFromAddress.length} />
+                                        </h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <FollowerIcon className={cx("content__filter--icon")} />
                                             <span>Followers:</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}></h4>
+                                        <h4 className={cx("content__filter--value")}>0</h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <RatingIcon className={cx("content__filter--icon")} />
                                             <span>Rating</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}></h4>
+                                        <h4 className={cx("content__filter--value")}>0</h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -236,92 +265,7 @@ const AccountPage = function ({}: Props) {
                                         <h4 className={cx("content__filter--value")}></h4>
                                     </section>
                                 </article>
-                            </section>
-
-                            <section className={cx("content__filter")}>
-                                <header className={cx("content__filter--header")}>
-                                    <h3 className={cx("content__filter--title")}>Category</h3>
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                                </header>
-                                <article className={cx("content__filter--option")}>
-                                    {categories.map(function (category: CategoryItemType, index: number) {
-                                        return (
-                                            <section key={index} className={cx("content__filter--group")}>
-                                                <h4 className={cx("content__filter--name")}>{category.name}</h4>
-                                                <input className={cx("content__filter--control")} type="checkbox" />
-                                            </section>
-                                        );
-                                    })}
-                                </article>
-                            </section>
-                        </aside>
-                    </Modal>
-
-                    <aside className={cx("content__left")}>
-                        <Search searchValue="" setSearchValue={setSearchValue} />
-
-                        <section className={cx("content__filter")}>
-                            <header className={cx("content__filter--header")}>
-                                <h3 className={cx("content__filter--title")}>Introduce</h3>
-                                <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
-                            </header>
-                            <article className={cx("content__filter--option")}>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <PolicyIdIcon />
-                                        <span>Address:</span>
-                                    </h4>
-                                    <p className={cx("content__filter--description")}>{id}</p>
-                                    <CopyItem value="123" />
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <StakekeyIcon />
-                                        <span>Stake key: </span>
-                                    </h4>
-                                    <p className={cx("content__filter--description")}></p>
-                                    <CopyItem value="123" />
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <NftIcon />
-                                        <span>NFTs: </span>
-                                    </h4>
-                                    <h4 className={cx("content__filter--value")}>
-                                        <CountUp start={0} end={assetsFromAddress.length} />
-                                    </h4>
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <SelledIcon className={cx("content__filter--icon")} />
-                                        <span>NFTs selling:</span>
-                                    </h4>
-                                    <h4 className={cx("content__filter--value")}>
-                                        <CountUp start={0} end={sellingAssetsFromAddress.length} />
-                                    </h4>
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <FollowerIcon className={cx("content__filter--icon")} />
-                                        <span>Followers:</span>
-                                    </h4>
-                                    <h4 className={cx("content__filter--value")}>0</h4>
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <RatingIcon className={cx("content__filter--icon")} />
-                                        <span>Rating</span>
-                                    </h4>
-                                    <h4 className={cx("content__filter--value")}>0</h4>
-                                </section>
-                                <section className={cx("content__filter--group")}>
-                                    <h4 className={cx("content__filter--name")}>
-                                        <CreatedAtIcon className={cx("content__filter--icon")} />
-                                        <span>Joinned</span>
-                                    </h4>
-                                    <h4 className={cx("content__filter--value")}></h4>
-                                </section>
-                            </article>
+                            )}
                         </section>
 
                         <Category setSelectedCategory={setSelectedCategory} />
@@ -349,10 +293,16 @@ const AccountPage = function ({}: Props) {
                                 <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />
                             )}
                             {activeTab === "selling" && (
-                                <NftContainer nfts={sellingAssetsFromAddress} loading={loadingAssetsFromAddress} />
+                                <NftContainer
+                                    nfts={sellingAssetsFromAddress}
+                                    loading={loadingSellingAssetsFromAddress}
+                                />
                             )}
                             {activeTab === "created" && (
-                                <NftContainer nfts={createdAssetsFromAddress} loading={loadingAssetsFromAddress} />
+                                <NftContainer
+                                    nfts={createdAssetsFromAddress}
+                                    loading={loadingCreatedAssetsFromAddress}
+                                />
                             )}
                             {activeTab === "collection" && <NftContainer nfts={assetsFromAddress} />}
                             {activeTab === "following" && (

@@ -19,7 +19,6 @@ import ConnectWallet from "../ConnectWallet/ConnectWallet";
 import Avatar from "@/components/Avatar";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 const cx = classNames.bind(styles);
 type Props = {
@@ -64,13 +63,7 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
                         )}
                         {account && <Avatar account={account} />}
                     </div>
-
                     <ConnectWallet />
-
-                    {/* <Button>
-                        <FontAwesomeIcon icon={faBars} />
-                        {/* <FontAwesomeIcon icon={faXmark} /> */}
-                    {/* </Button> */}
                 </div>
             </div>
 

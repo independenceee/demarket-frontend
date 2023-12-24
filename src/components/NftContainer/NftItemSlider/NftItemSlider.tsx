@@ -4,6 +4,7 @@ import styles from "./NftItemSlider.module.scss";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import { NftItemType } from "@/types/GenericsType";
 import checkMediaType from "@/helpers/checkMediaType";
+import convertHexToString from "@/helpers/convertHexToString";
 const cx = classNames.bind(styles);
 
 type Props = {
