@@ -44,14 +44,14 @@ const Home = function ({}: Props) {
                     <div className={cx("trending__container")}>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-left")}>
-                                {assetsFromSmartContract.map(function (value: any, index: number) {
+                                {assetsFromSmartContract.slice(0, 10).map(function (value: any, index: number) {
                                     return <NftItemSlider value={value} key={index} index={index} />;
                                 })}
                             </div>
                         </section>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-right")}>
-                                {assetsFromSmartContract.map(function (value: any, index: number) {
+                                {assetsFromSmartContract.slice(10, 20).map(function (value: any, index: number) {
                                     return <NftItemSlider value={value} key={index} index={index} />;
                                 })}
                             </div>

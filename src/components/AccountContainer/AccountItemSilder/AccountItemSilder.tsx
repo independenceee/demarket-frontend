@@ -38,7 +38,7 @@ const AccountItemSilder = function ({ account, index }: Props) {
                     <VerifiedIcon className={cx("content__main--icon")} />
                 </div>
                 <div className={cx("content__information")}>
-                    0 Order <span>•</span> 0 NFT
+                    0 Order <span>•</span> 0 Product
                 </div>
             </section>
         </Link>

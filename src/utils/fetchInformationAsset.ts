@@ -7,11 +7,7 @@ type Props = {
 
 const fetchCurrentAddressAsset = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
     try {
-        const data = await post("/koios/assets/nft-address", {
-            policyId: policyId,
-            assetName: assetName,
-        });
-
+        const data = await post("/koios/assets/nft-address", { policyId: policyId, assetName: assetName });
         return data.address;
     } catch (error) {
         console.error(error);
@@ -19,18 +15,13 @@ const fetchCurrentAddressAsset = async function ({ policyId, assetName }: { poli
 };
 
 const fetchAddressFromTxHash = async function (transactionHash: string) {
-    const data = await post("/blockfrost/transaction/utxos", {
-        transactionHash: transactionHash,
-    });
-
+    const data = await post("/blockfrost/transaction/utxos", { transactionHash: transactionHash });
     return data.inputs[0].address;
 };
 
 const fetchStakeKeyFromAddress = async function (address: string) {
     try {
-        const data = await post("/emurgo/stakekey/address", {
-            address: address,
-        });
+        const data = await post("/emurgo/stakekey/address", { address: address });
 
         return data.stakeKey;
     } catch (error) {
@@ -39,11 +30,7 @@ const fetchStakeKeyFromAddress = async function (address: string) {
 };
 
 const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName }: Props) {
-    const data = await post("/blockfrost/transaction/asset", {
-        policyId: policyId,
-        assetName: assetName,
-    });
-
+    const data = await post("/blockfrost/transaction/asset", { policyId: policyId, assetName: assetName });
     const authorAddress = await fetchAddressFromTxHash(data.firstTransaction.tx_hash);
     const sellerAddress = await fetchAddressFromTxHash(data.currentTransaction.tx_hash);
     const stakekeyAuthorAddress = await fetchStakeKeyFromAddress(authorAddress);
@@ -53,15 +40,8 @@ const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName
 };
 
 const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetName }: Props) {
-    const metadata = await post("/blockfrost/assets/information", {
-        policyId: policyId,
-        assetName: assetName,
-    });
-
-    return {
-        fingerprint: metadata.fingerprint,
-        metadata: metadata.onchain_metadata,
-    };
+    const metadata = await post("/blockfrost/assets/information", { policyId: policyId, assetName: assetName });
+    return { fingerprint: metadata.fingerprint, metadata: metadata.onchain_metadata };
 };
 
 const fetchInformationFromDemarket = async function ({ policyId, assetName }: Props) {

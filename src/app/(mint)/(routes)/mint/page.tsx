@@ -30,9 +30,10 @@ function convertMetadataToObj(metadataArray: any) {
 type Props = {};
 
 const MintPage = function ({}: Props) {
+    const [isActionCreate, setIsActionCreate] = useState(false);
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
     const { mintAsset } = useContext<SmartContractType>(SmartContractContext);
-    const { addNft, categories } = useContext<DemarketContextType>(DemarketContext);
+    const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [mediaType, setMediaType] = useState<string>("Media type asset");
@@ -93,6 +94,7 @@ const MintPage = function ({}: Props) {
 
     const handleMintNft = async function () {
         try {
+            setIsActionCreate(true);
             const formData = new FormData();
             formData.append("file", image);
             const metadata = JSON.stringify({ name: "fileName" });
@@ -131,6 +133,8 @@ const MintPage = function ({}: Props) {
         } catch (error) {
             toast.warning("Mint asset faild");
             console.log(error);
+        } finally {
+            setIsActionCreate(false);
         }
     };
 

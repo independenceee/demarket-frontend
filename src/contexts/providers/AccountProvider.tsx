@@ -10,6 +10,7 @@ import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { get, post } from "@/utils/httpRequest";
+import { toast } from "react-toastify";
 
 type Props = {
     children: ReactNode;
@@ -18,7 +19,7 @@ type Props = {
 const AccountProvider = function ({ children }: Props) {
     const { id: walletAddressParams } = useParams();
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
-    const { walletItem } = useContext<LucidContextType>(LucidContext);
+    const { walletItem, revalidate } = useContext<LucidContextType>(LucidContext);
 
     /**
      * TODO: Get account infomation when connect wallet
@@ -35,6 +36,7 @@ const AccountProvider = function ({ children }: Props) {
                     });
                     setAccount(account);
                     setLoadingAccount(false);
+                    toast.success("Login account successfully.");
                 } catch (error) {
                     console.log(error);
                 }
@@ -59,12 +61,10 @@ const AccountProvider = function ({ children }: Props) {
             const fetchAssetsFromAddress = async function () {
                 try {
                     setLoadingAssetsFromAddress(true);
-
                     const { paginatedData, totalPage } = await post(
                         `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
                         { address: walletAddressParams },
                     );
-
                     const assetsFromAddress = await Promise.all(
                         paginatedData.map(async ({ policy_id, asset_name }: any) => {
                             const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
@@ -84,7 +84,7 @@ const AccountProvider = function ({ children }: Props) {
                 fetchAssetsFromAddress();
             }
         },
-        [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract],
+        [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate],
     );
 
     /**

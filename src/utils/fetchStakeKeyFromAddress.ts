@@ -5,7 +5,6 @@ const fetchStakeKeyFromAddress = async function (address: string) {
         const data = await post("/emurgo/stakekey/address", {
             address: address,
         });
-
         return data.stakeKey;
     } catch (error) {
         console.error(error);

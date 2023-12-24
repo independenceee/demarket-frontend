@@ -2,6 +2,8 @@ import { Lucid } from "lucid-cardano";
 import { WalletItemType } from "./GenericsType";
 
 export type LucidContextType = {
+    revalidate: boolean;
+    setRevalidate: React.Dispatch<React.SetStateAction<boolean>>;
     networkPlatform: string;
     lucidWallet: Lucid;
     walletItem: WalletItemType;

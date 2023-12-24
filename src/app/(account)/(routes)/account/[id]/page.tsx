@@ -5,8 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
-import { FaFacebookMessenger, FaShare } from "react-icons/fa6";
-import { CiHeart } from "react-icons/ci";
+
 import {
     ArrowDropdownCircleIcon,
     CreatedAtIcon,
@@ -16,7 +15,6 @@ import {
     RatingIcon,
     SelledIcon,
     StakekeyIcon,
-    ArrowRightIcon,
     FillDashCircleFillIcon,
 } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";

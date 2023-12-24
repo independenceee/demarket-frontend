@@ -19,7 +19,7 @@ type Props = {
 };
 
 const SmartContractProvider = function ({ children }: Props) {
-    const { networkPlatform, lucidNeworkPlatform } = useContext<LucidContextType>(LucidContext);
+    const { networkPlatform, lucidNeworkPlatform, revalidate } = useContext<LucidContextType>(LucidContext);
     const [assetsFromSmartContract, setAssetsFromSmartContract] = useState<NftItemType[]>([]);
     const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] = useState<boolean>(true);
     const fetchAssetsFromSmartContract = async function () {
@@ -66,7 +66,7 @@ const SmartContractProvider = function ({ children }: Props) {
         function () {
             fetchAssetsFromSmartContract();
         },
-        [networkPlatform, lucidNeworkPlatform],
+        [networkPlatform, lucidNeworkPlatform, revalidate],
     );
     return (
         <SmartContractContext.Provider
