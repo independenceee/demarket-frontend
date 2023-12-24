@@ -20,15 +20,18 @@ import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import { LucidContextType } from "@/types/LucidContextType";
 import SubTitle from "@/components/SubTitle";
-import { post } from "@/utils/httpRequest";
 import Button from "@/components/Button";
+import HistoryContainer from "@/components/HistoryContainer";
+import MetadataContainer from "@/components/MetadataContainer";
+import { CartContextType } from "@/types/CartContextType";
+import CartContext from "@/contexts/components/CartContext";
 
 const cx = classNames.bind(styles);
 type Props = {};
 
 const tabItems = [
-    { id: 1, name: "History" },
-    { id: 2, name: "Metadata" },
+    { id: 2, name: "History" },
+    { id: 1, name: "Metadata" },
     { id: 3, name: "UTXOs" },
 ];
 
@@ -37,11 +40,10 @@ const DetailPage = function ({}: Props) {
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
 
-    const inputRef = useRef<HTMLInputElement>(null!);
-
     const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
         useContext<SmartContractType>(SmartContractContext);
     const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+    const { addToCart } = useContext<CartContextType>(CartContext);
 
     const [toggleTabState, setToggleTabState] = useState<number>(1);
     const [asset, setAsset] = useState<any>();
@@ -50,29 +52,11 @@ const DetailPage = function ({}: Props) {
         setToggleTabState(index);
     };
 
-    const [assetMetadata, setAssetMetadata] = useState<any>(null!);
-
     const handleInputPrice = function (event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         setPrice(event.target.value);
     };
 
-    useEffect(
-        function () {
-            const fetchMetadataFromPolicyIdAndAssetName = async function () {
-                const metadata = await post("/blockfrost/assets/information", {
-                    policyId: policyId,
-                    assetName: assetName,
-                });
-                setAssetMetadata(metadata.onchain_metadata);
-            };
-
-            fetchMetadataFromPolicyIdAndAssetName();
-        },
-        [policyId, assetName],
-    );
-
-    console.log(assetMetadata);
     useEffect(function () {
         const fetchInformationFromPolicyIdAndAssetName = async function () {
             try {
@@ -86,6 +70,14 @@ const DetailPage = function ({}: Props) {
         };
         fetchInformationFromPolicyIdAndAssetName();
     }, []);
+
+    const handleAddtoCart = async function () {
+        try {
+            await addToCart(asset);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleBuyNft = async function () {
         try {
@@ -114,6 +106,7 @@ const DetailPage = function ({}: Props) {
                     price: BigInt(Number(price) * 1000000),
                     royalties: BigInt(Number(price) * 10000),
                 });
+            } else {
             }
         } catch (error) {
             console.log(error);
@@ -149,7 +142,7 @@ const DetailPage = function ({}: Props) {
                                     />
                                 )}
                                 {checkMediaType(String(asset.mediaType), "video") && (
-                                    <video autoPlay muted loop className={cx("content__image--image")}>
+                                    <video autoPlay controls muted loop className={cx("content__image--image")}>
                                         <source src={String(convertIpfsAddressToUrl(asset.image))} type="video/mp4" />
                                     </video>
                                 )}
@@ -265,14 +258,12 @@ const DetailPage = function ({}: Props) {
                             </section>
                             {asset.price && asset.sellerAddress !== walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>
-                                        Price: {Number(asset.price) / 1000000} &nbsp;₳
-                                    </header>
+                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000} </header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleBuyNft}>
                                             Buy asset
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleBuyNft}>
+                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
                                             Add to cart
                                         </Button>
                                     </article>
@@ -281,14 +272,12 @@ const DetailPage = function ({}: Props) {
 
                             {asset.price && asset.sellerAddress === walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>
-                                        Price: {Number(asset.price) / 1000000} &nbsp;₳
-                                    </header>
+                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000}</header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleRefundNft}>
                                             Refund asset
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleBuyNft}>
+                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
                                             Add to cart
                                         </Button>
                                     </article>
@@ -296,16 +285,14 @@ const DetailPage = function ({}: Props) {
                             )}
 
                             {asset.currentAddress === walletItem.walletAddress && !asset.price ? (
-                                <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>Enter the price</header>
-                                    <article className={cx("price__container")}>
+                                <section className={cx("price__wrapper--input")}>
+                                    <article className={cx("price__container--input")}>
                                         <input
-                                            ref={inputRef}
                                             value={price}
                                             spellCheck={false}
                                             type="text"
                                             onChange={handleInputPrice}
-                                            placeholder="Price ..."
+                                            placeholder="Enter the price ..."
                                         />
 
                                         <Button className={cx("search-btn")} onClick={handleSellNft}>
@@ -330,42 +317,21 @@ const DetailPage = function ({}: Props) {
                                         );
                                     })}
                                 </div>
-                                {toggleTabState === 1 && (
-                                    <div className={cx("tab__content")}>
-                                        <h2>History</h2>
-                                        <div>
-                                            {Object.keys(assetMetadata).map((key) => (
-                                                <div key={key}>
-                                                    <strong>{key}:</strong> {assetMetadata[key]}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
+
                                 {toggleTabState === 2 && (
                                     <div className={cx("tab__content")}>
-                                        <h2>Metadata</h2>
-                                        <div className={cx("metadata__wrapper")}>
-                                            {Object.keys(assetMetadata).map((key) => (
-                                                <div className={cx("metadata__container")} key={key}>
-                                                    <div className={cx("metadata__key")}>{key}</div>{" "}
-                                                    <div className={cx("metadata__value")}>{assetMetadata[key]}</div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
+                                    </div>
+                                )}
+                                {toggleTabState === 1 && (
+                                    <div className={cx("tab__content")}>
+                                        <MetadataContainer policyId={policyId} assetName={assetName} />
                                     </div>
                                 )}
 
                                 {toggleTabState === 3 && (
                                     <div className={cx("tab__content")}>
-                                        <h2>UTXOs</h2>
-                                        <div>
-                                            {Object.keys(assetMetadata).map((key) => (
-                                                <div key={key}>
-                                                    <strong>{key}:</strong> {assetMetadata[key]}
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
                                     </div>
                                 )}
                             </section>

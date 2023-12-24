@@ -24,7 +24,6 @@ function convertMetadataToObj(metadataArray: any) {
             resultObj[item.property] = item.value;
         }
     }
-
     return resultObj;
 }
 
@@ -40,12 +39,7 @@ const MintPage = function ({}: Props) {
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
     const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
-    const [metadatas, setMetadatas] = useState<any>([
-        {
-            property: "",
-            value: "",
-        },
-    ]);
+    const [metadatas, setMetadatas] = useState<any>([{ property: "", value: "" }]);
 
     useEffect(() => {
         return function () {
@@ -78,13 +72,7 @@ const MintPage = function ({}: Props) {
     };
 
     const handleAddMetadata = function () {
-        setMetadatas([
-            ...metadatas,
-            {
-                property: "",
-                value: "",
-            },
-        ]);
+        setMetadatas([...metadatas, { property: "", value: "" }]);
     };
 
     const handleDeleteMetadata = function (index: number) {
@@ -148,6 +136,7 @@ const MintPage = function ({}: Props) {
 
     return (
         <main className={cx("wrapper")} data-aos="fade-down">
+            <title>Mint - Demarket</title>
             <div className={cx("container")}>
                 <section className={cx("left")}>
                     <header className={cx("header")}>Mint Your Asset</header>
@@ -163,7 +152,7 @@ const MintPage = function ({}: Props) {
                                 hidden
                                 onChange={handleChangeFile}
                             />
-                            <Button>Upload</Button>
+                            <Button className={cx("button__upload")}>Upload</Button>
                         </div>
                     </div>
                     {/* upload-end */}
@@ -189,19 +178,19 @@ const MintPage = function ({}: Props) {
                         </div>
                     </div>
 
-                    <div className={cx("select-wrapper")}>
+                    {/* <div className={cx("select-wrapper")}>
                         <h3 className={cx("label")}>Category</h3>
 
                         <Select
                             placeholder="Select category ..."
                             isMulti
-                            className={cx("title-control")}
+                            className={cx("multi-select")}
                             options={categories.map(function (category) {
                                 return { value: category.id, label: category.name };
                             })}
                             onChange={console.log}
                         />
-                    </div>
+                    </div> */}
 
                     {/* select-end */}
                     {/* description-begin */}
@@ -302,7 +291,9 @@ const MintPage = function ({}: Props) {
                         </div>
 
                         <div className={cx("mint")}>
-                            <Button onClick={handleMintNft}>Mint</Button>
+                            <Button className={cx("button__mint")} onClick={handleMintNft}>
+                                Create
+                            </Button>
                         </div>
                     </div>
                     {/* bill-end */}

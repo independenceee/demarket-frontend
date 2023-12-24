@@ -10,4 +10,5 @@ export type CartContextType = {
     removeFromCart: ({ id, policyId, assetName }: NftItemType) => Promise<any>;
     addToCart: (newItem: NftItemType) => Promise<any>;
     clearCart: () => Promise<any>;
+    completePurchase: () => Promise<any>;
 };

@@ -15,7 +15,7 @@ type Props = {
     loading?: boolean;
 };
 
-const NftContainer = function ({ nfts, itemsPerPage = 8, loading }: Props) {
+const NftContainer = function ({ nfts, itemsPerPage = 12, loading }: Props) {
     const [currentItems, setCurrentItems] = useState<any>([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0);

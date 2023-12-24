@@ -23,7 +23,7 @@ const Verify = function ({ setVerify }: Props) {
     return (
         <section className={cx("content__filter")}>
             <header className={cx("content__filter--header")} onClick={handleOpenVerify}>
-                <h3 className={cx("content__filter--title")}>Category</h3>
+                <h3 className={cx("content__filter--title")}>Verify</h3>
                 {!openVerify ? (
                     <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
                 ) : (

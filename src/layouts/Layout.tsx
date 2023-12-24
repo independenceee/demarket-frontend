@@ -18,7 +18,7 @@ const Layout = function ({ children }: Props) {
 
     useEffect(function () {
         const router = pathName.split("/").join("").toUpperCase();
-        setSelectedRouter(router || "HOME");
+        setSelectedRouter(router || "Home");
     }, []);
 
     return (

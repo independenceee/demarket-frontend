@@ -287,7 +287,7 @@
         }
 
         .description {
-            color: #2b2b2b;
+            color: var(--text-color);
             font-size: 20px;
             font-weight: 600;
             line-height: 20px;
@@ -509,4 +509,50 @@
             }
         }
     }
+}
+
+.button__upload {
+    text-align: center;
+    display: inline-block;
+    padding: 10px 30px;
+    min-width: 100px;
+    background: linear-gradient(
+        90deg,
+        #2400ff -22.36%,
+        rgba(92, 0, 241, 0.85) 39.25%,
+        rgba(112, 0, 255, 0.7) 68.73%,
+        rgba(173, 0, 255, 0.55) 129.76%
+    );
+    color: #e1e1e1;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: 0.3s ease;
+}
+
+.button__mint {
+    text-align: center;
+    display: inline-block;
+    padding: 10px 30px;
+    min-width: 150px;
+    background: linear-gradient(
+        90deg,
+        #2400ff -22.36%,
+        rgba(92, 0, 241, 0.85) 39.25%,
+        rgba(112, 0, 255, 0.7) 68.73%,
+        rgba(173, 0, 255, 0.55) 129.76%
+    );
+    color: #e1e1e1;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+}
+
+.multi-select {
 }

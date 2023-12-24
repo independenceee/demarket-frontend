@@ -9,11 +9,16 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import CartContext from "@/contexts/components/CartContext";
 import CartItem from "@/components/Cart/CartItem";
 import { CartContextType } from "@/types/CartContextType";
+import Button from "@/components/Button";
+import ModalContext from "@/contexts/components/ModalContext";
+import { ModalContextType } from "@/types/ModalContextType";
 
 const cx = classNames.bind(styles);
 type Props = {};
 const Cart = function ({}: Props) {
-    const { cartItem, clearCart } = useContext<CartContextType>(CartContext);
+    const { isShowingCart, toggleShowingCart } = useContext<ModalContextType>(ModalContext);
+    const { cartItem, clearCart, completePurchase } = useContext<CartContextType>(CartContext);
+
     return (
         <main className={cx("wrapper")} data-aos="fade-left">
             <header className={cx("header")}>
@@ -22,7 +27,7 @@ const Cart = function ({}: Props) {
                         <span>Your cart</span>
                     </div>
 
-                    <div className={cx("title__right")}>
+                    <div className={cx("title__right")} onClick={toggleShowingCart}>
                         <FontAwesomeIcon icon={faXmark} />
                     </div>
                 </section>
@@ -52,7 +57,9 @@ const Cart = function ({}: Props) {
                     <span>Add items to get started</span>
                 </div>
             )}
-            <button className={cx("button")}>Complete purchase</button>
+            <Button className={cx("button")} onClick={completePurchase}>
+                Complete purchase
+            </Button>
         </main>
     );
 };
