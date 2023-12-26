@@ -1,22 +1,65 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 import styles from "./AccountItem.module.scss";
 import Image from "next/image";
 import images from "@/assets/images";
 import { AccountItemType } from "@/types/GenericsType";
+import { AccountContextType } from "@/types/AccountContextType";
+import AccountContext from "@/contexts/components/AccountContext";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
 type Props = {
     account: AccountItemType;
     index: number;
+    isFollow?: boolean;
 };
 
-const AccountItem = function ({ account, index }: Props) {
+const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const router = useRouter();
+    const [follow, setFollow] = useState<boolean>(isFollow);
+
+    const { followAccount, unFollowAccount, account: accountConnect } = useContext<AccountContextType>(AccountContext);
+
+    useEffect(() => {
+        if (!accountConnect) {
+            setFollow(false);
+        }
+    }, []);
+
+    const handleFollowAccount = async function () {
+        try {
+            if (accountConnect) {
+                await followAccount({ accountId: accountConnect.id, accountIdFollow: account.id });
+                setFollow(!follow);
+                toast.success("Follow account successfully");
+            } else {
+                setFollow(false);
+                toast.warn("You can login account");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleUnfollowAccount = async function () {
+        try {
+            if (accountConnect) {
+                await unFollowAccount({ accountId: accountConnect.id, accountIdUnFollow: account.id });
+                setFollow(!follow);
+                toast.success("Follow account successfully");
+            } else {
+                setFollow(false);
+                toast.warn("You can login account");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div
@@ -29,11 +72,7 @@ const AccountItem = function ({ account, index }: Props) {
             <div className={cx("container")}>
                 <header className={cx("header")}>
                     <div className={cx("background__wrapper")}>
-                        <Image
-                            className={cx("background__image")}
-                            src={account.cover || images.noImage}
-                            alt="Backgound Image"
-                        />
+                        <Image className={cx("background__image")} src={account.cover || images.noImage} alt="Backgound Image" />
                     </div>
                     <div className={cx("avatar__wrapper")}>
                         <Image className={cx("avatar__image")} src={account.avatar || images.user} alt="User Image" />
@@ -45,7 +84,15 @@ const AccountItem = function ({ account, index }: Props) {
                         <p className={cx("content__left--amount")}>{account.rating}</p>
                     </div>
                     <div className={cx("content_right")}>
-                        <button className={cx("content_right--button")}>Follow</button>
+                        {!follow ? (
+                            <button onClick={handleFollowAccount} className={cx("content_right--button")}>
+                                Follow
+                            </button>
+                        ) : (
+                            <button onClick={handleUnfollowAccount} className={cx("content_right--button")}>
+                                Unfollow
+                            </button>
+                        )}
                     </div>
                 </section>
             </div>

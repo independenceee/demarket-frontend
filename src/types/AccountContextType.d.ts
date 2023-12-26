@@ -49,4 +49,7 @@ export type AccountContextType = {
     setTotalPagesFollowers: React.Dispatch<React.SetStateAction<number>>;
     loadingFollowers: boolean;
     setLoadingFollowers: React.Dispatch<React.SetStateAction<boolean>>;
+
+    followAccount: ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) => Promise<void>;
+    unFollowAccount: ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) => Promise<void>;
 };

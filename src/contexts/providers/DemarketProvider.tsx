@@ -61,7 +61,7 @@ const DemarketProvider = function ({ children }: Props) {
             const fetchAccounts = async function () {
                 try {
                     const { accounts, totalPage } = await get("/account", {
-                        params: { page: currentPageAccounts, pageSize: 12 },
+                        params: { page: currentPageAccounts, pageSize: 12, walletAddress: walletAddressParams },
                     });
                     setAccounts(accounts);
                     setTotalPagesAccounts(totalPage);
