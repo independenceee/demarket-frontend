@@ -28,6 +28,9 @@ import CartContext from "@/contexts/components/CartContext";
 import { toast } from "react-toastify";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
+import { DemarketContextType } from "@/types/DemarketContextType";
+import DemarketContext from "@/contexts/components/DemarketContext";
+import { ClipLoader } from "react-spinners";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -44,7 +47,7 @@ const DetailPage = function ({}: Props) {
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
-
+    const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
         useContext<SmartContractType>(SmartContractContext);
     const { lucidWallet, walletItem, revalidate, setRevalidate } = useContext<LucidContextType>(LucidContext);
@@ -82,6 +85,7 @@ const DetailPage = function ({}: Props) {
     const handleAddtoCart = async function () {
         try {
             await addToCart(asset);
+            await addNft({ policyId, assetName });
         } catch (error) {
             console.log(error);
         }
@@ -101,6 +105,7 @@ const DetailPage = function ({}: Props) {
                 if (txHash) {
                     setRevalidate(!revalidate);
                     toast.success("Buy asset successfully.");
+                    await addNft({ policyId, assetName });
                 }
             } else {
                 toggleNotificationConnectWallet();
@@ -127,6 +132,7 @@ const DetailPage = function ({}: Props) {
                 if (txHash) {
                     setRevalidate(!revalidate);
                     toast.success("Selling asset successfully.");
+                    await addNft({ policyId, assetName });
                 }
             } else {
                 toggleNotificationConnectWallet();
@@ -151,6 +157,7 @@ const DetailPage = function ({}: Props) {
                 if (txHash) {
                     setRevalidate(!revalidate);
                     toast.success("Refund asset successfully.");
+                    await addNft({ policyId, assetName });
                 }
             } else {
                 toggleNotificationConnectWallet();
@@ -170,11 +177,7 @@ const DetailPage = function ({}: Props) {
                         <section className={cx("content__left")}>
                             <div className={cx("content__image")}>
                                 {checkMediaType(String(asset.mediaType), "image") && (
-                                    <img
-                                        className={cx("content__image--image")}
-                                        src={String(convertIpfsAddressToUrl(asset.image))}
-                                        alt=""
-                                    />
+                                    <img className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))} alt="" />
                                 )}
                                 {checkMediaType(String(asset.mediaType), "video") && (
                                     <video autoPlay controls muted loop className={cx("content__image--image")}>
@@ -183,10 +186,7 @@ const DetailPage = function ({}: Props) {
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "application") && (
-                                    <iframe
-                                        className={cx("content__image--image")}
-                                        src={String(convertIpfsAddressToUrl(asset.image))}
-                                    ></iframe>
+                                    <iframe className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))}></iframe>
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "audio") && (
@@ -231,11 +231,7 @@ const DetailPage = function ({}: Props) {
                                         <header className={cx("people__header")}>Owner</header>
                                         <div className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
-                                                <Image
-                                                    className={cx("people__avatar--image")}
-                                                    src={images.user}
-                                                    alt=""
-                                                />
+                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
                                             </div>
                                             <div className={cx("people__information")}>
                                                 <h3 className={cx("people__name")}>
@@ -262,11 +258,7 @@ const DetailPage = function ({}: Props) {
                                         <header className={cx("people__header")}>Author</header>
                                         <div className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
-                                                <Image
-                                                    className={cx("people__avatar--image")}
-                                                    src={images.user}
-                                                    alt=""
-                                                />
+                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
                                             </div>
                                             <div className={cx("people__information")}>
                                                 <h3 className={cx("people__name")}>
@@ -296,7 +288,11 @@ const DetailPage = function ({}: Props) {
                                     <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000} </header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleBuyNft}>
-                                            Buy asset
+                                            {!isActive ? (
+                                                "Buy asset"
+                                            ) : (
+                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                            )}
                                         </Button>
                                         <Button className={cx("search-btn")} onClick={handleAddtoCart}>
                                             Add to cart
@@ -310,7 +306,11 @@ const DetailPage = function ({}: Props) {
                                     <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000}</header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleRefundNft}>
-                                            Refund asset
+                                            {!isActive ? (
+                                                "Refund asset"
+                                            ) : (
+                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                            )}
                                         </Button>
                                         <Button className={cx("search-btn")} onClick={handleAddtoCart}>
                                             Add to cart
@@ -331,7 +331,11 @@ const DetailPage = function ({}: Props) {
                                         />
 
                                         <Button className={cx("search-btn")} onClick={handleSellNft}>
-                                            Sell asset
+                                            {!isActive ? (
+                                                "Sell asset"
+                                            ) : (
+                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                            )}
                                         </Button>
                                     </article>
                                 </section>
@@ -342,9 +346,7 @@ const DetailPage = function ({}: Props) {
                                         return (
                                             <button
                                                 key={index}
-                                                className={
-                                                    toggleTabState === id ? cx("tab__item--active") : cx("tab__item")
-                                                }
+                                                className={toggleTabState === id ? cx("tab__item--active") : cx("tab__item")}
                                                 onClick={() => toggleTab(id)}
                                             >
                                                 {name}

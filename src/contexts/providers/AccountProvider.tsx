@@ -9,7 +9,7 @@ import { AccountItemType, NftItemType } from "@/types/GenericsType";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { get, post } from "@/utils/httpRequest";
+import { get, post, del } from "@/utils/httpRequest";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -151,11 +151,11 @@ const AccountProvider = function ({ children }: Props) {
     const [loadingFollowers, setLoadingFollowers] = useState<boolean>(true);
     const fetchFollowers = async function () {
         try {
-            const { accountsFollowed, totalPage } = await get("/follow/followed", {
+            const { accounts, totalPage } = await get("/follow/followed", {
                 params: { walletAddress: walletAddressParams, page: currentPageFollowers, pageSize: 12 },
             });
 
-            setFollowers(accountsFollowed);
+            setFollowers(accounts);
             setTotalPagesFollowers(totalPage);
             setLoadingFollowers(false);
         } catch (error) {
@@ -178,28 +178,52 @@ const AccountProvider = function ({ children }: Props) {
     const [followings, setFollowings] = useState<AccountItemType[]>([]);
     const [currentPageFollowings, setCurrentPageFollowings] = useState<number>(1);
     const [totalPagesFollowings, setTotalPagesFollowings] = useState<number>(1);
-    const [loadingFollowings, setLoadingFollowings] = useState<boolean>(true);
-    const fetchFollowings = async function () {
-        try {
-            const { accountsFollowing, totalPage } = await get("/follow/following", {
-                params: { walletAddress: walletAddressParams, page: currentPageFollowings, pageSize: 12 },
-            });
+    const [loadingFollowings, setLoadingFollowings] = useState<boolean>(false);
 
-            setFollowings(accountsFollowing);
-            setTotalPagesFollowings(totalPage);
-            setLoadingFollowings(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     useEffect(
         function () {
+            const fetchFollowings = async function () {
+                try {
+                    const { accounts, totalPage } = await get("/follow/following", {
+                        params: { walletAddress: walletAddressParams, page: currentPageFollowings, pageSize: 12 },
+                    });
+
+                    setFollowings(accounts);
+                    setTotalPagesFollowings(totalPage);
+                    setLoadingFollowings(false);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
             if (walletAddressParams) {
                 fetchFollowings();
             }
         },
         [currentPageFollowings, walletAddressParams],
     );
+
+    console.log(followers);
+    console.log(followings);
+
+    const followAccount = async function ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) {
+        try {
+            await post("/follow", {
+                followingId: accountId,
+                followerId: accountIdFollow,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const unFollowAccount = async function ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) {
+        try {
+            await del("/follow", {
+                followerId: accountId,
+                followingId: accountIdUnFollow,
+            });
+        } catch (error) {}
+    };
 
     return (
         <AccountContext.Provider
@@ -252,6 +276,9 @@ const AccountProvider = function ({ children }: Props) {
                 setCurrentPageFollowings,
                 totalPagesFollowings,
                 setTotalPagesFollowings,
+
+                followAccount,
+                unFollowAccount,
             }}
         >
             {children}
