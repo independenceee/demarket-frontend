@@ -1,4 +1,8 @@
 @import "normalize.css";
+@import "react-loading-skeleton/dist/skeleton.css";
+@import "react-toastify/dist/ReactToastify.css";
+@import "tippy.js/dist/tippy.css";
+@import "aos/dist/aos.css";
 
 :root {
     --font-family: "Open Sans", sans-serif;
@@ -28,6 +32,7 @@ body {
     text-rendering: optimizespeed;
     color: var(--text-color);
     overflow-y: overlay;
+    overflow-x: hidden;
 }
 
 a {
