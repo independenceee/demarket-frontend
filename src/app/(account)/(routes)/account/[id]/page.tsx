@@ -50,31 +50,22 @@ const tabItems = [
 
 const AccountPage = function ({}: Props) {
     const { id: walletAddressPath } = useParams();
-
-    const [stakeKey, setStakeKey] = useState<string>("");
     const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
+    const [activeTab, setActiveTab] = useState<string>("my assets");
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [searchValue, setSearchValue] = useState<string>("");
+
     const handleOpenIntroduct = function () {
         setOpenIntroduce(!openIntroduce);
     };
 
-    useEffect(
-        function () {
-            const fetchStakeKey = async function () {
-                setStakeKey(await fetchStakeKeyFromAddress(String(walletAddressPath)));
-            };
-            fetchStakeKey();
-        },
-        [walletAddressPath],
-    );
-
-    const { walletItem, lucidWallet } = useContext<LucidContextType>(LucidContext);
+    const { walletItem } = useContext<LucidContextType>(LucidContext);
     const { accounts, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
         useContext<DemarketContextType>(DemarketContext);
 
     const {
         account,
         loadingAccount,
-
         assetsFromAddress,
         setAssetsFromAddress,
         currentPageAssetsFromAddress,
@@ -83,7 +74,6 @@ const AccountPage = function ({}: Props) {
         setTotalPagesAssetsFromAddress,
         loadingAssetsFromAddress,
         setLoadingAssetsFromAddress,
-
         createdAssetsFromAddress,
         setCreatedAssetsFromAddress,
         currentPageCreatedAssetsFromAddress,
@@ -128,23 +118,19 @@ const AccountPage = function ({}: Props) {
             const fetchAccountFromAddress = async function () {
                 try {
                     const account: AccountItemType = await post("/account", {
-                        walletAddress: walletItem.walletAddress,
+                        walletAddress: walletAddressPath,
                     });
                     setAccountWalletAddressParams(account);
                 } catch (error) {
                     console.log(error);
                 }
             };
-            if (walletItem.walletAddress) {
+            if (walletAddressPath) {
                 fetchAccountFromAddress();
             }
         },
-        [walletItem.walletAddress],
+        [walletAddressPath],
     );
-    const [activeTab, setActiveTab] = useState<string>("my assets");
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-
-    const [searchValue, setSearchValue] = useState<string>("");
 
     return (
         <main className={cx("wrapper")}>
@@ -171,23 +157,32 @@ const AccountPage = function ({}: Props) {
 
                     <div className={cx("account__content")}>
                         <div className={cx("account__infomation")}>
-                            <h3>{accountWalletAddressParams ? account.userName : stakeKey}</h3>
-                            <p>{accountWalletAddressParams && account.description}</p>
+                            <h3>{accountWalletAddressParams && accountWalletAddressParams.userName}</h3>
+                            <p>{accountWalletAddressParams && accountWalletAddressParams.description}</p>
                         </div>
                         <div className={cx("account__media")}>
                             <div className={cx("social__links")}>
-                                <Link href={"#"}>
-                                    <Image src={images.meta} alt="" />
-                                </Link>
-                                <Link href={""}>
-                                    <Image src={images.linkedin} alt="" />
-                                </Link>
-                                <Link href={""}>
-                                    <Image src={images.youtube} alt="" />
-                                </Link>
-                                <Link href={""}>
-                                    <Image src={images.twitter} alt="" />
-                                </Link>
+                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
+                                    <Link href={accountWalletAddressParams.twitter}>
+                                        <Image src={images.meta} alt="" />
+                                    </Link>
+                                )}
+
+                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
+                                    <Link href={accountWalletAddressParams.telegram}>
+                                        <Image src={images.youtube} alt="" />
+                                    </Link>
+                                )}
+                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
+                                    <Link href={accountWalletAddressParams.twitter}>
+                                        <Image src={images.twitter} alt="" />
+                                    </Link>
+                                )}
+                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
+                                    <Link href={accountWalletAddressParams.linkedin}>
+                                        <Image src={images.linkedin} alt="" />
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -213,15 +208,17 @@ const AccountPage = function ({}: Props) {
                                             <span>Address:</span>
                                         </h4>
                                         <p className={cx("content__filter--description")}>{walletAddressPath}</p>
-                                        <CopyItem value="123" />
+                                        <CopyItem value={accountWalletAddressParams && accountWalletAddressParams.walletAddress!} />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <StakekeyIcon />
                                             <span>Stake key: </span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>{stakeKey}</p>
-                                        <CopyItem value="123" />
+                                        <p className={cx("content__filter--description")}>
+                                            {accountWalletAddressParams && accountWalletAddressParams.stakeKey}
+                                        </p>
+                                        <CopyItem value={accountWalletAddressParams && accountWalletAddressParams.stakeKey!} />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -276,9 +273,7 @@ const AccountPage = function ({}: Props) {
                                         <li
                                             key={index}
                                             onClick={() => setActiveTab(tab.slug)}
-                                            className={
-                                                activeTab == tab.slug ? cx("tab__item--active") : cx("tab__item")
-                                            }
+                                            className={activeTab == tab.slug ? cx("tab__item--active") : cx("tab__item")}
                                         >
                                             {tab.name}
                                         </li>
@@ -287,21 +282,9 @@ const AccountPage = function ({}: Props) {
                             </ul>
                         </nav>
                         <section>
-                            {activeTab === "my assets" && (
-                                <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />
-                            )}
-                            {activeTab === "selling" && (
-                                <NftContainer
-                                    nfts={sellingAssetsFromAddress}
-                                    loading={loadingSellingAssetsFromAddress}
-                                />
-                            )}
-                            {activeTab === "created" && (
-                                <NftContainer
-                                    nfts={createdAssetsFromAddress}
-                                    loading={loadingCreatedAssetsFromAddress}
-                                />
-                            )}
+                            {activeTab === "my assets" && <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />}
+                            {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromAddress} loading={loadingSellingAssetsFromAddress} />}
+                            {activeTab === "created" && <NftContainer nfts={createdAssetsFromAddress} loading={loadingCreatedAssetsFromAddress} />}
                             {activeTab === "collection" && <NftContainer nfts={assetsFromAddress} />}
                             {activeTab === "following" && (
                                 <AccountContainer

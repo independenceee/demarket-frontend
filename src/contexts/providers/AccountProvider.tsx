@@ -75,9 +75,10 @@ const AccountProvider = function ({ children }: Props) {
 
                     setAssetsFromAddress(assetsFromAddress.filter(Boolean));
                     setTotalPagesAssetsFromAddress(totalPage);
-                    setLoadingAssetsFromAddress(false);
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    setLoadingAssetsFromAddress(false);
                 }
             };
             if (walletAddressParams) {
@@ -86,10 +87,6 @@ const AccountProvider = function ({ children }: Props) {
         },
         [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate],
     );
-
-    /**
-     * TODO: Get assets created from account
-     */
 
     const [createdAssetsFromAddress, setCreatedAssetsFromAddress] = useState<NftItemType[]>([]);
     const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] = useState<boolean>(false);
@@ -105,9 +102,10 @@ const AccountProvider = function ({ children }: Props) {
                         return asset.authorAddress === walletAddressParams;
                     });
                     setCreatedAssetsFromAddress(createdAssetsList);
-                    setLoadingCreatedAssetsFromAddress(false);
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    setLoadingCreatedAssetsFromAddress(false);
                 }
             };
             if (walletAddressParams) {
@@ -117,22 +115,24 @@ const AccountProvider = function ({ children }: Props) {
         [walletAddressParams, assetsFromSmartContract],
     );
 
-    /**
-     * TODO: Get assets selling from accounts
-     */
-
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);
     const [currentPageSellingAssetsFromAddress, setCurrentPageSellingAssetsFromAddress] = useState<number>(1);
-    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] = useState<boolean>(true);
+    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] = useState<boolean>(false);
     const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] = useState<number>(1);
-
     useEffect(
         function () {
-            const fetchSellingsAsset = function () {
-                const sellingAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
-                    return asset.sellerAddress === walletAddressParams;
-                });
-                setSellingAssetsFromAddress(sellingAssetsList);
+            const fetchSellingsAsset = async function () {
+                try {
+                    setLoadingSellingAssetsFromAddress(true);
+                    const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
+                        return asset.sellerAddress === walletAddressParams;
+                    });
+                    setSellingAssetsFromAddress(sellingAssetsList);
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    setLoadingSellingAssetsFromAddress(false);
+                }
             };
             if (walletAddressParams) {
                 fetchSellingsAsset();
@@ -141,39 +141,34 @@ const AccountProvider = function ({ children }: Props) {
         [walletAddressParams, assetsFromSmartContract],
     );
 
-    /**
-     * TODO: Get accounts follower from account
-     */
-
     const [followers, setFollowers] = useState<AccountItemType[]>([]);
     const [currentPageFollowers, setCurrentPageFollowers] = useState<number>(1);
     const [totalPagesFollowers, setTotalPagesFollowers] = useState<number>(1);
-    const [loadingFollowers, setLoadingFollowers] = useState<boolean>(true);
-    const fetchFollowers = async function () {
-        try {
-            const { accounts, totalPage } = await get("/follow/followed", {
-                params: { walletAddress: walletAddressParams, page: currentPageFollowers, pageSize: 12 },
-            });
+    const [loadingFollowers, setLoadingFollowers] = useState<boolean>(false);
 
-            setFollowers(accounts);
-            setTotalPagesFollowers(totalPage);
-            setLoadingFollowers(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     useEffect(
         function () {
+            const fetchFollowers = async function () {
+                try {
+                    setLoadingFollowers(true);
+                    const { accounts, totalPage } = await get("/account/followed", {
+                        params: { walletAddress: walletAddressParams, page: currentPageFollowers, pageSize: 12 },
+                    });
+
+                    setFollowers(accounts);
+                    setTotalPagesFollowers(totalPage);
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    setLoadingFollowers(false);
+                }
+            };
             if (walletAddressParams) {
                 fetchFollowers();
             }
         },
         [currentPageFollowers, walletAddressParams],
     );
-
-    /**
-     *  TODO: Get accounts following from account
-     */
 
     const [followings, setFollowings] = useState<AccountItemType[]>([]);
     const [currentPageFollowings, setCurrentPageFollowings] = useState<number>(1);
@@ -184,15 +179,17 @@ const AccountProvider = function ({ children }: Props) {
         function () {
             const fetchFollowings = async function () {
                 try {
-                    const { accounts, totalPage } = await get("/follow/following", {
+                    setLoadingFollowings(true);
+                    const { accounts, totalPage } = await get("/account/following", {
                         params: { walletAddress: walletAddressParams, page: currentPageFollowings, pageSize: 12 },
                     });
 
                     setFollowings(accounts);
                     setTotalPagesFollowings(totalPage);
-                    setLoadingFollowings(false);
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    setLoadingFollowings(false);
                 }
             };
             if (walletAddressParams) {
@@ -201,9 +198,6 @@ const AccountProvider = function ({ children }: Props) {
         },
         [currentPageFollowings, walletAddressParams],
     );
-
-    console.log(followers);
-    console.log(followings);
 
     const followAccount = async function ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) {
         try {

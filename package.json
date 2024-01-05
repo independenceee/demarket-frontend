@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@cyntler/react-doc-viewer": "^1.14.1",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -28,6 +29,7 @@
         "react": "^18",
         "react-copy-to-clipboard": "^5.1.0",
         "react-countup": "^6.4.2",
+        "react-doc-viewer": "^0.1.5",
         "react-dom": "^18",
         "react-icons": "^4.11.0",
         "react-loading-skeleton": "^3.3.1",
