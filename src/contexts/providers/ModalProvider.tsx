@@ -17,40 +17,6 @@ const ModalProvider = function ({ children }: Props) {
     const { isShowing: isShowingWalletLong, toggle: toggleShowingWalletLong } = useModal();
     const { isShowing: isShowingInfomationAccount, toggle: toggleShowingInfomationAccount } = useModal();
 
-    useEffect(() => {
-        if (
-            isShowingNotificationConnectWallet ||
-            isShowingDownloadWallet ||
-            isShowingSearch ||
-            isShowingCart ||
-            isShowingWalletShort ||
-            isShowingWalletLong ||
-            isShowingInfomationAccount
-        ) {
-            document.body.style.overflowY = "hidden";
-        } else {
-            document.body.style.overflowY = "auto";
-        }
-    }, [
-        isShowingNotificationConnectWallet,
-        isShowingDownloadWallet,
-        isShowingSearch,
-        isShowingCart,
-        isShowingWalletShort,
-        isShowingWalletLong,
-        isShowingInfomationAccount,
-    ]);
-
-    useEffect(() => {
-        const handleScroll = function () {};
-
-        window.addEventListener("scroll", handleScroll);
-
-        return function () {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
     return (
         <ModalContext.Provider
             value={{

@@ -14,15 +14,17 @@ import SmartContractContext from "@/contexts/components/SmartContractContext";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import NftItemSlider from "@/components/NftContainer/NftItemSlider/NftItemSlider";
 import { DemarketContextType } from "@/types/DemarketContextType";
+import NftItemSliderSkeleton from "@/components/NftContainer/NftItemSlider/NftItemSliderSkeleton";
+import AccountItemSliderSkeleton from "@/components/AccountContainer/AccountItemSilder/AccountItemSliderSkeleton";
+import { AccountItemType } from "@/types/GenericsType";
 type Props = {};
 
 const cx = classNames.bind(styles);
 
 const Home = function ({}: Props) {
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
-        useContext<SmartContractType>(SmartContractContext);
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
 
-    const { accounts } = useContext<DemarketContextType>(DemarketContext);
+    const { accounts, loadingAccounts } = useContext<DemarketContextType>(DemarketContext);
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -36,33 +38,35 @@ const Home = function ({}: Props) {
                     </article>
                 </section>
                 <section className={cx("trending__wrapper")}>
-                    <SubTitle
-                        title="Trending Items"
-                        description="The trending tech products of 2024. Let's shop now for the hottest products."
-                    />
+                    <SubTitle title="Trending Items" description="The trending tech products of 2024. Let's shop now for the hottest products." />
 
                     <div className={cx("trending__container")}>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-left")}>
-                                {assetsFromSmartContract.slice(0, 10).map(function (value: any, index: number) {
-                                    return <NftItemSlider value={value} key={index} index={index} />;
-                                })}
+                                {loadingAssetsFromSmartContract
+                                    ? new Array(10).fill(null).map(function (value: any, index: number) {
+                                          return <NftItemSliderSkeleton index={1} />;
+                                      })
+                                    : assetsFromSmartContract.slice(0, 10).map(function (value: any, index: number) {
+                                          return <NftItemSlider value={value} key={index} index={index} />;
+                                      })}
                             </div>
                         </section>
                         <section className={cx("slider__wrapper")}>
                             <div className={cx("slider__list-right")}>
-                                {assetsFromSmartContract.slice(10, 20).map(function (value: any, index: number) {
-                                    return <NftItemSlider value={value} key={index} index={index} />;
-                                })}
+                                {loadingAssetsFromSmartContract
+                                    ? new Array(10).fill(null).map(function (value: any, index: number) {
+                                          return <NftItemSliderSkeleton index={1} />;
+                                      })
+                                    : assetsFromSmartContract.slice(10, 20).map(function (value: any, index: number) {
+                                          return <NftItemSlider value={value} key={index} index={index} />;
+                                      })}
                             </div>
                         </section>
                     </div>
                 </section>
                 <section className={cx("news__wrapper")}>
-                    <SubTitle
-                        title="Selling Items"
-                        description="Find amazing works from a variety of artists on our platform."
-                    />
+                    <SubTitle title="Selling Items" description="Find amazing works from a variety of artists on our platform." />
 
                     <article className={cx("news_container")}>
                         <NftContainer loading={loadingAssetsFromSmartContract} nfts={assetsFromSmartContract} />
@@ -75,20 +79,22 @@ const Home = function ({}: Props) {
                     />
                     <article className={cx("account__container")}>
                         <section className={cx("account__list--left")}>
-                            {accounts.map(function (account, index) {
-                                return <AccountItemSilder account={account} key={index} index={index} />;
-                            })}
-                            {accounts.map(function (account, index) {
-                                return <AccountItemSilder account={account} key={index} index={index} />;
-                            })}
+                            {loadingAccounts
+                                ? new Array(10).fill(null).map(function (value: any, index: number) {
+                                      return <AccountItemSliderSkeleton index={1} />;
+                                  })
+                                : accounts.slice(0, 10).map(function (account: AccountItemType, index: number) {
+                                      return <AccountItemSilder account={account} key={index} index={index} />;
+                                  })}
                         </section>
                         <section className={cx("account__list--right")}>
-                            {accounts.map(function (account, index) {
-                                return <AccountItemSilder account={account} key={index} index={index} />;
-                            })}
-                            {accounts.map(function (account, index) {
-                                return <AccountItemSilder account={account} key={index} index={index} />;
-                            })}
+                            {loadingAccounts
+                                ? new Array(10).fill(null).map(function (account: any, index: number) {
+                                      return <AccountItemSliderSkeleton index={index} />;
+                                  })
+                                : accounts.slice(0, 10).map(function (account: AccountItemType, index: number) {
+                                      return <AccountItemSilder account={account} key={index} index={index} />;
+                                  })}
                         </section>
                     </article>
                 </section>
