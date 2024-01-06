@@ -11,8 +11,8 @@ type Props = {
 
 const NftItemSkeletonSlider = function ({ index }: Props) {
     return (
-        <div className={cx("wrapper")} data-aos="zoom-in-up" data-aos-delay={`${100 * (index + 4)}`} data-aos-duration={`${1000 * (index + 4)}`}>
-            <Skeleton width={"100%"} height={"100%"} />
+        <div className={cx("skeleton")} data-aos="zoom-in-up" data-aos-delay={`${100 * (index + 4)}`} data-aos-duration={`${1000 * (index + 4)}`}>
+            <Skeleton width={310} height={200} />
         </div>
     );
 };

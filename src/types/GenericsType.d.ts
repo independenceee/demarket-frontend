@@ -77,3 +77,12 @@ export type CategoryItemType = {
     name?: string;
     slug?: string;
 };
+
+export type HistoryItemType = {
+    transactionHash: string;
+    fee: number;
+    address: string;
+    status: string;
+    price: number;
+    datetime: string;
+};
