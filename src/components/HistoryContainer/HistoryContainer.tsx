@@ -24,10 +24,10 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
             const fetchTransactions = async function () {
                 try {
                     setLoadingTransactions(true);
-                    const { allTransaction } = await post(
-                        `/blockfrost/transaction/asset?page=${currentPageTransactions}&pageSize=${8}`,
-                        { policyId: policyId, assetName: assetsName },
-                    );
+                    const { allTransaction } = await post(`/blockfrost/transaction/asset?page=${currentPageTransactions}&pageSize=${8}`, {
+                        policyId: policyId,
+                        assetName: assetsName,
+                    });
 
                     setTotalPagesTransactions(allTransaction.totalPage);
                     setTransactions(allTransaction.paginatedData);
@@ -46,11 +46,10 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
         setCurrentPageTransactions(page);
     };
 
+    console.log(transactions);
     return (
         <div className={cx("wrapper")}>
-            <div className={cx("container")}>
-                <h2>Comming Soon</h2>
-            </div>
+            <div className={cx("container")}>{/* <HistoryItem /> */}</div>
         </div>
     );
 };

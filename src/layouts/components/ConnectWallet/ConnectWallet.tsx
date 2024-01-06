@@ -36,6 +36,8 @@ const ConnectWallet = function ({}: Props) {
         toggleShowingWalletLong,
         isShowingInfomationAccount,
         toggleShowingInfomationAccount,
+        isShowingConnectWalletMainnet,
+        toggleShowingConnectWalletMainnet,
     } = useContext<ModalContextType>(ModalContext);
 
     const { setAccount } = useContext<AccountContextType>(AccountContext);
@@ -113,11 +115,7 @@ const ConnectWallet = function ({}: Props) {
                 <div className={cx("wallet__short--wrapper")}>
                     {wallets.slice(0, 5).map(function (wallet, index) {
                         return (
-                            <div
-                                key={index}
-                                onClick={() => handleConnectWallet(wallet)}
-                                className={cx("wallet__short--container")}
-                            >
+                            <div key={index} onClick={() => handleConnectWallet(wallet)} className={cx("wallet__short--container")}>
                                 <div className={cx("wallet__short--item")}>
                                     <Image className={cx("wallet__short--image")} src={wallet.walletImage} alt="" />
                                     <span className={cx("wallet__short--name")}>{wallet.walletName}</span>
@@ -144,11 +142,7 @@ const ConnectWallet = function ({}: Props) {
                     <section className={cx("wallet__long--list")}>
                         {wallets.map(function (wallet: WalletItemType, index: number) {
                             return (
-                                <div
-                                    key={index}
-                                    className={cx("wallet__long--item")}
-                                    onClick={() => handleConnectWallet(wallet)}
-                                >
+                                <div key={index} className={cx("wallet__long--item")} onClick={() => handleConnectWallet(wallet)}>
                                     <div className={cx("wallet__long--content")}>
                                         <Image src={wallet.walletImage} alt="" className={cx("wallet__long--image")} />
                                         <div className={cx("wallet__long--name")}>
@@ -162,25 +156,16 @@ const ConnectWallet = function ({}: Props) {
                 </div>
             </Modal>
 
-            <Modal isShowing={isShowingNotificationConnectWallet} toggle={toggleNotificationConnectWallet}>
+            <Modal isShowing={isShowingConnectWalletMainnet} toggle={toggleShowingConnectWalletMainnet}>
                 <div className={cx("wallet_download")}>
                     <section className={cx("nowallet__content")}>
-                        <p>
-                            You must connect a wallet to make a transaction. Chrome Web Store and install it now , if
-                            you dont have one yet?
-                        </p>
+                        <p>You must connect a wallet to make a transaction. Chrome Web Store and install it now , if you dont have one yet?</p>
                     </section>
                     <div className={cx("nowallet__button")}>
-                        <button className={cx("button__ok")} onClick={toggleNotificationConnectWallet}>
+                        <button className={cx("button__ok")} onClick={toggleShowingConnectWalletMainnet}>
                             CANCEL
                         </button>
-                        <button
-                            onClick={() => {
-                                toggleShowingWalletShort();
-                                toggleNotificationConnectWallet();
-                            }}
-                            className={cx("button__cancel")}
-                        >
+                        <button onClick={toggleShowingConnectWalletMainnet} className={cx("button__cancel")}>
                             OK
                         </button>
                     </div>
@@ -191,20 +176,34 @@ const ConnectWallet = function ({}: Props) {
                 <div className={cx("wallet_download")}>
                     <section className={cx("nowallet__content")}>
                         <p>
-                            The selected wallet ({walletItem.walletName}) has not been installed. Do you want to visit
-                            Chrome Web Store and install it now?
+                            The selected wallet ({walletItem.walletName}) has not been installed. Do you want to visit Chrome Web Store and install it
+                            now?
                         </p>
                     </section>
                     <div className={cx("nowallet__button")}>
                         <button className={cx("button__ok")} onClick={toggleDownloadWallet}>
                             CANCEL
                         </button>
-                        <a
-                            target="_blank"
-                            href={walletItem.walletDownloadApi}
-                            className={cx("button__cancel")}
-                            rel="noopener noreferrer"
-                        >
+                        <a target="_blank" href={walletItem.walletDownloadApi} className={cx("button__cancel")} rel="noopener noreferrer">
+                            OK
+                        </a>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal isShowing={isShowingDownloadWallet} toggle={toggleDownloadWallet}>
+                <div className={cx("wallet_download")}>
+                    <section className={cx("nowallet__content")}>
+                        <p>
+                            You must connect via mainnet wallet to donate via account. You must connect a wallet to make a transaction. Chrome Web
+                            Store and install it now , if you dont have one yet?
+                        </p>
+                    </section>
+                    <div className={cx("nowallet__button")}>
+                        <button className={cx("button__ok")} onClick={toggleDownloadWallet}>
+                            CANCEL
+                        </button>
+                        <a target="_blank" href={walletItem.walletDownloadApi} className={cx("button__cancel")} rel="noopener noreferrer">
                             OK
                         </a>
                     </div>
@@ -215,9 +214,7 @@ const ConnectWallet = function ({}: Props) {
                 <div className={cx("wallet__infomation--wrapper")}>
                     <section className={cx("wallet__short--container")}>
                         <div className={cx("wallet__short--item")}>
-                            <span className={cx("wallet__short--name")}>
-                                Wallet: {walletItem.walletAddress?.slice(0, 15)}...
-                            </span>
+                            <span className={cx("wallet__short--name")}>Wallet: {walletItem.walletAddress?.slice(0, 15)}...</span>
                             <CopyIcon className={cx("wallet__short--image")} />
                         </div>
                     </section>

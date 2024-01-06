@@ -16,6 +16,7 @@ const ModalProvider = function ({ children }: Props) {
     const { isShowing: isShowingWalletShort, toggle: toggleShowingWalletShort } = useModal();
     const { isShowing: isShowingWalletLong, toggle: toggleShowingWalletLong } = useModal();
     const { isShowing: isShowingInfomationAccount, toggle: toggleShowingInfomationAccount } = useModal();
+    const { isShowing: isShowingConnectWalletMainnet, toggle: toggleShowingConnectWalletMainnet } = useModal();
 
     return (
         <ModalContext.Provider
@@ -34,6 +35,8 @@ const ModalProvider = function ({ children }: Props) {
                 toggleShowingWalletLong,
                 isShowingInfomationAccount,
                 toggleShowingInfomationAccount,
+                isShowingConnectWalletMainnet,
+                toggleShowingConnectWalletMainnet,
             }}
         >
             {children}

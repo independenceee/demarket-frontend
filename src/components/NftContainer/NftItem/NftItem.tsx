@@ -10,7 +10,6 @@ import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import checkMediaType from "@/helpers/checkMediaType";
 import convertHexToString from "@/helpers/convertHexToString";
 import CopyItem from "@/components/CopyItem";
-import DocViewer, { DocViewerRenderers, PDFRenderer } from "react-doc-viewer";
 
 const cx = classNames.bind(styles);
 type Props = {

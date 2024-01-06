@@ -17,6 +17,7 @@ import { DemarketContextType } from "@/types/DemarketContextType";
 import NftItemSliderSkeleton from "@/components/NftContainer/NftItemSlider/NftItemSliderSkeleton";
 import AccountItemSliderSkeleton from "@/components/AccountContainer/AccountItemSilder/AccountItemSliderSkeleton";
 import { AccountItemType } from "@/types/GenericsType";
+import Donate from "@/components/Donate";
 type Props = {};
 
 const cx = classNames.bind(styles);
@@ -45,7 +46,7 @@ const Home = function ({}: Props) {
                             <div className={cx("slider__list-left")}>
                                 {loadingAssetsFromSmartContract
                                     ? new Array(10).fill(null).map(function (value: any, index: number) {
-                                          return <NftItemSliderSkeleton index={1} />;
+                                          return <NftItemSliderSkeleton key={index} index={index} />;
                                       })
                                     : assetsFromSmartContract.slice(0, 10).map(function (value: any, index: number) {
                                           return <NftItemSlider value={value} key={index} index={index} />;
@@ -56,7 +57,7 @@ const Home = function ({}: Props) {
                             <div className={cx("slider__list-right")}>
                                 {loadingAssetsFromSmartContract
                                     ? new Array(10).fill(null).map(function (value: any, index: number) {
-                                          return <NftItemSliderSkeleton index={1} />;
+                                          return <NftItemSliderSkeleton key={index} index={index} />;
                                       })
                                     : assetsFromSmartContract.slice(10, 20).map(function (value: any, index: number) {
                                           return <NftItemSlider value={value} key={index} index={index} />;
@@ -81,7 +82,7 @@ const Home = function ({}: Props) {
                         <section className={cx("account__list--left")}>
                             {loadingAccounts
                                 ? new Array(10).fill(null).map(function (value: any, index: number) {
-                                      return <AccountItemSliderSkeleton index={1} />;
+                                      return <AccountItemSliderSkeleton key={index} index={index} />;
                                   })
                                 : accounts.slice(0, 10).map(function (account: AccountItemType, index: number) {
                                       return <AccountItemSilder account={account} key={index} index={index} />;
@@ -90,7 +91,7 @@ const Home = function ({}: Props) {
                         <section className={cx("account__list--right")}>
                             {loadingAccounts
                                 ? new Array(10).fill(null).map(function (account: any, index: number) {
-                                      return <AccountItemSliderSkeleton index={index} />;
+                                      return <AccountItemSliderSkeleton key={index} index={index} />;
                                   })
                                 : accounts.slice(0, 10).map(function (account: AccountItemType, index: number) {
                                       return <AccountItemSilder account={account} key={index} index={index} />;
@@ -100,6 +101,9 @@ const Home = function ({}: Props) {
                 </section>
                 <section className={cx("statistics")}>
                     <Statistics />
+                </section>
+                <section className={cx("donate")}>
+                    <Donate />
                 </section>
             </div>
         </main>

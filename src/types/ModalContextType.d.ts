@@ -13,4 +13,6 @@ export type ModalContextType = {
     toggleShowingCart: () => void;
     isShowingInfomationAccount: boolean;
     toggleShowingInfomationAccount: () => void;
+    isShowingConnectWalletMainnet: boolean;
+    toggleShowingConnectWalletMainnet: () => void;
 };
