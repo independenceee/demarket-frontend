@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import classNames from "classnames/bind";
 import styles from "./SearchFeild.module.scss";
+import Link from "next/link";
+import routes from "@/configs/routes";
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +31,9 @@ const SearchFeild = ({ setResults }: Props) => {
 
     return (
         <div className={cx("input-wrapper")}>
-            <FaSearch className={cx("search-icon")} />
+            <Link href={routes.marketplace} className={cx("search-icon")}>
+                <FaSearch className={cx("search-icon")} />
+            </Link>
             <input placeholder="Type to search..." value={input} onChange={(e) => handleChange(e.target.value)} />
         </div>
     );
