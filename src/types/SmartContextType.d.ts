@@ -36,15 +36,7 @@ export type SmartContractType = {
         lucid: Lucid;
     }) => Promise<any>;
 
-    refundAsset: ({
-        lucid,
-        policyId,
-        assetName,
-    }: {
-        lucid: Lucid;
-        policyId: string;
-        assetName: string;
-    }) => Promise<any>;
+    refundAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;
 
     mintAsset: ({
         lucid,
@@ -60,6 +52,22 @@ export type SmartContractType = {
         mediaType: string;
         imageUrl: string;
         customMetadata: any;
+    }) => Promise<any>;
+
+    mintCollection: ({
+        title,
+        description,
+        address,
+        lucid,
+        imageAvatar,
+        imageCover,
+    }: {
+        lucid: Lucid;
+        title: string;
+        address: string;
+        description: string;
+        imageAvatar: string;
+        imageCover: string;
     }) => Promise<any>;
 
     burnAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;

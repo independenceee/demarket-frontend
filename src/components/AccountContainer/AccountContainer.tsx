@@ -7,6 +7,7 @@ import styles from "./AccountContainer.module.scss";
 import AccountItem from "@/components/AccountContainer/AccountItem";
 import { AccountItemType } from "@/types/GenericsType";
 import AccountItemSkeleton from "@/components/AccountContainer/AccountItem/AccountItemSkeleton";
+import BannerCreate from "@/components/BannerCreate";
 
 const cx = classNames.bind(styles);
 
@@ -40,6 +41,7 @@ const AccountContainer = function ({ currentPageAccounts, accounts, loadingAccou
                     <Pagination count={totalPagesAccounts} page={currentPageAccounts} onChange={handlePageChange} shape="rounded" />
                 </Stack>
             ) : null}
+            {!loadingAccounts && accounts.length === 0 ? <BannerCreate /> : null}
         </div>
     );
 };

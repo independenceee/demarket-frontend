@@ -7,6 +7,7 @@ import sellAsset from "@/services/contracts/sellAsset";
 import buyAsset from "@/services/contracts/buyAsset";
 import listAssets from "@/services/contracts/listAssets";
 import mintAsset from "@/services/contracts/mintAsset";
+import mintCollection from "@/services/contracts/mintCollection";
 import refundAsset from "@/services/contracts/refundAsset";
 import findAsset from "@/services/contracts/findAsset";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
@@ -49,8 +50,7 @@ const SmartContractProvider = function ({ children }: Props) {
                         return existingAsset;
                     });
                     const newAssets: NftItemType[] = convertedAssets.filter(
-                        (newAsset: NftItemType) =>
-                            !previousAssets.some((existingAsset: any) => existingAsset.policyId === newAsset.policyId),
+                        (newAsset: NftItemType) => !previousAssets.some((existingAsset: any) => existingAsset.policyId === newAsset.policyId),
                     );
 
                     return [...updatedAssets, ...newAssets];
@@ -80,6 +80,7 @@ const SmartContractProvider = function ({ children }: Props) {
                 mintAsset,
                 refundAsset,
                 sellAsset,
+                mintCollection,
             }}
         >
             {children}
