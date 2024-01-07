@@ -7,6 +7,7 @@ import NftItem from "./NftItem";
 import NftItemSkeleton from "./NftItem/NftItemSkeleton";
 import { Pagination, Stack } from "@mui/material";
 import { NftItemType } from "@/types/GenericsType";
+import BannerCreate from "../BannerCreate";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -27,6 +28,7 @@ const NftContainer = function ({ nfts, itemsPerPage = 12, loading }: Props) {
     }, [itemOffset, itemsPerPage, nfts]);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        event.preventDefault();
         const newOffset = (value - 1) * itemsPerPage;
         setItemOffset(newOffset);
     };
@@ -46,6 +48,7 @@ const NftContainer = function ({ nfts, itemsPerPage = 12, loading }: Props) {
                     <Pagination count={pageCount} shape="rounded" page={Math.ceil(itemOffset / itemsPerPage) + 1} onChange={handlePageChange} />
                 </Stack>
             ) : null}
+            {!loading && nfts.length === 0 ? <BannerCreate /> : null}
         </div>
     );
 };

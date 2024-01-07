@@ -1,5 +1,8 @@
 .wrapper {
-    padding: 90px 8%;
+    width: min(90rem, 90%);
+    margin: 0 auto;
+    position: relative;
+    padding: 90px 0;
 
     .container {
         display: flex;
