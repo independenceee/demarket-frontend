@@ -1,0 +1,25 @@
+.wrapper {
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar__wrapper {
+    border-radius: 50%;
+}
+
+.avatar__image {
+    border-radius: inherit;
+}
+
+.infomation__wrapper {
+    .infomation__content {
+        span {
+            font-weight: 550;
+            color: var(--text-color);
+        }
+    }
+}

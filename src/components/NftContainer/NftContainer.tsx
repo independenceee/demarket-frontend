@@ -41,16 +41,11 @@ const NftContainer = function ({ nfts, itemsPerPage = 12, loading }: Props) {
                           return <NftItem key={index} value={value} index={index} />;
                       })}
             </div>
-            {!loading && nfts.length !== 0 && (
+            {!loading && nfts.length !== 0 ? (
                 <Stack spacing={2}>
-                    <Pagination
-                        count={pageCount}
-                        shape="rounded"
-                        page={Math.ceil(itemOffset / itemsPerPage) + 1}
-                        onChange={handlePageChange}
-                    />
+                    <Pagination count={pageCount} shape="rounded" page={Math.ceil(itemOffset / itemsPerPage) + 1} onChange={handlePageChange} />
                 </Stack>
-            )}
+            ) : null}
         </div>
     );
 };
