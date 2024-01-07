@@ -29,11 +29,11 @@ import { DemarketContextType } from "@/types/DemarketContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import Search from "@/components/Search";
-import fetchStakeKeyFromAddress from "@/utils/fetchStakeKeyFromAddress";
 import Category from "@/components/Category";
 import Link from "next/link";
 import { AccountItemType } from "@/types/GenericsType";
 import { post } from "@/utils/httpRequest";
+import convertDatetimePrisma from "@/helpers/convertDatetimePrisma";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -243,7 +243,9 @@ const AccountPage = function ({}: Props) {
                                             <FollowerIcon className={cx("content__filter--icon")} />
                                             <span>Followers:</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}>0</h4>
+                                        <h4 className={cx("content__filter--value")}>
+                                            <CountUp start={0} end={followers.length} />
+                                        </h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -257,7 +259,9 @@ const AccountPage = function ({}: Props) {
                                             <CreatedAtIcon className={cx("content__filter--icon")} />
                                             <span>Joinned</span>
                                         </h4>
-                                        <h4 className={cx("content__filter--value")}></h4>
+                                        <h4 className={cx("content__filter--value")}>
+                                            {accountWalletAddressParams && convertDatetimePrisma(accountWalletAddressParams.createdAt)}
+                                        </h4>
                                     </section>
                                 </article>
                             )}
@@ -293,6 +297,7 @@ const AccountPage = function ({}: Props) {
                                     totalPagesAccounts={totalPagesFollowings}
                                     loadingAccounts={loadingFollowings}
                                     setCurrentPageAccounts={setCurrentPageFollowings}
+                                    isFollow={walletItem.walletAddress === String(walletAddressPath)}
                                 />
                             )}
                             {activeTab === "follower" && (

@@ -1,8 +1,7 @@
 "use client";
-import React, { useContext } from "react";
+import React from "react";
 import classNames from "classnames/bind";
 import styles from "./NftItem.module.scss";
-import CopyItem from "@/components/CopyItem";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const cx = classNames.bind(styles);
@@ -12,12 +11,7 @@ type Props = {
 
 const NftItemSkeleton = function ({ index }: Props) {
     return (
-        <div
-            className={cx("wrapper")}
-            data-aos="zoom-in-up"
-            data-aos-delay={`${100 * (index + 4)}`}
-            data-aos-duration={`${1000 * (index + 4)}`}
-        >
+        <div className={cx("wrapper")} data-aos="zoom-in-up" data-aos-delay={`${100 * (index + 4)}`} data-aos-duration={`${1000 * (index + 4)}`}>
             <SkeletonTheme highlightColor="#7000ff" />
             <div className={cx("container")}>
                 <Skeleton width={"100%"} height={200} borderRadius={8} />

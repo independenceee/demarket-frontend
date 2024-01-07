@@ -13,7 +13,6 @@ import images from "@/assets/images";
 import { LucidContextType } from "@/types/LucidContextType";
 import { SmartContractType } from "@/types/SmartContextType";
 import { DemarketContextType } from "@/types/DemarketContextType";
-import Select from "react-select";
 import styles from "./Mint.module.scss";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";

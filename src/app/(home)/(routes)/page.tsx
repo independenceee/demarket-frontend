@@ -18,6 +18,7 @@ import NftItemSliderSkeleton from "@/components/NftContainer/NftItemSlider/NftIt
 import AccountItemSliderSkeleton from "@/components/AccountContainer/AccountItemSilder/AccountItemSliderSkeleton";
 import { AccountItemType } from "@/types/GenericsType";
 import Donate from "@/components/Donate";
+import AccountItemSkeleton from "@/components/AccountContainer/AccountItem/AccountItemSkeleton";
 type Props = {};
 
 const cx = classNames.bind(styles);

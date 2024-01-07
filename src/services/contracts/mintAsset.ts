@@ -9,14 +9,7 @@ type Props = {
     customMetadata: any;
 };
 
-const mintAssetService = async function ({
-    lucid,
-    title,
-    description,
-    imageUrl,
-    mediaType,
-    customMetadata,
-}: Props): Promise<any> {
+const mintAssetService = async function ({ lucid, title, description, imageUrl, mediaType, customMetadata }: Props): Promise<any> {
     try {
         if (lucid) {
             const { paymentCredential }: any = lucid.utils.getAddressDetails(await lucid.wallet.address());
@@ -28,6 +21,7 @@ const mintAssetService = async function ({
                 ],
             });
             const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
+
             const assetName = fromText(title);
             const cleanedData = Object.fromEntries(Object.entries(customMetadata).filter(([key, value]) => key !== ""));
             const tx = await lucid
@@ -35,7 +29,7 @@ const mintAssetService = async function ({
                 .mintAssets({ [policyId + assetName]: BigInt(1) })
                 .attachMetadata(721, {
                     [policyId]: {
-                        [title]: {
+                        [assetName]: {
                             name: title,
                             description: description,
                             image: imageUrl,
