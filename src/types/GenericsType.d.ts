@@ -21,16 +21,15 @@ export type NftItemType = {
     validate?: boolean;
 };
 
-export type CollectionType = {
+export type CollectionItemType = {
     policyId: string;
     cover: string;
     avatar: string;
-    name: string;
+    title: string;
     description: string;
-    telegram: string;
-    linkedin: string;
-    twitter: string;
-    followed?: number;
+    address: string;
+    totalAsset: number;
+    createdAt: string;
 };
 
 export type AccountItemType = {

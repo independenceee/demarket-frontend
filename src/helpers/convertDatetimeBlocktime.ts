@@ -14,13 +14,7 @@ const convertDatetimeBlocktime = function (datetime: number) {
         " " +
         date.toLocaleString("en-US", { month: "long" }) +
         " " +
-        date.getFullYear() +
-        " " +
-        ("0" + date.getHours()).slice(-2) +
-        ":" +
-        ("0" + date.getMinutes()).slice(-2) +
-        ":" +
-        ("0" + date.getSeconds()).slice(-2);
+        date.getFullYear();
 
     return formatted_date_time;
 };

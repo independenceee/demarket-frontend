@@ -10,6 +10,7 @@ import mintAsset from "@/services/contracts/mintAsset";
 import mintCollection from "@/services/contracts/mintCollection";
 import refundAsset from "@/services/contracts/refundAsset";
 import findAsset from "@/services/contracts/findAsset";
+import mintAssetPolicyId from "@/services/contracts/mintAssetPolicyId";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { NftItemType } from "@/types/GenericsType";
 import LucidContext from "../components/LucidContext";
@@ -81,6 +82,7 @@ const SmartContractProvider = function ({ children }: Props) {
                 refundAsset,
                 sellAsset,
                 mintCollection,
+                mintAssetPolicyId,
             }}
         >
             {children}

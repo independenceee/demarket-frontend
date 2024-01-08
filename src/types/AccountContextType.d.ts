@@ -1,4 +1,4 @@
-import { AccountItemType, AccountItemTypeType, NftItemType } from "@/types/GenericsType";
+import { AccountItemType, AccountItemTypeType, CollectionItemType, NftItemType } from "@/types/GenericsType";
 
 export type AccountContextType = {
     account: AccountItemType;
@@ -49,6 +49,15 @@ export type AccountContextType = {
     setTotalPagesFollowers: React.Dispatch<React.SetStateAction<number>>;
     loadingFollowers: boolean;
     setLoadingFollowers: React.Dispatch<React.SetStateAction<boolean>>;
+
+    collectionsFromAddress: CollectionItemType[];
+    setCollectionsFromAddress: React.Dispatch<React.SetStateAction<CollectionItemType[]>>;
+    loadingCollectionsFromAddress: boolean;
+    setLoadingCollectionsFromAddress: React.Dispatch<React.SetStateAction<boolean>>;
+    totalPagesCollectionsFromAddress: number;
+    setTotalPagesCollectionsFromAddress: React.Dispatch<React.SetStateAction<number>>;
+    currentPageCollectionsFromAddress: number;
+    setCurrentPageCollectionsFromAddress: React.Dispatch<React.SetStateAction<number>>;
 
     followAccount: ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) => Promise<void>;
     unFollowAccount: ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) => Promise<void>;

@@ -70,5 +70,23 @@ export type SmartContractType = {
         imageCover: string;
     }) => Promise<any>;
 
+    mintAssetPolicyId: ({
+        lucid,
+        title,
+        description,
+        imageUrl,
+        mediaType,
+        customMetadata,
+        policyId,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        title: string;
+        description: string;
+        mediaType: string;
+        imageUrl: string;
+        customMetadata: any;
+    }) => Promise<any>;
+
     burnAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;
 };

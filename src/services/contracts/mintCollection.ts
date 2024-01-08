@@ -1,3 +1,4 @@
+import fetchPublicKeyFromAddress from "@/utils/fetchPublicKeyFromAddress";
 import { Lucid, TxComplete, TxSigned } from "lucid-cardano";
 
 type Props = {
@@ -17,7 +18,7 @@ const mintCollection = async function ({ lucid, title, description, address, ima
                 type: "all",
                 scripts: [
                     { type: "sig", keyHash: paymentCredential.hash },
-                    { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
+                    { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now()) },
                 ],
             });
             const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
@@ -25,16 +26,17 @@ const mintCollection = async function ({ lucid, title, description, address, ima
             const tx: TxComplete = await lucid
                 .newTx()
                 .mintAssets({ [policyId]: BigInt(1) })
-                .attachMetadata(777, {
+                .attachMetadata(721, {
                     [policyId]: {
-                        address: address,
-                        avatar: imageAvatar,
-                        cover: imageCover,
-                        title: title,
-                        description: description,
+                        [""]: {
+                            avatar: imageAvatar,
+                            cover: imageCover,
+                            title: title,
+                            description: description,
+                        },
                     },
                 })
-                .validTo(Date.now() + 200000)
+                .validTo(Date.now())
                 .attachMintingPolicy(mintingPolicy)
                 .complete();
             const signedTx: TxSigned = await tx.sign().complete();

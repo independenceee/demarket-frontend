@@ -41,7 +41,7 @@ const AccountContainer = function ({ currentPageAccounts, accounts, loadingAccou
                     <Pagination count={totalPagesAccounts} page={currentPageAccounts} onChange={handlePageChange} shape="rounded" />
                 </Stack>
             ) : null}
-            {!loadingAccounts && accounts.length === 0 ? <BannerCreate /> : null}
+            {/* {!loadingAccounts && accounts.length === 0 ? <BannerCreate /> : null} */}
         </div>
     );
 };
