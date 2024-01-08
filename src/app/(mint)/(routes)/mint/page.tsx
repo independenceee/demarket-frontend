@@ -132,7 +132,7 @@ const MintPage = function ({}: Props) {
                 setDescription("");
                 setImagePath("");
                 setMetadatas([]);
-                setMediaType("");
+                setMediaType("Media type asset");
                 await addNft({ policyId, assetName });
             } else {
                 toggleNotificationConnectWallet();

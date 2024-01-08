@@ -83,7 +83,6 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
         setCurrentPageTransactions(page);
     };
 
-    console.log(transactions);
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>{/* <HistoryItem /> */}</div>
