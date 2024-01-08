@@ -34,6 +34,7 @@ import Link from "next/link";
 import { AccountItemType } from "@/types/GenericsType";
 import { post } from "@/utils/httpRequest";
 import convertDatetimePrisma from "@/helpers/convertDatetimePrisma";
+import CollectionContainer from "@/components/CollectionContainer";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -64,51 +65,24 @@ const AccountPage = function ({}: Props) {
         useContext<DemarketContextType>(DemarketContext);
 
     const {
-        account,
-        loadingAccount,
         assetsFromAddress,
-        setAssetsFromAddress,
-        currentPageAssetsFromAddress,
-        setCurrentPageAssetsFromAddress,
-        totalPagesAssetsFromAddress,
-        setTotalPagesAssetsFromAddress,
         loadingAssetsFromAddress,
-        setLoadingAssetsFromAddress,
         createdAssetsFromAddress,
-        setCreatedAssetsFromAddress,
-        currentPageCreatedAssetsFromAddress,
-        setCurrentPageCreatedAssetsFromAddress,
-        totalPagesCreatedAssetsFromAddress,
-        setTotalPagesCreatedAssetsFromAddress,
         loadingCreatedAssetsFromAddress,
-        setLoadingCreatedAssetsFromAddress,
-
         sellingAssetsFromAddress,
-        setSellingAssetsFromAddress,
-        currentPageSellingAssetsFromAddress,
-        setCurrentPageSellingAssetsFromAddress,
-        totalPagesSellingAssetsFromAddress,
-        setTotalPagesSellingAssetsFromAddress,
         loadingSellingAssetsFromAddress,
-        setLoadingSellingAssetsFromAddress,
-
         followers,
-        setFollowers,
         currentPageFollowers,
         setCurrentPageFollowers,
         loadingFollowers,
-        setLoadingFollowers,
         totalPagesFollowers,
-        setTotalPagesFollowers,
-
         followings,
-        setFollowings,
         loadingFollowings,
-        setLoadingFollowings,
         currentPageFollowings,
         setCurrentPageFollowings,
         totalPagesFollowings,
-        setTotalPagesFollowings,
+        collectionsFromAddress,
+        loadingCollectionsFromAddress,
     } = useContext<AccountContextType>(AccountContext);
 
     const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(null!);
@@ -289,7 +263,9 @@ const AccountPage = function ({}: Props) {
                             {activeTab === "my assets" && <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />}
                             {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromAddress} loading={loadingSellingAssetsFromAddress} />}
                             {activeTab === "created" && <NftContainer nfts={createdAssetsFromAddress} loading={loadingCreatedAssetsFromAddress} />}
-                            {activeTab === "collection" && <NftContainer nfts={assetsFromAddress} />}
+                            {activeTab === "collection" && (
+                                <CollectionContainer collections={collectionsFromAddress} loading={loadingCollectionsFromAddress} />
+                            )}
                             {activeTab === "following" && (
                                 <AccountContainer
                                     accounts={followings}

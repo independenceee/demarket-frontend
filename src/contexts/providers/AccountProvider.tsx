@@ -5,12 +5,13 @@ import { useParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
-import { AccountItemType, NftItemType } from "@/types/GenericsType";
+import { AccountItemType, CollectionItemType, NftItemType } from "@/types/GenericsType";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { get, post, del } from "@/utils/httpRequest";
 import { toast } from "react-toastify";
+import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 
 type Props = {
     children: ReactNode;
@@ -21,9 +22,6 @@ const AccountProvider = function ({ children }: Props) {
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
     const { walletItem, revalidate } = useContext<LucidContextType>(LucidContext);
 
-    /**
-     * TODO: Get account infomation when connect wallet
-     */
     const [account, setAccount] = useState<AccountItemType>(null!);
     const [loadingAccount, setLoadingAccount] = useState<boolean>(false);
     useEffect(
@@ -48,9 +46,11 @@ const AccountProvider = function ({ children }: Props) {
         [walletItem.walletAddress],
     );
 
-    /**
-     * TODO: Get All Assets from account
-     */
+    const [collectionsFromAddress, setCollectionsFromAddress] = useState<CollectionItemType[]>([]);
+    const [loadingCollectionsFromAddress, setLoadingCollectionsFromAddress] = useState<boolean>(false);
+    const [totalPagesCollectionsFromAddress, setTotalPagesCollectionsFromAddress] = useState<number>(1);
+    const [currentPageCollectionsFromAddress, setCurrentPageCollectionsFromAddress] = useState<number>(1);
+
     const [assetsFromAddress, setAssetsFromAddress] = useState<NftItemType[]>([]);
     const [currentPageAssetsFromAddress, setCurrentPageAssetsFromAddress] = useState<number>(1);
     const [totalPagesAssetsFromAddress, setTotalPagesAssetsFromAddress] = useState<number>(1);
@@ -59,19 +59,36 @@ const AccountProvider = function ({ children }: Props) {
     useEffect(
         function () {
             const fetchAssetsFromAddress = async function () {
+                setLoadingAssetsFromAddress(true);
+                setLoadingCollectionsFromAddress(true);
                 try {
-                    setLoadingAssetsFromAddress(true);
                     const { paginatedData, totalPage } = await post(
-                        `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${8}`,
+                        `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
                         { address: walletAddressParams },
                     );
+
                     const assetsFromAddress = await Promise.all(
-                        paginatedData.map(async ({ policy_id, asset_name }: any) => {
-                            const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                            if (data) return { ...data };
-                            return null;
+                        paginatedData.map(async ({ policy_id, asset_name, quantity }: any) => {
+                            if (policy_id !== "" && asset_name !== "" && quantity === "1") {
+                                const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
+                                if (data) return { ...data };
+                                return null;
+                            }
                         }),
                     );
+
+                    const collectionsFromAddress = await Promise.all(
+                        paginatedData.map(async function ({ policy_id, asset_name, quantity }: any) {
+                            if (policy_id !== "" && asset_name === "" && quantity === "1") {
+                                const data = await fetchInfomationCollection({ policyId: policy_id, assetName: asset_name });
+                                if (data) return { ...data };
+                                return null;
+                            }
+                        }),
+                    );
+
+                    setCollectionsFromAddress(collectionsFromAddress.filter(Boolean));
+                    setTotalPagesCollectionsFromAddress(totalPage);
 
                     setAssetsFromAddress(assetsFromAddress.filter(Boolean));
                     setTotalPagesAssetsFromAddress(totalPage);
@@ -79,6 +96,7 @@ const AccountProvider = function ({ children }: Props) {
                     console.log(error);
                 } finally {
                     setLoadingAssetsFromAddress(false);
+                    setLoadingCollectionsFromAddress(false);
                 }
             };
             if (walletAddressParams) {
@@ -112,7 +130,7 @@ const AccountProvider = function ({ children }: Props) {
                 fetchCreatedAssetsFromAddress();
             }
         },
-        [walletAddressParams, assetsFromSmartContract],
+        [walletAddressParams, assetsFromSmartContract, revalidate],
     );
 
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);
@@ -138,7 +156,7 @@ const AccountProvider = function ({ children }: Props) {
                 fetchSellingsAsset();
             }
         },
-        [walletAddressParams, assetsFromSmartContract],
+        [walletAddressParams, assetsFromSmartContract, revalidate],
     );
 
     const [followers, setFollowers] = useState<AccountItemType[]>([]);
@@ -270,6 +288,15 @@ const AccountProvider = function ({ children }: Props) {
                 setCurrentPageFollowings,
                 totalPagesFollowings,
                 setTotalPagesFollowings,
+
+                collectionsFromAddress,
+                setCollectionsFromAddress,
+                loadingCollectionsFromAddress,
+                setLoadingCollectionsFromAddress,
+                totalPagesCollectionsFromAddress,
+                setTotalPagesCollectionsFromAddress,
+                currentPageCollectionsFromAddress,
+                setCurrentPageCollectionsFromAddress,
 
                 followAccount,
                 unFollowAccount,

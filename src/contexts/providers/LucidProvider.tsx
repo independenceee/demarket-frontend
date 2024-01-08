@@ -17,14 +17,14 @@ const LucidProvider = function ({ children }: Props) {
         switch (networkPlatform) {
             case "Preprod":
                 lucid = await Lucid.new(
-                    new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o"),
+                    new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS"),
                     networkPlatform,
                 );
 
                 break;
             case "Preview":
                 lucid = await Lucid.new(
-                    new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o"),
+                    new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS"),
                     networkPlatform,
                 );
                 break;
@@ -60,14 +60,14 @@ const LucidProvider = function ({ children }: Props) {
             switch (networkPlatform) {
                 case "Preprod":
                     lucid = await Lucid.new(
-                        new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o"),
+                        new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS"),
                         networkPlatform,
                     );
 
                     break;
                 case "Preview":
                     lucid = await Lucid.new(
-                        new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodez6rnHTjlVwmOJ94OzyJ6N0iGgNlKA1o"),
+                        new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS"),
                         networkPlatform,
                     );
                     break;
