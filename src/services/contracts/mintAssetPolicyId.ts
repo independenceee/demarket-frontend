@@ -14,11 +14,11 @@ const mintAssetPolicyIdService = async function ({ lucid, title, description, im
     try {
         if (lucid) {
             const { paymentCredential }: any = lucid.utils.getAddressDetails(await lucid.wallet.address());
-            console.log(paymentCredential);
+
             const mintingPolicy: Script = lucid.utils.nativeScriptFromJson({
                 type: "all",
                 scripts: [
-                    // { type: "after", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
+                    // { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
                     { type: "sig", keyHash: paymentCredential.hash },
                 ],
             });
@@ -46,6 +46,7 @@ const mintAssetPolicyIdService = async function ({ lucid, title, description, im
                 .complete();
             const signedTx = await tx.sign().complete();
             const txHash = await signedTx.submit();
+            console.log(txHash);
 
             return {
                 txHash,
