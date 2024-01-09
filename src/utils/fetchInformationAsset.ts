@@ -22,7 +22,6 @@ const fetchAddressFromTxHash = async function (transactionHash: string) {
 const fetchStakeKeyFromAddress = async function (address: string) {
     try {
         const data = await post("/emurgo/stakekey/address", { address: address });
-
         return data.stakeKey;
     } catch (error) {
         console.error(error);
@@ -51,8 +50,10 @@ const fetchInformationFromDemarket = async function ({ policyId, assetName }: Pr
 
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     const currentAddress = await fetchCurrentAddressAsset({ policyId, assetName });
-    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } =
-        await fetchAuthorAddressAndSellerAddress({ policyId, assetName });
+    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } = await fetchAuthorAddressAndSellerAddress({
+        policyId,
+        assetName,
+    });
     const { fingerprint, metadata } = await fetchMetadataFromPolicyIdAndAssetName({ policyId, assetName });
     const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
     return {

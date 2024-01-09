@@ -37,14 +37,13 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
 
                     const transactionDetails = transactionHashs.map(async function (transactionHash: any, index: number) {
                         const transactionDetail = await post(`/blockfrost/transaction/detail`, { transactionHash: transactionHash.tx_hash });
-                        console.log("transactionDetail", transactionDetail);
+                        // console.log("transactionDetail", transactionDetail);
                         // console.log(transactionDetail);
-                        const transactionUtxo = await post(`/blockfrost/transaction/utxos`, { transactionHash: transactionHash.tx_hash });
-                        const transactionUtxoOutputs = transactionUtxo.outputs.filter(function (output: any) {
+                        const transactionUtxos = await post(`/blockfrost/transaction/utxos`, { transactionHash: transactionHash.tx_hash });
+                        const transactionUtxoOutputs = transactionUtxos.outputs.forEach(function (output: any) {
                             if (output.address === contractAddress) {
-                                console.log(output);
+                                console.log(transactionUtxos.inputs);
                             }
-                            return output.address === contractAddress;
                         });
                         // console.log(transactionUtxoOutputs);
 
@@ -55,8 +54,6 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
                         // console.log(transactionUtxoInputs);
                         return;
                     });
-
-                    console.log(transactionDetails);
 
                     /**
                      * transactionHash

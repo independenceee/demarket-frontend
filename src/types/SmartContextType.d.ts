@@ -77,15 +77,15 @@ export type SmartContractType = {
         imageUrl,
         mediaType,
         customMetadata,
-        policyId,
+        policyIdCollection,
     }: {
         lucid: Lucid;
-        policyId: string;
         title: string;
         description: string;
         mediaType: string;
         imageUrl: string;
         customMetadata: any;
+        policyIdCollection: string;
     }) => Promise<any>;
 
     burnAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;

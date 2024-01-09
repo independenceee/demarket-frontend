@@ -60,16 +60,17 @@ const Donate = function ({}: Props) {
                 </section>
 
                 <section className={cx("about__content")} data-aos="fade-left">
-                    <h2>Open Your Own Marketplace</h2>
+                    <h2>Support Our Team Efforts</h2>
                     <p>
-                        In the era of digital transformation with the rise of digital art, NFT has gradually changed the concept of ownership and
-                        created a revolution connecting with digital assets. demarket, a decentralized NFT exchange on the Cardano Blockchain platform
-                        from BlockAlpha.
+                        We are proud to introduce our community to our first NFT exchange platform - DEMARKET. This is not just a project but a
+                        journey that the BlockAlpha team has tirelessly worked on to develop the first MVP test version. Every stage, every line of
+                        code, and every feature has been built with dedication and relentless effort to bring an excellent NFT trading experience to
+                        the community.
                     </p>
+
                     <p>
-                        Demarket is a decentralized NFT exchange project developed by the BlockAlpha team. The project has received high ratings from
-                        the review (CR) community with a score of 4.61, and ranked 2nd in the ranking in the Startup & Onboarding for Students
-                        category of Project Catalyst Fund 10.
+                        Be part of the supportive community, accompany us so that demarket is not just a place to trade NFTs but also a destination to
+                        share knowledge and Web3 experiences. Thank you for being with us and supporting us on this journey.
                     </p>
 
                     <div className={cx("about__button")}>

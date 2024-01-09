@@ -16,8 +16,7 @@ const mintCollection = async function ({ lucid, title, description, imageAvatar,
                 type: "all",
                 scripts: [
                     { type: "sig", keyHash: paymentCredential.hash },
-                    // { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
-                    // { type: "all" }, // error
+                    { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
                 ],
             });
             const policyId: string = lucid.utils.mintingPolicyToId(mintingPolicy);
@@ -25,7 +24,7 @@ const mintCollection = async function ({ lucid, title, description, imageAvatar,
             const tx: TxComplete = await lucid
                 .newTx()
                 .mintAssets({ [policyId]: BigInt(1) })
-                .attachMetadata(777, {
+                .attachMetadata(721, {
                     [policyId]: {
                         [""]: {
                             avatar: imageAvatar,

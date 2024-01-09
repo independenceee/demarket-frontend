@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode, useState, useContext, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
@@ -19,6 +19,14 @@ type Props = {
 
 const AccountProvider = function ({ children }: Props) {
     const { id: walletAddressParams } = useParams();
+
+    const searchParams = useSearchParams();
+    const [walletAddressQuery, setWalletAddressQuery] = useState<string>("");
+    useEffect(() => {
+        const address = searchParams.get("address");
+        setWalletAddressQuery(String(address));
+    }, [searchParams]);
+
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
     const { walletItem, revalidate } = useContext<LucidContextType>(LucidContext);
 
@@ -29,14 +37,13 @@ const AccountProvider = function ({ children }: Props) {
             const fetchAccountFromAddress = async function () {
                 try {
                     setLoadingAccount(true);
-                    const account: AccountItemType = await post("/account", {
-                        walletAddress: walletItem.walletAddress,
-                    });
+                    const account: AccountItemType = await post("/account", { walletAddress: walletItem.walletAddress });
                     setAccount(account);
-                    setLoadingAccount(false);
                     toast.success("Login account successfully.");
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    setLoadingAccount(false);
                 }
             };
             if (walletItem.walletAddress) {
@@ -64,7 +71,7 @@ const AccountProvider = function ({ children }: Props) {
                 try {
                     const { paginatedData, totalPage } = await post(
                         `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
-                        { address: walletAddressParams },
+                        { address: walletAddressParams || walletAddressQuery },
                     );
 
                     const assetsFromAddress = await Promise.all(
@@ -99,11 +106,11 @@ const AccountProvider = function ({ children }: Props) {
                     setLoadingCollectionsFromAddress(false);
                 }
             };
-            if (walletAddressParams) {
+            if (walletAddressParams || walletAddressQuery) {
                 fetchAssetsFromAddress();
             }
         },
-        [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate],
+        [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate, walletAddressQuery],
     );
 
     const [createdAssetsFromAddress, setCreatedAssetsFromAddress] = useState<NftItemType[]>([]);
@@ -117,7 +124,7 @@ const AccountProvider = function ({ children }: Props) {
                 try {
                     setLoadingCreatedAssetsFromAddress(true);
                     const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
-                        return asset.authorAddress === walletAddressParams;
+                        return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
                     });
                     setCreatedAssetsFromAddress(createdAssetsList);
                 } catch (error) {
@@ -126,11 +133,11 @@ const AccountProvider = function ({ children }: Props) {
                     setLoadingCreatedAssetsFromAddress(false);
                 }
             };
-            if (walletAddressParams) {
+            if (walletAddressParams || walletAddressQuery) {
                 fetchCreatedAssetsFromAddress();
             }
         },
-        [walletAddressParams, assetsFromSmartContract, revalidate],
+        [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate],
     );
 
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);
@@ -143,7 +150,7 @@ const AccountProvider = function ({ children }: Props) {
                 try {
                     setLoadingSellingAssetsFromAddress(true);
                     const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                        return asset.sellerAddress === walletAddressParams;
+                        return asset.sellerAddress === walletAddressParams || asset.sellerAddress === walletAddressQuery;
                     });
                     setSellingAssetsFromAddress(sellingAssetsList);
                 } catch (error) {
@@ -152,11 +159,11 @@ const AccountProvider = function ({ children }: Props) {
                     setLoadingSellingAssetsFromAddress(false);
                 }
             };
-            if (walletAddressParams) {
+            if (walletAddressParams || walletAddressQuery) {
                 fetchSellingsAsset();
             }
         },
-        [walletAddressParams, assetsFromSmartContract, revalidate],
+        [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate],
     );
 
     const [followers, setFollowers] = useState<AccountItemType[]>([]);

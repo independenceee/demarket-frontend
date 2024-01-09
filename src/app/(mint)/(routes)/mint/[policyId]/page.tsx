@@ -118,7 +118,7 @@ const MintPolicyIdPage = function ({}: Props) {
                 });
 
                 const { txHash, assetName } = await mintAssetPolicyId({
-                    policyId: String(policyId),
+                    policyIdCollection: String(policyId),
                     lucid: lucidWallet,
                     customMetadata,
                     description,
