@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./CollectionItem.module.scss";
 import { CollectionItemType } from "@/types/GenericsType";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import images from "@/assets/images";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 
@@ -16,14 +16,14 @@ type Props = {
 
 const CollectionItem = function ({ collection, index }: Props) {
     const router = useRouter();
-    
+    const { id: walletAddressParams } = useParams();
     return (
         <div
             className={cx("wrapper")}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}
-            onClick={() => router.push(`/collection/${collection.policyId}`)}
+            onClick={() => router.push(`/collection/${collection.policyId}?address=${walletAddressParams}`)}
         >
             <div className={cx("container")}>
                 <header className={cx("header")}>

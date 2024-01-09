@@ -126,6 +126,7 @@ const AccountProvider = function ({ children }: Props) {
                     const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
                         return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
                     });
+
                     setCreatedAssetsFromAddress(createdAssetsList);
                 } catch (error) {
                     console.log(error);
@@ -137,7 +138,7 @@ const AccountProvider = function ({ children }: Props) {
                 fetchCreatedAssetsFromAddress();
             }
         },
-        [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate],
+        [walletAddressParams, walletAddressQuery, assetsFromSmartContract, assetsFromAddress],
     );
 
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);

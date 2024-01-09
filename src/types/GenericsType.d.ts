@@ -92,9 +92,8 @@ export type CategoryItemType = {
 
 export type HistoryItemType = {
     transactionHash: string;
-    fee: number;
     address: string;
     status: string;
     price: number;
-    datetime: string;
+    dateTime: string;
 };

@@ -6,6 +6,7 @@ import classNames from "classnames/bind";
 import styles from "./HistoryItem.module.scss";
 import images from "@/assets/images";
 import { HistoryItemType } from "@/types/GenericsType";
+import convertDatetimeBlocktime from "@/helpers/convertDatetimeBlocktime";
 
 const cx = classNames.bind(styles);
 type Props = {
@@ -21,13 +22,15 @@ const HistoryItem = function ({ history }: Props) {
                 </section>
                 <section className={cx("infomation__wrapper")}>
                     <div className={cx("infomation__content")}>
-                        <span>Sell by: </span>add
+                        <span>Sell by: </span>
+                        {history.address}
                     </div>
                     <div className={cx("infomation__content")}>
-                        <span>Price: </span>12ada
+                        <span>Price: </span>
+                        {history.price / 1000000}
                     </div>
                     <div className={cx("infomation__content")}>
-                        <span>Datetime: </span> 17/11/2003
+                        <span>Datetime: </span> {convertDatetimeBlocktime(Number(history.dateTime))}
                     </div>
                 </section>
             </div>

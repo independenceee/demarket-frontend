@@ -39,7 +39,7 @@ const CollectionPolicyId = function ({}: Props) {
     const { policyId } = useParams();
 
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
-    const { assetsFromAddress } = useContext<AccountContextType>(AccountContext);
+    const { assetsFromAddress, loadingAssetsFromAddress } = useContext<AccountContextType>(AccountContext);
     const { walletItem } = useContext<LucidContextType>(LucidContext);
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -91,7 +91,7 @@ const CollectionPolicyId = function ({}: Props) {
                 const listAssetSellingFromCollection = assetsFromSmartContract.filter(function (asset) {
                     return asset.collection === collection.address;
                 });
-                setSellingAssetsFromCollection(listAssetSellingFromCollection)
+                setSellingAssetsFromCollection(listAssetSellingFromCollection);
                 setAssetsFromCollection(listAssetFromCollection);
             } catch (error) {
                 console.log(error);
@@ -217,10 +217,8 @@ const CollectionPolicyId = function ({}: Props) {
                             </ul>
                         </nav>
                         <section>
-                            {activeTab === "my assets" && <NftContainer nfts={assetsFromCollection} loading={loadingAssetsFromCollection} />}
-                            {activeTab === "selling" && (
-                                <NftContainer nfts={sellingAssetsFromCollection} loading={loadingSellingAssetsFromCollection} />
-                            )}
+                            {activeTab === "my assets" && <NftContainer nfts={assetsFromCollection} loading={loadingAssetsFromAddress} />}
+                            {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromCollection} loading={loadingAssetsFromAddress} />}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>
