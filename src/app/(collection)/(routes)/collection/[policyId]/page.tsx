@@ -25,6 +25,7 @@ import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
+import CollectionContainer from "@/components/CollectionContainer";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -39,7 +40,7 @@ const CollectionPolicyId = function ({}: Props) {
     const { policyId } = useParams();
 
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
-    const { assetsFromAddress, loadingAssetsFromAddress } = useContext<AccountContextType>(AccountContext);
+    const { assetsFromAddress, loadingAssetsFromAddress, collectionsFromAddress } = useContext<AccountContextType>(AccountContext);
     const { walletItem } = useContext<LucidContextType>(LucidContext);
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -191,7 +192,7 @@ const CollectionPolicyId = function ({}: Props) {
                                             <span>Joinned</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            {collection && convertDatetimeBlocktime(Number(assetsFromCollection))}
+                                            {collection && convertDatetimeBlocktime(Number(collection.createdAt))}
                                         </h4>
                                     </section>
                                 </article>
@@ -221,9 +222,9 @@ const CollectionPolicyId = function ({}: Props) {
                             {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromCollection} loading={loadingAssetsFromAddress} />}
                         </section>
                         <section className={cx("follower__wrapper")}>
-                            <header className={cx("follower__header")}>Popular Creators</header>
+                            <header className={cx("follower__header")}>Popular Collections</header>
                             <div className={cx("follower__container")}>
-                                {/* <CollectionContainer collections={collectionsFromAddress} loading={loadingCollectionsFromAddress} /> */}
+                                <CollectionContainer isShowCreate={false} collections={collectionsFromAddress} loading={loadingAssetsFromAddress} />
                             </div>
                         </section>
                     </article>

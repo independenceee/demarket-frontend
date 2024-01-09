@@ -12,6 +12,18 @@
     }
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .amount {
+    }
+
+    .button {
+    }
+}
+
 .pagination {
     list-style: none;
     display: flex;

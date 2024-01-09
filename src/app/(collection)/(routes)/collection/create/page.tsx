@@ -183,7 +183,7 @@ const CollectionCreatePage = function ({}: Props) {
 
                     <div className={cx("content__wrapper-reponsive")}>
                         <div className={cx("content__container")}>
-                            <img
+                            <Image
                                 width={100}
                                 height={100}
                                 src={imagePathCover ? imagePathCover : images.noImage}
@@ -192,7 +192,7 @@ const CollectionCreatePage = function ({}: Props) {
                             />
 
                             <div className={cx("content__image")}>
-                                <img
+                                <Image
                                     width={100}
                                     height={100}
                                     className={cx("image")}
@@ -214,7 +214,7 @@ const CollectionCreatePage = function ({}: Props) {
                     <div className={cx("content")}>
                         <div className={cx("content__wrapper")}>
                             <div className={cx("content__container")}>
-                                <img
+                                <Image
                                     width={100}
                                     height={100}
                                     src={imagePathCover ? imagePathCover : images.noImage}
@@ -223,7 +223,7 @@ const CollectionCreatePage = function ({}: Props) {
                                 />
 
                                 <div className={cx("content__image")}>
-                                    <img
+                                    <Image
                                         width={100}
                                         height={100}
                                         className={cx("image")}
