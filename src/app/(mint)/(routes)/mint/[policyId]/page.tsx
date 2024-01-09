@@ -258,7 +258,7 @@ const MintPolicyIdPage = function ({}: Props) {
                         <div className={cx("content")}>
                             <div className={cx("nft-wrapper")}>
                                 <div className={cx("image-container")}>
-                                    <img src={imagePath ? imagePath : images.noImage} alt="NFT IMAGE" className={cx("image")} />
+                                    <Image src={imagePath ? imagePath : images.noImage} alt="NFT IMAGE" className={cx("image")} />
                                 </div>
                                 <div className={cx("nft-container")}>
                                     <section className={cx("content")}>
@@ -304,7 +304,7 @@ const MintPolicyIdPage = function ({}: Props) {
                         <header className={cx("preview")}>Preview</header>
                         <div className={cx("nft-wrapper")}>
                             <div className={cx("image-container")}>
-                                <img src={imagePath ? imagePath : images.noImage} alt="" className={cx("image")} />
+                                <Image src={imagePath ? imagePath : images.noImage} alt="" className={cx("image")} />
                             </div>
                             <div className={cx("nft-container")}>
                                 <section className={cx("content")}>
