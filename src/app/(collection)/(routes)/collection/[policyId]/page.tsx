@@ -5,18 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
-
-import {
-    ArrowDropdownCircleIcon,
-    CreatedAtIcon,
-    FollowerIcon,
-    NftIcon,
-    PolicyIdIcon,
-    RatingIcon,
-    SelledIcon,
-    StakekeyIcon,
-    FillDashCircleFillIcon,
-} from "@/components/Icons";
+import { ArrowDropdownCircleIcon, CreatedAtIcon, NftIcon, PolicyIdIcon, SelledIcon, StakekeyIcon, FillDashCircleFillIcon } from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import CopyItem from "@/components/CopyItem";
 import styles from "./CollectionPolicyId.module.scss";
@@ -24,18 +13,18 @@ import images from "@/assets/images";
 import Search from "@/components/Search";
 import Category from "@/components/Category";
 import Link from "next/link";
-import CollectionContainer from "@/components/CollectionContainer";
 import { CollectionItemType, NftItemType } from "@/types/GenericsType";
 import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import Skeleton from "react-loading-skeleton";
-import { post } from "@/utils/httpRequest";
-import fetchInformationAsset from "@/utils/fetchInformationAsset";
+
 import convertDatetimeBlocktime from "@/helpers/convertDatetimeBlocktime";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
+import { AccountContextType } from "@/types/AccountContextType";
+import AccountContext from "@/contexts/components/AccountContext";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -50,12 +39,12 @@ const CollectionPolicyId = function ({}: Props) {
     const { policyId } = useParams();
 
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+    const { assetsFromAddress } = useContext<AccountContextType>(AccountContext);
     const { walletItem } = useContext<LucidContextType>(LucidContext);
-
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [searchValue, setSearchValue] = useState<string>("");
-    const [openIntroduce, setOpenIntroduce] = useState<boolean>(false);
+    const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
 
     const handleOpenIntroduct = function () {
         setOpenIntroduce(!openIntroduce);
@@ -63,9 +52,6 @@ const CollectionPolicyId = function ({}: Props) {
 
     const [collection, setCollection] = useState<CollectionItemType>(null!);
     const [loadingCollection, setLoadingCollection] = useState<boolean>(false);
-
-    // https://demarket-backend.vercel.app/api/v1/blockfrost/transaction/asset
-    // https://demarket-backend.vercel.app/api/v1/koios/assets/policy-list
 
     useEffect(() => {
         const fetchCollection = async function () {
@@ -84,52 +70,40 @@ const CollectionPolicyId = function ({}: Props) {
         }
     }, [policyId]);
 
-    const [assetsFromPolicyId, setAssetsFromPolicyId] = useState<NftItemType[]>([]);
-    const [loadingAssetsFromPolicyId, setLoadingAssetsFromPolicyId] = useState<boolean>(false);
-    const [currentPageAssetsFromPolicyId, setCurrentPageAssetsFromPolicyId] = useState<number>(1);
-    const [totalPagesAssetsFromPolicyId, setTotalPagesAssetsFromPolicyId] = useState<number>(1);
+    const [assetsFromCollection, setAssetsFromCollection] = useState<NftItemType[]>([]);
+    const [loadingAssetsFromCollection, setLoadingAssetsFromCollection] = useState<boolean>(false);
+    const [currentPageAssetsFromCollection, setCurrentPageAssetsFromCollection] = useState<number>(1);
+    const [totalPagesAssetsFromCollection, setTotalPagesAssetsFromCollection] = useState<number>(1);
 
-    const [sellingAssetsFromPolicyId, setSellingAssetsFromPolicyId] = useState<NftItemType[]>([]);
-    const [currentPageSellingAssetsFromPolicyId, setCurrentPageSellingAssetsFromPolicyId] = useState<number>(1);
-    const [totalPagesSellingAssetsFromPolicyId, setTotalPagesSellingAssetsFromPolicyId] = useState<number>(1);
-    const [loadingSellingAssetsFromPolicyId, setLoadingSellingAssetsFromPolicyId] = useState<boolean>(false);
+    const [sellingAssetsFromCollection, setSellingAssetsFromCollection] = useState<NftItemType[]>([]);
+    const [currentPageSellingAssetsFromCollection, setCurrentPageSellingAssetsFromCollection] = useState<number>(1);
+    const [totalPagesSellingAssetsFromCollection, setTotalPagesSellingAssetsFromCollection] = useState<number>(1);
+    const [loadingSellingAssetsFromCollection, setLoadingSellingAssetsFromCollection] = useState<boolean>(false);
 
     useEffect(() => {
-        const fetchAssetsFromPolicyId = async function () {
-            setLoadingAssetsFromPolicyId(true);
+        const fetchAssetsFromCollection = async function () {
+            setLoadingAssetsFromCollection(true);
             try {
-                const { paginatedData, totalPage } = await post(`/koios/assets/policy-list?page=${currentPageAssetsFromPolicyId}&pageSize=${12}`, {
-                    policyId: policyId,
+                const listAssetFromCollection = assetsFromAddress.filter(function (asset) {
+                    return asset.collection === policyId;
                 });
 
-                const assetsFromPolicyId = await Promise.all(
-                    paginatedData.map(async function ({ policy_id, asset_name, quantity }: any) {
-                        if (policy_id !== "" && asset_name !== "" && quantity === "1") {
-                            const data = await fetchInformationAsset({ policyId: policy_id, assetName: asset_name });
-                            if (data) return { ...data };
-                            return null;
-                        }
-                    }),
-                );
-
-                const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                    return asset.sellerAddress === collection.address;
+                const listAssetSellingFromCollection = assetsFromSmartContract.filter(function (asset) {
+                    return asset.collection === collection.address;
                 });
-
-                setSellingAssetsFromPolicyId(sellingAssetsList);
-                setTotalPagesAssetsFromPolicyId(totalPage);
-                setAssetsFromPolicyId(assetsFromPolicyId.filter(Boolean));
+                setSellingAssetsFromCollection(listAssetSellingFromCollection)
+                setAssetsFromCollection(listAssetFromCollection);
             } catch (error) {
                 console.log(error);
             } finally {
-                setLoadingAssetsFromPolicyId(false);
+                setLoadingAssetsFromCollection(false);
             }
         };
 
         if (policyId) {
-            fetchAssetsFromPolicyId();
+            fetchAssetsFromCollection();
         }
-    }, [policyId, assetsFromSmartContract]);
+    }, [policyId, assetsFromAddress]);
 
     return (
         <main className={cx("wrapper")}>
@@ -198,7 +172,7 @@ const CollectionPolicyId = function ({}: Props) {
                                             <span>NFTs: </span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            <CountUp start={0} end={assetsFromPolicyId.length} />
+                                            <CountUp start={0} end={assetsFromCollection.length} />
                                         </h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -207,7 +181,7 @@ const CollectionPolicyId = function ({}: Props) {
                                             <span>NFTs selling:</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            <CountUp start={0} end={sellingAssetsFromPolicyId.length} />
+                                            <CountUp start={0} end={sellingAssetsFromCollection.length} />
                                         </h4>
                                     </section>
 
@@ -217,7 +191,7 @@ const CollectionPolicyId = function ({}: Props) {
                                             <span>Joinned</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            {collection && convertDatetimeBlocktime(Number(assetsFromPolicyId))}
+                                            {collection && convertDatetimeBlocktime(Number(assetsFromCollection))}
                                         </h4>
                                     </section>
                                 </article>
@@ -243,8 +217,10 @@ const CollectionPolicyId = function ({}: Props) {
                             </ul>
                         </nav>
                         <section>
-                            {activeTab === "my assets" && <NftContainer nfts={assetsFromPolicyId} loading={loadingAssetsFromPolicyId} />}
-                            {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromPolicyId} loading={loadingSellingAssetsFromPolicyId} />}
+                            {activeTab === "my assets" && <NftContainer nfts={assetsFromCollection} loading={loadingAssetsFromCollection} />}
+                            {activeTab === "selling" && (
+                                <NftContainer nfts={sellingAssetsFromCollection} loading={loadingSellingAssetsFromCollection} />
+                            )}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>

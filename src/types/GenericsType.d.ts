@@ -19,6 +19,7 @@ export type NftItemType = {
     status?: string;
     updatedAt?: string;
     validate?: boolean;
+    collection?: string;
 };
 
 export type CollectionItemType = {

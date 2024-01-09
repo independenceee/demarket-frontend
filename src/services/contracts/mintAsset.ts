@@ -29,7 +29,7 @@ const mintAssetService = async function ({ lucid, title, description, imageUrl, 
                 .mintAssets({ [policyId + assetName]: BigInt(1) })
                 .attachMetadata(721, {
                     [policyId]: {
-                        [assetName]: {
+                        [title]: {
                             name: title,
                             description: description,
                             image: imageUrl,

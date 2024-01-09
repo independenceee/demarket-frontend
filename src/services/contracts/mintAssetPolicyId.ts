@@ -2,7 +2,7 @@ import { Lucid, fromText, Script } from "lucid-cardano";
 
 type Props = {
     lucid: Lucid;
-    policyId: string;
+    policyIdCollection: string;
     title: string;
     description: string;
     mediaType: string;
@@ -10,20 +10,26 @@ type Props = {
     customMetadata: any;
 };
 
-const mintAssetPolicyIdService = async function ({ lucid, title, description, imageUrl, mediaType, customMetadata, policyId }: Props): Promise<any> {
+const mintAssetPolicyId = async function ({
+    lucid,
+    title,
+    description,
+    imageUrl,
+    mediaType,
+    customMetadata,
+    policyIdCollection,
+}: Props): Promise<any> {
     try {
         if (lucid) {
             const { paymentCredential }: any = lucid.utils.getAddressDetails(await lucid.wallet.address());
-
-            const mintingPolicy: Script = lucid.utils.nativeScriptFromJson({
+            const mintingPolicy = lucid.utils.nativeScriptFromJson({
                 type: "all",
                 scripts: [
-                    // { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
                     { type: "sig", keyHash: paymentCredential.hash },
+                    { type: "before", slot: lucid.utils.unixTimeToSlot(Date.now() + 1000000) },
                 ],
             });
-
-            // const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
+            const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
 
             const assetName = fromText(title);
             const cleanedData = Object.fromEntries(Object.entries(customMetadata).filter(([key, value]) => key !== ""));
@@ -32,7 +38,8 @@ const mintAssetPolicyIdService = async function ({ lucid, title, description, im
                 .mintAssets({ [policyId + assetName]: BigInt(1) })
                 .attachMetadata(721, {
                     [policyId]: {
-                        [assetName]: {
+                        [title]: {
+                            collection: policyIdCollection,
                             name: title,
                             description: description,
                             image: imageUrl,
@@ -41,13 +48,13 @@ const mintAssetPolicyIdService = async function ({ lucid, title, description, im
                         },
                     },
                 })
-                .validTo(Date.now() + 2000)
+                .validTo(Date.now() + 200000)
                 .attachMintingPolicy(mintingPolicy)
                 .complete();
             const signedTx = await tx.sign().complete();
             const txHash = await signedTx.submit();
-            console.log(txHash);
 
+            console.log(txHash);
             return {
                 txHash,
                 policyId,
@@ -59,4 +66,4 @@ const mintAssetPolicyIdService = async function ({ lucid, title, description, im
     }
 };
 
-export default mintAssetPolicyIdService;
+export default mintAssetPolicyId;
