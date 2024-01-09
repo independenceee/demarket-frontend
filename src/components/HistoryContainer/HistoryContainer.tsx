@@ -4,9 +4,8 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import styles from "./HistoryContainer.module.scss";
 import { post } from "@/utils/httpRequest";
-import { Pagination, Stack } from "@mui/material";
-import HistoryItem from "@/components/HistoryContainer/HistoryItem";
 import { contractAddress } from "@/libs";
+import HistoryItem from "./HistoryItem";
 
 type Props = {
     policyId: string;
@@ -18,10 +17,7 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
     const [currentPageTransactions, setCurrentPageTransactions] = useState<number>(1);
     const [totalPagesTransactions, setTotalPagesTransactions] = useState<number>(1);
     const [loadingTransactions, setLoadingTransactions] = useState<boolean>(false);
-    const [transactions, setTransactions] = useState<Array<any>>();
-
-    // https://demarket-backend.vercel.app/api/v1/blockfrost/transaction/detail
-    // https://demarket-backend.vercel.app/api/v1/blockfrost/transaction/utxos
+    const [histories, setHistories] = useState<Array<any>>();
 
     useEffect(
         function () {
@@ -33,38 +29,29 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
                         assetName: assetsName,
                     });
 
-                    // console.log(transactionHashs);
+                    const transactionDetails = await Promise.all(
+                        transactionHashs.map(async function (transactionHash: any, index: number) {
+                            const transactionUtxos = await post(`/blockfrost/transaction/utxos`, { transactionHash: transactionHash.tx_hash });
+                            return { ...transactionUtxos, dateTime: transactionHash.block_time };
+                        }),
+                    );
 
-                    const transactionDetails = transactionHashs.map(async function (transactionHash: any, index: number) {
-                        const transactionDetail = await post(`/blockfrost/transaction/detail`, { transactionHash: transactionHash.tx_hash });
-                        // console.log("transactionDetail", transactionDetail);
-                        // console.log(transactionDetail);
-                        const transactionUtxos = await post(`/blockfrost/transaction/utxos`, { transactionHash: transactionHash.tx_hash });
-                        const transactionUtxoOutputs = transactionUtxos.outputs.forEach(function (output: any) {
-                            if (output.address === contractAddress) {
-                                console.log(transactionUtxos.inputs);
+                    const results = [];
+                    for (const transaction of transactionDetails) {
+                        for (const input of transaction.inputs) {
+                            if (input.address === contractAddress) {
+                                results.push({
+                                    address: transaction.outputs[0].address,
+                                    price: transaction.outputs[0].amount[0].quantity,
+                                    hash: transaction.hash,
+                                    dateTime: transaction.dateTime,
+                                    status: "Buy",
+                                });
                             }
-                        });
-                        // console.log(transactionUtxoOutputs);
+                        }
+                    }
 
-                        // console.log(transactionUtxo);
-                        // const transactionUtxoInputs = transactionUtxo.inputs.filter(function (input: any) {
-                        //     return input.address === contractAddress;
-                        // });
-                        // console.log(transactionUtxoInputs);
-                        return;
-                    });
-
-                    /**
-                     * transactionHash
-                     * blockTime
-                     * address
-                     * price
-                     * fee
-                     */
-
-                    // setTotalPagesTransactions(allTransaction.totalPage);
-                    // setTransactions(allTransaction.paginatedData);
+                    setHistories(results);
                     setLoadingTransactions(false);
                 } catch (error) {
                     console.log(error);
@@ -82,7 +69,11 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
 
     return (
         <div className={cx("wrapper")}>
-            <div className={cx("container")}>{/* <HistoryItem /> */}</div>
+            <div className={cx("container")}>
+                {histories?.map(function (history, index) {
+                    return <HistoryItem history={history} key={index} />;
+                })}
+            </div>
         </div>
     );
 };
