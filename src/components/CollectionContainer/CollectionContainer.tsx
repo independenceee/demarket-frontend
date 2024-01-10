@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import CountUp from "react-countup";
 import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
+import CollectionItemSkeleton from "@/components/CollectionContainer/CollectionItem/CollectionItemSkeleton";
 
 const cx = classNames.bind(styles);
 
@@ -58,7 +59,7 @@ const CollectionContainer = function ({ collections, itemsPerPage = 12, loading,
             <div className={cx("container")}>
                 {loading
                     ? new Array(itemsPerPage).fill(null).map(function (value: any, index: number) {
-                          return null;
+                          return <CollectionItemSkeleton index={index} key={index} />;
                       })
                     : collections.map(function (collection: CollectionItemType, index: number) {
                           return <CollectionItem collection={collection} index={index} key={index} />;

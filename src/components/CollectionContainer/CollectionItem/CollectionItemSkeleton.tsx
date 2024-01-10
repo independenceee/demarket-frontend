@@ -1,17 +1,14 @@
-"use client";
-
 import React from "react";
 import classNames from "classnames/bind";
-import styles from "./AccountItem.module.scss";
+import styles from "./CollectionItem.module.scss";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-
 const cx = classNames.bind(styles);
 
 type Props = {
     index: number;
 };
 
-const AccountItemSkeleton = function ({ index }: Props) {
+const CollectionItemSkeleton = function ({ index }: Props) {
     return (
         <div className={cx("wrapper")} data-aos="zoom-in-up" data-aos-delay={`${100 * (index + 4)}`} data-aos-duration={`${1000 * (index + 4)}`}>
             <SkeletonTheme highlightColor="#7000ff" />
@@ -38,4 +35,4 @@ const AccountItemSkeleton = function ({ index }: Props) {
     );
 };
 
-export default AccountItemSkeleton;
+export default CollectionItemSkeleton;

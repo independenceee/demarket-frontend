@@ -28,6 +28,12 @@ const LucidProvider = function ({ children }: Props) {
                     networkPlatform,
                 );
                 break;
+            case "Mainnet":
+                lucid = await Lucid.new(
+                    new Blockfrost("https://cardano-mainnet.blockfrost.io/api/v0", "mainnettClW67e7zjxBTdjgynNwmGsvyz5DCMmC"),
+                    networkPlatform,
+                );
+                break;
             default:
                 throw new Error("Invalid networkPlatform");
         }
@@ -37,6 +43,13 @@ const LucidProvider = function ({ children }: Props) {
     useEffect(
         function () {
             chooseLucidNetworkPlatform();
+        },
+        [networkPlatform],
+    );
+
+    useEffect(
+        function () {
+            setLucidWallet(lucidNeworkPlatform);
         },
         [networkPlatform],
     );
@@ -68,6 +81,13 @@ const LucidProvider = function ({ children }: Props) {
                 case "Preview":
                     lucid = await Lucid.new(
                         new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS"),
+                        networkPlatform,
+                    );
+                    break;
+
+                case "Mainnet":
+                    lucid = await Lucid.new(
+                        new Blockfrost("https://cardano-mainnet.blockfrost.io/api/v0", "mainnettClW67e7zjxBTdjgynNwmGsvyz5DCMmC"),
                         networkPlatform,
                     );
                     break;

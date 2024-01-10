@@ -16,9 +16,10 @@ const cx = classNames.bind(styles);
 
 type Props = {};
 const Donate = function ({}: Props) {
-    const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
+    const { lucidWallet, walletItem, setNetworkPlatform, connectWallet } = useContext<LucidContextType>(LucidContext);
     const { isShowingConnectWalletMainnet, toggleShowingConnectWalletMainnet } = useContext<ModalContextType>(ModalContext);
     const [price, setPrice] = useState<string>("");
+
     const [loadingDonatePlatform, setLoadingDonatePlatform] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null!);
@@ -30,23 +31,31 @@ const Donate = function ({}: Props) {
     const handleDonate = async function () {
         setLoadingDonatePlatform(true);
         try {
-            if (lucidWallet || !price) {
-                const tx = await lucidWallet
-                    .newTx()
-                    .payToAddress("addr_test1qzndmp8766ymgdsqkll9fq4tp63a0qey9q7le7g3wx4wu5d7080dwpufa65mkmh402unp4d4meyftg723gysz7mfnrqqfg09fs", {
-                        lovelace: BigInt(Number(price) * 1000000),
-                    })
-                    .complete();
-                const signedTx = await tx.sign().complete();
-                const txHash = await signedTx.submit();
-                setPrice("");
-                inputRef.current.focus();
-                toast.success("Thank you for Donate !");
+            if (walletItem.walletAddress?.includes("_test")) {
+                toggleShowingConnectWalletMainnet();
                 return;
+            }
+            if (lucidWallet || !price) {
+                setNetworkPlatform("Mainnet");
+
+                if (lucidWallet.network === "Mainnet") {
+                    const tx = await lucidWallet
+                        .newTx()
+                        .payToAddress("addr1qy2z60lx2zdfs7gvjn3mt47mlx20dhqyrt8xu0m7d685x2ng64psekpurtcrh0esrtgkyk3pn5ehv5njx745rqp5ts7s3zfapl", {
+                            lovelace: BigInt(Number(price) * 1000000),
+                        })
+                        .complete();
+                    const signedTx = await tx.sign().complete();
+                    const txHash = await signedTx.submit();
+                    setPrice("");
+                    inputRef.current.focus();
+                    toast.success("Thank you for Donate !");
+                    return;
+                }
             }
             toggleShowingConnectWalletMainnet();
         } catch (error) {
-            console.log(error);
+            toast.error(String(error));
         } finally {
             setLoadingDonatePlatform(false);
         }
