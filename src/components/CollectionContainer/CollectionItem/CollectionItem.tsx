@@ -2,7 +2,6 @@ import React from "react";
 import classNames from "classnames/bind";
 import styles from "./CollectionItem.module.scss";
 import { CollectionItemType } from "@/types/GenericsType";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import images from "@/assets/images";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";

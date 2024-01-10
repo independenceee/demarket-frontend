@@ -22,14 +22,16 @@ const DemarketProvider = function ({ children }: Props) {
     };
 
     const [categories, setCategories] = useState<CategoryItemType[]>([]);
-    const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
+    const [loadingCategories, setLoadingCategories] = useState<boolean>(false);
     useEffect(function () {
         const fetchCategories = async function () {
+            setLoadingCategories(true);
             try {
                 setCategories(await get("/category"));
-                setLoadingCategories(false);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoadingCategories(false);
             }
         };
         fetchCategories();
