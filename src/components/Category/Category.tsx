@@ -3,7 +3,7 @@
 import React, { ChangeEvent, useContext, useState } from "react";
 import classNames from "classnames/bind";
 import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Icons";
-
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { CategoryItemType } from "@/types/GenericsType";
 import { DemarketContextType } from "@/types/DemarketContextType";
 import DemarketContext from "@/contexts/components/DemarketContext";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const Category = function ({ setSelectedCategory }: Props) {
-    const { categories } = useContext<DemarketContextType>(DemarketContext);
+    const { categories, loadingCategories } = useContext<DemarketContextType>(DemarketContext);
     const [openCategory, setOpenCategory] = useState<boolean>(true);
 
     const handleChangeCategory = function (event: ChangeEvent<HTMLInputElement>) {
@@ -40,20 +40,30 @@ const Category = function ({ setSelectedCategory }: Props) {
 
             {openCategory && (
                 <article className={cx("content__filter--option")}>
-                    {categories.slice(0, 5).map(function (category: CategoryItemType, index: number) {
-                        return (
-                            <section key={index} className={cx("content__filter--group")}>
-                                <h4 className={cx("content__filter--name")}>{category.name}</h4>
-                                <input
-                                    value={category.slug}
-                                    className={cx("content__filter--control")}
-                                    type="radio"
-                                    name="category"
-                                    onChange={handleChangeCategory}
-                                />
-                            </section>
-                        );
-                    })}
+                    {loadingCategories
+                        ? new Array(5).fill(null).map(function (category: any, index) {
+                              return (
+                                  <section key={index} className={cx("content__filter--group")}>
+                                      <SkeletonTheme highlightColor="#7000ff" />
+                                      <Skeleton width={150} height={20} />
+                                      <Skeleton width={40} height={20} />
+                                  </section>
+                              );
+                          })
+                        : categories.slice(0, 5).map(function (category: CategoryItemType, index: number) {
+                              return (
+                                  <section key={index} className={cx("content__filter--group")}>
+                                      <h4 className={cx("content__filter--name")}>{category.name}</h4>
+                                      <input
+                                          value={category.slug}
+                                          className={cx("content__filter--control")}
+                                          type="radio"
+                                          name="category"
+                                          onChange={handleChangeCategory}
+                                      />
+                                  </section>
+                              );
+                          })}
                 </article>
             )}
         </section>

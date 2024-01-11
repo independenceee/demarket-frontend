@@ -7,7 +7,6 @@ import NftItem from "./NftItem";
 import NftItemSkeleton from "./NftItem/NftItemSkeleton";
 import { Pagination, Stack } from "@mui/material";
 import { NftItemType } from "@/types/GenericsType";
-import BannerCreate from "../BannerCreate";
 
 const cx = classNames.bind(styles);
 type Props = {
