@@ -102,4 +102,5 @@ export type QueryParamsType = {
     sortby?: string;
     verify?: string;
     category?: string;
+    search?: string;
 };
