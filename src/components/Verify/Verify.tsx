@@ -1,24 +1,48 @@
-import React, { useState, ChangeEvent } from "react";
+"use client";
+
+import React, { useState, ChangeEvent, memo, useCallback, useEffect } from "react";
 import classNames from "classnames/bind";
-import styles from "./Verify.module.scss";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Icons";
+import { useQueryState } from "nuqs";
+import { QueryParamsType } from "@/types/GenericsType";
+import styles from "./Verify.module.scss";
 
 const cx = classNames.bind(styles);
+
 type Props = {
-    setVerify: React.Dispatch<React.SetStateAction<string>>;
+    verifySearchParam: string;
+    setVerifySearchParam: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Verify = function ({ setVerify }: Props) {
+const Verify = function ({ verifySearchParam, setVerifySearchParam }: Props): React.JSX.Element {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [openVerify, setOpenVerify] = useState<boolean>(true);
-
+    const [verifyQuery, setVerifyQuery] = useQueryState<QueryParamsType>("verify", {
+        defaultValue: { verify: verifySearchParam },
+        parse: (query) => JSON.parse(query) as QueryParamsType,
+    });
     const handleOpenVerify = function () {
         setOpenVerify(!openVerify);
     };
 
-    const handleChangeVerify = function (event: ChangeEvent<HTMLInputElement>) {
-        event.preventDefault();
-        setVerify(event.target.value);
-    };
+    const handleChangeVerify = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
+        setVerifySearchParam(event.target.value);
+        setVerifyQuery({ verify: event.target.value } as QueryParamsType);
+    }, []);
+
+    useEffect(() => {
+        const { verify } = verifyQuery;
+        setVerifySearchParam(verify as string);
+    }, [verifyQuery]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("verify", verifySearchParam);
+        router.replace(pathname + "?" + params.toString(), { scroll: false });
+    }, [verifyQuery, router]);
 
     return (
         <section className={cx("content__filter")}>
@@ -34,23 +58,11 @@ const Verify = function ({ setVerify }: Props) {
                 <form className={cx("content__filter--option")}>
                     <section className={cx("content__filter--group")}>
                         <h4 className={cx("content__filter--name")}>Yes</h4>
-                        <input
-                            value={"verify"}
-                            name="verify"
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeVerify}
-                            type="radio"
-                        />
+                        <input name="verify" value={"true"} className={cx("content__filter--control")} onChange={handleChangeVerify} type="radio" />
                     </section>
                     <section className={cx("content__filter--group")}>
                         <h4 className={cx("content__filter--name")}>No</h4>
-                        <input
-                            name="verify"
-                            value={"noVerify"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeVerify}
-                            type="radio"
-                        />
+                        <input name="verify" value={"false"} className={cx("content__filter--control")} onChange={handleChangeVerify} type="radio" />
                     </section>
                 </form>
             )}
@@ -58,4 +70,4 @@ const Verify = function ({ setVerify }: Props) {
     );
 };
 
-export default Verify;
+export default memo(Verify);

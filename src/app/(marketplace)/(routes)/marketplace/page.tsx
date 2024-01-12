@@ -1,6 +1,7 @@
 "use client";
 
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
 import classNames from "classnames/bind";
 import Background from "@/components/Background";
 import Title from "@/components/Title";
@@ -14,45 +15,41 @@ import { NftItemType } from "@/types/GenericsType";
 import { SmartContractType } from "@/types/SmartContextType";
 import styles from "./Marketplace.module.scss";
 const cx = classNames.bind(styles);
-type Props = {};
-
-const MarketplacePage = function ({}: Props) {
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
-        useContext<SmartContractType>(SmartContractContext);
-    const [showFilter, setShowFilter] = useState<boolean>(false);
-    useEffect(function () {
-        const handleScroll = function () {
-            setShowFilter(window.screenY > 200);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return function () {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    const [searchValue, setSearchValue] = useState<string>("");
-    const [sortBy, setSortBy] = useState<string>("default");
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [verify, setVerify] = useState<string>("");
-    const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
-
-    const handleChangeFilter = function (event: ChangeEvent<HTMLInputElement>) {
-        setSortBy(event.target.value);
+type Props = {
+    params: {};
+    searchParams: {
+        sortby: string;
+        category: string;
+        verify: string;
+        search: string;
     };
+};
+
+const MarketplacePage = function ({ searchParams }: Props) {
+    const { sortby, category, verify, search } = searchParams;
+
+    const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
+    const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");
+    const [categorySearchParam, setCategorySearchParam] = useState<string>(category || "all");
+    const [searchParam, setSearchParam] = useState<string>("");
+
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+
+    const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
 
     useEffect(
         function () {
             let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
-            if (searchValue) {
+            if (searchParam) {
                 assetsFilterTemp = assetsFilter.filter(function (asset, index) {
-                    return asset.policyId.toString().toLowerCase().includes(searchValue.toLocaleLowerCase());
+                    return asset.policyId.toString().toLowerCase().includes(searchParam.toLocaleLowerCase());
                 });
             }
 
-            if (sortBy) {
+            if (sortby) {
                 assetsFilterTemp = assetsFilterTemp.sort(function (previous: NftItemType, next: NftItemType): any {
-                    switch (sortBy) {
-                        case "default":
+                    switch (sortby) {
+                        case "all":
                             return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
                         case "news":
                             return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
@@ -73,8 +70,19 @@ const MarketplacePage = function ({}: Props) {
 
             setAssetsFilter(assetsFilterTemp);
         },
-        [searchValue, sortBy, assetsFromSmartContract],
+        [searchParam, sortby, assetsFromSmartContract],
     );
+
+    const [showFilter, setShowFilter] = useState<boolean>(false);
+    useEffect(function () {
+        const handleScroll = function () {
+            setShowFilter(window.screenY > 200);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return function () {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     return (
         <div className={cx("wrapper")} data-aos="fade-down">
@@ -85,10 +93,10 @@ const MarketplacePage = function ({}: Props) {
                 <section className={cx("content__wrapper")}>
                     <div className={cx("content__left--wrapper")}>
                         <div className={cx("content__left--container")} data-aos="fade-right" data-aos-duration="1000">
-                            <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-                            <Category setSelectedCategory={setSelectedCategory} />
-                            <SortBy setSortBy={setSortBy} />
-                            <Verify setVerify={setVerify} />
+                            <Search searchValue={searchParam} setSearchValue={setSearchParam} />
+                            <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
+                            <SortBy sortBySearchParam={sortBySearchParam} setSortBySearchParam={setSortBySearchParam} />
+                            <Verify verifySearchParam={verifySearchParam} setVerifySearchParam={setVerifySearchParam} />
                         </div>
                     </div>
                     <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">

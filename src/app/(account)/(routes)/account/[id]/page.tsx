@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
-
+import { useQueryState } from "nuqs";
 import {
     ArrowDropdownCircleIcon,
     CreatedAtIcon,
@@ -51,11 +51,22 @@ const tabItems = [
 
 const AccountPage = function ({}: Props) {
     const { id: walletAddressPath } = useParams();
-    const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
-    const [activeTab, setActiveTab] = useState<string>("my assets");
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [searchValue, setSearchValue] = useState<string>("");
 
+    const [category, setCategory] = useQueryState("category");
+    const [searchValue, setSearchValue] = useQueryState("search");
+    const [verify, setVerify] = useQueryState("verify");
+
+    const handleSearchValue = function () {};
+    const handleChangeCategory = function (event: ChangeEvent<HTMLInputElement>) {
+        setCategory(event.target.value);
+    };
+
+    const handleChangeVerify = function(event: ChangeEvent<HTMLInputElement>) {
+        setVerify(event.target.value)
+    }
+
+    const [activeTab, setActiveTab] = useState<string>("my assets");
+    const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
     const handleOpenIntroduct = function () {
         setOpenIntroduce(!openIntroduce);
     };
@@ -241,7 +252,7 @@ const AccountPage = function ({}: Props) {
                             )}
                         </section>
 
-                        <Category setSelectedCategory={setSelectedCategory} />
+                        <Category category={category} onChangeCategory={handleChangeCategory} />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>

@@ -1,32 +1,54 @@
 "use client";
 
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState, useCallback, memo, useEffect } from "react";
 import classNames from "classnames/bind";
 import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Icons";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { CategoryItemType } from "@/types/GenericsType";
 import { DemarketContextType } from "@/types/DemarketContextType";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import styles from "./Category.module.scss";
+import { QueryParamsType } from "@/types/GenericsType";
+import { useQueryState } from "nuqs";
 
 const cx = classNames.bind(styles);
 
 type Props = {
-    setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+    categorySearchParam: string;
+    setCategorySearchParam: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Category = function ({ setSelectedCategory }: Props) {
+const Category = function ({ categorySearchParam, setCategorySearchParam }: Props) {
+    const router = useRouter();
+    const pathname: string = usePathname();
+    const searchParams = useSearchParams();
     const { categories, loadingCategories } = useContext<DemarketContextType>(DemarketContext);
     const [openCategory, setOpenCategory] = useState<boolean>(true);
-
-    const handleChangeCategory = function (event: ChangeEvent<HTMLInputElement>) {
-        event.preventDefault();
-        setSelectedCategory(event.target.value);
-    };
+    const [categoryQuery, setCategoryQuery] = useQueryState<QueryParamsType>("category", {
+        defaultValue: { category: "all" },
+        parse: (query) => JSON.parse(query) as QueryParamsType,
+    });
 
     const handleOpenCategory = function () {
         setOpenCategory(!openCategory);
     };
+
+    const handleChangeCategory = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
+        setCategorySearchParam(event.target.value);
+        setCategoryQuery({ sortby: event.target.value } as QueryParamsType);
+    }, []);
+
+    useEffect(() => {
+        const { category } = categoryQuery;
+        setCategorySearchParam(category as string);
+    }, [categoryQuery]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("category", categorySearchParam);
+        router.replace(pathname + "?" + params.toString(), { scroll: false });
+    }, [categoryQuery, router]);
     return (
         <section className={cx("content__filter")}>
             <header className={cx("content__filter--header")} onClick={handleOpenCategory}>
@@ -70,4 +92,4 @@ const Category = function ({ setSelectedCategory }: Props) {
     );
 };
 
-export default Category;
+export default memo(Category);
