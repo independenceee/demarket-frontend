@@ -97,3 +97,9 @@ export type HistoryItemType = {
     price: number;
     dateTime: string;
 };
+
+export type QueryParamsType = {
+    sortby?: string;
+    verify?: string;
+    category?: string;
+};

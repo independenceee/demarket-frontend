@@ -1,23 +1,51 @@
-import React, { useState, ChangeEvent } from "react";
+"use client";
+
+import React, { useState, useEffect, ChangeEvent, memo, useCallback } from "react";
 import classNames from "classnames/bind";
-import styles from "./SortBy.module.scss";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Icons";
+import sortbys from "@/constants/sortbys";
+import { QueryParamsType } from "@/types/GenericsType";
+
+import styles from "./SortBy.module.scss";
 
 const cx = classNames.bind(styles);
+
 type Props = {
-    setSortBy: React.Dispatch<React.SetStateAction<string>>;
+    sortBySearchParam: string;
+    setSortBySearchParam: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const SortBy = function ({ setSortBy }: Props) {
+const SortBy = function ({ sortBySearchParam, setSortBySearchParam }: Props): React.JSX.Element {
+    const router = useRouter();
+    const pathname: string = usePathname();
+    const searchParams = useSearchParams();
+
     const [openSortBy, setOpenSortBy] = useState<boolean>(true);
+    const [sortByQuery, setSortByQuery] = useQueryState<QueryParamsType>("sortby", {
+        defaultValue: { sortby: sortBySearchParam },
+        parse: (query) => JSON.parse(query) as QueryParamsType,
+    });
     const handleOpenSortBy = function () {
         setOpenSortBy(!openSortBy);
     };
 
-    const handleChangeSortBy = function (event: ChangeEvent<HTMLInputElement>) {
-        event.preventDefault();
-        setSortBy(event.target.value);
-    };
+    const handleChangeSortBy = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
+        setSortBySearchParam(event.target.value);
+        setSortByQuery({ sortby: event.target.value } as QueryParamsType);
+    }, []);
+
+    useEffect(() => {
+        const { sortby } = sortByQuery;
+        setSortBySearchParam(sortby as string);
+    }, [sortByQuery]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("sortby", sortBySearchParam);
+        router.replace(pathname + "?" + params.toString(), { scroll: false });
+    }, [sortByQuery, router]);
 
     return (
         <section className={cx("content__filter")}>
@@ -31,60 +59,25 @@ const SortBy = function ({ setSortBy }: Props) {
             </header>
             {openSortBy && (
                 <form className={cx("content__filter--option")}>
-                    <section className={cx("content__filter--group")}>
-                        <h4 className={cx("content__filter--name")}>Default</h4>
-                        <input
-                            name="filter"
-                            value={"default"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeSortBy}
-                            type="radio"
-                        />
-                    </section>
-                    <section className={cx("content__filter--group")}>
-                        <h4 className={cx("content__filter--name")}>New</h4>
-                        <input
-                            name="filter"
-                            value={"news"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeSortBy}
-                            type="radio"
-                        />
-                    </section>
-                    <section className={cx("content__filter--group")}>
-                        <h4 className={cx("content__filter--name")}>Trending</h4>
-                        <input
-                            name="filter"
-                            value={"trending"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeSortBy}
-                            type="radio"
-                        />
-                    </section>
-                    <section className={cx("content__filter--group")}>
-                        <h4 className={cx("content__filter--name")}>Increment</h4>
-                        <input
-                            name="filter"
-                            value={"increment"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeSortBy}
-                            type="radio"
-                        />
-                    </section>
-                    <section className={cx("content__filter--group")}>
-                        <h4 className={cx("content__filter--name")}>Decrement</h4>
-                        <input
-                            name="filter"
-                            value={"decrement"}
-                            className={cx("content__filter--control")}
-                            onChange={handleChangeSortBy}
-                            type="radio"
-                        />
-                    </section>
+                    {sortbys.map(function (sortby, index: number) {
+                        return (
+                            <section key={index} className={cx("content__filter--group")}>
+                                <h4 className={cx("content__filter--name")}>{sortby.displayName}</h4>
+                                <input
+                                    name={sortby.name}
+                                    checked={sortby.value === sortByQuery.sortby}
+                                    value={sortby.value}
+                                    className={cx("content__filter--control")}
+                                    onChange={handleChangeSortBy}
+                                    type={sortby.type}
+                                />
+                            </section>
+                        );
+                    })}
                 </form>
             )}
         </section>
     );
 };
 
-export default SortBy;
+export default memo(SortBy);
