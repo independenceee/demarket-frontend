@@ -33,11 +33,12 @@ const Donate = function ({}: Props) {
         try {
             if (walletItem.walletAddress?.includes("_test")) {
                 toggleShowingConnectWalletMainnet();
-                return;
-            }
-            if (lucidWallet || !price) {
                 setNetworkPlatform("Mainnet");
+            }
 
+            
+
+            if (lucidWallet || !price ) {
                 if (lucidWallet.network === "Mainnet") {
                     const tx = await lucidWallet
                         .newTx()
@@ -54,6 +55,7 @@ const Donate = function ({}: Props) {
                 }
             }
             toggleShowingConnectWalletMainnet();
+            setNetworkPlatform("Mainnet");
         } catch (error) {
             toast.error(String(error));
         } finally {

@@ -40,12 +40,9 @@ const LucidProvider = function ({ children }: Props) {
 
         setLucidNeworkPlatform(lucid);
     };
-    useEffect(
-        function () {
-            chooseLucidNetworkPlatform();
-        },
-        [networkPlatform],
-    );
+    useEffect(() => {
+        chooseLucidNetworkPlatform();
+    }, [networkPlatform]);
 
     useEffect(
         function () {
@@ -94,7 +91,31 @@ const LucidProvider = function ({ children }: Props) {
                 default:
                     throw new Error("Invalid networkPlatform");
             }
+
             lucid.selectWallet(await walletApi());
+            
+            const walletAddress = await lucid.wallet.address();
+            // if (walletAddress.includes("addr1")) {
+            //     setNetworkPlatform("Mainnet");
+            //     const utxos = await lucid.wallet.getUtxos();
+            //     const walletBalance =
+            //         Number(
+            //             utxos.reduce(function (balance, utxo) {
+            //                 return balance + utxo.assets.lovelace;
+            //             }, BigInt(0)),
+            //         ) / 1000000;
+            //     setLucidWallet(lucidNeworkPlatform);
+            //     setWalletItem(function (prevous: WalletItemType) {
+            //         return {
+            //             ...prevous,
+            //             walletAddress: walletAddress,
+            //             walletBalance: walletBalance,
+            //             walletName: walletName,
+            //             walletImage: walletImage,
+            //         };
+            //     });
+            //     return;
+            // }
             const utxos = await lucid.wallet.getUtxos();
             const walletBalance =
                 Number(
@@ -102,7 +123,7 @@ const LucidProvider = function ({ children }: Props) {
                         return balance + utxo.assets.lovelace;
                     }, BigInt(0)),
                 ) / 1000000;
-            const walletAddress = await lucid.wallet.address();
+
             setLucidWallet(lucid);
             setWalletItem(function (prevous: WalletItemType) {
                 return {
@@ -113,9 +134,10 @@ const LucidProvider = function ({ children }: Props) {
                     walletImage: walletImage,
                 };
             });
-            setLoadingConnectWallet(false);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingConnectWallet(false);
         }
     };
 

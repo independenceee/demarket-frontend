@@ -31,12 +31,15 @@ import { AccountContextType } from "@/types/AccountContextType";
 import Search from "@/components/Search";
 import Category from "@/components/Category";
 import Link from "next/link";
-import { AccountItemType } from "@/types/GenericsType";
+import { AccountItemType, QueryParamsType } from "@/types/GenericsType";
 import { post } from "@/utils/httpRequest";
 import convertDatetimePrisma from "@/helpers/convertDatetimePrisma";
 import CollectionContainer from "@/components/CollectionContainer";
 
-type Props = {};
+type Props = {
+    params: {};
+    searchParams: QueryParamsType;
+};
 const cx = classNames.bind(styles);
 
 const tabItems = [
@@ -49,21 +52,13 @@ const tabItems = [
     { name: "Like", slug: "like" },
 ];
 
-const AccountPage = function ({}: Props) {
+const AccountPage = function ({ searchParams }: Props) {
     const { id: walletAddressPath } = useParams();
-
-    const [category, setCategory] = useQueryState("category");
-    const [searchValue, setSearchValue] = useQueryState("search");
-    const [verify, setVerify] = useQueryState("verify");
-
-    const handleSearchValue = function () {};
-    const handleChangeCategory = function (event: ChangeEvent<HTMLInputElement>) {
-        setCategory(event.target.value);
-    };
-
-    const handleChangeVerify = function(event: ChangeEvent<HTMLInputElement>) {
-        setVerify(event.target.value)
-    }
+    const { sortby, category, verify, search } = searchParams;
+    const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
+    const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");
+    const [categorySearchParam, setCategorySearchParam] = useState<string>(category || "all");
+    const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
@@ -175,7 +170,7 @@ const AccountPage = function ({}: Props) {
 
                 <section className={cx("content__wrapper")}>
                     <aside className={cx("content__left")}>
-                        <Search searchValue="" setSearchValue={setSearchValue} />
+                        <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")} onClick={handleOpenIntroduct}>
                                 <h3 className={cx("content__filter--title")}>Introduce</h3>
@@ -252,7 +247,7 @@ const AccountPage = function ({}: Props) {
                             )}
                         </section>
 
-                        <Category category={category} onChangeCategory={handleChangeCategory} />
+                        <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>
