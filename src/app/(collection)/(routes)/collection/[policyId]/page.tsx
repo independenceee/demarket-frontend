@@ -13,7 +13,7 @@ import images from "@/assets/images";
 import Search from "@/components/Search";
 import Category from "@/components/Category";
 import Link from "next/link";
-import { CollectionItemType, NftItemType } from "@/types/GenericsType";
+import { CollectionItemType, NftItemType, QueryParamsType } from "@/types/GenericsType";
 import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import Skeleton from "react-loading-skeleton";
@@ -27,7 +27,10 @@ import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import CollectionContainer from "@/components/CollectionContainer";
 
-type Props = {};
+type Props = {
+    params: {};
+    searchParams: QueryParamsType;
+};
 const cx = classNames.bind(styles);
 
 const tabItems = [
@@ -36,15 +39,18 @@ const tabItems = [
     { name: "Created", slug: "created" },
 ];
 
-const CollectionPolicyId = function ({}: Props) {
+const CollectionPolicyId = function ({ searchParams }: Props) {
     const { policyId } = useParams();
+    const { sortby, category, verify, search } = searchParams;
+    const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
+    const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");
+    const [categorySearchParam, setCategorySearchParam] = useState<string>(category || "all");
+    const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
     const { assetsFromAddress, loadingAssetsFromAddress, collectionsFromAddress } = useContext<AccountContextType>(AccountContext);
     const { walletItem } = useContext<LucidContextType>(LucidContext);
     const [activeTab, setActiveTab] = useState<string>("my assets");
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [searchValue, setSearchValue] = useState<string>("");
     const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
 
     const handleOpenIntroduct = function () {
@@ -139,7 +145,7 @@ const CollectionPolicyId = function ({}: Props) {
 
                 <section className={cx("content__wrapper")}>
                     <aside className={cx("content__left")}>
-                        <Search searchValue="" setSearchValue={setSearchValue} />
+                        <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
                         <section className={cx("content__filter")}>
                             <header className={cx("content__filter--header")} onClick={handleOpenIntroduct}>
                                 <h3 className={cx("content__filter--title")}>Introduce</h3>
@@ -199,7 +205,7 @@ const CollectionPolicyId = function ({}: Props) {
                             )}
                         </section>
 
-                        <Category setSelectedCategory={setSelectedCategory} />
+                        <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>
