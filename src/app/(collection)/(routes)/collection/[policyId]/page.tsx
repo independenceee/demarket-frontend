@@ -96,7 +96,7 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                 });
 
                 const listAssetSellingFromCollection = assetsFromSmartContract.filter(function (asset) {
-                    return asset.collection === collection.address;
+                    return asset.collection === collection.policyId;
                 });
                 setSellingAssetsFromCollection(listAssetSellingFromCollection);
                 setAssetsFromCollection(listAssetFromCollection);

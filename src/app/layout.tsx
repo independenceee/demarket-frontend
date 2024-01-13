@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     title: "Home - Demarket",
     description: "Home - Demarket",
 };
+
 type Props = {
     children: ReactNode;
 };
@@ -35,7 +36,7 @@ const RootLayout = function ({ children }: Props) {
                     pauseOnFocusLoss
                     draggable
                     pauseOnHover
-                    theme="colored"
+                    theme="light"
                 />
             </body>
         </html>

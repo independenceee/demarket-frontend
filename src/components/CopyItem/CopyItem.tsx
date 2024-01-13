@@ -13,8 +13,7 @@ type Props = {
 
 const CopyItem = function ({ value }: Props) {
     const [copied, setCopied] = useState<boolean>(false);
-    const handleCopyToClipboard = function (event: any) {
-        event.stopPropagation();
+    const handleCopyToClipboard = function () {
         setCopied(true);
         toast.success("Copy to clipboard!", {
             position: "bottom-right",
@@ -31,7 +30,7 @@ const CopyItem = function ({ value }: Props) {
         }, 1000);
     };
     return (
-        <CopyToClipboard text={value} onCopy={(event) => handleCopyToClipboard(event)}>
+        <CopyToClipboard text={value} onCopy={handleCopyToClipboard}>
             {copied ? (
                 <div className={cx("icon__wrapper")}>
                     <CheckIcon width={"16px"} height={"16"} />
