@@ -32,7 +32,7 @@ import Search from "@/components/Search";
 import Category from "@/components/Category";
 import Link from "next/link";
 import { AccountItemType, QueryParamsType } from "@/types/GenericsType";
-import { post } from "@/utils/httpRequest";
+import { post } from "@/utils/http-request";
 import convertDatetimePrisma from "@/helpers/convertDatetimePrisma";
 import CollectionContainer from "@/components/CollectionContainer";
 
@@ -67,8 +67,13 @@ const AccountPage = function ({ searchParams }: Props) {
     };
 
     const { walletItem } = useContext<LucidContextType>(LucidContext);
-    const { accounts, currentPageAccounts, loadingAccounts, setCurrentPageAccounts, totalPagesAccounts } =
-        useContext<DemarketContextType>(DemarketContext);
+    const {
+        accounts,
+        currentPageAccounts,
+        loadingAccounts,
+        setCurrentPageAccounts,
+        totalPagesAccounts,
+    } = useContext<DemarketContextType>(DemarketContext);
 
     const {
         assetsFromAddress,
@@ -91,7 +96,9 @@ const AccountPage = function ({ searchParams }: Props) {
         loadingCollectionsFromAddress,
     } = useContext<AccountContextType>(AccountContext);
 
-    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(null!);
+    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(
+        null!,
+    );
 
     useEffect(
         function () {
@@ -116,7 +123,11 @@ const AccountPage = function ({ searchParams }: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("banner__wrapper")}>
-                    <Image className={cx("banner__image")} src={images.background} alt="Background" />
+                    <Image
+                        className={cx("banner__image")}
+                        src={images.background}
+                        alt="Background"
+                    />
                 </section>
 
                 <section className={cx("account__wrapper")}>
@@ -125,7 +136,10 @@ const AccountPage = function ({ searchParams }: Props) {
                             <Image src={images.user} alt="User" className={cx("image")} />
                         </div>
                         {walletItem.walletAddress === walletAddressPath ? (
-                            <Link href={`/account/${walletItem.walletAddress}/edit`} className={cx("account__button")}>
+                            <Link
+                                href={`/account/${walletItem.walletAddress}/edit`}
+                                className={cx("account__button")}
+                            >
                                 Edit profile
                             </Link>
                         ) : (
@@ -137,32 +151,41 @@ const AccountPage = function ({ searchParams }: Props) {
 
                     <div className={cx("account__content")}>
                         <div className={cx("account__infomation")}>
-                            <h3>{accountWalletAddressParams && accountWalletAddressParams.userName}</h3>
-                            <p>{accountWalletAddressParams && accountWalletAddressParams.description}</p>
+                            <h3>
+                                {accountWalletAddressParams && accountWalletAddressParams.userName}
+                            </h3>
+                            <p>
+                                {accountWalletAddressParams &&
+                                    accountWalletAddressParams.description}
+                            </p>
                         </div>
                         <div className={cx("account__media")}>
                             <div className={cx("social__links")}>
-                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
-                                    <Link href={accountWalletAddressParams.twitter}>
-                                        <Image src={images.meta} alt="" />
-                                    </Link>
-                                )}
+                                {accountWalletAddressParams &&
+                                    accountWalletAddressParams.twitter && (
+                                        <Link href={accountWalletAddressParams.twitter}>
+                                            <Image src={images.meta} alt="" />
+                                        </Link>
+                                    )}
 
-                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
-                                    <Link href={accountWalletAddressParams.telegram}>
-                                        <Image src={images.youtube} alt="" />
-                                    </Link>
-                                )}
-                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
-                                    <Link href={accountWalletAddressParams.twitter}>
-                                        <Image src={images.twitter} alt="" />
-                                    </Link>
-                                )}
-                                {accountWalletAddressParams && accountWalletAddressParams.twitter && (
-                                    <Link href={accountWalletAddressParams.linkedin}>
-                                        <Image src={images.linkedin} alt="" />
-                                    </Link>
-                                )}
+                                {accountWalletAddressParams &&
+                                    accountWalletAddressParams.twitter && (
+                                        <Link href={accountWalletAddressParams.telegram}>
+                                            <Image src={images.youtube} alt="" />
+                                        </Link>
+                                    )}
+                                {accountWalletAddressParams &&
+                                    accountWalletAddressParams.twitter && (
+                                        <Link href={accountWalletAddressParams.twitter}>
+                                            <Image src={images.twitter} alt="" />
+                                        </Link>
+                                    )}
+                                {accountWalletAddressParams &&
+                                    accountWalletAddressParams.twitter && (
+                                        <Link href={accountWalletAddressParams.linkedin}>
+                                            <Image src={images.linkedin} alt="" />
+                                        </Link>
+                                    )}
                             </div>
                         </div>
                     </div>
@@ -170,14 +193,24 @@ const AccountPage = function ({ searchParams }: Props) {
 
                 <section className={cx("content__wrapper")}>
                     <aside className={cx("content__left")}>
-                        <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
+                        <Search
+                            searchValueParam={searchValueParam}
+                            setSearchValueParam={setSearchValueParam}
+                        />
                         <section className={cx("content__filter")}>
-                            <header className={cx("content__filter--header")} onClick={handleOpenIntroduct}>
+                            <header
+                                className={cx("content__filter--header")}
+                                onClick={handleOpenIntroduct}
+                            >
                                 <h3 className={cx("content__filter--title")}>Introduce</h3>
                                 {!openIntroduce ? (
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
+                                    <ArrowDropdownCircleIcon
+                                        className={cx("content__filter--icon")}
+                                    />
                                 ) : (
-                                    <FillDashCircleFillIcon className={cx("content__filter--icon")} />
+                                    <FillDashCircleFillIcon
+                                        className={cx("content__filter--icon")}
+                                    />
                                 )}
                             </header>
                             {openIntroduce && (
@@ -187,8 +220,15 @@ const AccountPage = function ({ searchParams }: Props) {
                                             <PolicyIdIcon />
                                             <span>Address:</span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>{walletAddressPath}</p>
-                                        <CopyItem value={accountWalletAddressParams && accountWalletAddressParams.walletAddress!} />
+                                        <p className={cx("content__filter--description")}>
+                                            {walletAddressPath}
+                                        </p>
+                                        <CopyItem
+                                            value={
+                                                accountWalletAddressParams &&
+                                                accountWalletAddressParams.walletAddress!
+                                            }
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -196,9 +236,15 @@ const AccountPage = function ({ searchParams }: Props) {
                                             <span>Stake key: </span>
                                         </h4>
                                         <p className={cx("content__filter--description")}>
-                                            {accountWalletAddressParams && accountWalletAddressParams.stakeKey}
+                                            {accountWalletAddressParams &&
+                                                accountWalletAddressParams.stakeKey}
                                         </p>
-                                        <CopyItem value={accountWalletAddressParams && accountWalletAddressParams.stakeKey!} />
+                                        <CopyItem
+                                            value={
+                                                accountWalletAddressParams &&
+                                                accountWalletAddressParams.stakeKey!
+                                            }
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
@@ -215,7 +261,10 @@ const AccountPage = function ({ searchParams }: Props) {
                                             <span>NFTs selling:</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            <CountUp start={0} end={sellingAssetsFromAddress.length} />
+                                            <CountUp
+                                                start={0}
+                                                end={sellingAssetsFromAddress.length}
+                                            />
                                         </h4>
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -236,18 +285,26 @@ const AccountPage = function ({ searchParams }: Props) {
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
-                                            <CreatedAtIcon className={cx("content__filter--icon")} />
+                                            <CreatedAtIcon
+                                                className={cx("content__filter--icon")}
+                                            />
                                             <span>Joinned</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            {accountWalletAddressParams && convertDatetimePrisma(accountWalletAddressParams.createdAt)}
+                                            {accountWalletAddressParams &&
+                                                convertDatetimePrisma(
+                                                    accountWalletAddressParams.createdAt,
+                                                )}
                                         </h4>
                                     </section>
                                 </article>
                             )}
                         </section>
 
-                        <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
+                        <Category
+                            categorySearchParam={categorySearchParam}
+                            setCategorySearchParam={setCategorySearchParam}
+                        />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>
@@ -257,7 +314,11 @@ const AccountPage = function ({ searchParams }: Props) {
                                         <li
                                             key={index}
                                             onClick={() => setActiveTab(tab.slug)}
-                                            className={activeTab == tab.slug ? cx("tab__item--active") : cx("tab__item")}
+                                            className={
+                                                activeTab == tab.slug
+                                                    ? cx("tab__item--active")
+                                                    : cx("tab__item")
+                                            }
                                         >
                                             {tab.name}
                                         </li>
@@ -266,11 +327,29 @@ const AccountPage = function ({ searchParams }: Props) {
                             </ul>
                         </nav>
                         <section>
-                            {activeTab === "my assets" && <NftContainer nfts={assetsFromAddress} loading={loadingAssetsFromAddress} />}
-                            {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromAddress} loading={loadingSellingAssetsFromAddress} />}
-                            {activeTab === "created" && <NftContainer nfts={createdAssetsFromAddress} loading={loadingCreatedAssetsFromAddress} />}
+                            {activeTab === "my assets" && (
+                                <NftContainer
+                                    nfts={assetsFromAddress}
+                                    loading={loadingAssetsFromAddress}
+                                />
+                            )}
+                            {activeTab === "selling" && (
+                                <NftContainer
+                                    nfts={sellingAssetsFromAddress}
+                                    loading={loadingSellingAssetsFromAddress}
+                                />
+                            )}
+                            {activeTab === "created" && (
+                                <NftContainer
+                                    nfts={createdAssetsFromAddress}
+                                    loading={loadingCreatedAssetsFromAddress}
+                                />
+                            )}
                             {activeTab === "collection" && (
-                                <CollectionContainer collections={collectionsFromAddress} loading={loadingCollectionsFromAddress} />
+                                <CollectionContainer
+                                    collections={collectionsFromAddress}
+                                    loading={loadingCollectionsFromAddress}
+                                />
                             )}
                             {activeTab === "following" && (
                                 <AccountContainer
@@ -279,7 +358,9 @@ const AccountPage = function ({ searchParams }: Props) {
                                     totalPagesAccounts={totalPagesFollowings}
                                     loadingAccounts={loadingFollowings}
                                     setCurrentPageAccounts={setCurrentPageFollowings}
-                                    isFollow={walletItem.walletAddress === String(walletAddressPath)}
+                                    isFollow={
+                                        walletItem.walletAddress === String(walletAddressPath)
+                                    }
                                 />
                             )}
                             {activeTab === "follower" && (

@@ -1,5 +1,7 @@
 import { Data, Lucid } from "lucid-cardano";
-import readValidator from "@/utils/readValidator";
+import readValidator from "@/utils/read-validator";
+import { contractValidatorMarketplace } from "@/libs/marketplace";
+
 import { Datum } from "@/constants/datum";
 import { redeemer } from "@/constants/redeemer";
 import { toast } from "react-toastify";
@@ -12,7 +14,10 @@ type Props = {
 
 const refundAssetService = async function ({ lucid, policyId, assetName }: Props) {
     try {
-        const validator = await readValidator();
+        const validator = await readValidator({
+            compliedCode: contractValidatorMarketplace[0].compiledCode,
+        });
+
         const scriptAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(scriptAddress);
         let existAsset: any;

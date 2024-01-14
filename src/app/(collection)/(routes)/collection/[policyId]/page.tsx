@@ -2,10 +2,17 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
-import { ArrowDropdownCircleIcon, CreatedAtIcon, NftIcon, PolicyIdIcon, SelledIcon, StakekeyIcon, FillDashCircleFillIcon } from "@/components/Icons";
+import {
+    ArrowDropdownCircleIcon,
+    CreatedAtIcon,
+    NftIcon,
+    PolicyIdIcon,
+    SelledIcon,
+    StakekeyIcon,
+    FillDashCircleFillIcon,
+} from "@/components/Icons";
 import NftContainer from "@/components/NftContainer";
 import CopyItem from "@/components/CopyItem";
 import styles from "./CollectionPolicyId.module.scss";
@@ -40,7 +47,7 @@ const tabItems = [
 ];
 
 const CollectionPolicyId = function ({ searchParams }: Props) {
-    const { policyId } = useParams();
+    const { policyId }: any = useParams();
     const { sortby, category, verify, search } = searchParams;
     const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
     const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");
@@ -48,7 +55,8 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
     const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
-    const { assetsFromAddress, loadingAssetsFromAddress, collectionsFromAddress } = useContext<AccountContextType>(AccountContext);
+    const { assetsFromAddress, loadingAssetsFromAddress, collectionsFromAddress } =
+        useContext<AccountContextType>(AccountContext);
     const { walletItem } = useContext<LucidContextType>(LucidContext);
     const [activeTab, setActiveTab] = useState<string>("my assets");
     const [openIntroduce, setOpenIntroduce] = useState<boolean>(true);
@@ -64,7 +72,10 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
         const fetchCollection = async function () {
             setLoadingCollection(true);
             try {
-                const collectionMetadata = await fetchInfomationCollection({ policyId: String(policyId), assetName: "" });
+                const collectionMetadata = await fetchInfomationCollection({
+                    policyId: String(policyId),
+                    assetName: "",
+                });
                 setCollection(collectionMetadata);
             } catch (error) {
             } finally {
@@ -79,13 +90,19 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
 
     const [assetsFromCollection, setAssetsFromCollection] = useState<NftItemType[]>([]);
     const [loadingAssetsFromCollection, setLoadingAssetsFromCollection] = useState<boolean>(false);
-    const [currentPageAssetsFromCollection, setCurrentPageAssetsFromCollection] = useState<number>(1);
+    const [currentPageAssetsFromCollection, setCurrentPageAssetsFromCollection] =
+        useState<number>(1);
     const [totalPagesAssetsFromCollection, setTotalPagesAssetsFromCollection] = useState<number>(1);
 
-    const [sellingAssetsFromCollection, setSellingAssetsFromCollection] = useState<NftItemType[]>([]);
-    const [currentPageSellingAssetsFromCollection, setCurrentPageSellingAssetsFromCollection] = useState<number>(1);
-    const [totalPagesSellingAssetsFromCollection, setTotalPagesSellingAssetsFromCollection] = useState<number>(1);
-    const [loadingSellingAssetsFromCollection, setLoadingSellingAssetsFromCollection] = useState<boolean>(false);
+    const [sellingAssetsFromCollection, setSellingAssetsFromCollection] = useState<NftItemType[]>(
+        [],
+    );
+    const [currentPageSellingAssetsFromCollection, setCurrentPageSellingAssetsFromCollection] =
+        useState<number>(1);
+    const [totalPagesSellingAssetsFromCollection, setTotalPagesSellingAssetsFromCollection] =
+        useState<number>(1);
+    const [loadingSellingAssetsFromCollection, setLoadingSellingAssetsFromCollection] =
+        useState<boolean>(false);
 
     useEffect(() => {
         const fetchAssetsFromCollection = async function () {
@@ -95,7 +112,9 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                     return asset.collection === policyId;
                 });
 
-                const listAssetSellingFromCollection = assetsFromSmartContract.filter(function (asset) {
+                const listAssetSellingFromCollection = assetsFromSmartContract.filter(function (
+                    asset,
+                ) {
                     return asset.collection === collection.policyId;
                 });
                 setSellingAssetsFromCollection(listAssetSellingFromCollection);
@@ -119,14 +138,22 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                     {loadingCollection ? (
                         <Skeleton className={cx("banner__image")} />
                     ) : (
-                        <img className={cx("banner__image")} src={convertIpfsAddressToUrl(String(collection?.cover)) as string} alt="Background" />
+                        <img
+                            className={cx("banner__image")}
+                            src={convertIpfsAddressToUrl(String(collection?.cover)) as string}
+                            alt="Background"
+                        />
                     )}
                 </section>
 
                 <section className={cx("account__wrapper")}>
                     <div className={cx("account__container")}>
                         <div className={cx("account__image")}>
-                            <img src={convertIpfsAddressToUrl(collection?.avatar) || images.user} alt="User" className={cx("image")} />
+                            <img
+                                src={convertIpfsAddressToUrl(collection?.avatar) || images.user}
+                                alt="User"
+                                className={cx("image")}
+                            />
                         </div>
                         {walletItem.walletAddress === collection?.address && (
                             <Link href={`/mint/${policyId}`} className={cx("account__button")}>
@@ -145,14 +172,24 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
 
                 <section className={cx("content__wrapper")}>
                     <aside className={cx("content__left")}>
-                        <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
+                        <Search
+                            searchValueParam={searchValueParam}
+                            setSearchValueParam={setSearchValueParam}
+                        />
                         <section className={cx("content__filter")}>
-                            <header className={cx("content__filter--header")} onClick={handleOpenIntroduct}>
+                            <header
+                                className={cx("content__filter--header")}
+                                onClick={handleOpenIntroduct}
+                            >
                                 <h3 className={cx("content__filter--title")}>Introduce</h3>
                                 {!openIntroduce ? (
-                                    <ArrowDropdownCircleIcon className={cx("content__filter--icon")} />
+                                    <ArrowDropdownCircleIcon
+                                        className={cx("content__filter--icon")}
+                                    />
                                 ) : (
-                                    <FillDashCircleFillIcon className={cx("content__filter--icon")} />
+                                    <FillDashCircleFillIcon
+                                        className={cx("content__filter--icon")}
+                                    />
                                 )}
                             </header>
                             {openIntroduce && (
@@ -162,15 +199,21 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                                             <PolicyIdIcon />
                                             <span>Address:</span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>{collection && collection.address}</p>
-                                        <CopyItem value={collection ? String(collection.address) : ""} />
+                                        <p className={cx("content__filter--description")}>
+                                            {collection && collection.address}
+                                        </p>
+                                        <CopyItem
+                                            value={collection ? String(collection.address) : ""}
+                                        />
                                     </section>
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
                                             <StakekeyIcon />
                                             <span>PolicyId: </span>
                                         </h4>
-                                        <p className={cx("content__filter--description")}>{collection && collection.policyId}</p>
+                                        <p className={cx("content__filter--description")}>
+                                            {collection && collection.policyId}
+                                        </p>
                                         <CopyItem value={collection && collection.policyId} />
                                     </section>
                                     <section className={cx("content__filter--group")}>
@@ -188,24 +231,35 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                                             <span>NFTs selling:</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            <CountUp start={0} end={sellingAssetsFromCollection.length} />
+                                            <CountUp
+                                                start={0}
+                                                end={sellingAssetsFromCollection.length}
+                                            />
                                         </h4>
                                     </section>
 
                                     <section className={cx("content__filter--group")}>
                                         <h4 className={cx("content__filter--name")}>
-                                            <CreatedAtIcon className={cx("content__filter--icon")} />
+                                            <CreatedAtIcon
+                                                className={cx("content__filter--icon")}
+                                            />
                                             <span>Joinned</span>
                                         </h4>
                                         <h4 className={cx("content__filter--value")}>
-                                            {collection && convertDatetimeBlocktime(Number(collection.createdAt))}
+                                            {collection &&
+                                                convertDatetimeBlocktime(
+                                                    Number(collection.createdAt),
+                                                )}
                                         </h4>
                                     </section>
                                 </article>
                             )}
                         </section>
 
-                        <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
+                        <Category
+                            categorySearchParam={categorySearchParam}
+                            setCategorySearchParam={setCategorySearchParam}
+                        />
                     </aside>
                     <article className={cx("content__right")}>
                         <nav className={cx("tab__wrapper")}>
@@ -215,7 +269,11 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                                         <li
                                             key={index}
                                             onClick={() => setActiveTab(tab.slug)}
-                                            className={activeTab == tab.slug ? cx("tab__item--active") : cx("tab__item")}
+                                            className={
+                                                activeTab == tab.slug
+                                                    ? cx("tab__item--active")
+                                                    : cx("tab__item")
+                                            }
                                         >
                                             {tab.name}
                                         </li>
@@ -224,13 +282,27 @@ const CollectionPolicyId = function ({ searchParams }: Props) {
                             </ul>
                         </nav>
                         <section>
-                            {activeTab === "my assets" && <NftContainer nfts={assetsFromCollection} loading={loadingAssetsFromAddress} />}
-                            {activeTab === "selling" && <NftContainer nfts={sellingAssetsFromCollection} loading={loadingAssetsFromAddress} />}
+                            {activeTab === "my assets" && (
+                                <NftContainer
+                                    nfts={assetsFromCollection}
+                                    loading={loadingAssetsFromAddress}
+                                />
+                            )}
+                            {activeTab === "selling" && (
+                                <NftContainer
+                                    nfts={sellingAssetsFromCollection}
+                                    loading={loadingAssetsFromAddress}
+                                />
+                            )}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Collections</header>
                             <div className={cx("follower__container")}>
-                                <CollectionContainer isShowCreate={false} collections={collectionsFromAddress} loading={loadingAssetsFromAddress} />
+                                <CollectionContainer
+                                    isShowCreate={false}
+                                    collections={collectionsFromAddress}
+                                    loading={loadingAssetsFromAddress}
+                                />
                             </div>
                         </section>
                     </article>

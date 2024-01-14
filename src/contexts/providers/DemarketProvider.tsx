@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { FounderItemType, CategoryItemType, AccountItemType } from "@/types/GenericsType";
-import { get, post } from "@/utils/httpRequest";
+import { get, post } from "@/utils/http-request";
 import { useParams } from "next/navigation";
 
 type Props = {

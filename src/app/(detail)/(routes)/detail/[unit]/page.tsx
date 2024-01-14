@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { useState, useEffect, useContext, ChangeEvent, useRef } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import Skeleton from "react-loading-skeleton";
 import { EyeIcon, UnHeartIcon } from "@/components/Icons";
@@ -42,15 +42,23 @@ const tabItems = [
 ];
 
 const DetailPage = function ({}: Props) {
-    const [isActive, setIsActive] = useState<boolean>(false);
     const { unit }: any = useParams();
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
+    const [isActive, setIsActive] = useState<boolean>(false);
+
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { addNft } = useContext<DemarketContextType>(DemarketContext);
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAsset, sellAsset, buyAsset, refundAsset } =
-        useContext<SmartContractType>(SmartContractContext);
-    const { lucidWallet, walletItem, revalidate, setRevalidate } = useContext<LucidContextType>(LucidContext);
+    const {
+        assetsFromSmartContract,
+        loadingAssetsFromSmartContract,
+        findAssetService,
+        sellAssetService,
+        buyAssetService,
+        refundAssetService,
+    } = useContext<SmartContractType>(SmartContractContext);
+    const { lucidWallet, walletItem, revalidate, setRevalidate } =
+        useContext<LucidContextType>(LucidContext);
     const { addToCart } = useContext<CartContextType>(CartContext);
 
     const [toggleTabState, setToggleTabState] = useState<number>(1);
@@ -65,22 +73,19 @@ const DetailPage = function ({}: Props) {
         setPrice(event.target.value);
     };
 
-    useEffect(
-        function () {
-            const fetchInformationFromPolicyIdAndAssetName = async function () {
-                try {
-                    const informationAsset = await fetchInformationAsset({ policyId, assetName });
-                    const informationContract = await findAsset({ policyId, assetName });
+    useEffect(() => {
+        const fetchInformationFromPolicyIdAndAssetName = async function () {
+            try {
+                const informationAsset = await fetchInformationAsset({ policyId, assetName });
+                const informationContract = await findAssetService({ policyId, assetName });
 
-                    setAsset({ ...informationAsset, ...informationContract });
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            fetchInformationFromPolicyIdAndAssetName();
-        },
-        [revalidate],
-    );
+                setAsset({ ...informationAsset, ...informationContract });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchInformationFromPolicyIdAndAssetName();
+    }, [revalidate]);
 
     const handleAddtoCart = async function () {
         try {
@@ -95,7 +100,7 @@ const DetailPage = function ({}: Props) {
         try {
             setIsActive(true);
             if (lucidWallet) {
-                const { txHash } = await buyAsset({
+                const { txHash } = await buyAssetService({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     lucid: lucidWallet,
@@ -121,7 +126,7 @@ const DetailPage = function ({}: Props) {
         try {
             setIsActive(true);
             if (lucidWallet) {
-                const { txHash } = await sellAsset({
+                const { txHash } = await sellAssetService({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     author: asset.authorAddress,
@@ -148,7 +153,7 @@ const DetailPage = function ({}: Props) {
         try {
             setIsActive(true);
             if (lucidWallet) {
-                const { txHash } = await refundAsset({
+                const { txHash } = await refundAssetService({
                     assetName: asset.assetName,
                     policyId: asset.policyId,
                     lucid: lucidWallet,
@@ -177,21 +182,40 @@ const DetailPage = function ({}: Props) {
                         <section className={cx("content__left")}>
                             <div className={cx("content__image")}>
                                 {checkMediaType(String(asset.mediaType), "image") && (
-                                    <img className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))} alt="" />
+                                    <img
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                        alt=""
+                                    />
                                 )}
                                 {checkMediaType(String(asset.mediaType), "video") && (
-                                    <video autoPlay controls muted loop className={cx("content__image--image")}>
-                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="video/mp4" />
+                                    <video
+                                        autoPlay
+                                        controls
+                                        muted
+                                        loop
+                                        className={cx("content__image--image")}
+                                    >
+                                        <source
+                                            src={String(convertIpfsAddressToUrl(asset.image))}
+                                            type="video/mp4"
+                                        />
                                     </video>
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "application") && (
-                                    <iframe className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))}></iframe>
+                                    <iframe
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                    ></iframe>
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "audio") && (
                                     <audio controls>
-                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="audio/mpeg" />
+                                        <source
+                                            src={String(convertIpfsAddressToUrl(asset.image))}
+                                            type="audio/mpeg"
+                                        />
                                     </audio>
                                 )}
                                 <div className={cx("content__image--left")}>
@@ -205,7 +229,9 @@ const DetailPage = function ({}: Props) {
 
                         <section className={cx("content__right")}>
                             <section className={cx("detail__content")}>
-                                <h2 className={cx("asset__name")}>{convertHexToString(asset.assetName)}</h2>
+                                <h2 className={cx("asset__name")}>
+                                    {convertHexToString(asset.assetName)}
+                                </h2>
                                 <div className={cx("description")}>
                                     <span>Type:</span> {asset.mediaType.split("/").pop()}
                                 </div>
@@ -231,12 +257,18 @@ const DetailPage = function ({}: Props) {
                                         <header className={cx("people__header")}>Owner</header>
                                         <div className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
-                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
                                             </div>
                                             <div className={cx("people__information")}>
                                                 <h3 className={cx("people__name")}>
                                                     {convertString({
-                                                        inputString: String(asset.stakekeySellerAddress),
+                                                        inputString: String(
+                                                            asset.stakekeySellerAddress,
+                                                        ),
                                                         numberOfFirstChar: 9,
                                                         numberOfLastChar: -6,
                                                     })}
@@ -244,7 +276,9 @@ const DetailPage = function ({}: Props) {
                                                 <div className={cx("people__address")}>
                                                     <p>
                                                         {convertString({
-                                                            inputString: String(asset.sellerAddress),
+                                                            inputString: String(
+                                                                asset.sellerAddress,
+                                                            ),
                                                             numberOfFirstChar: 9,
                                                             numberOfLastChar: -6,
                                                         })}
@@ -258,12 +292,18 @@ const DetailPage = function ({}: Props) {
                                         <header className={cx("people__header")}>Author</header>
                                         <div className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
-                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
                                             </div>
                                             <div className={cx("people__information")}>
                                                 <h3 className={cx("people__name")}>
                                                     {convertString({
-                                                        inputString: String(asset.stakekeyAuthorAddress),
+                                                        inputString: String(
+                                                            asset.stakekeyAuthorAddress,
+                                                        ),
                                                         numberOfFirstChar: 9,
                                                         numberOfLastChar: -6,
                                                     })}
@@ -271,7 +311,9 @@ const DetailPage = function ({}: Props) {
                                                 <div className={cx("people__address")}>
                                                     <p>
                                                         {convertString({
-                                                            inputString: String(asset.authorAddress),
+                                                            inputString: String(
+                                                                asset.authorAddress,
+                                                            ),
                                                             numberOfFirstChar: 9,
                                                             numberOfLastChar: -6,
                                                         })}
@@ -285,16 +327,26 @@ const DetailPage = function ({}: Props) {
                             </section>
                             {asset.price && asset.sellerAddress !== walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000} </header>
+                                    <header className={cx("price__header")}>
+                                        ₳ {Number(asset.price) / 1000000}{" "}
+                                    </header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleBuyNft}>
                                             {!isActive ? (
                                                 "Buy asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleAddtoCart}
+                                        >
                                             Add to cart
                                         </Button>
                                     </article>
@@ -303,16 +355,29 @@ const DetailPage = function ({}: Props) {
 
                             {asset.price && asset.sellerAddress === walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000}</header>
+                                    <header className={cx("price__header")}>
+                                        ₳ {Number(asset.price) / 1000000}
+                                    </header>
                                     <article className={cx("price__container")}>
-                                        <Button className={cx("search-btn")} onClick={handleRefundNft}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleRefundNft}
+                                        >
                                             {!isActive ? (
                                                 "Refund asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleAddtoCart}
+                                        >
                                             Add to cart
                                         </Button>
                                     </article>
@@ -330,11 +395,19 @@ const DetailPage = function ({}: Props) {
                                             placeholder="Enter the price ..."
                                         />
 
-                                        <Button className={cx("search-btn")} onClick={handleSellNft}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleSellNft}
+                                        >
                                             {!isActive ? (
                                                 "Sell asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
                                     </article>
@@ -346,7 +419,11 @@ const DetailPage = function ({}: Props) {
                                         return (
                                             <button
                                                 key={index}
-                                                className={toggleTabState === id ? cx("tab__item--active") : cx("tab__item")}
+                                                className={
+                                                    toggleTabState === id
+                                                        ? cx("tab__item--active")
+                                                        : cx("tab__item")
+                                                }
                                                 onClick={() => toggleTab(id)}
                                             >
                                                 {name}
@@ -357,18 +434,27 @@ const DetailPage = function ({}: Props) {
 
                                 {toggleTabState === 2 && (
                                     <div className={cx("tab__content")}>
-                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
+                                        <HistoryContainer
+                                            policyId={policyId}
+                                            assetsName={assetName}
+                                        />
                                     </div>
                                 )}
                                 {toggleTabState === 1 && (
                                     <div className={cx("tab__content")}>
-                                        <MetadataContainer policyId={policyId} assetName={assetName} />
+                                        <MetadataContainer
+                                            policyId={policyId}
+                                            assetName={assetName}
+                                        />
                                     </div>
                                 )}
 
                                 {toggleTabState === 3 && (
                                     <div className={cx("tab__content")}>
-                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
+                                        <HistoryContainer
+                                            policyId={policyId}
+                                            assetsName={assetName}
+                                        />
                                     </div>
                                 )}
                             </section>
@@ -396,7 +482,10 @@ const DetailPage = function ({}: Props) {
 
                 <section className={cx("other__wrapper")}>
                     <SubTitle title="More Items" />
-                    <NftContainer nfts={assetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
+                    <NftContainer
+                        nfts={assetsFromSmartContract}
+                        loading={loadingAssetsFromSmartContract}
+                    />
                 </section>
             </div>
         </main>

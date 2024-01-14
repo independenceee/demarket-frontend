@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
 import styles from "./Statistics.module.scss";
-import { get } from "@/utils/httpRequest";
+import { get } from "@/utils/http-request";
 import { Statistic } from "@/types/GenericsType";
-import { contractAddress } from "@/libs";
+import { contractAddressMarketplace } from "@/libs/marketplace";
 const cx = classNames.bind(styles);
 
 type Props = {};
@@ -17,8 +17,12 @@ const Statistics = function ({}: Props) {
             try {
                 const { totalAccounts } = await get("/statistics/account");
                 const { totalTrendings } = await get("/statistics/trending");
-                const { totalTransactions } = await get(`/statistics/transaction?contractAddress=${contractAddress}`);
-                const { totalProducts } = await get(`/statistics/product?contractAddress=${contractAddress}`);
+                const { totalTransactions } = await get(
+                    `/statistics/transaction?contractAddress=${contractAddressMarketplace}`,
+                );
+                const { totalProducts } = await get(
+                    `/statistics/product?contractAddress=${contractAddressMarketplace}`,
+                );
                 setStatistics({
                     totalAccount: totalAccounts,
                     totalProduct: totalProducts,
@@ -38,25 +42,45 @@ const Statistics = function ({}: Props) {
                 <ul className={cx("statistics")}>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="500">
                         <h2>
-                            <CountUp start={0} end={statistics?.totalProduct || 0} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalProduct || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>PRODUCT</p>
                     </li>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="1000">
                         <h2>
-                            <CountUp start={0} end={statistics?.totalTransaction || 0} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalTransaction || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>TRANSACTION</p>
                     </li>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="1500">
                         <h2>
-                            <CountUp start={0} end={statistics?.totalTrending || 0} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalTrending || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>TRENDING</p>
                     </li>
                     <li className={cx("statistic")} data-aos="fade-up" data-aos-duration="2000">
                         <h2>
-                            <CountUp start={0} end={statistics?.totalAccount || 0} duration={2} delay={0} />
+                            <CountUp
+                                start={0}
+                                end={statistics?.totalAccount || 0}
+                                duration={2}
+                                delay={0}
+                            />
                         </h2>
                         <p>AUTHOR</p>
                     </li>

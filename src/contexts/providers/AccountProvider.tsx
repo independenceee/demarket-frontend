@@ -9,7 +9,7 @@ import { AccountItemType, CollectionItemType, NftItemType } from "@/types/Generi
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { get, post, del } from "@/utils/httpRequest";
+import { get, post, del } from "@/utils/http-request";
 import { toast } from "react-toastify";
 import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 

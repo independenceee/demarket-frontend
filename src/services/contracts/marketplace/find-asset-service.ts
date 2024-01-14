@@ -1,6 +1,8 @@
+import lucidService from "./lucid-service";
+
 import { Data, Script, UTxO } from "lucid-cardano";
-import lucidService from "./lucid";
-import readValidator from "@/utils/readValidator";
+import { contractValidatorMarketplace } from "@/libs/marketplace";
+import readValidator from "@/utils/read-validator";
 import { Datum } from "@/constants/datum";
 
 type Props = {
@@ -11,7 +13,9 @@ type Props = {
 const findAssetService = async function ({ policyId, assetName }: Props) {
     let existAsset: any;
     const lucid = await lucidService();
-    const validator: Script = await readValidator();
+    const validator: Script = await readValidator({
+        compliedCode: contractValidatorMarketplace[0].compiledCode,
+    });
     const contractAddress: string = lucid.utils.validatorToAddress(validator);
     const scriptUtxos = await lucid.utxosAt(contractAddress);
     const utxos: UTxO[] = scriptUtxos.filter((utxo: any, index: number) => {

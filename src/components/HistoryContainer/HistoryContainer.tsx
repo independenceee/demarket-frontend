@@ -3,8 +3,8 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import classNames from "classnames/bind";
 import styles from "./HistoryContainer.module.scss";
-import { post } from "@/utils/httpRequest";
-import { contractAddress } from "@/libs";
+import { post } from "@/utils/http-request";
+import { contractAddressMarketplace } from "@/libs/marketplace";
 import HistoryItem from "./HistoryItem";
 
 type Props = {
@@ -24,14 +24,19 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
             const fetchTransactions = async function () {
                 try {
                     setLoadingTransactions(true);
-                    const transactionHashs = await post(`/blockfrost/transaction/asset?page=${currentPageTransactions}&pageSize=${8}&type=all`, {
-                        policyId: policyId,
-                        assetName: assetsName,
-                    });
+                    const transactionHashs = await post(
+                        `/blockfrost/transaction/asset?page=${currentPageTransactions}&pageSize=${8}&type=all`,
+                        {
+                            policyId: policyId,
+                            assetName: assetsName,
+                        },
+                    );
 
                     const transactionDetails = await Promise.all(
                         transactionHashs.map(async function (transactionHash: any, index: number) {
-                            const transactionUtxos = await post(`/blockfrost/transaction/utxos`, { transactionHash: transactionHash.tx_hash });
+                            const transactionUtxos = await post(`/blockfrost/transaction/utxos`, {
+                                transactionHash: transactionHash.tx_hash,
+                            });
                             return { ...transactionUtxos, dateTime: transactionHash.block_time };
                         }),
                     );
@@ -39,7 +44,7 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
                     const results = [];
                     for (const transaction of transactionDetails) {
                         for (const input of transaction.inputs) {
-                            if (input.address === contractAddress) {
+                            if (input.address === contractAddressMarketplace) {
                                 results.push({
                                     address: transaction.outputs[0].address,
                                     price: transaction.outputs[0].amount[0].quantity,

@@ -4,9 +4,15 @@ export type SmartContractType = {
     assetsFromSmartContract: Array<NftItemType>;
     setAssetsFromSmartContract: React.Dispatch<React.SetStateAction<NftItemType[]>>;
     loadingAssetsFromSmartContract: boolean;
-    findAsset: ({ policyId, assetName }: { policyId: string; assetName: string }) => Promise<any>;
+    findAssetService: ({
+        policyId,
+        assetName,
+    }: {
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
 
-    buyAsset: ({
+    buyAssetService: ({
         lucid,
         sellerAddress,
         royaltiesAddress,
@@ -20,7 +26,7 @@ export type SmartContractType = {
         assetName: string;
     }) => Promise<any>;
 
-    sellAsset: ({
+    sellAssetService: ({
         policyId,
         assetName,
         author,
@@ -36,9 +42,17 @@ export type SmartContractType = {
         lucid: Lucid;
     }) => Promise<any>;
 
-    refundAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;
+    refundAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
 
-    mintAsset: ({
+    mintAssetService: ({
         lucid,
         title,
         description,
@@ -54,7 +68,7 @@ export type SmartContractType = {
         customMetadata: any;
     }) => Promise<any>;
 
-    mintCollection: ({
+    mintCollectionService: ({
         title,
         description,
         address,
@@ -70,7 +84,7 @@ export type SmartContractType = {
         imageCover: string;
     }) => Promise<any>;
 
-    mintAssetPolicyId: ({
+    mintAssetPolicyIdService: ({
         lucid,
         title,
         description,
@@ -88,5 +102,13 @@ export type SmartContractType = {
         policyIdCollection: string;
     }) => Promise<any>;
 
-    burnAsset: ({ lucid, policyId, assetName }: { lucid: Lucid; policyId: string; assetName: string }) => Promise<any>;
+    burnAssetService: ({
+        lucid,
+        policyId,
+        assetName,
+    }: {
+        lucid: Lucid;
+        policyId: string;
+        assetName: string;
+    }) => Promise<any>;
 };
