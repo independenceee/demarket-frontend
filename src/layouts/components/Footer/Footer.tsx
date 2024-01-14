@@ -6,7 +6,7 @@ import Logo from "@/components/Logo";
 import { publicRouters } from "@/routes";
 import Image from "next/image";
 import images from "@/assets/images";
-import { post } from "@/utils/httpRequest";
+import { post } from "@/utils/http-request";
 import { toast } from "react-toastify";
 import Button from "@/components/Button";
 import { socialMedia } from "@/data/socialMedia";
@@ -56,8 +56,8 @@ const Footer = function ({ selectedRouter, setSelectedRouter }: Props) {
                     <div className={cx("column")}>
                         <Logo />
                         <p>
-                            Buy, sell and discover exclusive digital assets by the top artists of Design & Develop with
-                            by BlockAlpha
+                            Buy, sell and discover exclusive digital assets by the top artists of
+                            Design & Develop with by BlockAlpha
                         </p>
                         <div className={cx("social-links")}>
                             <Link target="_blank" href={`${socialMedia.metaLink}`}>

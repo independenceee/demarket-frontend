@@ -1,9 +1,9 @@
-import { Data, Lucid } from "lucid-cardano";
 import { Datum } from "@/constants/datum";
 import { redeemer } from "@/constants/redeemer";
 
-import readValidator from "@/utils/readValidator";
-import { toast } from "react-toastify";
+import { contractValidatorMarketplace } from "@/libs/marketplace";
+import { Data, Lucid, TxComplete, TxSigned } from "lucid-cardano";
+import readValidator from "@/utils/read-validator";
 
 type Props = {
     lucid: Lucid;
@@ -13,9 +13,18 @@ type Props = {
     assetName: string;
 };
 
-const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddress, royaltiesAddress }: Props) {
+const buyAssetService = async function ({
+    lucid,
+    policyId,
+    assetName,
+    sellerAddress,
+    royaltiesAddress,
+}: Props) {
     try {
-        const validator = await readValidator();
+        const validator = await readValidator({
+            compliedCode: contractValidatorMarketplace[0].compiledCode,
+        });
+
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
         let existAsset: any;
@@ -36,7 +45,7 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
 
-        const tx = await lucid
+        const tx: TxComplete = await lucid
             .newTx()
             .payToAddress(sellerAddress, { lovelace: BigInt(existAsset.price) })
             .payToAddress(
@@ -48,22 +57,13 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
             .attachSpendingValidator(validator)
             .complete();
 
-        const signedTx = await tx.sign().complete();
-        const txHash = await signedTx.submit();
+        const signedTx: TxSigned = await tx.sign().complete();
+        const txHash: string = await signedTx.submit();
         await lucid.awaitTx(txHash);
 
         return { txHash, policyId, assetName };
     } catch (error) {
-        toast.error("Buy asset faild !", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
+        console.log(error);
     }
 };
 

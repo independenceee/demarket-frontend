@@ -20,15 +20,8 @@ type Props = {
 };
 
 const Category = function ({ categorySearchParam, setCategorySearchParam }: Props) {
-    const router = useRouter();
-    const pathname: string = usePathname();
-    const searchParams = useSearchParams();
     const { categories, loadingCategories } = useContext<DemarketContextType>(DemarketContext);
     const [openCategory, setOpenCategory] = useState<boolean>(true);
-    const [categoryQuery, setCategoryQuery] = useQueryState<QueryParamsType>("category", {
-        defaultValue: { category: "all" },
-        parse: (query) => JSON.parse(query) as QueryParamsType,
-    });
 
     const handleOpenCategory = function () {
         setOpenCategory(!openCategory);
@@ -36,19 +29,8 @@ const Category = function ({ categorySearchParam, setCategorySearchParam }: Prop
 
     const handleChangeCategory = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
         setCategorySearchParam(event.target.value);
-        setCategoryQuery({ sortby: event.target.value } as QueryParamsType);
     }, []);
 
-    useEffect(() => {
-        const { category } = categoryQuery;
-        setCategorySearchParam(category as string);
-    }, [categoryQuery]);
-
-    useEffect(() => {
-        const params = new URLSearchParams(searchParams);
-        params.set("category", categorySearchParam);
-        router.replace(pathname + "?" + params.toString(), { scroll: false });
-    }, [categoryQuery, router]);
     return (
         <section className={cx("content__filter")}>
             <header className={cx("content__filter--header")} onClick={handleOpenCategory}>
@@ -72,20 +54,24 @@ const Category = function ({ categorySearchParam, setCategorySearchParam }: Prop
                                   </section>
                               );
                           })
-                        : categories.slice(0, 5).map(function (category: CategoryItemType, index: number) {
-                              return (
-                                  <section key={index} className={cx("content__filter--group")}>
-                                      <h4 className={cx("content__filter--name")}>{category.name}</h4>
-                                      <input
-                                          value={category.slug}
-                                          className={cx("content__filter--control")}
-                                          type="radio"
-                                          name="category"
-                                          onChange={handleChangeCategory}
-                                      />
-                                  </section>
-                              );
-                          })}
+                        : categories
+                              .slice(0, 5)
+                              .map(function (category: CategoryItemType, index: number) {
+                                  return (
+                                      <section key={index} className={cx("content__filter--group")}>
+                                          <h4 className={cx("content__filter--name")}>
+                                              {category.name}
+                                          </h4>
+                                          <input
+                                              value={category.slug}
+                                              className={cx("content__filter--control")}
+                                              type="radio"
+                                              name="category"
+                                              onChange={handleChangeCategory}
+                                          />
+                                      </section>
+                                  );
+                              })}
                 </article>
             )}
         </section>

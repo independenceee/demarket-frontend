@@ -15,14 +15,15 @@ type Props = {
 
 const CollectionItem = function ({ collection, index }: Props) {
     const router = useRouter();
-    const { id: walletAddressParams } = useParams();
     return (
         <div
             className={cx("wrapper")}
             data-aos="zoom-in-up"
             data-aos-delay={`${100 * (index + 4)}`}
             data-aos-duration={`${1000 * (index + 4)}`}
-            onClick={() => router.push(`/collection/${collection.policyId}?address=${walletAddressParams}`)}
+            onClick={() =>
+                router.push(`/collection/${collection.policyId}?address=${collection.address}`)
+            }
         >
             <div className={cx("container")}>
                 <header className={cx("header")}>
@@ -34,7 +35,11 @@ const CollectionItem = function ({ collection, index }: Props) {
                         />
                     </div>
                     <div className={cx("avatar__wrapper")}>
-                        <img className={cx("avatar__image")} src={convertIpfsAddressToUrl(collection.avatar) || images.user} alt="User Image" />
+                        <img
+                            className={cx("avatar__image")}
+                            src={convertIpfsAddressToUrl(collection.avatar) || images.user}
+                            alt="User Image"
+                        />
                     </div>
                 </header>
                 <section className={cx("content")}>

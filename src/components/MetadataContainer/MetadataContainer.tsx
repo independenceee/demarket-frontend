@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./MetedataContainer.module.scss";
 import classNames from "classnames/bind";
-import { post } from "@/utils/httpRequest";
+import { post } from "@/utils/http-request";
 
 type Props = {
     policyId: string;
@@ -32,7 +32,8 @@ const MetadataContainer = function ({ policyId, assetName }: Props) {
             <div className={cx("wrapper")}>
                 {Object.entries(metadata).map(([key, value]: any) => (
                     <div key={key} className={cx("container")}>
-                        <div className={cx("key")}>{key}</div> <div className={cx("value")}>{value}</div>
+                        <div className={cx("key")}>{key}</div>{" "}
+                        <div className={cx("value")}>{value}</div>
                     </div>
                 ))}
             </div>

@@ -1,4 +1,4 @@
-import { get, post } from "@/utils/httpRequest";
+import { get, post } from "@/utils/http-request";
 
 type Props = {
     policyId: string;

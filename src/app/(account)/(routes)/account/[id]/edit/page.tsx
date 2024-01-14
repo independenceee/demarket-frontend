@@ -9,7 +9,7 @@ import images from "@/assets/images";
 import Button from "@/components/Button";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
-import { patch } from "@/utils/httpRequest";
+import { patch } from "@/utils/http-request";
 import { toast } from "react-toastify";
 
 type Props = {};

@@ -1,4 +1,4 @@
-import * as httpRequest from "@/utils/httpRequest";
+import * as httpRequest from "@/utils/http-request";
 
 type Props = {};
 

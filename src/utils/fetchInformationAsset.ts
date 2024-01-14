@@ -1,13 +1,22 @@
-import { post, get } from "@/utils/httpRequest";
+import { post, get } from "@/utils/http-request";
 
 type Props = {
     policyId: string;
     assetName: string;
 };
 
-const fetchCurrentAddressAsset = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
+const fetchCurrentAddressAsset = async function ({
+    policyId,
+    assetName,
+}: {
+    policyId: string;
+    assetName: string;
+}) {
     try {
-        const data = await post("/koios/assets/nft-address", { policyId: policyId, assetName: assetName });
+        const data = await post("/koios/assets/nft-address", {
+            policyId: policyId,
+            assetName: assetName,
+        });
         return data.address;
     } catch (error) {
         console.error(error);
@@ -29,7 +38,10 @@ const fetchStakeKeyFromAddress = async function (address: string) {
 };
 
 const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName }: Props) {
-    const data = await post("/blockfrost/transaction/asset", { policyId: policyId, assetName: assetName });
+    const data = await post("/blockfrost/transaction/asset", {
+        policyId: policyId,
+        assetName: assetName,
+    });
     const authorAddress = await fetchAddressFromTxHash(data.firstTransaction.tx_hash);
     const sellerAddress = await fetchAddressFromTxHash(data.currentTransaction.tx_hash);
     const stakekeyAuthorAddress = await fetchStakeKeyFromAddress(authorAddress);
@@ -39,7 +51,10 @@ const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName
 };
 
 const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetName }: Props) {
-    const metadata = await post("/blockfrost/assets/information", { policyId: policyId, assetName: assetName });
+    const metadata = await post("/blockfrost/assets/information", {
+        policyId: policyId,
+        assetName: assetName,
+    });
     return { fingerprint: metadata.fingerprint, metadata: metadata.onchain_metadata };
 };
 
@@ -50,11 +65,15 @@ const fetchInformationFromDemarket = async function ({ policyId, assetName }: Pr
 
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     const currentAddress = await fetchCurrentAddressAsset({ policyId, assetName });
-    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } = await fetchAuthorAddressAndSellerAddress({
+    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } =
+        await fetchAuthorAddressAndSellerAddress({
+            policyId,
+            assetName,
+        });
+    const { fingerprint, metadata } = await fetchMetadataFromPolicyIdAndAssetName({
         policyId,
         assetName,
     });
-    const { fingerprint, metadata } = await fetchMetadataFromPolicyIdAndAssetName({ policyId, assetName });
     const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
     return {
         policyId,

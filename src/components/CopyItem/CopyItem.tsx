@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 import classNames from "classnames/bind";
 import styles from "./CopyItem.module.scss";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -13,35 +13,30 @@ type Props = {
 
 const CopyItem = function ({ value }: Props) {
     const [copied, setCopied] = useState<boolean>(false);
-    const handleCopyToClipboard = function (event: any) {
+
+    const handleCopyToClipboard = function (event: MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setCopied(true);
-        toast.success("Copy to clipboard!", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
+        toast.success("Copy to clipboard!");
         setTimeout(function () {
             setCopied(false);
         }, 1000);
     };
+
     return (
-        <CopyToClipboard text={value} onCopy={(event) => handleCopyToClipboard(event)}>
-            {copied ? (
-                <div className={cx("icon__wrapper")}>
-                    <CheckIcon width={"16px"} height={"16"} />
-                </div>
-            ) : (
-                <div className={cx("icon__wrapper")}>
-                    <CopyIcon width={"16px"} height={"16"} />
-                </div>
-            )}
-        </CopyToClipboard>
+        <div onClick={handleCopyToClipboard}>
+            <CopyToClipboard text={value}>
+                {copied ? (
+                    <div className={cx("icon__wrapper")}>
+                        <CheckIcon width={"16px"} height={"16"} />
+                    </div>
+                ) : (
+                    <div className={cx("icon__wrapper")}>
+                        <CopyIcon width={"16px"} height={"16"} />
+                    </div>
+                )}
+            </CopyToClipboard>
+        </div>
     );
 };
 

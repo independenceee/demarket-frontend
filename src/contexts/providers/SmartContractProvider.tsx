@@ -2,15 +2,15 @@
 
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import burnAsset from "@/services/contracts/burnAsset";
-import sellAsset from "@/services/contracts/sellAsset";
-import buyAsset from "@/services/contracts/buyAsset";
-import listAssets from "@/services/contracts/listAssets";
-import mintAsset from "@/services/contracts/mintAsset";
-import mintCollection from "@/services/contracts/mintCollection";
-import refundAsset from "@/services/contracts/refundAsset";
-import findAsset from "@/services/contracts/findAsset";
-import mintAssetPolicyId from "@/services/contracts/mintAssetPolicyId";
+import burnAssetService from "@/services/contracts/marketplace/burn-asset";
+import sellAssetService from "@/services/contracts/marketplace/sell-asset-service";
+import buyAssetService from "@/services/contracts/marketplace/buy-asset-service";
+import listAssetsService from "@/services/contracts/marketplace/list-assets-service";
+import mintAssetService from "@/services/contracts/marketplace/mint-asset-service";
+import mintCollectionService from "@/services/contracts/marketplace/mint-collection-service";
+import refundAssetService from "@/services/contracts/marketplace/refund-asset-service";
+import findAssetService from "@/services/contracts/marketplace/find-asset-service";
+import mintAssetPolicyIdService from "@/services/contracts/marketplace/mint-asset-policyid-service";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { NftItemType } from "@/types/GenericsType";
 import LucidContext from "../components/LucidContext";
@@ -21,12 +21,14 @@ type Props = {
 };
 
 const SmartContractProvider = function ({ children }: Props) {
-    const { networkPlatform, lucidNeworkPlatform, revalidate } = useContext<LucidContextType>(LucidContext);
+    const { networkPlatform, lucidNeworkPlatform, revalidate } =
+        useContext<LucidContextType>(LucidContext);
     const [assetsFromSmartContract, setAssetsFromSmartContract] = useState<NftItemType[]>([]);
-    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] = useState<boolean>(true);
+    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] =
+        useState<boolean>(true);
     const fetchAssetsFromSmartContract = async function () {
         try {
-            const assets: NftItemType[] = await listAssets({ lucid: lucidNeworkPlatform });
+            const assets: NftItemType[] = await listAssetsService({ lucid: lucidNeworkPlatform });
             if (assets) {
                 const assetPromises = assets.reverse().map(async function (asset: NftItemType) {
                     const response: NftItemType = await fetchInformationAsset({
@@ -39,19 +41,27 @@ const SmartContractProvider = function ({ children }: Props) {
                 const convertedAssets: NftItemType[] = await Promise.all(assetPromises);
 
                 setAssetsFromSmartContract((previousAssets: NftItemType[]) => {
-                    const updatedAssets: NftItemType[] = previousAssets.map((existingAsset: NftItemType) => {
-                        const matchingAsset = convertedAssets.find(function (newAsset: NftItemType) {
-                            return existingAsset.policyId === newAsset.policyId;
-                        });
+                    const updatedAssets: NftItemType[] = previousAssets.map(
+                        (existingAsset: NftItemType) => {
+                            const matchingAsset = convertedAssets.find(function (
+                                newAsset: NftItemType,
+                            ) {
+                                return existingAsset.policyId === newAsset.policyId;
+                            });
 
-                        if (matchingAsset) {
-                            return { ...existingAsset, ...matchingAsset };
-                        }
+                            if (matchingAsset) {
+                                return { ...existingAsset, ...matchingAsset };
+                            }
 
-                        return existingAsset;
-                    });
+                            return existingAsset;
+                        },
+                    );
                     const newAssets: NftItemType[] = convertedAssets.filter(
-                        (newAsset: NftItemType) => !previousAssets.some((existingAsset: any) => existingAsset.policyId === newAsset.policyId),
+                        (newAsset: NftItemType) =>
+                            !previousAssets.some(
+                                (existingAsset: any) =>
+                                    existingAsset.policyId === newAsset.policyId,
+                            ),
                     );
 
                     return [...updatedAssets, ...newAssets];
@@ -75,14 +85,14 @@ const SmartContractProvider = function ({ children }: Props) {
                 assetsFromSmartContract,
                 setAssetsFromSmartContract,
                 loadingAssetsFromSmartContract,
-                buyAsset,
-                burnAsset,
-                findAsset,
-                mintAsset,
-                refundAsset,
-                sellAsset,
-                mintCollection,
-                mintAssetPolicyId,
+                buyAssetService,
+                burnAssetService,
+                findAssetService,
+                mintAssetService,
+                refundAssetService,
+                sellAssetService,
+                mintCollectionService,
+                mintAssetPolicyIdService,
             }}
         >
             {children}

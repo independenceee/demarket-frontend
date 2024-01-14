@@ -1,4 +1,4 @@
-import { post } from "@/utils/httpRequest";
+import { post } from "@/utils/http-request";
 
 const fetchStakeKeyFromAddress = async function (address: string) {
     try {

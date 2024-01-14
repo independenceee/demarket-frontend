@@ -6,7 +6,7 @@ import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import { toast } from "react-toastify";
 import { NftItemType } from "@/types/GenericsType";
-import { get } from "@/utils/httpRequest";
+import { get } from "@/utils/http-request";
 import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import { SmartContractType } from "@/types/SmartContextType";
@@ -39,7 +39,10 @@ const CartProvider = function ({ children }: Props) {
     useEffect(() => {
         const fetchAssetsCartFromAccount = async function () {
             try {
-                const data = await get("/nft/nft_cart", { walletAddress: account.walletAddress, page: 1 });
+                const data = await get("/nft/nft_cart", {
+                    walletAddress: account.walletAddress,
+                    page: 1,
+                });
             } catch (error) {
                 console.log(error);
             }
@@ -52,7 +55,8 @@ const CartProvider = function ({ children }: Props) {
     const addToCart = async function (newItem: NftItemType) {
         setCartItem((prev: any) => {
             const existingItem: NftItemType[] = prev.itemsList.find(
-                (item: NftItemType) => item.assetName === newItem.assetName && item.policyId === newItem.policyId,
+                (item: NftItemType) =>
+                    item.assetName === newItem.assetName && item.policyId === newItem.policyId,
             );
 
             if (existingItem) {
@@ -74,7 +78,8 @@ const CartProvider = function ({ children }: Props) {
     const removeFromCart = async function ({ id, policyId, assetName }: NftItemType) {
         setCartItem((prev: any) => {
             const updatedItemsList: NftItemType[] = prev.itemsList.filter(
-                (item: any) => item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
+                (item: any) =>
+                    item.id !== id || (item.policyId !== policyId && item.assetName !== assetName),
             );
             const updatedTotalPrice = updatedItemsList.reduce(function (total: number, item: any) {
                 return total + Number(item.price);
@@ -127,7 +132,9 @@ const CartProvider = function ({ children }: Props) {
     };
 
     return (
-        <CartContext.Provider value={{ completePurchase, cartItem, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider
+            value={{ completePurchase, cartItem, addToCart, removeFromCart, clearCart }}
+        >
             {children}
         </CartContext.Provider>
     );
