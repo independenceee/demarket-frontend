@@ -335,19 +335,19 @@ const AccountPage = function ({ searchParams }: Props) {
                             {activeTab === "selling" && (
                                 <NftContainer
                                     nfts={sellingAssetsFromAddress}
-                                    loading={loadingSellingAssetsFromAddress}
+                                    loading={loadingAssetsFromAddress}
                                 />
                             )}
                             {activeTab === "created" && (
                                 <NftContainer
                                     nfts={createdAssetsFromAddress}
-                                    loading={loadingCreatedAssetsFromAddress}
+                                    loading={loadingAssetsFromAddress}
                                 />
                             )}
                             {activeTab === "collection" && (
                                 <CollectionContainer
                                     collections={collectionsFromAddress}
-                                    loading={loadingCollectionsFromAddress}
+                                    loading={loadingAssetsFromAddress}
                                 />
                             )}
                             {activeTab === "following" && (
@@ -371,7 +371,12 @@ const AccountPage = function ({ searchParams }: Props) {
                                     setCurrentPageAccounts={setCurrentPageFollowers}
                                 />
                             )}
-                            {activeTab === "like" && <NftContainer nfts={assetsFromAddress} />}
+                            {activeTab === "like" && (
+                                <NftContainer
+                                    nfts={assetsFromAddress}
+                                    loading={loadingAssetsFromAddress}
+                                />
+                            )}
                         </section>
                         <section className={cx("follower__wrapper")}>
                             <header className={cx("follower__header")}>Popular Creators</header>

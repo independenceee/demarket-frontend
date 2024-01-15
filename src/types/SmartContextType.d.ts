@@ -1,3 +1,4 @@
+import { Lucid } from "lucid-cardano";
 import { NftItemType } from "./GenericsType";
 
 export type SmartContractType = {
@@ -110,5 +111,13 @@ export type SmartContractType = {
         lucid: Lucid;
         policyId: string;
         assetName: string;
+    }) => Promise<any>;
+
+    buyMoreAssetsService: ({
+        lucid,
+        assets,
+    }: {
+        lucid: Lucid;
+        assets: Array<NftItemType>;
     }) => Promise<any>;
 };
