@@ -8,7 +8,18 @@ const cx = classNames.bind(styles);
 type Props = {};
 
 const HistoryItemSkeleton = function ({}: Props) {
-    return <></>;
+    return (
+        <div className={cx("wrapper")}>
+            <SkeletonTheme highlightColor="#7000ff" />
+            <div className={cx("container")}>
+                <Skeleton width={70} height={70} borderRadius={"50%"} />
+                <section className={cx("infomation__wrapper")}>
+                    <Skeleton width={500} height={17} />
+                    <Skeleton width={120} height={17} />
+                </section>
+            </div>
+        </div>
+    );
 };
 
 export default HistoryItemSkeleton;

@@ -22,15 +22,18 @@ const HistoryItem = function ({ history }: Props) {
                 </section>
                 <section className={cx("infomation__wrapper")}>
                     <div className={cx("infomation__content")}>
-                        <span>Sell by: </span>
-                        {history.address}
+                        <div className={cx("key")}>Sell by: </div>
+                        <div className={cx("value")}>{history.address}</div>
                     </div>
                     <div className={cx("infomation__content")}>
-                        <span>Price: </span>
-                        {history.price / 1000000}
+                        <div className={cx("key")}>Price: </div>
+                        <div className={cx("value")}>{history.price / 1000000}</div>
                     </div>
                     <div className={cx("infomation__content")}>
-                        <span>Datetime: </span> {convertDatetimeBlocktime(Number(history.dateTime))}
+                        <div className={cx("key")}>Datetime: </div>
+                        <div className={cx("value")}>
+                            {convertDatetimeBlocktime(Number(history.dateTime))}
+                        </div>
                     </div>
                 </section>
             </div>

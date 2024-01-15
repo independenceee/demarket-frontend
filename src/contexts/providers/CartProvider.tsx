@@ -22,7 +22,7 @@ const CartProvider = function ({ children }: Props) {
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { account } = useContext<AccountContextType>(AccountContext);
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
-    const { buyAsset } = useContext<SmartContractType>(SmartContractContext);
+    const { buyAssetService } = useContext<SmartContractType>(SmartContractContext);
 
     const [cartItem, setCartItem] = useState<{
         itemsList: NftItemType[];
@@ -112,7 +112,7 @@ const CartProvider = function ({ children }: Props) {
             if (lucidWallet) {
                 cartItem.itemsList.forEach(async function (item: NftItemType) {
                     try {
-                        await buyAsset({
+                        await buyAssetService({
                             assetName: item.assetName,
                             policyId: item.policyId,
                             lucid: lucidWallet,

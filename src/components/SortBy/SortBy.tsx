@@ -20,9 +20,14 @@ const SortBy = function ({ sortBySearchParam, setSortBySearchParam }: Props): Re
         setOpenSortBy(!openSortBy);
     };
 
-    const handleChangeSortBy = useCallback(function (event: ChangeEvent<HTMLInputElement>) {
-        setSortBySearchParam(event.target.value);
-    }, []);
+    console.log(sortBySearchParam);
+
+    const handleChangeSortBy = useCallback(
+        function (event: ChangeEvent<HTMLInputElement>) {
+            setSortBySearchParam(event.target.value);
+        },
+        [sortBySearchParam],
+    );
 
     return (
         <section className={cx("content__filter")}>

@@ -239,6 +239,36 @@ const ConnectWallet = function ({}: Props) {
                 </div>
             </Modal>
 
+            <Modal
+                isShowing={isShowingNotificationConnectWallet}
+                toggle={toggleNotificationConnectWallet}
+            >
+                <div className={cx("wallet_download")}>
+                    <section className={cx("nowallet__content")}>
+                        <p>
+                            You must connect a wallet to make a transaction. Chrome Web Store and
+                            install it now , if you dont have one yet?
+                        </p>
+                    </section>
+                    <div className={cx("nowallet__button")}>
+                        <button
+                            className={cx("button__ok")}
+                            onClick={toggleNotificationConnectWallet}
+                        >
+                            CANCEL
+                        </button>
+                        <a
+                            onClick={toggleNotificationConnectWallet}
+                            href={walletItem.walletDownloadApi}
+                            className={cx("button__cancel")}
+                            rel="noopener noreferrer"
+                        >
+                            OK
+                        </a>
+                    </div>
+                </div>
+            </Modal>
+
             <Modal isShowing={isShowingDownloadWallet} toggle={toggleDownloadWallet}>
                 <div className={cx("wallet_download")}>
                     <section className={cx("nowallet__content")}>

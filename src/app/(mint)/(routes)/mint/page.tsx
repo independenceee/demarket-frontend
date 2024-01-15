@@ -35,7 +35,7 @@ const MintPage = function ({}: Props) {
     const [isActionCreate, setIsActionCreate] = useState(false);
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
-    const { mintAsset } = useContext<SmartContractType>(SmartContractContext);
+    const { mintAssetService } = useContext<SmartContractType>(SmartContractContext);
     const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -119,7 +119,7 @@ const MintPage = function ({}: Props) {
                     },
                 );
 
-                const { txHash, policyId, assetName } = await mintAsset({
+                const { txHash, policyId, assetName } = await mintAssetService({
                     lucid: lucidWallet,
                     customMetadata,
                     description,
@@ -179,6 +179,7 @@ const MintPage = function ({}: Props) {
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>Title</h3>
                         <input
+                            value={title}
                             placeholder="Enter your title"
                             type="text"
                             className={cx("title-control")}
@@ -216,6 +217,7 @@ const MintPage = function ({}: Props) {
                     <div className={cx("title-wrapper")}>
                         <h3 className={cx("label")}>Description</h3>
                         <textarea
+                            value={description}
                             placeholder="Description of the NFT"
                             rows={10}
                             typeof="text"

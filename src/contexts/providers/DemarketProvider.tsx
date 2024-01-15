@@ -11,7 +11,7 @@ type Props = {
 };
 
 const DemarketProvider = function ({ children }: Props) {
-    const { id: walletAddressParams } = useParams();
+    const { id: walletAddressParams }: any = useParams();
 
     const addNft = async function ({
         policyId,

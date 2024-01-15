@@ -18,8 +18,8 @@ type Props = {
 };
 
 const AccountProvider = function ({ children }: Props) {
-    const { id: walletAddressParams } = useParams();
-    const searchParams = useSearchParams();
+    const { id: walletAddressParams }: any = useParams();
+    const searchParams: any = useSearchParams();
 
     const [walletAddressQuery, setWalletAddressQuery] = useState<string>("");
     useEffect(() => {

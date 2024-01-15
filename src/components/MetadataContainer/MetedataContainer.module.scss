@@ -9,9 +9,16 @@
 .container {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .key {
-    font-size: 16px;
+    font-size: 17px;
     width: 100px;
+}
+
+.value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
