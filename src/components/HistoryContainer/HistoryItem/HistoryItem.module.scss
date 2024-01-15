@@ -1,4 +1,6 @@
 .wrapper {
+    width: 100%;
+    height: 100%;
 }
 
 .container {
@@ -16,10 +18,20 @@
 }
 
 .infomation__wrapper {
-    .infomation__content {
-        span {
-            font-weight: 550;
-            color: var(--text-color);
-        }
-    }
+    width: 100%;
+}
+
+.infomation__content {
+    display: flex;
+}
+
+.key {
+}
+
+.value {
+    max-width: 470px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

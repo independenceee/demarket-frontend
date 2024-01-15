@@ -13,7 +13,7 @@ type Props = {
 };
 
 const Layout = function ({ children }: Props) {
-    const pathName = usePathname();
+    const pathName: any = usePathname();
     const [selectedRouter, setSelectedRouter] = useState<string>("");
 
     useEffect(function () {

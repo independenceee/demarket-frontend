@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import CountUp from "react-countup";
 import classNames from "classnames/bind";
-import { useQueryState } from "nuqs";
 import {
     ArrowDropdownCircleIcon,
     CreatedAtIcon,
@@ -53,7 +52,7 @@ const tabItems = [
 ];
 
 const AccountPage = function ({ searchParams }: Props) {
-    const { id: walletAddressPath } = useParams();
+    const { id: walletAddressPath }: any = useParams();
     const { sortby, category, verify, search } = searchParams;
     const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
     const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");

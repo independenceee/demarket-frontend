@@ -6,6 +6,7 @@ import styles from "./HistoryContainer.module.scss";
 import { post } from "@/utils/http-request";
 import { contractAddressMarketplace } from "@/libs/marketplace";
 import HistoryItem from "./HistoryItem";
+import HistoryItemSkeleton from "./HistoryItem/HistoryItemSkeleton";
 
 type Props = {
     policyId: string;
@@ -75,9 +76,13 @@ const HistoryContainer = function ({ policyId, assetsName }: Props) {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
-                {histories?.map(function (history, index) {
-                    return <HistoryItem history={history} key={index} />;
-                })}
+                {loadingTransactions
+                    ? new Array(6).fill(null).map(function (value: any, index) {
+                          return <HistoryItemSkeleton key={index} />;
+                      })
+                    : histories?.map(function (history, index) {
+                          return <HistoryItem history={history} key={index} />;
+                      })}
             </div>
         </div>
     );

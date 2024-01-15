@@ -20,9 +20,14 @@ type Props = {
     itemsPerPage?: number;
     loading?: boolean;
 };
-const CollectionContainer = function ({ collections, itemsPerPage = 12, loading, isShowCreate = true }: Props) {
+const CollectionContainer = function ({
+    collections,
+    itemsPerPage = 12,
+    loading,
+    isShowCreate = true,
+}: Props) {
     const { walletItem } = useContext<LucidContextType>(LucidContext);
-    const { id: walletAddressParams } = useParams();
+    const { id: walletAddressParams }: any = useParams();
     const router = useRouter();
     const [currentItems, setCurrentItems] = useState<any>([]);
     const [pageCount, setPageCount] = useState(0);
@@ -62,12 +67,19 @@ const CollectionContainer = function ({ collections, itemsPerPage = 12, loading,
                           return <CollectionItemSkeleton index={index} key={index} />;
                       })
                     : collections.map(function (collection: CollectionItemType, index: number) {
-                          return <CollectionItem collection={collection} index={index} key={index} />;
+                          return (
+                              <CollectionItem collection={collection} index={index} key={index} />
+                          );
                       })}
             </div>
             {!loading && collections.length !== 0 ? (
                 <Stack spacing={2}>
-                    <Pagination count={pageCount} page={Math.ceil(itemOffset / itemsPerPage) + 1} onChange={handlePageChange} shape="rounded" />
+                    <Pagination
+                        count={pageCount}
+                        page={Math.ceil(itemOffset / itemsPerPage) + 1}
+                        onChange={handlePageChange}
+                        shape="rounded"
+                    />
                 </Stack>
             ) : null}
         </div>

@@ -21,12 +21,10 @@ type Props = {
 };
 
 const MarketplacePage = function ({ searchParams }: Props) {
-    const { sortby, category, verify, search } = searchParams;
-
-    const [verifySearchParam, setVerifySearchParam] = useState<string>(verify || "all");
-    const [sortBySearchParam, setSortBySearchParam] = useState<string>(sortby || "all");
-    const [categorySearchParam, setCategorySearchParam] = useState<string>(category || "all");
-    const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
+    const [verifySearchParam, setVerifySearchParam] = useState<string>("all");
+    const [sortBySearchParam, setSortBySearchParam] = useState<string>("all");
+    const [categorySearchParam, setCategorySearchParam] = useState<string>("all");
+    const [searchValueParam, setSearchValueParam] = useState<string>("");
 
     const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
@@ -44,12 +42,12 @@ const MarketplacePage = function ({ searchParams }: Props) {
             });
         }
 
-        if (sortby) {
+        if (sortBySearchParam) {
             assetsFilterTemp = assetsFilterTemp.sort(function (
                 previous: NftItemType,
                 next: NftItemType,
             ): any {
-                switch (sortby) {
+                switch (sortBySearchParam) {
                     case "all":
                         return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
                     case "news":
@@ -66,11 +64,11 @@ const MarketplacePage = function ({ searchParams }: Props) {
             });
         }
 
-        if (verify) {
+        if (verifySearchParam) {
         }
 
         setAssetsFilter(assetsFilterTemp);
-    }, [searchValueParam, sortby, assetsFromSmartContract]);
+    }, [searchValueParam, sortBySearchParam, assetsFromSmartContract]);
 
     const [showFilter, setShowFilter] = useState<boolean>(false);
     useEffect(function () {

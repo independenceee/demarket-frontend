@@ -43,6 +43,7 @@ const tabItems = [
 
 const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
+    console.log(unit);
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
     const [isActive, setIsActive] = useState<boolean>(false);
