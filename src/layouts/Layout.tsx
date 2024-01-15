@@ -16,10 +16,11 @@ const Layout = function ({ children }: Props) {
     const pathName: any = usePathname();
     const [selectedRouter, setSelectedRouter] = useState<string>("");
 
-    useEffect(function () {
+    useEffect(() => {
         const router = pathName.split("/").join("").toUpperCase();
         setSelectedRouter(router || "Home");
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathName]);
 
     return (
         <main className={cx("wrapper")}>

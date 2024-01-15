@@ -14,49 +14,54 @@ const LucidProvider = function ({ children }: Props) {
     const [loadingConnectWallet, setLoadingConnectWallet] = useState<boolean>(false);
     const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
 
-    const chooseLucidNetworkPlatform = async function () {
-        let lucid: Lucid;
-        switch (networkPlatform) {
-            case "Preprod":
-                lucid = await Lucid.new(
-                    new Blockfrost(
-                        "https://cardano-preprod.blockfrost.io/api/v0",
-                        "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS",
-                    ),
-                    networkPlatform,
-                );
-
-                break;
-            case "Preview":
-                lucid = await Lucid.new(
-                    new Blockfrost(
-                        "https://cardano-preprod.blockfrost.io/api/v0",
-                        "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS",
-                    ),
-                    networkPlatform,
-                );
-                break;
-            case "Mainnet":
-                lucid = await Lucid.new(
-                    new Blockfrost(
-                        "https://cardano-mainnet.blockfrost.io/api/v0",
-                        "mainnettClW67e7zjxBTdjgynNwmGsvyz5DCMmC",
-                    ),
-                    networkPlatform,
-                );
-                break;
-            default:
-                throw new Error("Invalid networkPlatform");
-        }
-
-        setLucidNeworkPlatform(lucid);
-    };
     useEffect(() => {
+        const chooseLucidNetworkPlatform = async function () {
+            let lucid: Lucid;
+            switch (networkPlatform) {
+                case "Preprod":
+                    lucid = await Lucid.new(
+                        new Blockfrost(
+                            "https://cardano-preprod.blockfrost.io/api/v0",
+                            "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS",
+                        ),
+                        networkPlatform,
+                    );
+
+                    break;
+                case "Preview":
+                    lucid = await Lucid.new(
+                        new Blockfrost(
+                            "https://cardano-preprod.blockfrost.io/api/v0",
+                            "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS",
+                        ),
+                        networkPlatform,
+                    );
+                    break;
+                case "Mainnet":
+                    lucid = await Lucid.new(
+                        new Blockfrost(
+                            "https://cardano-mainnet.blockfrost.io/api/v0",
+                            "mainnettClW67e7zjxBTdjgynNwmGsvyz5DCMmC",
+                        ),
+                        networkPlatform,
+                    );
+                    break;
+                default:
+                    throw new Error("Invalid networkPlatform");
+            }
+
+            setLucidNeworkPlatform(lucid);
+        };
+
         chooseLucidNetworkPlatform();
+
+        // react-hooks/exhaustive-deps
     }, [networkPlatform]);
 
     useEffect(() => {
         setLucidWallet(lucidNeworkPlatform);
+
+        // react-hooks/exhaustive-deps
     }, [networkPlatform]);
 
     const [lucidWallet, setLucidWallet] = useState<Lucid>(null!);

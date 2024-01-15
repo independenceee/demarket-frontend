@@ -20,7 +20,7 @@ const Cart = function ({}: Props) {
     const { cartItem, clearCart, completePurchase } = useContext<CartContextType>(CartContext);
 
     return (
-        <main className={cx("wrapper")} data-aos="fade-left">
+        <main className={cx("wrapper")} data-aos="fade-left" data-aos-duration="500">
             <header className={cx("header")}>
                 <section className={cx("header__title")}>
                     <div className={cx("title__left")}>

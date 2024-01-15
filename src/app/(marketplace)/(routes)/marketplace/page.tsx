@@ -21,10 +21,12 @@ type Props = {
 };
 
 const MarketplacePage = function ({ searchParams }: Props) {
+    const { sortby, category, verify, search } = searchParams;
+
     const [verifySearchParam, setVerifySearchParam] = useState<string>("all");
     const [sortBySearchParam, setSortBySearchParam] = useState<string>("all");
     const [categorySearchParam, setCategorySearchParam] = useState<string>("all");
-    const [searchValueParam, setSearchValueParam] = useState<string>("");
+    const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
     const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
         useContext<SmartContractType>(SmartContractContext);
@@ -33,12 +35,14 @@ const MarketplacePage = function ({ searchParams }: Props) {
 
     useEffect(() => {
         let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
-        if (searchValueParam) {
+        if (searchValueParam || search) {
             assetsFilterTemp = assetsFilter.filter(function (asset, index) {
                 return asset.policyId
                     .toString()
                     .toLowerCase()
-                    .includes(searchValueParam.toLocaleLowerCase());
+                    .includes(
+                        searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase()),
+                    );
             });
         }
 
@@ -68,7 +72,8 @@ const MarketplacePage = function ({ searchParams }: Props) {
         }
 
         setAssetsFilter(assetsFilterTemp);
-    }, [searchValueParam, sortBySearchParam, assetsFromSmartContract]);
+        // react-hooks/exhaustive-deps
+    }, [searchValueParam, sortBySearchParam, assetsFromSmartContract, search]);
 
     const [showFilter, setShowFilter] = useState<boolean>(false);
     useEffect(function () {
@@ -79,6 +84,8 @@ const MarketplacePage = function ({ searchParams }: Props) {
         return function () {
             window.removeEventListener("scroll", handleScroll);
         };
+
+        // react-hooks/exhaustive-deps
     }, []);
 
     return (

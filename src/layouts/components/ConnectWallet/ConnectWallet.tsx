@@ -177,7 +177,7 @@ const ConnectWallet = function ({}: Props) {
                                             className={cx("wallet__long--image")}
                                         />
                                         <div className={cx("wallet__long--name")}>
-                                            {wallet.walletName} <span> WALLET</span>
+                                            {wallet.walletName} wallet
                                         </div>
                                     </div>
                                 </div>
@@ -257,14 +257,12 @@ const ConnectWallet = function ({}: Props) {
                         >
                             CANCEL
                         </button>
-                        <a
+                        <button
                             onClick={toggleNotificationConnectWallet}
-                            href={walletItem.walletDownloadApi}
                             className={cx("button__cancel")}
-                            rel="noopener noreferrer"
                         >
                             OK
-                        </a>
+                        </button>
                     </div>
                 </div>
             </Modal>

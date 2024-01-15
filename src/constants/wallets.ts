@@ -39,38 +39,49 @@ const wallets: Array<WalletItemType> = [
         walletDownloadApi: configs.wallets.flint,
     },
     {
-        walletName: "Gero",
-        walletImage: images.geroWallet,
+        walletName: "Lace",
+        walletImage: images.laceWallet,
         walletApi: async function () {
-            return await window.cardano.gero.enable();
+            return await window.cardano.lace.enable();
         },
         walletCheckApi: async function () {
-            return await window.cardano.gero;
+            return await window.cardano.lace;
         },
-        walletDownloadApi: configs.wallets.gero,
+        walletDownloadApi: configs.wallets.lace,
     },
-    {
-        walletName: "Typhon",
-        walletImage: images.typhonWallet,
-        walletApi: async function () {
-            return await window.cardano.typhon.enable();
-        },
-        walletCheckApi: async function () {
-            return await window.cardano.typhon;
-        },
-        walletDownloadApi: configs.wallets.typhon,
-    },
-    {
-        walletName: "Vespr",
-        walletImage: images.vesprWallet,
-        walletApi: async function () {
-            return await window.cardano.vespr.enable();
-        },
-        walletCheckApi: async function () {
-            return await window.cardano.vespr;
-        },
-        walletDownloadApi: configs.wallets.vespr,
-    },
+    // {
+    //     walletName: "Gero",
+    //     walletImage: images.geroWallet,
+    //     walletApi: async function () {
+    //         return await window.cardano.gero.enable();
+    //     },
+    //     walletCheckApi: async function () {
+    //         return await window.cardano.gero;
+    //     },
+    //     walletDownloadApi: configs.wallets.gero,
+    // },
+    // {
+    //     walletName: "Typhon",
+    //     walletImage: images.typhonWallet,
+    //     walletApi: async function () {
+    //         return await window.cardano.typhon.enable();
+    //     },
+    //     walletCheckApi: async function () {
+    //         return await window.cardano.typhon;
+    //     },
+    //     walletDownloadApi: configs.wallets.typhon,
+    // },
+    // {
+    //     walletName: "Vespr",
+    //     walletImage: images.vesprWallet,
+    //     walletApi: async function () {
+    //         return await window.cardano.vespr.enable();
+    //     },
+    //     walletCheckApi: async function () {
+    //         return await window.cardano.vespr;
+    //     },
+    //     walletDownloadApi: configs.wallets.vespr,
+    // },
 ];
 
 export default wallets;

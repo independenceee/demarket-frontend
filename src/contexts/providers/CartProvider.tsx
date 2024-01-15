@@ -6,23 +6,23 @@ import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import { toast } from "react-toastify";
 import { NftItemType } from "@/types/GenericsType";
-import { get } from "@/utils/http-request";
 import { LucidContextType } from "@/types/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import { SmartContractType } from "@/types/SmartContextType";
-import SmartContractContext from "../components/SmartContractContext";
+import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { ModalContextType } from "@/types/ModalContextType";
-import ModalContext from "../components/ModalContext";
+import ModalContext from "@/contexts/components/ModalContext";
+import { get } from "@/utils/http-request";
 
 type Props = {
     children: ReactNode;
 };
 
 const CartProvider = function ({ children }: Props) {
-    const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { account } = useContext<AccountContextType>(AccountContext);
     const { lucidWallet } = useContext<LucidContextType>(LucidContext);
-    const { buyAssetService } = useContext<SmartContractType>(SmartContractContext);
+    const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
+    const { buyMoreAssetsService } = useContext<SmartContractType>(SmartContractContext);
 
     const [cartItem, setCartItem] = useState<{
         itemsList: NftItemType[];
@@ -110,19 +110,7 @@ const CartProvider = function ({ children }: Props) {
     const completePurchase = async function () {
         try {
             if (lucidWallet) {
-                cartItem.itemsList.forEach(async function (item: NftItemType) {
-                    try {
-                        await buyAssetService({
-                            assetName: item.assetName,
-                            policyId: item.policyId,
-                            lucid: lucidWallet,
-                            royaltiesAddress: String(item.authorAddress),
-                            sellerAddress: String(item.sellerAddress),
-                        });
-                    } catch (error) {
-                        console.log(error);
-                    }
-                });
+                await buyMoreAssetsService({ lucid: lucidWallet, assets: cartItem.itemsList });
             } else {
                 toggleNotificationConnectWallet();
             }

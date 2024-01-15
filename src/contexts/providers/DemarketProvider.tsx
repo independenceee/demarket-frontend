@@ -86,32 +86,6 @@ const DemarketProvider = function ({ children }: Props) {
         fetchAccounts();
     }, [currentPageAccounts, walletAddressParams]);
 
-    // const [otherAccounts, setOtherAccounts] = useState<AccountItemType[]>([]);
-    // const [currentPageOtherAccounts, setcurrentPageOtherAccounts] = useState<number>(1);
-    // const [totalPagesOtherAccounts, setTotalPagesOtherAccounts] = useState<number>(1);
-    // const [loadingOtherAccounts, setLoadingOtherAccounts] = useState<boolean>(true);
-
-    // useEffect(
-    //     function () {
-    //         if (walletAddressParams) {
-    //             const fetchOtherAccounts = async function () {
-    //                 try {
-    //                     const { accounts, totalPage } = await get("/account", {
-    //                         params: { page: currentPageOtherAccounts, pageSize: 12 },
-    //                     });
-    //                     setOtherAccounts(accounts);
-    //                     setTotalPagesAccounts(totalPage);
-    //                     setLoadingAccounts(false);
-    //                 } catch (error) {
-    //                     console.log(error);
-    //                 }
-    //             };
-    //             fetchOtherAccounts();
-    //         }
-    //     },
-    //     [walletAddressParams, currentPageOtherAccounts],
-    // );
-
     return (
         <DemarketContext.Provider
             value={{

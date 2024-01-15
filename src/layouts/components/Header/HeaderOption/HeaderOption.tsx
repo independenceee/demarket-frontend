@@ -24,6 +24,7 @@ const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props)
                 return;
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [redirect],
     );
 
@@ -35,7 +36,9 @@ const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props)
                 handleClick(text);
             }}
         >
-            <span className={cx(`${isActive ? "navbar__content--active" : "navbar__content"}`)}>{text}</span>
+            <span className={cx(`${isActive ? "navbar__content--active" : "navbar__content"}`)}>
+                {text}
+            </span>
         </Link>
     );
 };
