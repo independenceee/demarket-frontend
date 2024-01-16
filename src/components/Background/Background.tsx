@@ -72,7 +72,8 @@ const Carousel = function ({}: Props) {
                         <h1>Make WEB3 Popular with Humans</h1>
                         <hr />
                         <p>
-                            DEMARKET is a decentralized NFT exchange on the Cardano Blockchain platform from BLOCKALPHA.
+                            DEMARKET is a decentralized NFT exchange on the Cardano Blockchain
+                            platform from BLOCKALPHA.
                         </p>
                         <Link href="/marketplace" className={cx("slider-btn")}>
                             Enter NFT Marketplace
@@ -87,7 +88,13 @@ const Carousel = function ({}: Props) {
                     effect={"coverflow"}
                     grabCursor={true}
                     centeredSlides={true}
-                    coverflowEffect={{ rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true }}
+                    coverflowEffect={{
+                        rotate: 0,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 3,
+                        slideShadows: true,
+                    }}
                     loop={true}
                     pagination={{ clickable: true }}
                     autoplay={{ delay: 5000, disableOnInteraction: false }}

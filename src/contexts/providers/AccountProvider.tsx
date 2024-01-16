@@ -5,13 +5,15 @@ import { useParams, useSearchParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
 import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
-import { AccountItemType, CollectionItemType, NftItemType } from "@/types/GenericsType";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { SmartContractType } from "@/types/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
+import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
+import { GlobalStateContextType } from "@/types/GlobalStateContextType";
+import GlobalStateContext from "@/contexts/components/GlobalStateContext";
+import { AccountItemType, CollectionItemType, NftItemType, RevalidateType } from "@/types/GenericsType";
 import { get, post, del } from "@/utils/http-request";
 import { toast } from "react-toastify";
-import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 
 type Props = {
     children: ReactNode;
@@ -20,15 +22,16 @@ type Props = {
 const AccountProvider = function ({ children }: Props) {
     const { id: walletAddressParams }: any = useParams();
     const searchParams: any = useSearchParams();
-
     const [walletAddressQuery, setWalletAddressQuery] = useState<string>("");
+
     useEffect(() => {
         const address = searchParams.get("address");
         setWalletAddressQuery(String(address));
     }, [searchParams]);
 
+    const { walletItem } = useContext<LucidContextType>(LucidContext);
     const { assetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
-    const { walletItem, revalidate } = useContext<LucidContextType>(LucidContext);
+    const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
 
     const [account, setAccount] = useState<AccountItemType>(null!);
     const [loadingAccount, setLoadingAccount] = useState<boolean>(false);
@@ -53,12 +56,9 @@ const AccountProvider = function ({ children }: Props) {
     }, [walletItem.walletAddress]);
 
     const [collectionsFromAddress, setCollectionsFromAddress] = useState<CollectionItemType[]>([]);
-    const [loadingCollectionsFromAddress, setLoadingCollectionsFromAddress] =
-        useState<boolean>(false);
-    const [totalPagesCollectionsFromAddress, setTotalPagesCollectionsFromAddress] =
-        useState<number>(1);
-    const [currentPageCollectionsFromAddress, setCurrentPageCollectionsFromAddress] =
-        useState<number>(1);
+    const [loadingCollectionsFromAddress, setLoadingCollectionsFromAddress] = useState<boolean>(false);
+    const [totalPagesCollectionsFromAddress, setTotalPagesCollectionsFromAddress] = useState<number>(1);
+    const [currentPageCollectionsFromAddress, setCurrentPageCollectionsFromAddress] = useState<number>(1);
 
     const [assetsFromAddress, setAssetsFromAddress] = useState<NftItemType[]>([]);
     const [currentPageAssetsFromAddress, setCurrentPageAssetsFromAddress] = useState<number>(1);
@@ -70,12 +70,9 @@ const AccountProvider = function ({ children }: Props) {
             setLoadingAssetsFromAddress(true);
             setLoadingCollectionsFromAddress(true);
             try {
-                const { paginatedData, totalPage } = await post(
-                    `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
-                    {
-                        address: walletAddressParams || walletAddressQuery,
-                    },
-                );
+                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
+                    address: walletAddressParams || walletAddressQuery,
+                });
 
                 const assetsFromAddress = await Promise.all(
                     paginatedData.map(async ({ policy_id, asset_name, quantity }: any) => {
@@ -118,31 +115,19 @@ const AccountProvider = function ({ children }: Props) {
         if (walletAddressParams || walletAddressQuery) {
             fetchAssetsFromAddress();
         }
-    }, [
-        walletAddressParams,
-        currentPageAssetsFromAddress,
-        assetsFromSmartContract,
-        revalidate,
-        walletAddressQuery,
-    ]);
+    }, [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate.account, walletAddressQuery]);
 
     const [createdAssetsFromAddress, setCreatedAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] =
-        useState<boolean>(false);
-    const [totalPagesCreatedAssetsFromAddress, setTotalPagesCreatedAssetsFromAddress] =
-        useState<number>(1);
-    const [currentPageCreatedAssetsFromAddress, setCurrentPageCreatedAssetsFromAddress] =
-        useState<number>(1);
+    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] = useState<boolean>(false);
+    const [totalPagesCreatedAssetsFromAddress, setTotalPagesCreatedAssetsFromAddress] = useState<number>(1);
+    const [currentPageCreatedAssetsFromAddress, setCurrentPageCreatedAssetsFromAddress] = useState<number>(1);
 
     useEffect(() => {
         const fetchCreatedAssetsFromAddress = async function () {
             try {
                 setLoadingCreatedAssetsFromAddress(true);
                 const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
-                    return (
-                        asset.authorAddress === walletAddressParams ||
-                        asset.authorAddress === walletAddressQuery
-                    );
+                    return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
                 });
 
                 setCreatedAssetsFromAddress(createdAssetsList);
@@ -158,23 +143,15 @@ const AccountProvider = function ({ children }: Props) {
     }, [walletAddressParams, walletAddressQuery, assetsFromSmartContract, assetsFromAddress]);
 
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [currentPageSellingAssetsFromAddress, setCurrentPageSellingAssetsFromAddress] =
-        useState<number>(1);
-    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] =
-        useState<boolean>(false);
-    const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] =
-        useState<number>(1);
+    const [currentPageSellingAssetsFromAddress, setCurrentPageSellingAssetsFromAddress] = useState<number>(1);
+    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] = useState<boolean>(false);
+    const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] = useState<number>(1);
     useEffect(() => {
         const fetchSellingsAsset = async function () {
             try {
                 setLoadingSellingAssetsFromAddress(true);
-                const sellingAssetsList = assetsFromSmartContract.filter(function (
-                    asset: NftItemType,
-                ) {
-                    return (
-                        asset.sellerAddress === walletAddressParams ||
-                        asset.sellerAddress === walletAddressQuery
-                    );
+                const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
+                    return asset.sellerAddress === walletAddressParams || asset.sellerAddress === walletAddressQuery;
                 });
                 setSellingAssetsFromAddress(sellingAssetsList);
             } catch (error) {
@@ -186,7 +163,7 @@ const AccountProvider = function ({ children }: Props) {
         if (walletAddressParams || walletAddressQuery) {
             fetchSellingsAsset();
         }
-    }, [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate]);
+    }, [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate.account]);
 
     const [followers, setFollowers] = useState<AccountItemType[]>([]);
     const [currentPageFollowers, setCurrentPageFollowers] = useState<number>(1);
@@ -216,7 +193,7 @@ const AccountProvider = function ({ children }: Props) {
         if (walletAddressParams) {
             fetchFollowers();
         }
-    }, [currentPageFollowers, walletAddressParams]);
+    }, [currentPageFollowers, walletAddressParams, revalidate.follow]);
 
     const [followings, setFollowings] = useState<AccountItemType[]>([]);
     const [currentPageFollowings, setCurrentPageFollowings] = useState<number>(1);
@@ -246,38 +223,46 @@ const AccountProvider = function ({ children }: Props) {
         if (walletAddressParams) {
             fetchFollowings();
         }
-    }, [currentPageFollowings, walletAddressParams]);
+    }, [currentPageFollowings, walletAddressParams, revalidate.follow]);
 
-    const followAccount = async function ({
-        accountId,
-        accountIdFollow,
-    }: {
-        accountId: string;
-        accountIdFollow: string;
-    }) {
+    /**
+     * Follow account
+     */
+    const followAccount = async function ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) {
         try {
             await post("/follow", {
                 followingId: accountId,
                 followerId: accountIdFollow,
             });
+
+            if (walletItem.walletAddress === walletAddressParams) {
+                setRevalidate(function (previous: RevalidateType) {
+                    return { ...previous, follow: !revalidate.follow };
+                });
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
-    const unFollowAccount = async function ({
-        accountId,
-        accountIdUnFollow,
-    }: {
-        accountId: string;
-        accountIdUnFollow: string;
-    }) {
+    /**
+     * Unfollow account
+     */
+    const unFollowAccount = async function ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) {
         try {
             await del("/follow", {
                 followerId: accountId,
                 followingId: accountIdUnFollow,
             });
-        } catch (error) {}
+
+            if (walletItem.walletAddress === walletAddressParams) {
+                setRevalidate(function (previous: RevalidateType) {
+                    return { ...previous, follow: !revalidate.follow };
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

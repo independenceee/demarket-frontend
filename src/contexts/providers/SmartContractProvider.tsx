@@ -14,19 +14,20 @@ import findAssetService from "@/services/contracts/marketplace/find-asset-servic
 import mintAssetPolicyIdService from "@/services/contracts/marketplace/mint-asset-policyid-service";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
 import { NftItemType } from "@/types/GenericsType";
-import LucidContext from "../components/LucidContext";
+import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
+import { GlobalStateContextType } from "@/types/GlobalStateContextType";
+import GlobalStateContext from "@/contexts/components/GlobalStateContext";
 
 type Props = {
     children: ReactNode;
 };
 
 const SmartContractProvider = function ({ children }: Props) {
-    const { networkPlatform, lucidNeworkPlatform, revalidate } =
-        useContext<LucidContextType>(LucidContext);
+    const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
+    const { networkPlatform, lucidNeworkPlatform } = useContext<LucidContextType>(LucidContext);
     const [assetsFromSmartContract, setAssetsFromSmartContract] = useState<NftItemType[]>([]);
-    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] =
-        useState<boolean>(false);
+    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchAssetsFromSmartContract = async function () {
@@ -47,27 +48,19 @@ const SmartContractProvider = function ({ children }: Props) {
                     const convertedAssets: NftItemType[] = await Promise.all(assetPromises);
 
                     setAssetsFromSmartContract((previousAssets: NftItemType[]) => {
-                        const updatedAssets: NftItemType[] = previousAssets.map(
-                            (existingAsset: NftItemType) => {
-                                const matchingAsset = convertedAssets.find(function (
-                                    newAsset: NftItemType,
-                                ) {
-                                    return existingAsset.policyId === newAsset.policyId;
-                                });
+                        const updatedAssets: NftItemType[] = previousAssets.map((existingAsset: NftItemType) => {
+                            const matchingAsset = convertedAssets.find(function (newAsset: NftItemType) {
+                                return existingAsset.policyId === newAsset.policyId;
+                            });
 
-                                if (matchingAsset) {
-                                    return { ...existingAsset, ...matchingAsset };
-                                }
+                            if (matchingAsset) {
+                                return { ...existingAsset, ...matchingAsset };
+                            }
 
-                                return existingAsset;
-                            },
-                        );
+                            return existingAsset;
+                        });
                         const newAssets: NftItemType[] = convertedAssets.filter(
-                            (newAsset: NftItemType) =>
-                                !previousAssets.some(
-                                    (existingAsset: any) =>
-                                        existingAsset.policyId === newAsset.policyId,
-                                ),
+                            (newAsset: NftItemType) => !previousAssets.some((existingAsset: any) => existingAsset.policyId === newAsset.policyId),
                         );
 
                         return [...updatedAssets, ...newAssets];
@@ -82,7 +75,9 @@ const SmartContractProvider = function ({ children }: Props) {
         fetchAssetsFromSmartContract();
 
         // react-hooks/exhaustive-deps
-    }, [networkPlatform, lucidNeworkPlatform, revalidate]);
+    }, [networkPlatform, lucidNeworkPlatform, revalidate.account]);
+
+    console.log(revalidate);
     return (
         <SmartContractContext.Provider
             value={{

@@ -2,23 +2,16 @@
 
 import React, { useState, ReactNode } from "react";
 import GlobalStateContext from "@/contexts/components/GlobalStateContext";
+import { RevalidateType } from "@/types/GenericsType";
 
 type Props = {
     children: ReactNode;
 };
 
 const GlobalStateProvider = function ({ children }: Props) {
-    const [revalidateSmartContract, setRevalidateSmartContract] = useState<boolean>(true);
-    const [revalidateAccount, setRevalidateAccount] = useState<boolean>(true);
+    const [revalidate, setRevalidate] = useState<RevalidateType>({ follow: false, account: false });
     return (
-        <GlobalStateContext.Provider
-            value={{
-                revalidateAccount,
-                setRevalidateAccount,
-                revalidateSmartContract,
-                setRevalidateSmartContract,
-            }}
-        >
+        <GlobalStateContext.Provider value={{ revalidate, setRevalidate }}>
             {children}
         </GlobalStateContext.Provider>
     );

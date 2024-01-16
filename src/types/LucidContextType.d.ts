@@ -2,13 +2,16 @@ import { Lucid } from "lucid-cardano";
 import { WalletItemType } from "./GenericsType";
 
 export type LucidContextType = {
-    revalidate: boolean;
-    setRevalidate: React.Dispatch<React.SetStateAction<boolean>>;
     networkPlatform: string;
     lucidWallet: Lucid;
     walletItem: WalletItemType;
     setWalletItem: React.Dispatch<React.SetStateAction<WalletItemType>>;
-    connectWallet: ({ walletApi, walletName, walletImage, walletCheckApi }: WalletItemType) => Promise<any>;
+    connectWallet: ({
+        walletApi,
+        walletName,
+        walletImage,
+        walletCheckApi,
+    }: WalletItemType) => Promise<any>;
     disconnectWallet: () => Promise<any>;
     lucidNeworkPlatform: Lucid;
     setLucidNeworkPlatform: React.Dispatch<React.SetStateAction<Lucid>>;

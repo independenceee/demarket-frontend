@@ -52,18 +52,18 @@ const buyMoreAssetsService = async function ({ lucid, assets }: Props): Promise<
                 });
         }
 
-        // assets.forEach(async function (asset: NftItemType, index: number) {
-        //     const exchangeFee = BigInt((Number(asset.price) * 1) / 100);
+        // utxos.forEach(async function (asset: NftItemType, index: number) {
+        //     const exchangeFee = BigInt((Number(utxoOuts[index].price) * 1) / 100);
         //     tx = await tx
         //         .payToAddress(asset.sellerAddress as string, {
-        //             lovelace: asset.price as bigint,
+        //             lovelace: utxoOuts[index].price as bigint,
         //         })
         //         .payToAddress(
         //             "addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg" as string,
         //             { lovelace: exchangeFee as bigint },
         //         )
         //         .payToAddress(asset.authorAddress as string, {
-        //             lovelace: asset.royalties as bigint,
+        //             lovelace: utxoOuts[index].royalties as bigint,
         //         });
         // });
 
