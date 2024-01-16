@@ -10,7 +10,12 @@ const cx = classNames.bind(styles);
 
 type Props = {};
 const Statistics = function ({}: Props) {
-    const [statistics, setStatistics] = useState<Statistic>();
+    const [statistics, setStatistics] = useState<Statistic>({
+        totalAccount: 0,
+        totalProduct: 0,
+        totalTransaction: 0,
+        totalTrending: 0,
+    });
 
     useEffect(function () {
         const fetchStatistics = async function () {
@@ -44,7 +49,7 @@ const Statistics = function ({}: Props) {
                         <h2>
                             <CountUp
                                 start={0}
-                                end={statistics?.totalProduct || 0}
+                                end={statistics.totalProduct}
                                 duration={2}
                                 delay={0}
                             />
@@ -55,7 +60,7 @@ const Statistics = function ({}: Props) {
                         <h2>
                             <CountUp
                                 start={0}
-                                end={statistics?.totalTransaction || 0}
+                                end={statistics.totalTransaction}
                                 duration={2}
                                 delay={0}
                             />
@@ -66,7 +71,7 @@ const Statistics = function ({}: Props) {
                         <h2>
                             <CountUp
                                 start={0}
-                                end={statistics?.totalTrending || 0}
+                                end={statistics.totalTrending}
                                 duration={2}
                                 delay={0}
                             />
@@ -77,7 +82,7 @@ const Statistics = function ({}: Props) {
                         <h2>
                             <CountUp
                                 start={0}
-                                end={statistics?.totalAccount || 0}
+                                end={statistics.totalAccount}
                                 duration={2}
                                 delay={0}
                             />

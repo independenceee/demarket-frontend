@@ -104,3 +104,8 @@ export type QueryParamsType = {
     category?: string;
     search?: string;
 };
+
+export type RevalidateType = {
+    follow: boolean;
+    account: boolean;
+};

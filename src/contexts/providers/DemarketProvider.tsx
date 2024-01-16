@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode, useContext } from "react";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { FounderItemType, CategoryItemType, AccountItemType } from "@/types/GenericsType";
 import { get, post } from "@/utils/http-request";
 import { useParams } from "next/navigation";
+import { GlobalStateContextType } from "@/types/GlobalStateContextType";
+import GlobalStateContext from "../components/GlobalStateContext";
 
 type Props = {
     children: ReactNode;
@@ -12,14 +14,8 @@ type Props = {
 
 const DemarketProvider = function ({ children }: Props) {
     const { id: walletAddressParams }: any = useParams();
-
-    const addNft = async function ({
-        policyId,
-        assetName,
-    }: {
-        policyId: string;
-        assetName: string;
-    }) {
+    const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
+    const addNft = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
         try {
             await post("/nft", { policyId: policyId, assetName: assetName });
         } catch (error) {

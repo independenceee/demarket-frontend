@@ -8,8 +8,6 @@ import { WalletItemType } from "@/types/GenericsType";
 type Props = { children: ReactNode };
 
 const LucidProvider = function ({ children }: Props) {
-    const [revalidate, setRevalidate] = useState<boolean>(false);
-
     const [networkPlatform, setNetworkPlatform] = useState<string>("Preprod");
     const [loadingConnectWallet, setLoadingConnectWallet] = useState<boolean>(false);
     const [lucidNeworkPlatform, setLucidNeworkPlatform] = useState<Lucid>(null!);
@@ -179,8 +177,6 @@ const LucidProvider = function ({ children }: Props) {
     return (
         <LucidContext.Provider
             value={{
-                revalidate,
-                setRevalidate,
                 networkPlatform,
                 disconnectWallet,
                 connectWallet,

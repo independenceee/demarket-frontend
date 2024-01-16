@@ -8,6 +8,7 @@ const ModalProvider = lazy(() => import("@/contexts/providers/ModalProvider"));
 const SmartContractProvider = lazy(() => import("@/contexts/providers/SmartContractProvider"));
 const CartProvider = lazy(() => import("@/contexts/providers/CartProvider"));
 const AccountProvider = lazy(() => import("@/contexts/providers/AccountProvider"));
+const GlobalStateProvider = lazy(() => import("@/contexts/providers/GlobalStateProvider"));
 
 type Props = {
     children: ReactNode;
@@ -15,17 +16,19 @@ type Props = {
 
 const ContextProvider = function ({ children }: Props) {
     return (
-        <ModalProvider>
-            <LucidProvider>
-                <SmartContractProvider>
-                    <DemarketProvider>
-                        <AccountProvider>
-                            <CartProvider>{children}</CartProvider>
-                        </AccountProvider>
-                    </DemarketProvider>
-                </SmartContractProvider>
-            </LucidProvider>
-        </ModalProvider>
+        <GlobalStateProvider>
+            <ModalProvider>
+                <LucidProvider>
+                    <SmartContractProvider>
+                        <DemarketProvider>
+                            <AccountProvider>
+                                <CartProvider>{children}</CartProvider>
+                            </AccountProvider>
+                        </DemarketProvider>
+                    </SmartContractProvider>
+                </LucidProvider>
+            </ModalProvider>
+        </GlobalStateProvider>
     );
 };
 

@@ -23,11 +23,7 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const router = useRouter();
     const [follow, setFollow] = useState<boolean>(isFollow);
 
-    const {
-        followAccount,
-        unFollowAccount,
-        account: accountConnect,
-    } = useContext<AccountContextType>(AccountContext);
+    const { followAccount, unFollowAccount, account: accountConnect } = useContext<AccountContextType>(AccountContext);
 
     useEffect(() => {
         if (!accountConnect) {
@@ -39,9 +35,11 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
         event.stopPropagation();
         try {
             if (accountConnect) {
+                console.log(accountConnect.id);
+                console.log(account.id);
                 setFollow(!follow);
                 await followAccount({ accountId: accountConnect.id, accountIdFollow: account.id });
-                toast.success("Follow account successfully");
+                toast.success("Follow account successfully.");
             } else {
                 setFollow(false);
                 toast.warn("You can login account");
@@ -54,13 +52,16 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const handleUnfollowAccount = async function (event: MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
         try {
+            console.log(accountConnect.id);
+            console.log(account.id);
             if (accountConnect) {
                 setFollow(!follow);
+
                 await unFollowAccount({
                     accountId: accountConnect.id,
                     accountIdUnFollow: account.id,
                 });
-                toast.success("Follow account successfully");
+                toast.success("Un follow account successfully.");
             } else {
                 setFollow(false);
                 toast.warn("You can login account");
@@ -81,18 +82,10 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
             <div className={cx("container")}>
                 <header className={cx("header")}>
                     <div className={cx("background__wrapper")}>
-                        <Image
-                            className={cx("background__image")}
-                            src={account.cover || images.noImage}
-                            alt="Backgound Image"
-                        />
+                        <Image className={cx("background__image")} src={account.cover || images.noImage} alt="Backgound Image" />
                     </div>
                     <div className={cx("avatar__wrapper")}>
-                        <Image
-                            className={cx("avatar__image")}
-                            src={account.avatar || images.user}
-                            alt="User Image"
-                        />
+                        <Image className={cx("avatar__image")} src={account.avatar || images.user} alt="User Image" />
                     </div>
                 </header>
                 <section className={cx("content")}>
@@ -102,17 +95,11 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
                     </div>
                     <div className={cx("content_right")}>
                         {!follow ? (
-                            <button
-                                onClick={handleFollowAccount}
-                                className={cx("content_right--button")}
-                            >
+                            <button onClick={handleFollowAccount} className={cx("content_right--button")}>
                                 Follow
                             </button>
                         ) : (
-                            <button
-                                onClick={handleUnfollowAccount}
-                                className={cx("content_right--button")}
-                            >
+                            <button onClick={handleUnfollowAccount} className={cx("content_right--button")}>
                                 Unfollow
                             </button>
                         )}

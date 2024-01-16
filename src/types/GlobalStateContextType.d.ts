@@ -1,7 +1,6 @@
-export type GlobalStateContextType = {
-    revalidateSmartContract: boolean;
-    setRevalidateSmartContract: React.Dispatch<React.SetStateAction<boolean>>;
+import { RevalidateType } from "./GenericsType";
 
-    revalidateAccount: boolean;
-    setRevalidateAccount: React.Dispatch<React.SetStateAction<boolean>>;
+export type GlobalStateContextType = {
+    revalidate: RevalidateType;
+    setRevalidate: React.Dispatch<React.SetStateAction<RevalidateType>>;
 };
