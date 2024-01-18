@@ -4,7 +4,7 @@
     border-radius: 4px;
     border: 0.5px solid #e4eeef;
     opacity: 1;
-    background: hsl(216, 56%, 98%);
+    background: #fff;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
     transition: all 550ms linear 0s;
     position: relative;
@@ -133,7 +133,7 @@
         color: #4c4747;
         display: flex;
         align-items: center;
-        max-width: 50%;
+        max-width: 40%;
 
         .policyId__convert {
             white-space: nowrap;

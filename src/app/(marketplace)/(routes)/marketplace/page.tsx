@@ -28,29 +28,36 @@ const MarketplacePage = function ({ searchParams }: Props) {
     const [categorySearchParam, setCategorySearchParam] = useState<string>("all");
     const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
-        useContext<SmartContractType>(SmartContractContext);
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
 
     const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
 
     useEffect(() => {
         let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
         if (searchValueParam || search) {
-            assetsFilterTemp = assetsFilter.filter(function (asset, index) {
-                return asset.policyId
-                    .toString()
-                    .toLowerCase()
-                    .includes(
-                        searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase()),
-                    );
+            assetsFilterTemp = assetsFilter.filter(function (asset: NftItemType, index: number) {
+                return (
+                    asset.policyId
+                        .toString()
+                        .toLowerCase()
+                        .includes(searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase())) ||
+                    asset.assetName
+                        .toString()
+                        .toLowerCase()
+                        .includes(searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase()))
+                );
             });
         }
 
+        setAssetsFilter(assetsFilterTemp);
+        // react-hooks/exhaustive-deps
+    }, [searchValueParam, search, assetsFromSmartContract]);
+
+    useEffect(() => {
+        let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
+
         if (sortBySearchParam) {
-            assetsFilterTemp = assetsFilterTemp.sort(function (
-                previous: NftItemType,
-                next: NftItemType,
-            ): any {
+            assetsFilterTemp = assetsFilterTemp.sort(function (previous: NftItemType, next: NftItemType): any {
                 switch (sortBySearchParam) {
                     case "all":
                         return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
@@ -68,26 +75,8 @@ const MarketplacePage = function ({ searchParams }: Props) {
             });
         }
 
-        if (verifySearchParam) {
-        }
-
         setAssetsFilter(assetsFilterTemp);
-        // react-hooks/exhaustive-deps
-    }, [searchValueParam, sortBySearchParam, assetsFromSmartContract, search]);
-
-    const [showFilter, setShowFilter] = useState<boolean>(false);
-    useEffect(function () {
-        const handleScroll = function () {
-            setShowFilter(window.screenY > 200);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return function () {
-            window.removeEventListener("scroll", handleScroll);
-        };
-
-        // react-hooks/exhaustive-deps
-    }, []);
-
+    }, [sortBySearchParam]);
     return (
         <div className={cx("wrapper")} data-aos="fade-down">
             <title>Marketplace - Demarket</title>
@@ -96,39 +85,15 @@ const MarketplacePage = function ({ searchParams }: Props) {
                 <Title main="HOME" slug="MARKETPLACE" />
                 <section className={cx("content__wrapper")}>
                     <div className={cx("content__left--wrapper")}>
-                        <div
-                            className={cx("content__left--container")}
-                            data-aos="fade-right"
-                            data-aos-duration="1000"
-                        >
-                            <Search
-                                searchValueParam={searchValueParam}
-                                setSearchValueParam={setSearchValueParam}
-                            />
-                            <Category
-                                categorySearchParam={categorySearchParam}
-                                setCategorySearchParam={setCategorySearchParam}
-                            />
-                            <SortBy
-                                sortBySearchParam={sortBySearchParam}
-                                setSortBySearchParam={setSortBySearchParam}
-                            />
-                            <Verify
-                                verifySearchParam={verifySearchParam}
-                                setVerifySearchParam={setVerifySearchParam}
-                            />
+                        <div className={cx("content__left--container")} data-aos="fade-right" data-aos-duration="1000">
+                            <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
+                            <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
+                            <SortBy sortBySearchParam={sortBySearchParam} setSortBySearchParam={setSortBySearchParam} />
+                            <Verify verifySearchParam={verifySearchParam} setVerifySearchParam={setVerifySearchParam} />
                         </div>
                     </div>
-                    <div
-                        className={cx("content__right")}
-                        data-aos="fade-left"
-                        data-aos-duration="1000"
-                    >
-                        <NftContainer
-                            nfts={assetsFilter}
-                            itemsPerPage={12}
-                            loading={loadingAssetsFromSmartContract}
-                        />
+                    <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
+                        <NftContainer nfts={assetsFilter} itemsPerPage={12} loading={loadingAssetsFromSmartContract} />
                     </div>
                 </section>
             </div>

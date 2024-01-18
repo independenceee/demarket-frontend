@@ -20,8 +20,6 @@ const SortBy = function ({ sortBySearchParam, setSortBySearchParam }: Props): Re
         setOpenSortBy(!openSortBy);
     };
 
-    console.log(sortBySearchParam);
-
     const handleChangeSortBy = useCallback(
         function (event: ChangeEvent<HTMLInputElement>) {
             setSortBySearchParam(event.target.value);
@@ -44,9 +42,7 @@ const SortBy = function ({ sortBySearchParam, setSortBySearchParam }: Props): Re
                     {sortbys.map(function (sortby, index: number) {
                         return (
                             <section key={index} className={cx("content__filter--group")}>
-                                <h4 className={cx("content__filter--name")}>
-                                    {sortby.displayName}
-                                </h4>
+                                <h4 className={cx("content__filter--name")}>{sortby.displayName}</h4>
                                 <input
                                     name={sortby.name}
                                     checked={sortby.value === sortBySearchParam}

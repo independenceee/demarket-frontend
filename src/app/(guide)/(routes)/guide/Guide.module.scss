@@ -10,31 +10,31 @@
     position: relative;
     align-items: center;
     justify-content: center;
+}
 
-    .background__container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+.background__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 
-        .background__title {
-            color: #fff;
-            font-size: 60px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-        }
+.background__title {
+    color: #fff;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
 
-        .background__description {
-            color: #fff;
-            text-align: center;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-            max-width: 600px;
-        }
-    }
+.background__description {
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    max-width: 600px;
 }
 
 .guide__wrapper {
@@ -66,12 +66,6 @@
     font-weight: 500;
 }
 
-@media only screen and (max-width: 968px) {
-    .guide__container {
-        max-width: 100%;
-        width: 100%;
-    }
-}
 .guide__content {
     h2 {
         margin: 32px 0;
@@ -87,5 +81,19 @@
         li {
             margin: 32px 0;
         }
+    }
+}
+
+@media only screen and (max-width: 968px) {
+    .guide__wrapper {
+        padding: 50px 0;
+    }
+    .guide__container {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .title {
+        font-size: 20px;
     }
 }

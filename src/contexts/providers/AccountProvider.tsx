@@ -14,6 +14,7 @@ import GlobalStateContext from "@/contexts/components/GlobalStateContext";
 import { AccountItemType, CollectionItemType, NftItemType, RevalidateType } from "@/types/GenericsType";
 import { get, post, del } from "@/utils/http-request";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 type Props = {
     children: ReactNode;
@@ -251,8 +252,10 @@ const AccountProvider = function ({ children }: Props) {
     const unFollowAccount = async function ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) {
         try {
             await del("/follow", {
-                followerId: accountId,
-                followingId: accountIdUnFollow,
+                data: {
+                    followerId: accountIdUnFollow,
+                    followingId: accountId,
+                },
             });
 
             if (walletItem.walletAddress === walletAddressParams) {

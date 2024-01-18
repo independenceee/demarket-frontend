@@ -52,8 +52,6 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const handleUnfollowAccount = async function (event: MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
         try {
-            console.log(accountConnect.id);
-            console.log(account.id);
             if (accountConnect) {
                 setFollow(!follow);
 
