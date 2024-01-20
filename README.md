@@ -1,10 +1,17 @@
 - Preview Video Mint
-- Cart
-- Search
-- Category
+
+# Cart
+# Search
+# Category
+
 - Ràng buộc
+
 - Detail
+
 - History
+
 - Metadata
+
 - Account
+
 - Edit Profile

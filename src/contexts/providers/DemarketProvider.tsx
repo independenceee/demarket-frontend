@@ -58,12 +58,11 @@ const DemarketProvider = function ({ children }: Props) {
     const [accounts, setAccounts] = useState<AccountItemType[]>([]);
     const [currentPageAccounts, setCurrentPageAccounts] = useState<number>(1);
     const [totalPagesAccounts, setTotalPagesAccounts] = useState<number>(1);
-    const [loadingAccounts, setLoadingAccounts] = useState<boolean>(false);
+    const [loadingAccounts, setLoadingAccounts] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchAccounts = async function () {
             try {
-                setLoadingAccounts(true);
                 const { accounts, totalPage } = await get("/account", {
                     params: {
                         page: currentPageAccounts,
@@ -80,23 +79,20 @@ const DemarketProvider = function ({ children }: Props) {
             }
         };
         fetchAccounts();
-    }, [currentPageAccounts, walletAddressParams]);
+    }, [currentPageAccounts, walletAddressParams, revalidate.follower, revalidate.following]);
 
     return (
         <DemarketContext.Provider
             value={{
                 categories,
                 loadingCategories,
-
                 founders,
                 loadingFounders,
-
                 accounts,
                 loadingAccounts,
                 currentPageAccounts,
                 setCurrentPageAccounts,
                 totalPagesAccounts,
-
                 addNft,
             }}
         >

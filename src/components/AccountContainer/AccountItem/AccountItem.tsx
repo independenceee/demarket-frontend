@@ -35,8 +35,6 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
         event.stopPropagation();
         try {
             if (accountConnect) {
-                console.log(accountConnect.id);
-                console.log(account.id);
                 setFollow(!follow);
                 await followAccount({ accountId: accountConnect.id, accountIdFollow: account.id });
                 toast.success("Follow account successfully.");

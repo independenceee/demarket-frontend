@@ -9,12 +9,13 @@ type Props = {
 };
 
 const GlobalStateProvider = function ({ children }: Props) {
-    const [revalidate, setRevalidate] = useState<RevalidateType>({ follow: false, account: false });
-    return (
-        <GlobalStateContext.Provider value={{ revalidate, setRevalidate }}>
-            {children}
-        </GlobalStateContext.Provider>
-    );
+    const [revalidate, setRevalidate] = useState<RevalidateType>({
+        follower: false,
+        account: false,
+        following: false,
+    });
+
+    return <GlobalStateContext.Provider value={{ revalidate, setRevalidate }}>{children}</GlobalStateContext.Provider>;
 };
 
 export default GlobalStateProvider;

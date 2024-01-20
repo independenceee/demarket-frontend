@@ -7,6 +7,13 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 0 5px;
+    border-radius: 4px;
+
+    transition: all ease-in-out;
+    &:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
 }
 
 .avatar__wrapper {
@@ -23,9 +30,12 @@
 
 .infomation__content {
     display: flex;
+    gap: 5px;
 }
 
 .key {
+    width: 70px;
+    font-weight: 600;
 }
 
 .value {

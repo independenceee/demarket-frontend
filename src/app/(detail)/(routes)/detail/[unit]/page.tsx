@@ -216,17 +216,19 @@ const DetailPage = function ({}: Props) {
 
                         <section className={cx("content__right")}>
                             <section className={cx("detail__content")}>
+                                <title>{convertHexToString(asset.assetName)}</title>
                                 <h2 className={cx("asset__name")}>{convertHexToString(asset.assetName)}</h2>
                                 <div className={cx("description")}>
                                     <span>Type:</span> {asset.mediaType.split("/").pop()}
                                 </div>
                                 <div className={cx("description")}>
-                                    <span>PolicyId:</span> {asset.policyId}
-                                    <CopyItem value={asset.policyId} />
-                                </div>
-                                <div className={cx("description")}>
                                     <span>Fingerprint:</span>
                                     {asset.fingerprint}
+                                    <CopyItem value={asset.fingerprint} />
+                                </div>
+                                <div className={cx("description")}>
+                                    <span>PolicyId:</span> {asset.policyId}
+                                    <CopyItem value={asset.policyId} />
                                 </div>
                                 <div className={cx("people__wrapper")}>
                                     <section className={cx("people__container")}>
@@ -354,6 +356,7 @@ const DetailPage = function ({}: Props) {
                     </main>
                 ) : (
                     <main className={cx("content__wrapper")}>
+                        <title>Loading ...</title>
                         <section className={cx("content__left--skeleton")}>
                             <Skeleton className={cx("skeleton__item--skeleton")} />
                         </section>

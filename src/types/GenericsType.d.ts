@@ -91,7 +91,7 @@ export type CategoryItemType = {
 };
 
 export type HistoryItemType = {
-    transactionHash: string;
+    hash: string;
     address: string;
     status: string;
     price: number;
@@ -106,6 +106,7 @@ export type QueryParamsType = {
 };
 
 export type RevalidateType = {
-    follow: boolean;
+    following: boolean;
+    follower: boolean;
     account: boolean;
 };

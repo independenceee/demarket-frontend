@@ -76,7 +76,13 @@ const MarketplacePage = function ({ searchParams }: Props) {
         }
 
         setAssetsFilter(assetsFilterTemp);
-    }, [sortBySearchParam]);
+    }, [sortBySearchParam, sortby, assetsFromSmartContract]);
+
+    useEffect(() => {
+        let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
+        setAssetsFilter(assetsFilterTemp);
+    }, [verifySearchParam, assetsFromSmartContract]);
+
     return (
         <div className={cx("wrapper")} data-aos="fade-down">
             <title>Marketplace - Demarket</title>
