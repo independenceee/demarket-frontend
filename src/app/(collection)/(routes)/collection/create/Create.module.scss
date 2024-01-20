@@ -210,7 +210,8 @@
 
     border-radius: 10px;
     border: 1px solid var(--primary-color-30, #f8fafd);
-    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.1);
+
     .content__container {
         width: 100%;
         position: relative;
@@ -249,7 +250,7 @@
             margin-top: 90px;
             text-align: center;
             color: #3c3838;
-            font-size: 40px;
+            font-size: 30px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
@@ -259,7 +260,7 @@
             color: #4c4747;
             text-align: center;
             font-family: "Roboto", sans-serif;
-            font-size: 14px;
+            font-size: 30px;
             font-style: normal;
             font-weight: 400;
             line-height: 16px;
@@ -274,10 +275,10 @@
     flex-direction: column;
     align-items: center;
     gap: 97px;
-
     border-radius: 10px;
     border: 1px solid var(--primary-color-30, #f8fafd);
     box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
+
     .content__container {
         width: 100%;
         position: relative;
@@ -316,7 +317,7 @@
             margin-top: 90px;
             text-align: center;
             color: #3c3838;
-            font-size: 40px;
+            font-size: 30px;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
@@ -326,12 +327,33 @@
             color: #4c4747;
             text-align: center;
             font-family: "Roboto", sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             font-style: normal;
             font-weight: 400;
             line-height: 16px;
         }
     }
+}
+
+.button__upload {
+    text-align: center;
+    display: inline-block;
+    padding: 10px 30px;
+    min-width: 100px;
+    background: linear-gradient(
+        90deg,
+        #2400ff -22.36%,
+        rgba(92, 0, 241, 0.85) 39.25%,
+        rgba(112, 0, 255, 0.7) 68.73%,
+        rgba(173, 0, 255, 0.55) 129.76%
+    );
+    color: #e1e1e1;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: 0.3s ease;
 }
 
 @media only screen and (max-width: 767px) {

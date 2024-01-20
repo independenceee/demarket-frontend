@@ -1,16 +1,20 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import classNames from "classnames/bind";
 import { useRouter } from "next/navigation";
 import styles from "./SearchFeild.module.scss";
 import routes from "@/configs/routes";
+import { ModalContextType } from "@/types/ModalContextType";
+import ModalContext from "@/contexts/components/ModalContext";
 
 const cx = classNames.bind(styles);
 
 type Props = {
     setResults: React.Dispatch<React.SetStateAction<any[]>>;
 };
-const SearchFeild = ({ setResults }: Props) => {
+const SearchFeild = function ({ setResults }: Props) {
+    const { isShowingSearch, toggleShowingSearch } = useContext<ModalContextType>(ModalContext);
+
     const router = useRouter();
     const [input, setInput] = useState("");
 
@@ -32,6 +36,9 @@ const SearchFeild = ({ setResults }: Props) => {
 
     const handleSubmit = function () {
         router.push(routes.marketplace + "?search=" + input);
+        if (isShowingSearch) {
+            toggleShowingSearch();
+        }
     };
 
     return (
@@ -39,11 +46,7 @@ const SearchFeild = ({ setResults }: Props) => {
             <button onClick={handleSubmit} className={cx("search-icon")}>
                 <FaSearch className={cx("search-icon")} />
             </button>
-            <input
-                placeholder="Type to search..."
-                value={input}
-                onChange={(e) => handleChange(e.target.value)}
-            />
+            <input placeholder="Enter you policyId ..." value={input} onChange={(e) => handleChange(e.target.value)} />
         </div>
     );
 };

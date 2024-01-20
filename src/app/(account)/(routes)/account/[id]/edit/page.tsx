@@ -11,6 +11,7 @@ import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
 import { patch } from "@/utils/http-request";
 import { toast } from "react-toastify";
+import ipfsPinata from "@/utils/ipfs-pinata";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -39,15 +40,11 @@ const EditAccountPage = function ({}: Props) {
         });
     };
 
-    const [fileNameImageAvatar, setFileNameImageAvatar] = useState<string>(
-        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
-    );
+    const [fileNameImageAvatar, setFileNameImageAvatar] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
     const [imageAvatar, setImageAvatar] = useState<File>(null!);
     const [imageAvatarPath, setImageAvatarPath] = useState<string>("");
 
-    const [fileNameImageCover, setFileNameImageCover] = useState<string>(
-        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
-    );
+    const [fileNameImageCover, setFileNameImageCover] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
     const [imageCover, setImageCover] = useState<File>(null!);
     const [imageCoverPath, setImageCoverPath] = useState<string>("");
 
@@ -93,8 +90,11 @@ const EditAccountPage = function ({}: Props) {
 
     const handleSubmit = async function () {
         try {
+            const avatar = await ipfsPinata({ image: imageAvatar });
+            const cover = await ipfsPinata({ image: imageCover });
+
             if (account) {
-                const updateAccount = await patch(`/account/${account.id}`, {
+                await patch(`/account/${account.id}`, {
                     email: dataEdit.email,
                     userName: dataEdit.username,
                     description: dataEdit.description,
@@ -114,21 +114,13 @@ const EditAccountPage = function ({}: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("banner__wrapper")}>
-                    <Image
-                        className={cx("banner__image")}
-                        src={imageCoverPath ? imageCoverPath : images.background}
-                        alt="Background Image"
-                    />
+                    <img className={cx("banner__image")} src={imageCoverPath ? imageCoverPath : images.background} alt="Background Image" />
                 </section>
 
                 <section className={cx("account__wrapper")}>
                     <div className={cx("account__container")}>
                         <div className={cx("account__image")}>
-                            <Image
-                                src={imageAvatarPath ? imageAvatarPath : images.user}
-                                alt="Avatar Image"
-                                className={cx("image")}
-                            />
+                            <img src={imageAvatarPath ? imageAvatarPath : images.user} alt="Avatar Image" className={cx("image")} />
                         </div>
                     </div>
 
@@ -163,13 +155,7 @@ const EditAccountPage = function ({}: Props) {
                             <h3 className={cx("upload-title")}>Upload backgound</h3>
                             <div className={cx("upload-content")} onClick={handleChooseCoverFile}>
                                 <p className={cx("upload-type")}>{fileNameImageCover}</p>
-                                <input
-                                    type="file"
-                                    className="file__input--cover"
-                                    accept="image/*"
-                                    hidden
-                                    onChange={handleChangeCover}
-                                />
+                                <input type="file" className="file__input--cover" accept="image/*" hidden onChange={handleChangeCover} />
                                 <Button className={cx("button__upload")}>Upload</Button>
                             </div>
                         </div>
@@ -179,13 +165,7 @@ const EditAccountPage = function ({}: Props) {
                             <h3 className={cx("upload-title")}>Upload avatar</h3>
                             <div className={cx("upload-content")} onClick={handleChooseAvatarFile}>
                                 <p className={cx("upload-type")}>{fileNameImageAvatar}</p>
-                                <input
-                                    type="file"
-                                    className="file__input--avatar"
-                                    accept="image/*"
-                                    hidden
-                                    onChange={handleChangeAvatar}
-                                />
+                                <input type="file" className="file__input--avatar" accept="image/*" hidden onChange={handleChangeAvatar} />
                                 <Button className={cx("button__upload")}>Upload</Button>
                             </div>
                         </div>
@@ -234,13 +214,7 @@ const EditAccountPage = function ({}: Props) {
                         {/* title-end */}
                         <div className={cx("title-wrapper")}>
                             <h3 className={cx("label")}>Email</h3>
-                            <input
-                                placeholder="Enter your email"
-                                type="text"
-                                name="email"
-                                className={cx("title-control")}
-                                onChange={handleChange}
-                            />
+                            <input placeholder="Enter your email" type="text" name="email" className={cx("title-control")} onChange={handleChange} />
                         </div>
                         {/* title-begin */}
                         <div className={cx("title-wrapper")}>

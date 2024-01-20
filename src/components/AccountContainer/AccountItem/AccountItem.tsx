@@ -35,8 +35,6 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
         event.stopPropagation();
         try {
             if (accountConnect) {
-                console.log(accountConnect.id);
-                console.log(account.id);
                 setFollow(!follow);
                 await followAccount({ accountId: accountConnect.id, accountIdFollow: account.id });
                 toast.success("Follow account successfully.");
@@ -52,8 +50,6 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const handleUnfollowAccount = async function (event: MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
         try {
-            console.log(accountConnect.id);
-            console.log(account.id);
             if (accountConnect) {
                 setFollow(!follow);
 

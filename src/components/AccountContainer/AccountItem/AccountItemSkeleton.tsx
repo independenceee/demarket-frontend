@@ -26,8 +26,7 @@ const AccountItemSkeleton = function ({ index }: Props) {
                 </header>
                 <section className={cx("content")}>
                     <div className={cx("content__left")}>
-                        <Skeleton width={130} height={20} />
-                        <Skeleton width={90} height={15} />
+                        <Skeleton width={120} height={20} />
                     </div>
                     <div className={cx("content_right")}>
                         <Skeleton width={80} height={25} />

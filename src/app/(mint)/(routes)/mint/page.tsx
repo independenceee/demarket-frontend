@@ -42,9 +42,7 @@ const MintPage = function ({}: Props) {
     const [mediaType, setMediaType] = useState<string>("Media type asset");
     const [imagePath, setImagePath] = useState<string>("");
     const [image, setImage] = useState<File>(null!);
-    const [fileName, setFileName] = useState<string>(
-        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
-    );
+    const [fileName, setFileName] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
     const [metadatas, setMetadatas] = useState<any>([{ property: "", value: "" }]);
 
     useEffect(() => {
@@ -108,16 +106,12 @@ const MintPage = function ({}: Props) {
                 formData.append("pinataMetadata", metadata);
                 const options = JSON.stringify({ cidVersion: 0 });
                 formData.append("pinataOptions", options);
-                const response = await axios.post(
-                    "https://api.pinata.cloud/pinning/pinFileToIPFS",
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": `multipart/form-data; boundary=${formData}`,
-                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
-                        },
+                const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+                    headers: {
+                        "Content-Type": `multipart/form-data; boundary=${formData}`,
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
                     },
-                );
+                });
 
                 const { txHash, policyId, assetName } = await mintAssetService({
                     lucid: lucidWallet,
@@ -164,13 +158,7 @@ const MintPage = function ({}: Props) {
                         <h3 className={cx("upload-title")}>Upload Item File</h3>
                         <div className={cx("upload-content")} onClick={handleChooseFile}>
                             <p className={cx("upload-type")}>{fileName}</p>
-                            <input
-                                type="file"
-                                className="file__input"
-                                accept="image/*"
-                                hidden
-                                onChange={handleChangeFile}
-                            />
+                            <input type="file" className="file__input" accept="image/*" hidden onChange={handleChangeFile} />
                             <Button className={cx("button__upload")}>Upload</Button>
                         </div>
                     </div>
@@ -274,11 +262,7 @@ const MintPage = function ({}: Props) {
                         <div className={cx("content")}>
                             <div className={cx("nft-wrapper")}>
                                 <div className={cx("image-container")}>
-                                    <Image
-                                        src={imagePath ? imagePath : images.noImage}
-                                        alt="NFT IMAGE"
-                                        className={cx("image")}
-                                    />
+                                    <Image src={imagePath ? imagePath : images.noImage} alt="NFT IMAGE" className={cx("image")} />
                                 </div>
                                 <div className={cx("nft-container")}>
                                     <section className={cx("content")}>
@@ -313,16 +297,7 @@ const MintPage = function ({}: Props) {
 
                         <div className={cx("mint")}>
                             <Button className={cx("button__mint")} onClick={handleMintNft}>
-                                {!isActionCreate ? (
-                                    "Create"
-                                ) : (
-                                    <ClipLoader
-                                        size={25}
-                                        loading={isActionCreate}
-                                        color="#7000ff"
-                                        speedMultiplier={1}
-                                    />
-                                )}
+                                {!isActionCreate ? "Create" : <ClipLoader size={25} loading={isActionCreate} color="#7000ff" speedMultiplier={1} />}
                             </Button>
                         </div>
                     </div>
@@ -333,11 +308,7 @@ const MintPage = function ({}: Props) {
                         <header className={cx("preview")}>Preview</header>
                         <div className={cx("nft-wrapper")}>
                             <div className={cx("image-container")}>
-                                <Image
-                                    src={imagePath ? imagePath : images.noImage}
-                                    alt=""
-                                    className={cx("image")}
-                                />
+                                <Image src={imagePath ? imagePath : images.noImage} alt="" className={cx("image")} />
                             </div>
                             <div className={cx("nft-container")}>
                                 <section className={cx("content")}>

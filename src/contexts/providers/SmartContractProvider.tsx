@@ -72,12 +72,12 @@ const SmartContractProvider = function ({ children }: Props) {
                 setLoadingAssetsFromSmartContract(false);
             }
         };
+
         fetchAssetsFromSmartContract();
 
         // react-hooks/exhaustive-deps
     }, [networkPlatform, lucidNeworkPlatform, revalidate.account]);
 
-    console.log(revalidate);
     return (
         <SmartContractContext.Provider
             value={{

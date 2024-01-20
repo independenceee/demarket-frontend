@@ -34,6 +34,7 @@ import { ClipLoader } from "react-spinners";
 import { GlobalStateContextType } from "@/types/GlobalStateContextType";
 import GlobalStateContext from "@/contexts/components/GlobalStateContext";
 import { RevalidateType } from "@/types/GenericsType";
+import Link from "next/link";
 
 const cx = classNames.bind(styles);
 type Props = {};
@@ -46,13 +47,15 @@ const tabItems = [
 
 const DetailPage = function ({}: Props) {
     const { unit }: any = useParams();
+
     const [policyId] = useState<string>(unit.slice(0, 56));
     const [assetName] = useState<string>(unit.slice(56));
+
     const [isActive, setIsActive] = useState<boolean>(false);
 
+    const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
-    const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAssetService, sellAssetService, buyAssetService, refundAssetService } =
         useContext<SmartContractType>(SmartContractContext);
     const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
@@ -213,81 +216,50 @@ const DetailPage = function ({}: Props) {
 
                         <section className={cx("content__right")}>
                             <section className={cx("detail__content")}>
+                                <title>{convertHexToString(asset.assetName)}</title>
                                 <h2 className={cx("asset__name")}>{convertHexToString(asset.assetName)}</h2>
                                 <div className={cx("description")}>
                                     <span>Type:</span> {asset.mediaType.split("/").pop()}
                                 </div>
                                 <div className={cx("description")}>
-                                    <span>PolicyId:</span>
-                                    {convertString({
-                                        inputString: String(asset.policyId),
-                                        numberOfFirstChar: 20,
-                                        numberOfLastChar: -10,
-                                    })}
-                                    <CopyItem value={asset.policyId} />
+                                    <span>Fingerprint:</span>
+                                    {asset.fingerprint}
+                                    <CopyItem value={asset.fingerprint} />
                                 </div>
                                 <div className={cx("description")}>
-                                    <span>Fingerprint:</span>
-                                    {convertString({
-                                        inputString: String(asset.fingerprint),
-                                        numberOfFirstChar: 20,
-                                        numberOfLastChar: -10,
-                                    })}
+                                    <span>PolicyId:</span> {asset.policyId}
+                                    <CopyItem value={asset.policyId} />
                                 </div>
                                 <div className={cx("people__wrapper")}>
-                                    <section className={cx("peple__container")}>
+                                    <section className={cx("people__container")}>
                                         <header className={cx("people__header")}>Owner</header>
-                                        <div className={cx("people__content")}>
+                                        <Link href={`/account/${asset.sellerAddress}`} className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
                                                 <Image className={cx("people__avatar--image")} src={images.user} alt="" />
                                             </div>
                                             <div className={cx("people__information")}>
-                                                <h3 className={cx("people__name")}>
-                                                    {convertString({
-                                                        inputString: String(asset.stakekeySellerAddress),
-                                                        numberOfFirstChar: 9,
-                                                        numberOfLastChar: -6,
-                                                    })}
-                                                </h3>
+                                                <h3 className={cx("people__name")}>{asset.stakekeySellerAddress}</h3>
                                                 <div className={cx("people__address")}>
-                                                    <p>
-                                                        {convertString({
-                                                            inputString: String(asset.sellerAddress),
-                                                            numberOfFirstChar: 9,
-                                                            numberOfLastChar: -6,
-                                                        })}
-                                                    </p>
+                                                    <p>{asset.sellerAddress}</p>
                                                     <CopyItem value={asset.sellerAddress} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </section>
-                                    <section className={cx("peple__container")}>
+                                    <section className={cx("people__container")}>
                                         <header className={cx("people__header")}>Author</header>
-                                        <div className={cx("people__content")}>
+                                        <Link href={`/account/${asset.authorAddress}`} className={cx("people__content")}>
                                             <div className={cx("people__avatar")}>
                                                 <Image className={cx("people__avatar--image")} src={images.user} alt="" />
                                             </div>
                                             <div className={cx("people__information")}>
-                                                <h3 className={cx("people__name")}>
-                                                    {convertString({
-                                                        inputString: String(asset.stakekeyAuthorAddress),
-                                                        numberOfFirstChar: 9,
-                                                        numberOfLastChar: -6,
-                                                    })}
-                                                </h3>
+                                                <h3 className={cx("people__name")}>{asset.stakekeyAuthorAddress}</h3>
                                                 <div className={cx("people__address")}>
-                                                    <p>
-                                                        {convertString({
-                                                            inputString: String(asset.authorAddress),
-                                                            numberOfFirstChar: 9,
-                                                            numberOfLastChar: -6,
-                                                        })}
-                                                    </p>
-                                                    <CopyItem value={asset.sellerAddress} />
+                                                    <p>{asset.authorAddress}</p>
+                                                    <CopyItem value={asset.authorAddress} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </section>
                                 </div>
                             </section>
@@ -384,6 +356,7 @@ const DetailPage = function ({}: Props) {
                     </main>
                 ) : (
                     <main className={cx("content__wrapper")}>
+                        <title>Loading ...</title>
                         <section className={cx("content__left--skeleton")}>
                             <Skeleton className={cx("skeleton__item--skeleton")} />
                         </section>

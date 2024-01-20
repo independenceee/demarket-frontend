@@ -12,7 +12,7 @@ type Props = {
 
 const GuideItem = function ({ id, title, description, description2, bonus }: Props) {
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper")} data-aos="fade-up">
             <header className={cx("header")}>
                 <button className={cx("button")}>{id}</button>
                 <h4 className={cx("title")}>{title}</h4>
