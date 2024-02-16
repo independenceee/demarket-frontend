@@ -175,6 +175,39 @@ const AccountProvider = function ({ children }: Props) {
         }
     }, [walletAddressParams, walletAddressQuery, assetsFromSmartContract, revalidate.account]);
 
+    useEffect(() => {
+        const fetchLikeAsset = async function () {
+            try {
+                setLoadingLikeAssetsFromAddress(true);
+                const { nfts, totalPage } = await get(`/nft`, {
+                    walletAddress: walletAddressParams,
+                });
+
+                const likeAssetsFromAddress = await Promise.all(
+                    nfts.map(async function ({ policyId, assetName }: any) {
+                        const data = await fetchInfomationCollection({
+                            policyId: policyId,
+                            assetName: assetName,
+                        });
+                        if (data) return { ...data };
+                        return null;
+                    }),
+                );
+
+                setLikeAssetsFromAddress(likeAssetsFromAddress.filter(Boolean));
+                setTotalPagesLikeAssetsFromAddress(totalPage);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoadingLikeAssetsFromAddress(false);
+            }
+        };
+
+        if (walletAddressParams) {
+            fetchLikeAsset();
+        }
+    }, [walletAddressParams]);
+
     const [followers, setFollowers] = useState<AccountItemType[]>([]);
     const [currentPageFollowers, setCurrentPageFollowers] = useState<number>(1);
     const [totalPagesFollowers, setTotalPagesFollowers] = useState<number>(1);
@@ -292,6 +325,15 @@ const AccountProvider = function ({ children }: Props) {
                 setTotalPagesAssetsFromAddress,
                 loadingAssetsFromAddress,
                 setLoadingAssetsFromAddress,
+
+                likeAssetsFromAddress,
+                setLikeAssetsFromAddress,
+                currentPageLikeAssetsFromAddress,
+                setCurrentPageLikeAssetsFromAddress,
+                loadingLikeAssetsFromAddress,
+                setLoadingLikeAssetsFromAddress,
+                setTotalPagesLikeAssetsFromAddress,
+                totalPagesLikeAssetsFromAddress,
 
                 createdAssetsFromAddress,
                 setCreatedAssetsFromAddress,

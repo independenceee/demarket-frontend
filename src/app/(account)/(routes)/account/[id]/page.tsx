@@ -34,6 +34,7 @@ import { AccountItemType, QueryParamsType } from "@/types/GenericsType";
 import { post } from "@/utils/http-request";
 import convertDatetimePrisma from "@/helpers/convertDatetimePrisma";
 import CollectionContainer from "@/components/CollectionContainer";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 
 type Props = {
     params: {};
@@ -112,13 +113,21 @@ const AccountPage = function ({ searchParams }: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("banner__wrapper")}>
-                    <Image className={cx("banner__image")} src={images.background} alt="Background" />
+                    <img
+                        className={cx("banner__image")}
+                        src={convertIpfsAddressToUrl(accountWalletAddressParams?.cover) || images.background}
+                        alt="Background"
+                    />
                 </section>
 
                 <section className={cx("account__wrapper")}>
                     <div className={cx("account__container")}>
                         <div className={cx("account__image")}>
-                            <Image src={images.user} alt="User" className={cx("image")} />
+                            <img
+                                src={convertIpfsAddressToUrl(accountWalletAddressParams?.avatar) || images.background}
+                                alt="User"
+                                className={cx("image")}
+                            />
                         </div>
                         {walletItem.walletAddress === walletAddressPath ? (
                             <Link href={`/account/${walletItem.walletAddress}/edit`} className={cx("account__button")}>

@@ -42,7 +42,7 @@ const CartProvider = function ({ children }: Props) {
     useEffect(() => {
         const fetchAssetsCartFromAccount = async function () {
             try {
-                const data = await get("/nft/nft_cart", {
+                const data = await get("/nft/cart", {
                     walletAddress: account.walletAddress,
                     page: 1,
                 });

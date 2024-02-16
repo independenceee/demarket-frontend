@@ -14,6 +14,15 @@ export type AccountContextType = {
     loadingAssetsFromAddress: boolean;
     setLoadingAssetsFromAddress: React.Dispatch<React.SetStateAction<boolean>>;
 
+    likeAssetsFromAddress: NftItemType[];
+    setLikeAssetsFromAddress: React.Dispatch<React.SetStateAction<NftItemType[]>>;
+    currentPageLikeAssetsFromAddress: number;
+    setCurrentPageLikeAssetsFromAddress: React.Dispatch<React.SetStateAction<number>>;
+    loadingLikeAssetsFromAddress: boolean;
+    setLoadingLikeAssetsFromAddress: React.Dispatch<React.SetStateAction<boolean>>;
+    totalPagesLikeAssetsFromAddress: number;
+    setTotalPagesLikeAssetsFromAddress: React.Dispatch<React.SetStateAction<number>>;
+
     createdAssetsFromAddress: NftItemType[];
     setCreatedAssetsFromAddress: React.Dispatch<React.SetStateAction<NftItemType[]>>;
     currentPageCreatedAssetsFromAddress: number;

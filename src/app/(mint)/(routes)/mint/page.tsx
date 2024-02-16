@@ -149,7 +149,7 @@ const MintPage = function ({}: Props) {
 
     return (
         <main className={cx("wrapper")} data-aos="fade-down">
-            <title>Mint - Demarket</title>
+            <title>{isActionCreate ? "Mint ..." : "Mint - Demarket"}</title>
             <div className={cx("container")}>
                 <section className={cx("left")}>
                     <header className={cx("header")}>Mint Your Asset</header>
@@ -296,9 +296,13 @@ const MintPage = function ({}: Props) {
                         </div>
 
                         <div className={cx("mint")}>
-                            <Button className={cx("button__mint")} onClick={handleMintNft}>
-                                {!isActionCreate ? "Create" : <ClipLoader size={25} loading={isActionCreate} color="#7000ff" speedMultiplier={1} />}
-                            </Button>
+                            {!isActionCreate ? (
+                                <Button className={cx("button__mint")} onClick={handleMintNft}>
+                                    Create
+                                </Button>
+                            ) : (
+                                <ClipLoader size={40} loading={isActionCreate} color="#7000ff" speedMultiplier={1} />
+                            )}
                         </div>
                     </div>
                     {/* bill-end */}
