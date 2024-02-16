@@ -78,10 +78,10 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
             <div className={cx("container")}>
                 <header className={cx("header")}>
                     <div className={cx("background__wrapper")}>
-                        <Image className={cx("background__image")} src={account.cover || images.noImage} alt="Backgound Image" />
+                        <img className={cx("background__image")} src={account.cover || images.noImage} alt="Backgound Image" />
                     </div>
                     <div className={cx("avatar__wrapper")}>
-                        <Image className={cx("avatar__image")} src={account.avatar || images.user} alt="User Image" />
+                        <img className={cx("avatar__image")} src={account.avatar || images.user} alt="User Image" />
                     </div>
                 </header>
                 <section className={cx("content")}>

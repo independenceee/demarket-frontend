@@ -12,6 +12,7 @@ import { AccountContextType } from "@/types/AccountContextType";
 import { patch } from "@/utils/http-request";
 import { toast } from "react-toastify";
 import ipfsPinata from "@/utils/ipfs-pinata";
+import axios from "axios";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -90,17 +91,37 @@ const EditAccountPage = function ({}: Props) {
 
     const handleSubmit = async function () {
         try {
-            const avatar = await ipfsPinata({ image: imageAvatar });
-            const cover = await ipfsPinata({ image: imageCover });
-
             if (account) {
-                await patch(`/account/${account.id}`, {
-                    email: dataEdit.email,
-                    userName: dataEdit.username,
-                    description: dataEdit.description,
-                    linkedin: dataEdit.linkedinLink,
-                    telegram: dataEdit.facebookLink,
-                    twitter: dataEdit.twitterLink,
+                const formDataAvatar = new FormData();
+                formDataAvatar.append("file", imageAvatar);
+                const metadataAvatar = JSON.stringify({ name: "fileName" });
+                formDataAvatar.append("pinataMetadata", metadataAvatar);
+                const optionsAvatar = JSON.stringify({ cidVersion: 0 });
+                formDataAvatar.append("pinataOptions", optionsAvatar);
+                const responseAvatar = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataAvatar, {
+                    headers: {
+                        "Content-Type": `multipart/form-data; boundary=${formDataAvatar}`,
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                    },
+                });
+
+                const formDataCover = new FormData();
+                formDataCover.append("file", imageCover);
+                const metadataCover = JSON.stringify({ name: "fileName" });
+                formDataCover.append("pinataMetadata", metadataCover);
+                const optionsCover = JSON.stringify({ cidVersion: 0 });
+                formDataCover.append("pinataOptions", optionsCover);
+                const responseCover = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataCover, {
+                    headers: {
+                        "Content-Type": `multipart/form-data; boundary=${formDataCover}`,
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                    },
+                });
+
+                await patch(`/account/${account.id}?destination="images/account"`, {
+                    avatar: "ipfs://" + responseAvatar.data.IpfsHash,
+                    cover: "ipfs://" + responseCover.data.IpfsHash,
+                    ...dataEdit,
                 });
                 toast.success("Updated account successfully");
                 router.back();

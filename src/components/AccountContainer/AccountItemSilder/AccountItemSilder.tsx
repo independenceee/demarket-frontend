@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 import images from "@/assets/images";
 import styles from "./AccountItemSilder.module.scss";
 import { AccountItemType } from "@/types/GenericsType";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 
 const cx = classNames.bind(styles);
 
@@ -25,8 +26,9 @@ const AccountItemSilder = function ({ account, index }: Props) {
             <section className={cx("avatar__wrapper")}>
                 <div className={cx("avatar__container")}>
                     <Image
+                        fill
                         className={cx("avatar__image")}
-                        src={account.avatar ? account.avatar : images.user}
+                        src={account.avatar ? convertIpfsAddressToUrl(account.avatar) : images.user}
                         alt="Avatar"
                     />
                 </div>
