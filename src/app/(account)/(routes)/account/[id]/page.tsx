@@ -113,9 +113,11 @@ const AccountPage = function ({ searchParams }: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("banner__wrapper")}>
-                    <img
+                    <Image
+                        width={2000}
+                        height={2000}
                         className={cx("banner__image")}
-                        src={convertIpfsAddressToUrl(accountWalletAddressParams?.cover) || images.background}
+                        src={accountWalletAddressParams?.cover ? convertIpfsAddressToUrl(accountWalletAddressParams?.cover) : images.background}
                         alt="Background"
                     />
                 </section>
@@ -123,8 +125,10 @@ const AccountPage = function ({ searchParams }: Props) {
                 <section className={cx("account__wrapper")}>
                     <div className={cx("account__container")}>
                         <div className={cx("account__image")}>
-                            <img
-                                src={convertIpfsAddressToUrl(accountWalletAddressParams?.avatar) || images.background}
+                            <Image
+                                width={2000}
+                                height={2000}
+                                src={accountWalletAddressParams?.avatar ? convertIpfsAddressToUrl(accountWalletAddressParams?.avatar) : images.user}
                                 alt="User"
                                 className={cx("image")}
                             />
