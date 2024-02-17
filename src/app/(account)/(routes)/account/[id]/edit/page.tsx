@@ -135,13 +135,25 @@ const EditAccountPage = function ({}: Props) {
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
                 <section className={cx("banner__wrapper")}>
-                    <img className={cx("banner__image")} src={imageCoverPath ? imageCoverPath : images.background} alt="Background Image" />
+                    <Image
+                        width={2000}
+                        height={2000}
+                        className={cx("banner__image")}
+                        src={imageCoverPath ? imageCoverPath : images.background}
+                        alt="Background Image"
+                    />
                 </section>
 
                 <section className={cx("account__wrapper")}>
                     <div className={cx("account__container")}>
                         <div className={cx("account__image")}>
-                            <img src={imageAvatarPath ? imageAvatarPath : images.user} alt="Avatar Image" className={cx("image")} />
+                            <Image
+                                width={2000}
+                                height={2000}
+                                src={imageAvatarPath ? imageAvatarPath : images.user}
+                                alt="Avatar Image"
+                                className={cx("image")}
+                            />
                         </div>
                     </div>
 

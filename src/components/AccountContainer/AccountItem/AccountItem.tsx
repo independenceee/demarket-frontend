@@ -10,6 +10,7 @@ import { AccountItemType } from "@/types/GenericsType";
 import { AccountContextType } from "@/types/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { toast } from "react-toastify";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 
 const cx = classNames.bind(styles);
 
@@ -78,10 +79,22 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
             <div className={cx("container")}>
                 <header className={cx("header")}>
                     <div className={cx("background__wrapper")}>
-                        <img className={cx("background__image")} src={account.cover || images.noImage} alt="Backgound Image" />
+                        <Image
+                            width={2000}
+                            height={2000}
+                            className={cx("background__image")}
+                            src={account?.cover ? convertIpfsAddressToUrl(account?.cover) : images.background}
+                            alt="Backgound Image"
+                        />
                     </div>
                     <div className={cx("avatar__wrapper")}>
-                        <img className={cx("avatar__image")} src={account.avatar || images.user} alt="User Image" />
+                        <Image
+                            width={2000}
+                            height={2000}
+                            className={cx("avatar__image")}
+                            src={account?.avatar ? convertIpfsAddressToUrl(account?.avatar) : images.user}
+                            alt="User Image"
+                        />
                     </div>
                 </header>
                 <section className={cx("content")}>
