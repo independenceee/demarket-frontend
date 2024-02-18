@@ -20,6 +20,10 @@ export type NftItemType = {
     updatedAt?: string;
     validate?: boolean;
     collection?: string;
+
+    authorAccount?: AccountItemType;
+    currentAccount?: AccountItemType;
+    sellerAccount?: AccountItemType;
 };
 
 export type CollectionItemType = {
