@@ -81,6 +81,7 @@
         align-items: center;
         padding: 0 4px;
         flex: 1;
+
         .avatar {
             display: flex;
             width: 26px;
@@ -101,7 +102,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 80px;
+            max-width: 90px;
             flex: 1;
         }
     }

@@ -5,13 +5,7 @@ type Props = {
     assetName: string;
 };
 
-const fetchCurrentAddressAsset = async function ({
-    policyId,
-    assetName,
-}: {
-    policyId: string;
-    assetName: string;
-}) {
+const fetchCurrentAddressAsset = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
     try {
         const data = await post("/koios/assets/nft-address", {
             policyId: policyId,
@@ -65,15 +59,27 @@ const fetchInformationFromDemarket = async function ({ policyId, assetName }: Pr
 
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     const currentAddress = await fetchCurrentAddressAsset({ policyId, assetName });
-    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } =
-        await fetchAuthorAddressAndSellerAddress({
-            policyId,
-            assetName,
-        });
+    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } = await fetchAuthorAddressAndSellerAddress({
+        policyId,
+        assetName,
+    });
     const { fingerprint, metadata } = await fetchMetadataFromPolicyIdAndAssetName({
         policyId,
         assetName,
     });
+
+    // console.log(authorAddress);
+    console.log(sellerAddress);
+    // console.log(currentAddress);
+
+    // const authorAccount = await post("/account", {
+    //     walletAddress: authorAddress,
+    // });
+
+    const sellerAccount = await post("/account", {
+        walletAddress: sellerAddress,
+    });
+
     const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
     return {
         policyId,
@@ -86,6 +92,9 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
         fingerprint,
         ...assetDb,
         ...metadata,
+
+        sellerAccount: sellerAccount,
+        // authorAccount: authorAccount,
     };
 };
 

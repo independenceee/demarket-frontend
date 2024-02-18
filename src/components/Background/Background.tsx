@@ -85,7 +85,7 @@ const slider = [
         assetName: "547261646974696f6e616c204769726c",
         title: "Traditional Girl",
         description:
-            " Traditional Girl wears time-honored couture, where each stitch and embellishment narrate a story of cultural pride and timeless fashion.",
+            "Traditional Girl wears time-honored couture, where each stitch and embellishment narrate a story of cultural pride and timeless fashion.",
         url: "https://ipfs.io/ipfs/QmU8cdX4AWSAiAg5hagnBhyZ3vibM2QYmtJFgCSPCHFHW1",
     },
 ];

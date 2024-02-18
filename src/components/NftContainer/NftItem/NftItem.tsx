@@ -51,7 +51,16 @@ const NftItem = function ({ value, index }: Props) {
                 </section>
                 <section className={cx("information")}>
                     <div className={cx("author")}>
-                        <Image className={cx("avatar")} src={images.user} alt="" />
+                        {!value.price && <Image width={2000} height={2000} className={cx("avatar")} src={images.user} alt="" />}
+                        {value.price && (
+                            <Image
+                                width={2000}
+                                height={2000}
+                                className={cx("avatar")}
+                                src={value.sellerAccount.avatar !== null ? convertIpfsAddressToUrl(value.sellerAccount.avatar) : images.user}
+                                alt=""
+                            />
+                        )}
                         {value.price && <h3 className={cx("name")}>{value.sellerAddress}</h3>}
                         {!value.price && <h3 className={cx("name")}>{value.currentAddress}</h3>}
                     </div>
