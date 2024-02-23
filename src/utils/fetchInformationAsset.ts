@@ -68,10 +68,6 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
         assetName,
     });
 
-    // console.log(authorAddress);
-    console.log(sellerAddress);
-    // console.log(currentAddress);
-
     // const authorAccount = await post("/account", {
     //     walletAddress: authorAddress,
     // });
