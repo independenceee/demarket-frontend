@@ -89,7 +89,9 @@ const slider = [
         url: "https://ipfs.io/ipfs/QmU8cdX4AWSAiAg5hagnBhyZ3vibM2QYmtJFgCSPCHFHW1",
     },
 ];
+
 type Props = {};
+
 const Carousel = function ({}: Props) {
     const [background, setBackground] = useState<string>("https://ipfs.io/ipfs/QmU8cdX4AWSAiAg5hagnBhyZ3vibM2QYmtJFgCSPCHFHW1");
 

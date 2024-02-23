@@ -1,5 +1,9 @@
 .wrapper {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
     z-index: 1;
 }
 
@@ -69,10 +73,11 @@
 }
 
 @media screen and (max-width: 656px) {
-    .navbar {
-        display: none;
-    }
     .button__other {
+        display: none !important;
+    }
+
+    .connect-wallet-button {
         display: none !important;
     }
 }
