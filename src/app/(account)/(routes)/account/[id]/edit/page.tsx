@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import styles from "./EditAccount.module.scss";
@@ -9,21 +9,42 @@ import images from "@/assets/images";
 import Button from "@/components/Button";
 import AccountContext from "@/contexts/components/AccountContext";
 import { AccountContextType } from "@/types/AccountContextType";
-import { patch } from "@/utils/http-request";
+import { patch, post } from "@/utils/http-request";
 import { toast } from "react-toastify";
-import ipfsPinata from "@/utils/ipfs-pinata";
 import axios from "axios";
+import { AccountItemType } from "@/types/GenericsType";
+import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 
 type Props = {};
 const cx = classNames.bind(styles);
 
 const EditAccountPage = function ({}: Props) {
     const router = useRouter();
+    const { id: walletAddressPath }: any = useParams();
+    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(null!);
+    useEffect(
+        function () {
+            const fetchAccountFromAddress = async function () {
+                try {
+                    const account: AccountItemType = await post("/account", {
+                        walletAddress: walletAddressPath,
+                    });
+                    setAccountWalletAddressParams(account);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            if (walletAddressPath) {
+                fetchAccountFromAddress();
+            }
+        },
+        [walletAddressPath],
+    );
 
     const { account } = useContext<AccountContextType>(AccountContext);
     const [dataEdit, setDataEdit] = useState<any>({
         email: "",
-        username: "",
+        userName: "",
         description: "",
         facebookLink: "",
         twitterLink: "",
@@ -92,35 +113,39 @@ const EditAccountPage = function ({}: Props) {
     const handleSubmit = async function () {
         try {
             if (account) {
-                const formDataAvatar = new FormData();
-                formDataAvatar.append("file", imageAvatar);
-                const metadataAvatar = JSON.stringify({ name: "fileName" });
-                formDataAvatar.append("pinataMetadata", metadataAvatar);
-                const optionsAvatar = JSON.stringify({ cidVersion: 0 });
-                formDataAvatar.append("pinataOptions", optionsAvatar);
-                const responseAvatar = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataAvatar, {
-                    headers: {
-                        "Content-Type": `multipart/form-data; boundary=${formDataAvatar}`,
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
-                    },
-                });
-
-                const formDataCover = new FormData();
-                formDataCover.append("file", imageCover);
-                const metadataCover = JSON.stringify({ name: "fileName" });
-                formDataCover.append("pinataMetadata", metadataCover);
-                const optionsCover = JSON.stringify({ cidVersion: 0 });
-                formDataCover.append("pinataOptions", optionsCover);
-                const responseCover = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataCover, {
-                    headers: {
-                        "Content-Type": `multipart/form-data; boundary=${formDataCover}`,
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
-                    },
-                });
+                let responseAvatar, responseCover;
+                if (imageAvatar) {
+                    const formDataAvatar = new FormData();
+                    formDataAvatar.append("file", imageAvatar);
+                    const metadataAvatar = JSON.stringify({ name: "fileName" });
+                    formDataAvatar.append("pinataMetadata", metadataAvatar);
+                    const optionsAvatar = JSON.stringify({ cidVersion: 0 });
+                    formDataAvatar.append("pinataOptions", optionsAvatar);
+                    responseAvatar = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataAvatar, {
+                        headers: {
+                            "Content-Type": `multipart/form-data; boundary=${formDataAvatar}`,
+                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                        },
+                    });
+                }
+                if (imageCover) {
+                    const formDataCover = new FormData();
+                    formDataCover.append("file", imageCover);
+                    const metadataCover = JSON.stringify({ name: "fileName" });
+                    formDataCover.append("pinataMetadata", metadataCover);
+                    const optionsCover = JSON.stringify({ cidVersion: 0 });
+                    formDataCover.append("pinataOptions", optionsCover);
+                    responseCover = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataCover, {
+                        headers: {
+                            "Content-Type": `multipart/form-data; boundary=${formDataCover}`,
+                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                        },
+                    });
+                }
 
                 await patch(`/account/${account.id}?destination="images/account"`, {
-                    avatar: "ipfs://" + responseAvatar.data.IpfsHash,
-                    cover: "ipfs://" + responseCover.data.IpfsHash,
+                    avatar: responseAvatar ? "ipfs://" + responseAvatar.data.IpfsHash : "",
+                    cover: responseCover ? "ipfs://" + responseCover.data.IpfsHash : "",
                     ...dataEdit,
                 });
                 toast.success("Updated account successfully");
@@ -131,6 +156,13 @@ const EditAccountPage = function ({}: Props) {
         }
     };
 
+    const [avatarPrevious, setAvatarPrevious] = useState("");
+    const [coverPrevious, setCoverPrevious] = useState("");
+    useEffect(() => {
+        setAvatarPrevious(accountWalletAddressParams?.avatar ? convertIpfsAddressToUrl(accountWalletAddressParams.avatar) : images.user);
+        setCoverPrevious(accountWalletAddressParams?.cover ? convertIpfsAddressToUrl(accountWalletAddressParams.cover) : images.background);
+    }, [accountWalletAddressParams]);
+
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")}>
@@ -139,7 +171,7 @@ const EditAccountPage = function ({}: Props) {
                         width={2000}
                         height={2000}
                         className={cx("banner__image")}
-                        src={imageCoverPath ? imageCoverPath : images.background}
+                        src={imageCoverPath ? imageCoverPath : coverPrevious}
                         alt="Background Image"
                     />
                 </section>
@@ -150,7 +182,7 @@ const EditAccountPage = function ({}: Props) {
                             <Image
                                 width={2000}
                                 height={2000}
-                                src={imageAvatarPath ? imageAvatarPath : images.user}
+                                src={imageAvatarPath ? imageAvatarPath : avatarPrevious}
                                 alt="Avatar Image"
                                 className={cx("image")}
                             />
@@ -159,7 +191,7 @@ const EditAccountPage = function ({}: Props) {
 
                     <div className={cx("account__content")}>
                         <div className={cx("account__infomation")}>
-                            <h3>{dataEdit.username}</h3>
+                            <h3>{dataEdit.userName}</h3>
                             <p>{dataEdit.description}</p>
                         </div>
                         <div className={cx("account__media")}>
@@ -209,7 +241,7 @@ const EditAccountPage = function ({}: Props) {
                             <input
                                 placeholder="Enter your username"
                                 type="text"
-                                name="username"
+                                name="userName"
                                 className={cx("title-control")}
                                 onChange={handleChange}
                             />
