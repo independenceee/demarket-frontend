@@ -11,8 +11,10 @@ type Props = {
     isActive?: boolean;
     redirect: string;
     setSelected?: Dispatch<SetStateAction<string>>;
+    className?: string;
+    setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props) {
+const HeaderOption = function ({ text, setOpen, isActive, setSelected, redirect, className }: Props) {
     const router = useRouter();
 
     const handleClick = useCallback(
@@ -31,14 +33,13 @@ const HeaderOption = function ({ text, isActive, setSelected, redirect }: Props)
     return (
         <Link
             href={redirect}
-            className={cx("navbar__link")}
+            className={cx("navbar__link", className)}
             onClick={() => {
                 handleClick(text);
+                setOpen && setOpen(false);
             }}
         >
-            <span className={cx(`${isActive ? "navbar__content--active" : "navbar__content"}`)}>
-                {text}
-            </span>
+            <span className={cx(`${isActive ? "navbar__content--active" : "navbar__content"}`)}>{text}</span>
         </Link>
     );
 };

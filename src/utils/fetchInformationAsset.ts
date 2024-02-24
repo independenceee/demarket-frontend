@@ -76,6 +76,8 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
         walletAddress: sellerAddress,
     });
 
+    console.log(sellerAccount);
+
     const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
     return {
         policyId,

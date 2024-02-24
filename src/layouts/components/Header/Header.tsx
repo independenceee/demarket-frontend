@@ -20,6 +20,8 @@ import Avatar from "@/components/Avatar";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
 import Modal from "@/components/Modal";
+import Hamburger from "@/components/Hamburger";
+import HeaderUtilities from "../HeaderUtilities";
 const cx = classNames.bind(styles);
 type Props = {
     selectedRouter: string;
@@ -29,8 +31,7 @@ type Props = {
 const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
     const { cartItem } = useContext<CartContextType>(CartContext);
     const { account, loadingAccount } = useContext<AccountContextType>(AccountContext);
-    const { isShowingCart, isShowingSearch, toggleShowingSearch, toggleShowingCart } =
-        useContext<ModalContextType>(ModalContext);
+    const { isShowingCart, isShowingSearch, toggleShowingSearch, toggleShowingCart } = useContext<ModalContextType>(ModalContext);
 
     return (
         <header className={cx("wrapper")}>
@@ -50,20 +51,9 @@ const Header = function ({ selectedRouter, setSelectedRouter }: Props) {
                     })}
                 </nav>
                 <div className={cx("button__wrapper")}>
-                    <div className={cx("button__other")}>
-                        <div className={cx("icon__container")}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} onClick={toggleShowingSearch} />
-                        </div>
-                        <div className={cx("icon__container")}>
-                            <FontAwesomeIcon icon={faCartShopping} onClick={toggleShowingCart} />
-                            <span>{cartItem.totalQuantity}</span>
-                        </div>
-                        {loadingAccount && (
-                            <ClipLoader size={20} color="#7000ff" loading={loadingAccount} speedMultiplier={1} />
-                        )}
-                        {account && <Avatar account={account} />}
-                    </div>
-                    <ConnectWallet />
+                    <HeaderUtilities className={cx("button__other")} />
+                    <ConnectWallet className={cx("connect-wallet-button")} />
+                    <Hamburger />
                 </div>
             </div>
 

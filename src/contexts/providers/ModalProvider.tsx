@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import ModalContext from "@/contexts/components/ModalContext";
 import { useModal } from "@/hooks";
 
