@@ -13,15 +13,12 @@ const listAssets = async function ({ lucid }: Props): Promise<NftItemType[] | an
         const validator: Script = await readValidator({
             compliedCode: contractValidatorMarketplace[0].compiledCode,
         });
-        console.log(validator);
         const contractAddress: string = lucid.utils.validatorToAddress(validator);
-        console.log(contractAddress);
         const scriptAssets: UTxO[] = await lucid.utxosAt(contractAddress);
         const assets: NftItemType[] = scriptAssets.map(function (asset: any, index: number) {
             const datum = Data.from<Datum>(asset.datum, Datum);
             return datum;
         });
-        console.log(assets);
         return assets;
     } catch (error) {
         console.log(error);
