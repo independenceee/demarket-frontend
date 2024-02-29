@@ -52,10 +52,10 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
     return { fingerprint: metadata.fingerprint, metadata: metadata.onchain_metadata };
 };
 
-const fetchInformationFromDemarket = async function ({ policyId, assetName }: Props) {
-    const data = await get(`/nft?policyId=${policyId}&assetName=${assetName}`);
-    return { ...data };
-};
+// const fetchInformationFromDemarket = async function ({ policyId, assetName }: Props) {
+//     const data = await get(`/nft?policyId=${policyId}&assetName=${assetName}`);
+//     return { ...data };
+// };
 
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     const currentAddress = await fetchCurrentAddressAsset({ policyId, assetName });
@@ -78,7 +78,7 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
 
     console.log(sellerAccount);
 
-    const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
+    // const assetDb = await fetchInformationFromDemarket({ policyId, assetName });
     return {
         policyId,
         assetName,
@@ -88,7 +88,7 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
         stakekeyAuthorAddress,
         stakekeySellerAddress,
         fingerprint,
-        ...assetDb,
+        // ...assetDb,
         ...metadata,
 
         sellerAccount: sellerAccount,
