@@ -18,14 +18,14 @@ const LucidProvider = function ({ children }: Props) {
             switch (networkPlatform) {
                 case "Preprod":
                     lucid = await Lucid.new(
-                        new Blockfrost(process.env.BLOCKFROST_RPC_URL_PREPROD as string, process.env.BLOCKFROST_RPC_URL_PREPROD as string),
+                        new Blockfrost(process.env.BLOCKFROST_RPC_URL_PREPROD as string, process.env.BLOCKFROST_PROJECT_API_KEY_PREPROD as string),
                         networkPlatform,
                     );
 
                     break;
                 case "Preview":
                     lucid = await Lucid.new(
-                        new Blockfrost(process.env.BLOCKFROST_RPC_URL_PREPROD as string, process.env.BLOCKFROST_RPC_URL_PREPROD as string),
+                        new Blockfrost(process.env.BLOCKFROST_RPC_URL_PREPROD as string, process.env.BLOCKFROST_PROJECT_API_KEY_PREPROD as string),
                         networkPlatform,
                     );
                     break;
