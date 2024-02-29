@@ -39,15 +39,15 @@ const AboutPage = function ({}: Props) {
                 <section className={cx("about__wrapper")}>
                     <div className={cx("about__container")}>
                         <div className={cx("about__inner")}>
-                            <div className={cx("about__video")} data-aos="fade-right">
-                                <ReactPlayer
-                                    className={cx("about__video--control")}
-                                    controls
-                                    width={"100%"}
-                                    height={"350px"}
-                                    url="https://www.youtube.com/watch?v=icX1mgKkrS0"
-                                />
-                            </div>
+                            <section className={cx("image__wrapper")}>
+                                <iframe
+                                    className={cx("iframe-video")}
+                                    src="https://www.youtube.com/embed/bA_0YiNfma8?si=bVvN7wXIy5D2lVyz"
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                ></iframe>
+                            </section>
                             <div className={cx("about__content")} data-aos="fade-left">
                                 <h2>Open Your Own Marketplace</h2>
                                 <p>
