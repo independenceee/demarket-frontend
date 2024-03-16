@@ -12,6 +12,7 @@ import styles from "./About.module.scss";
 import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
 import Button from "@/components/Button";
 import founders from "@/data/founders";
+import { CheckIcon } from "@/components/Icons";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -31,48 +32,39 @@ const AboutPage = function ({}: Props) {
                     </div>
                 </section>
                 <Title main="HOME" slug="ABOUT" />
-                <section className={cx("heading__wrapper")}>
-                    <a className={cx("heading__title")} data-aos="fade-up" href="founder__contact">
-                        About Us
-                    </a>
-                </section>
-                <section className={cx("about__wrapper")}>
-                    <div className={cx("about__container")}>
-                        <div className={cx("about__inner")}>
-                            <section className={cx("image__wrapper")}>
+                <SubTitle title="About Us" />
+                <section className={cx("about")}>
+                    <div className={cx("wrapper")}>
+                        <div className={cx("wrapper-inner")}>
+                            <div className={cx("video-wrapper")} data-aos="fade-right">
                                 <iframe
-                                    className={cx("iframe-video")}
+                                    className={cx("video")}
                                     src="https://www.youtube.com/embed/bA_0YiNfma8?si=bVvN7wXIy5D2lVyz"
                                     title="YouTube video player"
+                                    frameBorder={0}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowFullScreen
-                                ></iframe>
-                            </section>
-                            <div className={cx("about__content")} data-aos="fade-left">
-                                <h2>Open Your Own Marketplace</h2>
-                                <p>
-                                    In the era of digital transformation with the rise of digital art, NFT has gradually changed the concept of
-                                    ownership and created a revolution connecting with digital assets. demarket, a decentralized NFT exchange on the
-                                    Cardano Blockchain platform from BlockAlpha.
-                                </p>
-                                <p>
-                                    Demarket is a decentralized NFT exchange project developed by the BlockAlpha team. The project has received high
-                                    ratings from the review (CR) community with a score of 4.61, and ranked 2nd in the ranking in the Startup &
-                                    Onboarding for Students category of Project Catalyst Fund 10.
-                                </p>
-
-                                <div className={cx("about__button")}>
-                                    <Button className={cx("button")} href={""}>
-                                        Contact us
-                                    </Button>
+                                    allowFullScreen={false}
+                                />
+                            </div>
+                            <div className={cx("content-wrapper")} data-aos="fade-left">
+                                <div className={cx("content-body")}>
+                                    <div className={cx("content-body-description")}>
+                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+                                        aperiam, eaque ipsa quae ab illo inventore veritatis et tempora incidunt ut labore et dolore magnam aliquam
+                                        quaerat voluptatem.
+                                    </div>
+                                    <div className={cx("content-body-description")}>
+                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+                                        aperiam, eaque ipsa quae ab illo inventore veritatis et tempora incidunt ut labore et dolore magnam aliquam
+                                        quaerat voluptatem.
+                                    </div>
                                 </div>
+                                <Button>About Us</Button>
                             </div>
                         </div>
                     </div>
                 </section>
-                <section className={cx("statistics__wrapper")}>
-                    <Statistics />
-                </section>
+                <Statistics />
                 <section className={cx("founder__wrapper")}>
                     <SubTitle
                         title="Our Foundation"
@@ -82,7 +74,6 @@ const AboutPage = function ({}: Props) {
 
                     <div id="founder__contact" className={cx("founder__container")}>
                         {founders?.map(function (founder: any, index: number) {
-                            console.log(founder);
                             return (
                                 <FounderItem
                                     index={index}
