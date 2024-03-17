@@ -7,7 +7,6 @@ import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import ReactPlayer from "react-player";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 
