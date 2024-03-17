@@ -63,18 +63,14 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchAccountFromAddress = async function () {
-            try {
-                setLoadingAccount(true);
-                const account: AccountItemType = await post("/account", {
-                    walletAddress: walletItem.walletAddress,
-                });
-                setAccount(account);
-                toast.success("Login account successfully.");
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingAccount(false);
-            }
+            setLoadingAccount(true);
+            const account: AccountItemType = await post("/account", {
+                walletAddress: walletItem.walletAddress,
+            });
+            setAccount(account);
+            toast.success("Login account successfully.");
+
+            setLoadingAccount(false);
         };
         if (walletItem.walletAddress) {
             fetchAccountFromAddress();
@@ -83,49 +79,45 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchAssetsFromAddress = async function () {
-            try {
-                setLoadingAssetsFromAddress(true);
-                setLoadingCollectionsFromAddress(true);
-                const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
-                    address: walletAddressParams || walletAddressQuery,
-                });
+            setLoadingAssetsFromAddress(true);
+            setLoadingCollectionsFromAddress(true);
+            const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
+                address: walletAddressParams || walletAddressQuery,
+            });
 
-                const assetsFromAddress = await Promise.all(
-                    paginatedData.map(async ({ policy_id, asset_name, quantity }: any) => {
-                        if (policy_id !== "" && asset_name !== "" && quantity === "1") {
-                            const data = await fetchInformationAsset({
-                                policyId: policy_id,
-                                assetName: asset_name,
-                            });
-                            if (data) return { ...data };
-                            return null;
-                        }
-                    }),
-                );
+            const assetsFromAddress = await Promise.all(
+                paginatedData.map(async ({ policy_id, asset_name, quantity }: any) => {
+                    if (policy_id !== "" && asset_name !== "" && quantity === "1") {
+                        const data = await fetchInformationAsset({
+                            policyId: policy_id,
+                            assetName: asset_name,
+                        });
+                        if (data) return { ...data };
+                        return null;
+                    }
+                }),
+            );
 
-                const collectionsFromAddress = await Promise.all(
-                    paginatedData.map(async function ({ policy_id, asset_name, quantity }: any) {
-                        if (policy_id !== "" && asset_name === "" && quantity === "1") {
-                            const data = await fetchInfomationCollection({
-                                policyId: policy_id,
-                                assetName: asset_name,
-                            });
-                            if (data) return { ...data };
-                            return null;
-                        }
-                    }),
-                );
+            const collectionsFromAddress = await Promise.all(
+                paginatedData.map(async function ({ policy_id, asset_name, quantity }: any) {
+                    if (policy_id !== "" && asset_name === "" && quantity === "1") {
+                        const data = await fetchInfomationCollection({
+                            policyId: policy_id,
+                            assetName: asset_name,
+                        });
+                        if (data) return { ...data };
+                        return null;
+                    }
+                }),
+            );
 
-                setCollectionsFromAddress(collectionsFromAddress.filter(Boolean));
-                setTotalPagesCollectionsFromAddress(totalPage);
-                setAssetsFromAddress(assetsFromAddress.filter(Boolean));
-                setTotalPagesAssetsFromAddress(totalPage);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingAssetsFromAddress(false);
-                setLoadingCollectionsFromAddress(false);
-            }
+            setCollectionsFromAddress(collectionsFromAddress.filter(Boolean));
+            setTotalPagesCollectionsFromAddress(totalPage);
+            setAssetsFromAddress(assetsFromAddress.filter(Boolean));
+            setTotalPagesAssetsFromAddress(totalPage);
+
+            setLoadingAssetsFromAddress(false);
+            setLoadingCollectionsFromAddress(false);
         };
         if (walletAddressParams || walletAddressQuery) {
             fetchAssetsFromAddress();
@@ -134,22 +126,18 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchCreatedAssetsFromAddress = async function () {
-            try {
-                setLoadingCreatedAssetsFromAddress(true);
-                const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
-                    return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
-                });
+            setLoadingCreatedAssetsFromAddress(true);
+            const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
+                return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
+            });
 
-                const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                    return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
-                });
+            const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
+                return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
+            });
 
-                setCreatedAssetsFromAddress([...createdAssetsList, ...sellingAssetsList]);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingCreatedAssetsFromAddress(false);
-            }
+            setCreatedAssetsFromAddress([...createdAssetsList, ...sellingAssetsList]);
+
+            setLoadingCreatedAssetsFromAddress(false);
         };
         if (walletAddressParams || walletAddressQuery) {
             fetchCreatedAssetsFromAddress();
@@ -158,17 +146,13 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchSellingsAsset = async function () {
-            try {
-                setLoadingSellingAssetsFromAddress(true);
-                const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                    return asset.sellerAddress === walletAddressParams || asset.sellerAddress === walletAddressQuery;
-                });
-                setSellingAssetsFromAddress(sellingAssetsList);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingSellingAssetsFromAddress(false);
-            }
+            setLoadingSellingAssetsFromAddress(true);
+            const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
+                return asset.sellerAddress === walletAddressParams || asset.sellerAddress === walletAddressQuery;
+            });
+            setSellingAssetsFromAddress(sellingAssetsList);
+
+            setLoadingSellingAssetsFromAddress(false);
         };
         if (walletAddressParams || walletAddressQuery) {
             fetchSellingsAsset();
@@ -177,30 +161,26 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchLikeAsset = async function () {
-            try {
-                setLoadingLikeAssetsFromAddress(true);
-                const { nfts, totalPage } = await get(`/nft`, {
-                    walletAddress: walletAddressParams,
-                });
+            setLoadingLikeAssetsFromAddress(true);
+            const { nfts, totalPage } = await get(`/nft`, {
+                walletAddress: walletAddressParams,
+            });
 
-                const likeAssetsFromAddress = await Promise.all(
-                    nfts.map(async function ({ policyId, assetName }: any) {
-                        const data = await fetchInfomationCollection({
-                            policyId: policyId,
-                            assetName: assetName,
-                        });
-                        if (data) return { ...data };
-                        return null;
-                    }),
-                );
+            const likeAssetsFromAddress = await Promise.all(
+                nfts.map(async function ({ policyId, assetName }: any) {
+                    const data = await fetchInfomationCollection({
+                        policyId: policyId,
+                        assetName: assetName,
+                    });
+                    if (data) return { ...data };
+                    return null;
+                }),
+            );
 
-                setLikeAssetsFromAddress(likeAssetsFromAddress.filter(Boolean));
-                setTotalPagesLikeAssetsFromAddress(totalPage);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingLikeAssetsFromAddress(false);
-            }
+            setLikeAssetsFromAddress(likeAssetsFromAddress.filter(Boolean));
+            setTotalPagesLikeAssetsFromAddress(totalPage);
+
+            setLoadingLikeAssetsFromAddress(false);
         };
 
         if (walletAddressParams) {
@@ -215,23 +195,19 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchFollowers = async function () {
-            try {
-                setLoadingFollowers(true);
-                const { accounts, totalPage } = await get("/account/followed", {
-                    params: {
-                        walletAddress: walletAddressParams,
-                        page: currentPageFollowers,
-                        pageSize: 12,
-                    },
-                });
+            setLoadingFollowers(true);
+            const { accounts, totalPage } = await get("/account/followed", {
+                params: {
+                    walletAddress: walletAddressParams,
+                    page: currentPageFollowers,
+                    pageSize: 12,
+                },
+            });
 
-                setFollowers(accounts);
-                setTotalPagesFollowers(totalPage);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingFollowers(false);
-            }
+            setFollowers(accounts);
+            setTotalPagesFollowers(totalPage);
+
+            setLoadingFollowers(false);
         };
         if (walletAddressParams) {
             fetchFollowers();
@@ -245,23 +221,19 @@ const AccountProvider = function ({ children }: Props) {
 
     useEffect(() => {
         const fetchFollowings = async function () {
-            try {
-                setLoadingFollowings(true);
-                const { accounts, totalPage } = await get("/account/following", {
-                    params: {
-                        walletAddress: walletAddressParams,
-                        page: currentPageFollowings,
-                        pageSize: 12,
-                    },
-                });
+            setLoadingFollowings(true);
+            const { accounts, totalPage } = await get("/account/following", {
+                params: {
+                    walletAddress: walletAddressParams,
+                    page: currentPageFollowings,
+                    pageSize: 12,
+                },
+            });
 
-                setFollowings(accounts);
-                setTotalPagesFollowings(totalPage);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingFollowings(false);
-            }
+            setFollowings(accounts);
+            setTotalPagesFollowings(totalPage);
+
+            setLoadingFollowings(false);
         };
         if (walletAddressParams) {
             fetchFollowings();
@@ -272,19 +244,15 @@ const AccountProvider = function ({ children }: Props) {
      * Follow account
      */
     const followAccount = async function ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) {
-        try {
-            await post("/follow", {
-                followingId: accountId,
-                followerId: accountIdFollow,
-            });
+        await post("/follow", {
+            followingId: accountId,
+            followerId: accountIdFollow,
+        });
 
-            if (walletItem.walletAddress === walletAddressParams) {
-                setRevalidate(function (previous: RevalidateType) {
-                    return { ...previous, follower: !revalidate.follower };
-                });
-            }
-        } catch (error) {
-            console.log(error);
+        if (walletItem.walletAddress === walletAddressParams) {
+            setRevalidate(function (previous: RevalidateType) {
+                return { ...previous, follower: !revalidate.follower };
+            });
         }
     };
 
@@ -292,21 +260,17 @@ const AccountProvider = function ({ children }: Props) {
      * Unfollow account
      */
     const unFollowAccount = async function ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) {
-        try {
-            await del("/follow", {
-                data: {
-                    followerId: accountIdUnFollow,
-                    followingId: accountId,
-                },
-            });
+        await del("/follow", {
+            data: {
+                followerId: accountIdUnFollow,
+                followingId: accountId,
+            },
+        });
 
-            if (walletItem.walletAddress === walletAddressParams) {
-                setRevalidate(function (previous: RevalidateType) {
-                    return { ...previous, following: !revalidate.following };
-                });
-            }
-        } catch (error) {
-            console.log(error);
+        if (walletItem.walletAddress === walletAddressParams) {
+            setRevalidate(function (previous: RevalidateType) {
+                return { ...previous, following: !revalidate.following };
+            });
         }
     };
 

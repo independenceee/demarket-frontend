@@ -1,4 +1,4 @@
-.background__wrapper {
+.background-wrapper {
     background-image: url("../../../../assets/images/generate/background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -13,14 +13,14 @@
     margin-top: 80px;
 }
 
-.background__container {
+.background-container {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-.background__title {
+.background-title {
     color: #fff;
     font-size: 60px;
     font-style: normal;
@@ -29,7 +29,7 @@
     margin-bottom: 10px;
 }
 
-.background__description {
+.background-description {
     text-shadow: 0px 4px 4px black;
     color: #fff;
     text-align: center;
@@ -61,11 +61,11 @@
     transition: 0.3s ease;
 }
 
-.statistics__wrapper {
+.statistics-wrapper {
     margin: 80px 0;
 }
 
-.founder__container {
+.founder-container {
     background: #f8fafd;
     border-radius: 8px;
     padding: 56px min(56px, 5.6vw);
@@ -83,92 +83,67 @@
 }
 
 @media only screen and (max-width: 767px) {
-    .background__wrapper {
-        .background__container {
-            .background__title {
-                font-size: 40px;
-            }
-
-            .background__description {
-                font-size: 16px;
-                max-width: 600px;
-            }
-        }
+    .background-title {
+        font-size: 40px;
     }
 
-    .founder__wrapper {
-        .founder__container {
-            grid-template-columns: repeat(1, 1fr);
-        }
+    .background-description {
+        font-size: 16px;
+        max-width: 600px;
+    }
+
+    .founder-container {
+        grid-template-columns: repeat(1, 1fr);
     }
 }
 
 @media screen and (max-width: 768px) {
-    .background__wrapper {
-        .background__container {
-            .background__title {
-                font-size: 40px;
-            }
-
-            .background__description {
-                font-size: 16px;
-                max-width: 600px;
-            }
-        }
+    .background-title {
+        font-size: 40px;
     }
 
-    .founder__wrapper {
-        .founder__container {
-            grid-template-columns: repeat(1, 1fr);
-        }
+    .background-description {
+        font-size: 16px;
+        max-width: 600px;
     }
-    .about__container {
+
+    .founder-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .about-container {
         padding: 0;
+    }
 
-        .about__inner {
-            padding: 20px;
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
+    .about-inner {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    .about-video {
+        margin-right: 0px;
+        margin-bottom: 20px;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
-            .about__video {
-                margin-right: 0px;
-                margin-bottom: 20px;
-                max-width: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            .about__content {
-                display: flex;
-            }
-        }
+    .about-content {
+        display: flex;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .founder__wrapper {
-        .founder__container {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    .founder-container {
+        grid-template-columns: repeat(2, 1fr);
     }
-}
-
-@media only screen and (min-width: 1024px) and (max-width: 1279px) {
-}
-
-@media only screen and (min-width: 1280px) and (max-width: 1535px) {
-}
-
-@media only screen and (min-width: 1536px) {
 }
 
 .about {
     background: #f8fafd;
     border-radius: 8px;
     padding: 56px min(56px, 5.6vw);
-    margin: 0 auto;
-    margin: 50px 20px;
+    margin: 40px 20px;
 }
 
 .wrapper-inner {
@@ -215,8 +190,14 @@
     width: 50%;
 }
 
+.content-body-title {
+    font-weight: 600;
+    color: #000;
+    font-size: 25px;
+}
+
 .content-body-description {
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 400;
     margin-bottom: 16px;
     line-height: 1.8;
