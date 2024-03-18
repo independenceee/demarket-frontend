@@ -8,7 +8,6 @@ const mintingPolicyId = async function ({
     lucid,
 }: Props): Promise<{ policyId: string; mintingPolicy: Script }> {
     const { paymentCredential }: any = lucid.utils.getAddressDetails(await lucid.wallet.address());
-
     const mintingPolicy: Script = lucid.utils.nativeScriptFromJson({
         type: "all",
         scripts: [
@@ -17,11 +16,7 @@ const mintingPolicyId = async function ({
         ],
     });
     const policyId: string = lucid.utils.mintingPolicyToId(mintingPolicy);
-
-    return {
-        policyId: policyId,
-        mintingPolicy: mintingPolicy,
-    };
+    return { policyId: policyId, mintingPolicy: mintingPolicy };
 };
 
 export default mintingPolicyId;
