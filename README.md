@@ -2,7 +2,7 @@
 
 ## 1. First, please clone this source code
 
-In this project, nextjs is used as the main frontend framework to perform construction and development. In this guide there will be some requirements to show you how to develop products using git to clone the project.
+In this project, nextjs is used as the main frontend framework to perform construction and development.. In this guide there will be some requirements to show you how to develop products using git to clone the project. 
 
 ```sh
 git clone https://github.com/independenceee/demarket-frontend.git
@@ -47,7 +47,6 @@ After the project is built successfully, execute `npm run build` to build and ch
 -   Users can Follow or unFollow. At the same time, they can follow each other's number of products
 -   At the same time, users can check products, number of products, number of products sold, number of products created and check who is following account and following account.
 -   With the profile page, you can show all information about your wallet as well as participation time and at the same time act as a sales page
--
 
 ### 3. License
 
