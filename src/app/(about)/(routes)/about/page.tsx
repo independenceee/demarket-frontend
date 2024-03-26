@@ -1,18 +1,14 @@
 "use client";
 
-import React, { useContext } from "react";
-import ReactPlayer from "react-player/youtube";
+import React from "react";
 import classNames from "classnames/bind";
 import Statistics from "@/components/Statistics";
 import FounderItem from "@/components/FounderItem";
-import { FounderItemType } from "@/types/GenericsType";
 import Title from "@/components/Title";
 import SubTitle from "@/components/SubTitle";
 import styles from "./About.module.scss";
-import FounderItemSkeleton from "@/components/FounderItem/FounderItemSkeleton";
 import Button from "@/components/Button";
 import founders from "@/data/founders";
-import { CheckIcon } from "@/components/Icons";
 
 type Props = {};
 const cx = classNames.bind(styles);
@@ -21,10 +17,10 @@ const AboutPage = function ({}: Props) {
     return (
         <main className={cx("wrapper")}>
             <div className={cx("container")} data-aos="fade-down">
-                <section className={cx("background__wrapper")}>
-                    <div className={cx("background__container")} data-aos="fade-down">
-                        <h2 className={cx("background__title")}>About Us</h2>
-                        <p className={cx("background__description")}>
+                <section className={cx("background-wrapper")}>
+                    <div className={cx("background-container")} data-aos="fade-down">
+                        <h2 className={cx("background-title")}>About Us</h2>
+                        <p className={cx("background-description")}>
                             Blockalpha brings an exciting solution to access the WEB3 platform for everyone, with the ultimate goal of transforming
                             the model from WEB2 to WEB3. We provide technologies to address issues related to transparency, information security, and
                             eliminate third-party interference.
@@ -48,31 +44,32 @@ const AboutPage = function ({}: Props) {
                             </div>
                             <div className={cx("content-wrapper")} data-aos="fade-left">
                                 <div className={cx("content-body")}>
+                                    <h2 className={cx("content-body-title")}>Open Your Own Marketplace</h2>
                                     <div className={cx("content-body-description")}>
-                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-                                        aperiam, eaque ipsa quae ab illo inventore veritatis et tempora incidunt ut labore et dolore magnam aliquam
-                                        quaerat voluptatem.
+                                        In the era of digital transformation with the rise of digital art, NFT has gradually changed the concept of
+                                        ownership and created a revolution connecting with digital assets. demarket, a decentralized NFT exchange on
+                                        the Cardano Blockchain platform from BlockAlpha.
                                     </div>
                                     <div className={cx("content-body-description")}>
-                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-                                        aperiam, eaque ipsa quae ab illo inventore veritatis et tempora incidunt ut labore et dolore magnam aliquam
-                                        quaerat voluptatem.
+                                        Demarket is a decentralized NFT exchange project developed by the BlockAlpha team. The project has received
+                                        high ratings from the review (CR) community with a score of 4.61, and ranked 2nd in the ranking in the Startup
+                                        & Onboarding for Students category of Project Catalyst Fund 10.
                                     </div>
                                 </div>
-                                <Button>About Us</Button>
+                                <Button>Contact us</Button>
                             </div>
                         </div>
                     </div>
                 </section>
                 <Statistics />
-                <section className={cx("founder__wrapper")}>
+                <section className={cx("founder-wrapper")}>
                     <SubTitle
                         title="Our Foundation"
                         description="We are impartial and independent, and every day we create distinctive, world-class
                             programmes and develop"
                     />
 
-                    <div id="founder__contact" className={cx("founder__container")}>
+                    <div id="founder-contact" className={cx("founder-container")}>
                         {founders?.map(function (founder: any, index: number) {
                             return (
                                 <FounderItem

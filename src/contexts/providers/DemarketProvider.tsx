@@ -70,6 +70,7 @@ const DemarketProvider = function ({ children }: Props) {
                         walletAddress: walletAddressParams,
                     },
                 });
+
                 setAccounts(accounts);
                 setTotalPagesAccounts(totalPage);
             } catch (error) {
