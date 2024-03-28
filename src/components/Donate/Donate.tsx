@@ -1,5 +1,4 @@
 "use client";
-import * as dotenv from "dotenv";
 import React, { useState, useContext, ChangeEvent, useRef } from "react";
 import classNames from "classnames/bind";
 import styles from "./Donate.module.scss";
@@ -7,11 +6,9 @@ import LucidContext from "@/contexts/components/LucidContext";
 import { LucidContextType } from "@/types/LucidContextType";
 import { ModalContextType } from "@/types/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import ReactPlayer from "react-player";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 
-dotenv.config();
 const cx = classNames.bind(styles);
 
 type Props = {};

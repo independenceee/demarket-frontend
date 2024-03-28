@@ -37,7 +37,7 @@ const nextConfig = {
         BLOCKFROST_RPC_URL_PREPROD: "https://cardano-preprod.blockfrost.io/api/v0",
         BLOCKFROST_RPC_URL_PREVIEW: "https://cardano-preview.blockfrost.io/api/v0",
         BLOCKFROST_PROJECT_API_KEY_MAINNET: "mainnettClW67e7zjxBTdjgynNwmGsvyz5DCMmC",
-        BLOCKFROST_PROJECT_API_KEY_PREPROD: "preprody7qLCi4kIiAUEFRlJvmZ2PTi6jreF7gI",
+        BLOCKFROST_PROJECT_API_KEY_PREPROD: "preprodE4Ulx8IH7MBAUFuJnkve21khk7LUC5Uo",
         BLOCKFROST_PROJECT_API_KEY_PREVIEW: "preprodQfe5parraxgP3k0IqDnrptIvZVBejjsS",
     },
 };
