@@ -77,6 +77,7 @@ const findAssetService = async function ({ policyId, assetName }: Props) {
     });
     const contractAddress: string = lucid.utils.validatorToAddress(validator);
     const scriptUtxos = await lucid.utxosAt(contractAddress);
+
     const utxos: UTxO[] = scriptUtxos.filter((utxo: any, index: number) => {
         const checkAsset: Datum = Data.from<Datum>(utxo.datum, Datum);
         if (checkAsset.policyId === policyId && checkAsset.assetName === assetName) {
@@ -119,18 +120,29 @@ const listAssets = async function ({ lucid }: Props): Promise<NftItemType[] | an
 
 ```ts
 /*
- Sell the assets in your wallet
+You can change the value of some fields such as price, author wallet address, etc. But you must be careful to change the value of the policyID field and AssetName field of the NFT you just minted.
 */
-const sellAssetService = async function ({ policyId, assetName, author, price, lucid, royalties }: Props) {
+const sellAssetService = async function ({
+    policyId,
+    assetName,
+    author,
+    price,
+    lucid,
+    royalties,
+}: Props) {
     try {
+        // Read the validator and assign it to a variable
         const validator: Script = await readValidator({
             compliedCode: contractValidatorMarketplace[0].compiledCode,
         });
         const contractAddress: string = lucid.utils.validatorToAddress(validator);
-
+        // Public key of the seller
         const authorPublicKey = fetchPublicKeyFromAddress(author);
-        const sellerPublicKey: any = lucid.utils.getAddressDetails(await lucid.wallet.address()).paymentCredential?.hash;
+        // Public key of the NFT creator
+        const sellerPublicKey: any = lucid.utils.getAddressDetails(await lucid.wallet.address())
+            .paymentCredential?.hash;
 
+        // initialize the Datum object
         const datum = Data.to(
             {
                 policyId: policyId,
@@ -143,38 +155,44 @@ const sellAssetService = async function ({ policyId, assetName, author, price, l
             Datum,
         );
 
+        // Create transaction
         const tx = await lucid
             .newTx()
-            .payToContract(contractAddress, { inline: datum }, { [policyId + assetName]: BigInt(1) })
-            .complete();
+            .payToContract(
+                contractAddress,
+                { inline: datum },
+                { [policyId + assetName]: BigInt(1) },
+            )
+            .complete(); // Submit NFT and exchange + royalty fees to the contract
+
+        // Sign transaction
         const signedTx = await tx.sign().complete();
         const txHash = await signedTx.submit();
+        // Send transactions to onchain
         await lucid.awaitTx(txHash);
         return { txHash, policyId, assetName };
     } catch (error) {
-        toast.error("Sell asset faild !", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
+        console.log(error);
     }
 };
 ```
 
 ```ts
 /*
-You can buy assets and return them to your wallet
+You must be careful to change the value of the policyID field and AssetName field, the price fields of the NFT you just locked into the contract.
 */
-const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddress, royaltiesAddress }: Props) {
+const buyAssetService = async function ({
+    lucid,
+    policyId,
+    assetName,
+    sellerAddress,
+    royaltiesAddress,
+}: Props) {
     try {
         const validator = await readValidator({
             compliedCode: contractValidatorMarketplace[0].compiledCode,
         });
+        // Read the contract address from the validator variable
 
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
@@ -189,6 +207,9 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
             return false;
         });
 
+        // The contract does not use a redeemer, but this is required so it is initialized empty
+        const redeemer = Data.void();
+
         if (utxos.length === 0) {
             console.log("utxo found");
             process.exit(1);
@@ -196,19 +217,26 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
 
+        // Create transaction
         const tx: TxComplete = await lucid
             .newTx()
-            .payToAddress(sellerAddress, { lovelace: BigInt(existAsset.price) })
-            .payToAddress("addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg", {
-                lovelace: exchange_fee,
-            })
-            .payToAddress(royaltiesAddress, { lovelace: BigInt(existAsset.royalties) })
-            .collectFrom(utxos, redeemer)
-            .attachSpendingValidator(validator)
+            .payToAddress(sellerAddress, { lovelace: BigInt(existAsset.price) }) // Send money to the seller
+            .payToAddress(
+                "addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg",
+                {
+                    lovelace: exchange_fee, // trading platform fees
+                },
+            )
+            .payToAddress(royaltiesAddress, { lovelace: BigInt(existAsset.royalties) }) // Send money to buyer
+            .collectFrom(utxos, redeemer) // Consume UTxO (Get NFTs on the contract to the wallet)
+            .attachSpendingValidator(validator) // Refers to the contract, if confirmed, all outputs will be implemented
             .complete();
 
+        // Sign transaction
         const signedTx: TxSigned = await tx.sign().complete();
+        // Send transactions to onchain
         const txHash: string = await signedTx.submit();
+        // Time until the transaction is confirmed on the Blockchain
         await lucid.awaitTx(txHash);
 
         return { txHash, policyId, assetName };
@@ -220,7 +248,7 @@ const buyAssetService = async function ({ lucid, policyId, assetName, sellerAddr
 
 ```ts
 /*
-You can refund your property to the wallet
+You can refund your property to the wallet, Get assets via PolicyId and assetsName and seller's address
 */
 const refundAssetService = async function ({ lucid, policyId, assetName }: Props) {
     try {
@@ -247,11 +275,11 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
 
         const exchange_fee = BigInt((parseInt(existAsset.price) * 1) / 100);
         if (validator) {
-            const tx = await lucid
+            const tx = await lucid // Initialize transaction
                 .newTx()
-                .collectFrom(assets, redeemer)
-                .addSigner(await lucid.wallet.address())
-                .attachSpendingValidator(validator)
+                .collectFrom(assets, redeemer) // Consume UTxO (retrieve NFTs on the contract to the wallet)
+                .addSigner(await lucid.wallet.address()) // Add a signature from the seller
+                .attachSpendingValidator(validator) // Refers to the contract, if confirmed all output will be executed
                 .complete();
 
             const signedTx = await tx.sign().complete();
