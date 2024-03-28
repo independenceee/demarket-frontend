@@ -1,5 +1,5 @@
 import { Data } from "lucid-cardano";
 
-const redeemer = Data.void();
+const MarketplaceRedeemer = Data.void();
 
-export { redeemer };
+export { MarketplaceRedeemer };

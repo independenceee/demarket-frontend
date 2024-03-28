@@ -19,25 +19,19 @@ type Props = {
     linkedin: string;
 };
 
-const FounderItem = function ({ index, avatar, company, firstName, lastName, role, twitter, linkedin }: Props) {
-    console.log(firstName);
+const FounderItem = function ({ index, avatar, firstName, lastName, role, twitter, linkedin }: Props) {
     return (
-        <div
-            className={cx("wrapper")}
-            data-aos="zoom-in-up"
-            data-aos-delay={`${100 * (index + 4)}`}
-            data-aos-duration={`${1000 * (index + 4)}`}
-        >
-            <div className={cx("image__wrapper")}>
+        <div className={cx("wrapper")} data-aos="zoom-in-up" data-aos-delay={`${100 * (index + 4)}`} data-aos-duration={`${1000 * (index + 4)}`}>
+            <div className={cx("image-wrapper")}>
                 <img className={cx("image")} src={avatar} alt="Avatar" />
-                <div className={cx("social__icon")}>
+                <div className={cx("social-icon")}>
                     {twitter && (
-                        <Link className={cx("icon__link")} href={twitter}>
+                        <Link className={cx("icon-link")} href={twitter}>
                             <TelegramIcon />
                         </Link>
                     )}
                     {linkedin && (
-                        <Link className={cx("icon__link")} href={linkedin}>
+                        <Link className={cx("icon-link")} href={linkedin}>
                             <LinkedinIcon />
                         </Link>
                     )}
