@@ -87,6 +87,8 @@ const DetailPage = function ({}: Props) {
         fetchInformationFromPolicyIdAndAssetName();
     }, [revalidate.account]);
 
+    console.log(asset);
+
     const handleAddtoCart = async function () {
         try {
             await addToCart(asset);

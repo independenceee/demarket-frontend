@@ -2,7 +2,7 @@
 
 ## 1. First, please clone this source code
 
-In this project, nextjs is used as the main frontend framework to perform construction and development.. In this guide there will be some requirements to show you how to develop products using git to clone the project. 
+In this project, nextjs is used as the main frontend framework to perform construction and development.. In this guide there will be some requirements to show you how to develop products using git to clone the project.
 
 ```sh
 git clone https://github.com/independenceee/demarket-frontend.git
