@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 
 const ModalContext = createContext<ModalContextType>(null!);
 

@@ -12,7 +12,7 @@ import Verify from "@/components/Verify";
 import SortBy from "@/components/SortBy";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import { NftItemType, QueryParamsType } from "@/types/GenericsType";
-import { SmartContractType } from "@/types/SmartContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
 import styles from "./Marketplace.module.scss";
 const cx = classNames.bind(styles);
 type Props = {
@@ -28,7 +28,8 @@ const MarketplacePage = function ({ searchParams }: Props) {
     const [categorySearchParam, setCategorySearchParam] = useState<string>("all");
     const [searchValueParam, setSearchValueParam] = useState<string>(search || "");
 
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract } = useContext<SmartContractType>(SmartContractContext);
+    const { assetsFromSmartContract, loadingAssetsFromSmartContract } =
+        useContext<SmartContractType>(SmartContractContext);
 
     const [assetsFilter, setAssetsFilter] = useState<NftItemType[]>([]);
 
@@ -40,11 +41,17 @@ const MarketplacePage = function ({ searchParams }: Props) {
                     asset.policyId
                         .toString()
                         .toLowerCase()
-                        .includes(searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase())) ||
+                        .includes(
+                            searchValueParam.toLocaleLowerCase() ||
+                                String(search?.toLocaleLowerCase()),
+                        ) ||
                     asset.assetName
                         .toString()
                         .toLowerCase()
-                        .includes(searchValueParam.toLocaleLowerCase() || String(search?.toLocaleLowerCase()))
+                        .includes(
+                            searchValueParam.toLocaleLowerCase() ||
+                                String(search?.toLocaleLowerCase()),
+                        )
                 );
             });
         }
@@ -57,7 +64,10 @@ const MarketplacePage = function ({ searchParams }: Props) {
         let assetsFilterTemp: NftItemType[] = [...assetsFromSmartContract];
 
         if (sortBySearchParam) {
-            assetsFilterTemp = assetsFilterTemp.sort(function (previous: NftItemType, next: NftItemType): any {
+            assetsFilterTemp = assetsFilterTemp.sort(function (
+                previous: NftItemType,
+                next: NftItemType,
+            ): any {
                 switch (sortBySearchParam) {
                     case "all":
                         return Number(next?.createdAt || 0) - Number(previous?.createdAt || 0);
@@ -91,15 +101,39 @@ const MarketplacePage = function ({ searchParams }: Props) {
                 <Title main="HOME" slug="MARKETPLACE" />
                 <section className={cx("content__wrapper")}>
                     <div className={cx("content__left--wrapper")}>
-                        <div className={cx("content__left--container")} data-aos="fade-right" data-aos-duration="1000">
-                            <Search searchValueParam={searchValueParam} setSearchValueParam={setSearchValueParam} />
-                            <Category categorySearchParam={categorySearchParam} setCategorySearchParam={setCategorySearchParam} />
-                            <SortBy sortBySearchParam={sortBySearchParam} setSortBySearchParam={setSortBySearchParam} />
-                            <Verify verifySearchParam={verifySearchParam} setVerifySearchParam={setVerifySearchParam} />
+                        <div
+                            className={cx("content__left--container")}
+                            data-aos="fade-right"
+                            data-aos-duration="1000"
+                        >
+                            <Search
+                                searchValueParam={searchValueParam}
+                                setSearchValueParam={setSearchValueParam}
+                            />
+                            <Category
+                                categorySearchParam={categorySearchParam}
+                                setCategorySearchParam={setCategorySearchParam}
+                            />
+                            <SortBy
+                                sortBySearchParam={sortBySearchParam}
+                                setSortBySearchParam={setSortBySearchParam}
+                            />
+                            <Verify
+                                verifySearchParam={verifySearchParam}
+                                setVerifySearchParam={setVerifySearchParam}
+                            />
                         </div>
                     </div>
-                    <div className={cx("content__right")} data-aos="fade-left" data-aos-duration="1000">
-                        <NftContainer nfts={assetsFilter} itemsPerPage={12} loading={loadingAssetsFromSmartContract} />
+                    <div
+                        className={cx("content__right")}
+                        data-aos="fade-left"
+                        data-aos-duration="1000"
+                    >
+                        <NftContainer
+                            nfts={assetsFilter}
+                            itemsPerPage={12}
+                            loading={loadingAssetsFromSmartContract}
+                        />
                     </div>
                 </section>
             </div>

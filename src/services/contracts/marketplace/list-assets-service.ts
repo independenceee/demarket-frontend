@@ -2,7 +2,7 @@ import { contractValidatorMarketplace } from "@/libs/marketplace";
 import { Data, Lucid, Script, UTxO } from "lucid-cardano";
 import readValidator from "@/utils/read-validator";
 
-import { Datum } from "@/constants/datum";
+import { MarketplaceDatum } from "@/constants/datum";
 import { NftItemType } from "@/types/GenericsType";
 
 type Props = {
@@ -10,13 +10,11 @@ type Props = {
 };
 const listAssets = async function ({ lucid }: Props): Promise<NftItemType[] | any> {
     try {
-        const validator: Script = await readValidator({
-            compliedCode: contractValidatorMarketplace[0].compiledCode,
-        });
+        const validator: Script = readValidator();
         const contractAddress: string = lucid.utils.validatorToAddress(validator);
         const scriptAssets: UTxO[] = await lucid.utxosAt(contractAddress);
         const assets: NftItemType[] = scriptAssets.map(function (asset: any, index: number) {
-            const datum = Data.from<Datum>(asset.datum, Datum);
+            const datum = Data.from<MarketplaceDatum>(asset.datum, MarketplaceDatum);
             return datum;
         });
         return assets;

@@ -1,4 +1,4 @@
-import { NftItemType } from "./GenericsType";
+import { NftItemType } from "../GenericsType";
 
 export type CartContextType = {
     cartItem: {

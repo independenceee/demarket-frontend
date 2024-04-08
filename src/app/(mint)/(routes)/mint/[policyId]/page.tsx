@@ -10,11 +10,11 @@ import LucidContext from "@/contexts/components/LucidContext";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 import images from "@/assets/images";
-import { LucidContextType } from "@/types/LucidContextType";
-import { SmartContractType } from "@/types/SmartContextType";
-import { DemarketContextType } from "@/types/DemarketContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
+import { DemarketContextType } from "@/types/contexts/DemarketContextType";
 import styles from "./MintPolicyId.module.scss";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
 import { ClipLoader } from "react-spinners";
 

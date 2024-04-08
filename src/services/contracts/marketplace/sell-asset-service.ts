@@ -3,7 +3,7 @@ import { contractValidatorMarketplace } from "@/libs/marketplace";
 import readValidator from "@/utils/read-validator";
 
 import fetchPublicKeyFromAddress from "@/utils/fetchPublicKeyFromAddress";
-import { Datum } from "@/constants/datum";
+import { MarketplaceDatum } from "@/constants/datum";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -24,9 +24,7 @@ const sellAssetService = async function ({
     royalties,
 }: Props) {
     try {
-        const validator: Script = await readValidator({
-            compliedCode: contractValidatorMarketplace[0].compiledCode,
-        });
+        const validator: Script = readValidator();
         const contractAddress: string = lucid.utils.validatorToAddress(validator);
 
         const authorPublicKey = fetchPublicKeyFromAddress(author);
@@ -42,7 +40,7 @@ const sellAssetService = async function ({
                 price: price,
                 royalties: royalties,
             },
-            Datum,
+            MarketplaceDatum,
         );
 
         const tx = await lucid

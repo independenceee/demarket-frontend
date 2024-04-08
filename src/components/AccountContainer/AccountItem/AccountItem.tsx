@@ -7,7 +7,7 @@ import styles from "./AccountItem.module.scss";
 import Image from "next/image";
 import images from "@/assets/images";
 import { AccountItemType } from "@/types/GenericsType";
-import { AccountContextType } from "@/types/AccountContextType";
+import { AccountContextType } from "@/types/contexts/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import { toast } from "react-toastify";
 import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
@@ -24,7 +24,11 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
     const router = useRouter();
     const [follow, setFollow] = useState<boolean>(isFollow);
 
-    const { followAccount, unFollowAccount, account: accountConnect } = useContext<AccountContextType>(AccountContext);
+    const {
+        followAccount,
+        unFollowAccount,
+        account: accountConnect,
+    } = useContext<AccountContextType>(AccountContext);
 
     useEffect(() => {
         if (!accountConnect) {
@@ -83,7 +87,11 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
                             width={2000}
                             height={2000}
                             className={cx("background__image")}
-                            src={account?.cover ? convertIpfsAddressToUrl(account?.cover) : images.background}
+                            src={
+                                account?.cover
+                                    ? convertIpfsAddressToUrl(account?.cover)
+                                    : images.background
+                            }
                             alt="Backgound Image"
                         />
                     </div>
@@ -92,7 +100,11 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
                             width={2000}
                             height={2000}
                             className={cx("avatar__image")}
-                            src={account?.avatar ? convertIpfsAddressToUrl(account?.avatar) : images.user}
+                            src={
+                                account?.avatar
+                                    ? convertIpfsAddressToUrl(account?.avatar)
+                                    : images.user
+                            }
                             alt="User Image"
                         />
                     </div>
@@ -104,11 +116,17 @@ const AccountItem = function ({ account, index, isFollow = false }: Props) {
                     </div>
                     <div className={cx("content_right")}>
                         {!follow ? (
-                            <button onClick={handleFollowAccount} className={cx("content_right--button")}>
+                            <button
+                                onClick={handleFollowAccount}
+                                className={cx("content_right--button")}
+                            >
                                 Follow
                             </button>
                         ) : (
-                            <button onClick={handleUnfollowAccount} className={cx("content_right--button")}>
+                            <button
+                                onClick={handleUnfollowAccount}
+                                className={cx("content_right--button")}
+                            >
                                 Unfollow
                             </button>
                         )}

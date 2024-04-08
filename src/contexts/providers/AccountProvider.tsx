@@ -4,14 +4,19 @@ import React, { ReactNode, useState, useContext, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import AccountContext from "@/contexts/components/AccountContext";
 import LucidContext from "@/contexts/components/LucidContext";
-import { LucidContextType } from "@/types/LucidContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
-import { SmartContractType } from "@/types/SmartContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import fetchInfomationCollection from "@/utils/fetchInfomationCollection";
 import { GlobalStateContextType } from "@/types/GlobalStateContextType";
 import GlobalStateContext from "@/contexts/components/GlobalStateContext";
-import { AccountItemType, CollectionItemType, NftItemType, RevalidateType } from "@/types/GenericsType";
+import {
+    AccountItemType,
+    CollectionItemType,
+    NftItemType,
+    RevalidateType,
+} from "@/types/GenericsType";
 import { get, post, del } from "@/utils/http-request";
 import { toast } from "react-toastify";
 
@@ -32,9 +37,12 @@ const AccountProvider = function ({ children }: Props) {
     const [loadingAccount, setLoadingAccount] = useState<boolean>(false);
 
     const [collectionsFromAddress, setCollectionsFromAddress] = useState<CollectionItemType[]>([]);
-    const [loadingCollectionsFromAddress, setLoadingCollectionsFromAddress] = useState<boolean>(false);
-    const [totalPagesCollectionsFromAddress, setTotalPagesCollectionsFromAddress] = useState<number>(1);
-    const [currentPageCollectionsFromAddress, setCurrentPageCollectionsFromAddress] = useState<number>(1);
+    const [loadingCollectionsFromAddress, setLoadingCollectionsFromAddress] =
+        useState<boolean>(false);
+    const [totalPagesCollectionsFromAddress, setTotalPagesCollectionsFromAddress] =
+        useState<number>(1);
+    const [currentPageCollectionsFromAddress, setCurrentPageCollectionsFromAddress] =
+        useState<number>(1);
 
     const [assetsFromAddress, setAssetsFromAddress] = useState<NftItemType[]>([]);
     const [currentPageAssetsFromAddress, setCurrentPageAssetsFromAddress] = useState<number>(1);
@@ -42,19 +50,27 @@ const AccountProvider = function ({ children }: Props) {
     const [loadingAssetsFromAddress, setLoadingAssetsFromAddress] = useState<boolean>(false);
 
     const [createdAssetsFromAddress, setCreatedAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] = useState<boolean>(false);
-    const [totalPagesCreatedAssetsFromAddress, setTotalPagesCreatedAssetsFromAddress] = useState<number>(1);
-    const [currentPageCreatedAssetsFromAddress, setCurrentPageCreatedAssetsFromAddress] = useState<number>(1);
+    const [loadingCreatedAssetsFromAddress, setLoadingCreatedAssetsFromAddress] =
+        useState<boolean>(false);
+    const [totalPagesCreatedAssetsFromAddress, setTotalPagesCreatedAssetsFromAddress] =
+        useState<number>(1);
+    const [currentPageCreatedAssetsFromAddress, setCurrentPageCreatedAssetsFromAddress] =
+        useState<number>(1);
 
     const [sellingAssetsFromAddress, setSellingAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [currentPageSellingAssetsFromAddress, setCurrentPageSellingAssetsFromAddress] = useState<number>(1);
-    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] = useState<boolean>(false);
-    const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] = useState<number>(1);
+    const [currentPageSellingAssetsFromAddress, setCurrentPageSellingAssetsFromAddress] =
+        useState<number>(1);
+    const [loadingSellingAssetsFromAddress, setLoadingSellingAssetsFromAddress] =
+        useState<boolean>(false);
+    const [totalPagesSellingAssetsFromAddress, setTotalPagesSellingAssetsFromAddress] =
+        useState<number>(1);
 
     const [likeAssetsFromAddress, setLikeAssetsFromAddress] = useState<NftItemType[]>([]);
-    const [currentPageLikeAssetsFromAddress, setCurrentPageLikeAssetsFromAddress] = useState<number>(1);
+    const [currentPageLikeAssetsFromAddress, setCurrentPageLikeAssetsFromAddress] =
+        useState<number>(1);
     const [loadingLikeAssetsFromAddress, setLoadingLikeAssetsFromAddress] = useState<boolean>(true);
-    const [totalPagesLikeAssetsFromAddress, setTotalPagesLikeAssetsFromAddress] = useState<number>(1);
+    const [totalPagesLikeAssetsFromAddress, setTotalPagesLikeAssetsFromAddress] =
+        useState<number>(1);
 
     useEffect(() => {
         const address = searchParams.get("address");
@@ -81,9 +97,12 @@ const AccountProvider = function ({ children }: Props) {
         const fetchAssetsFromAddress = async function () {
             setLoadingAssetsFromAddress(true);
             setLoadingCollectionsFromAddress(true);
-            const { paginatedData, totalPage } = await post(`/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`, {
-                address: walletAddressParams || walletAddressQuery,
-            });
+            const { paginatedData, totalPage } = await post(
+                `/koios/assets/address-assets?page=${currentPageAssetsFromAddress}&pageSize=${12}`,
+                {
+                    address: walletAddressParams || walletAddressQuery,
+                },
+            );
 
             const assetsFromAddress = await Promise.all(
                 paginatedData.map(async ({ policy_id, asset_name, quantity }: any) => {
@@ -122,17 +141,29 @@ const AccountProvider = function ({ children }: Props) {
         if (walletAddressParams || walletAddressQuery) {
             fetchAssetsFromAddress();
         }
-    }, [walletAddressParams, currentPageAssetsFromAddress, assetsFromSmartContract, revalidate.account, walletAddressQuery]);
+    }, [
+        walletAddressParams,
+        currentPageAssetsFromAddress,
+        assetsFromSmartContract,
+        revalidate.account,
+        walletAddressQuery,
+    ]);
 
     useEffect(() => {
         const fetchCreatedAssetsFromAddress = async function () {
             setLoadingCreatedAssetsFromAddress(true);
             const createdAssetsList = assetsFromAddress.filter(function (asset: NftItemType) {
-                return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
+                return (
+                    asset.authorAddress === walletAddressParams ||
+                    asset.authorAddress === walletAddressQuery
+                );
             });
 
             const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                return asset.authorAddress === walletAddressParams || asset.authorAddress === walletAddressQuery;
+                return (
+                    asset.authorAddress === walletAddressParams ||
+                    asset.authorAddress === walletAddressQuery
+                );
             });
 
             setCreatedAssetsFromAddress([...createdAssetsList, ...sellingAssetsList]);
@@ -148,7 +179,10 @@ const AccountProvider = function ({ children }: Props) {
         const fetchSellingsAsset = async function () {
             setLoadingSellingAssetsFromAddress(true);
             const sellingAssetsList = assetsFromSmartContract.filter(function (asset: NftItemType) {
-                return asset.sellerAddress === walletAddressParams || asset.sellerAddress === walletAddressQuery;
+                return (
+                    asset.sellerAddress === walletAddressParams ||
+                    asset.sellerAddress === walletAddressQuery
+                );
             });
             setSellingAssetsFromAddress(sellingAssetsList);
 
@@ -243,7 +277,13 @@ const AccountProvider = function ({ children }: Props) {
     /**
      * Follow account
      */
-    const followAccount = async function ({ accountId, accountIdFollow }: { accountId: string; accountIdFollow: string }) {
+    const followAccount = async function ({
+        accountId,
+        accountIdFollow,
+    }: {
+        accountId: string;
+        accountIdFollow: string;
+    }) {
         await post("/follow", {
             followingId: accountId,
             followerId: accountIdFollow,
@@ -259,7 +299,13 @@ const AccountProvider = function ({ children }: Props) {
     /**
      * Unfollow account
      */
-    const unFollowAccount = async function ({ accountId, accountIdUnFollow }: { accountId: string; accountIdUnFollow: string }) {
+    const unFollowAccount = async function ({
+        accountId,
+        accountIdUnFollow,
+    }: {
+        accountId: string;
+        accountIdUnFollow: string;
+    }) {
         await del("/follow", {
             data: {
                 followerId: accountIdUnFollow,

@@ -11,9 +11,9 @@ import { toast } from "react-toastify";
 import Button from "@/components/Button";
 import { socialMedia } from "@/data/socialMedia";
 import routes from "@/configs/routes";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import { AccountContextType } from "@/types/AccountContextType";
+import { AccountContextType } from "@/types/contexts/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 
 const cx = classNames.bind(styles);

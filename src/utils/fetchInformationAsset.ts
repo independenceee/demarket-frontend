@@ -6,7 +6,13 @@ type Props = {
     assetName: string;
 };
 
-const fetchCurrentAddressAsset = async function ({ policyId, assetName }: { policyId: string; assetName: string }) {
+const fetchCurrentAddressAsset = async function ({
+    policyId,
+    assetName,
+}: {
+    policyId: string;
+    assetName: string;
+}) {
     try {
         // const data = await post("/koios/assets/nft-address", {
         //     policyId: policyId,
@@ -33,10 +39,12 @@ const fetchStakeKeyFromAddress = async function (address: string) {
 };
 
 const fetchAuthorAddressAndSellerAddress = async function ({ policyId, assetName }: Props) {
+    // console.log(policyId, assetName);
     const data = await post("/blockfrost/transaction/asset", {
         policyId: policyId,
         assetName: assetName,
     });
+    console.log(data);
     const authorAddress = await fetchAddressFromTxHash(data.firstTransaction.tx_hash);
     const sellerAddress = await fetchAddressFromTxHash(data.currentTransaction.tx_hash);
     const stakekeyAuthorAddress = await fetchStakeKeyFromAddress(authorAddress);
@@ -56,10 +64,12 @@ const fetchMetadataFromPolicyIdAndAssetName = async function ({ policyId, assetN
 const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     const currentAddress = await fetchCurrentAddressAsset({ policyId, assetName });
     console.log(currentAddress);
-    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } = await fetchAuthorAddressAndSellerAddress({
-        policyId,
-        assetName,
-    });
+    console.log(policyId, assetName);
+    const { authorAddress, sellerAddress, stakekeyAuthorAddress, stakekeySellerAddress } =
+        await fetchAuthorAddressAndSellerAddress({
+            policyId,
+            assetName,
+        });
     const { fingerprint, metadata } = await fetchMetadataFromPolicyIdAndAssetName({
         policyId,
         assetName,
@@ -76,7 +86,8 @@ const fetchInformationAsset = async function ({ policyId, assetName }: Props) {
     return {
         policyId,
         assetName,
-        currentAddress: "addr_test1qrqudd4qgu6azvgnutgtmvtv46sf9lkhqkt6wjyqu7ljeukw482s9jl4yak650qhkj8zfvhkejkwenzdnkqz9v9xmqxstp46tr",
+        currentAddress:
+            "addr_test1qrqudd4qgu6azvgnutgtmvtv46sf9lkhqkt6wjyqu7ljeukw482s9jl4yak650qhkj8zfvhkejkwenzdnkqz9v9xmqxstp46tr",
         authorAddress,
         sellerAddress,
         stakekeyAuthorAddress,

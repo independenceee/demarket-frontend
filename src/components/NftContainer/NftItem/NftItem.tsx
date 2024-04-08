@@ -61,7 +61,7 @@ const NftItem = function ({ value, index }: Props) {
                                 alt=""
                             />
                         )}
-                        {value.price && <h3 className={cx("name")}>{value?.sellerAccount?.userName}</h3>}
+                        {value.price && <h3 className={cx("name")}>{value.sellerAddress}</h3>}
                         {!value.price && <h3 className={cx("name")}>{value.currentAddress}</h3>}
                     </div>
                     {value.price && (

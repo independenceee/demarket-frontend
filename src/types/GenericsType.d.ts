@@ -1,4 +1,4 @@
-export type ProductType = {
+export type NftItemType = {
     assetName: string;
     authorAddress?: string;
     currentAddress?: string;

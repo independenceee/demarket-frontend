@@ -1,4 +1,10 @@
-import { AccountItem, CategoryItemType, FounderItemType, GuideItemType, NftItemType } from "./GenericsType";
+import {
+    AccountItem,
+    CategoryItemType,
+    FounderItemType,
+    GuideItemType,
+    NftItemType,
+} from "../GenericsType";
 
 export type DemarketContextType = {
     categories: Array<CategoryItemType>;

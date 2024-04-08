@@ -1,5 +1,5 @@
-import { Datum } from "@/constants/datum";
-import { redeemer } from "@/constants/redeemer";
+import { MarketplaceDatum } from "@/constants/datum";
+import { MarketplaceRedeemer } from "@/constants/redeemer";
 
 import { contractValidatorMarketplace } from "@/libs/marketplace";
 import { Data, Lucid, TxComplete, TxSigned } from "lucid-cardano";
@@ -21,18 +21,16 @@ const buyAssetService = async function ({
     royaltiesAddress,
 }: Props) {
     try {
-        const validator = await readValidator({
-            compliedCode: contractValidatorMarketplace[0].compiledCode,
-        });
+        const validator = readValidator();
 
         const contractAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(contractAddress);
         let existAsset: any;
 
         const utxos = scriptUtxos.filter((utxo: any, index: number) => {
-            const checkAsset = Data.from<Datum>(utxo.datum, Datum);
+            const checkAsset = Data.from<MarketplaceDatum>(utxo.datum, MarketplaceDatum);
             if (checkAsset.policyId === policyId && checkAsset.assetName === assetName) {
-                existAsset = Data.from<Datum>(utxo.datum, Datum);
+                existAsset = Data.from<MarketplaceDatum>(utxo.datum, MarketplaceDatum);
                 return true;
             }
             return false;
@@ -53,7 +51,7 @@ const buyAssetService = async function ({
                 { lovelace: exchange_fee },
             )
             .payToAddress(royaltiesAddress, { lovelace: BigInt(existAsset.royalties) })
-            .collectFrom(utxos, redeemer)
+            .collectFrom(utxos, MarketplaceRedeemer)
             .attachSpendingValidator(validator)
             .complete();
 

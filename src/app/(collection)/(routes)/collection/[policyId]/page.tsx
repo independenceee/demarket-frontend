@@ -26,11 +26,11 @@ import convertIpfsAddressToUrl from "@/helpers/convertIpfsAddressToUrl";
 import Skeleton from "react-loading-skeleton";
 
 import convertDatetimeBlocktime from "@/helpers/convertDatetimeBlocktime";
-import { SmartContractType } from "@/types/SmartContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import { LucidContextType } from "@/types/LucidContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
-import { AccountContextType } from "@/types/AccountContextType";
+import { AccountContextType } from "@/types/contexts/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import CollectionContainer from "@/components/CollectionContainer";
 
