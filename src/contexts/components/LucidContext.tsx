@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { LucidContextType } from "@/types/LucidContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
 
 const LucidContext = createContext<LucidContextType>(null!);
 

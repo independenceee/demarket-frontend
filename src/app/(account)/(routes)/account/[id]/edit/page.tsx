@@ -8,7 +8,7 @@ import styles from "./EditAccount.module.scss";
 import images from "@/assets/images";
 import Button from "@/components/Button";
 import AccountContext from "@/contexts/components/AccountContext";
-import { AccountContextType } from "@/types/AccountContextType";
+import { AccountContextType } from "@/types/contexts/AccountContextType";
 import { patch, post } from "@/utils/http-request";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -21,7 +21,9 @@ const cx = classNames.bind(styles);
 const EditAccountPage = function ({}: Props) {
     const router = useRouter();
     const { id: walletAddressPath }: any = useParams();
-    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(null!);
+    const [accountWalletAddressParams, setAccountWalletAddressParams] = useState<AccountItemType>(
+        null!,
+    );
     useEffect(
         function () {
             const fetchAccountFromAddress = async function () {
@@ -62,11 +64,15 @@ const EditAccountPage = function ({}: Props) {
         });
     };
 
-    const [fileNameImageAvatar, setFileNameImageAvatar] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
+    const [fileNameImageAvatar, setFileNameImageAvatar] = useState<string>(
+        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
+    );
     const [imageAvatar, setImageAvatar] = useState<File>(null!);
     const [imageAvatarPath, setImageAvatarPath] = useState<string>("");
 
-    const [fileNameImageCover, setFileNameImageCover] = useState<string>("PNG, Video, Music, GIF, MP4 or MP3. Max 100mb");
+    const [fileNameImageCover, setFileNameImageCover] = useState<string>(
+        "PNG, Video, Music, GIF, MP4 or MP3. Max 100mb",
+    );
     const [imageCover, setImageCover] = useState<File>(null!);
     const [imageCoverPath, setImageCoverPath] = useState<string>("");
 
@@ -121,12 +127,16 @@ const EditAccountPage = function ({}: Props) {
                     formDataAvatar.append("pinataMetadata", metadataAvatar);
                     const optionsAvatar = JSON.stringify({ cidVersion: 0 });
                     formDataAvatar.append("pinataOptions", optionsAvatar);
-                    responseAvatar = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataAvatar, {
-                        headers: {
-                            "Content-Type": `multipart/form-data; boundary=${formDataAvatar}`,
-                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                    responseAvatar = await axios.post(
+                        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                        formDataAvatar,
+                        {
+                            headers: {
+                                "Content-Type": `multipart/form-data; boundary=${formDataAvatar}`,
+                                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                            },
                         },
-                    });
+                    );
                 }
                 if (imageCover) {
                     const formDataCover = new FormData();
@@ -135,12 +145,16 @@ const EditAccountPage = function ({}: Props) {
                     formDataCover.append("pinataMetadata", metadataCover);
                     const optionsCover = JSON.stringify({ cidVersion: 0 });
                     formDataCover.append("pinataOptions", optionsCover);
-                    responseCover = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formDataCover, {
-                        headers: {
-                            "Content-Type": `multipart/form-data; boundary=${formDataCover}`,
-                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                    responseCover = await axios.post(
+                        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                        formDataCover,
+                        {
+                            headers: {
+                                "Content-Type": `multipart/form-data; boundary=${formDataCover}`,
+                                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzOTBlYTJkYy04ZDc5LTQzYWMtYjFkOS0zYTE5ZWRkZTkzNzYiLCJlbWFpbCI6Im5ndXllbmtoYW5oMTcxMTIwMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQ0MjE1ZTZjMzk0ZjNjMjNjMzkxIiwic2NvcGVkS2V5U2VjcmV0IjoiOWZiYWRjOWIxOWJhMmRjYzNiZTU4MzMyZDJiNjAxMjE4YzhjYTM5NjIzMzU5ZGY3NWY3YzA3NjYxYTFlNGZkMyIsImlhdCI6MTcwMzA2MDI0N30.8D5f1dlPgVKDif5CikQtU4kd7pCcqIWvXo2Mlu5mYXk`,
+                            },
                         },
-                    });
+                    );
                 }
 
                 await patch(`/account/${account.id}?destination="images/account"`, {
@@ -159,8 +173,16 @@ const EditAccountPage = function ({}: Props) {
     const [avatarPrevious, setAvatarPrevious] = useState("");
     const [coverPrevious, setCoverPrevious] = useState("");
     useEffect(() => {
-        setAvatarPrevious(accountWalletAddressParams?.avatar ? convertIpfsAddressToUrl(accountWalletAddressParams.avatar) : images.user);
-        setCoverPrevious(accountWalletAddressParams?.cover ? convertIpfsAddressToUrl(accountWalletAddressParams.cover) : images.background);
+        setAvatarPrevious(
+            accountWalletAddressParams?.avatar
+                ? convertIpfsAddressToUrl(accountWalletAddressParams.avatar)
+                : images.user,
+        );
+        setCoverPrevious(
+            accountWalletAddressParams?.cover
+                ? convertIpfsAddressToUrl(accountWalletAddressParams.cover)
+                : images.background,
+        );
     }, [accountWalletAddressParams]);
 
     return (
@@ -220,7 +242,13 @@ const EditAccountPage = function ({}: Props) {
                             <h3 className={cx("upload-title")}>Upload backgound</h3>
                             <div className={cx("upload-content")} onClick={handleChooseCoverFile}>
                                 <p className={cx("upload-type")}>{fileNameImageCover}</p>
-                                <input type="file" className="file__input--cover" accept="image/*" hidden onChange={handleChangeCover} />
+                                <input
+                                    type="file"
+                                    className="file__input--cover"
+                                    accept="image/*"
+                                    hidden
+                                    onChange={handleChangeCover}
+                                />
                                 <Button className={cx("button__upload")}>Upload</Button>
                             </div>
                         </div>
@@ -230,7 +258,13 @@ const EditAccountPage = function ({}: Props) {
                             <h3 className={cx("upload-title")}>Upload avatar</h3>
                             <div className={cx("upload-content")} onClick={handleChooseAvatarFile}>
                                 <p className={cx("upload-type")}>{fileNameImageAvatar}</p>
-                                <input type="file" className="file__input--avatar" accept="image/*" hidden onChange={handleChangeAvatar} />
+                                <input
+                                    type="file"
+                                    className="file__input--avatar"
+                                    accept="image/*"
+                                    hidden
+                                    onChange={handleChangeAvatar}
+                                />
                                 <Button className={cx("button__upload")}>Upload</Button>
                             </div>
                         </div>
@@ -279,7 +313,13 @@ const EditAccountPage = function ({}: Props) {
                         {/* title-end */}
                         <div className={cx("title-wrapper")}>
                             <h3 className={cx("label")}>Email</h3>
-                            <input placeholder="Enter your email" type="text" name="email" className={cx("title-control")} onChange={handleChange} />
+                            <input
+                                placeholder="Enter your email"
+                                type="text"
+                                name="email"
+                                className={cx("title-control")}
+                                onChange={handleChange}
+                            />
                         </div>
                         {/* title-begin */}
                         <div className={cx("title-wrapper")}>

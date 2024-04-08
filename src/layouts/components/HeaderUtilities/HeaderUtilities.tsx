@@ -1,14 +1,19 @@
 import React, { useContext } from "react";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faCartShopping, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBars,
+    faCartShopping,
+    faMagnifyingGlass,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./HeaderUtilities.module.scss";
-import { ModalContextType } from "@/types/ModalContextType";
-import { AccountContextType } from "@/types/AccountContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
+import { AccountContextType } from "@/types/contexts/AccountContextType";
 import AccountContext from "@/contexts/components/AccountContext";
 import Avatar from "@/components/Avatar";
 import { ClipLoader } from "react-spinners";
-import { CartContextType } from "@/types/CartContextType";
+import { CartContextType } from "@/types/contexts/CartContextType";
 import CartContext from "@/contexts/components/CartContext";
 import ModalContext from "@/contexts/components/ModalContext";
 
@@ -31,7 +36,14 @@ const HeaderUtilities = function ({ className }: Props) {
                 <FontAwesomeIcon icon={faCartShopping} onClick={toggleShowingCart} />
                 <span>{cartItem.totalQuantity}</span>
             </div>
-            {loadingAccount && <ClipLoader size={20} color="#7000ff" loading={loadingAccount} speedMultiplier={1} />}
+            {loadingAccount && (
+                <ClipLoader
+                    size={20}
+                    color="#7000ff"
+                    loading={loadingAccount}
+                    speedMultiplier={1}
+                />
+            )}
             {account && <Avatar account={account} />}
         </div>
     );

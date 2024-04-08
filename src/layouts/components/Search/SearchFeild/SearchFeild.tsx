@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import { useRouter } from "next/navigation";
 import styles from "./SearchFeild.module.scss";
 import routes from "@/configs/routes";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
 
 const cx = classNames.bind(styles);
@@ -46,7 +46,11 @@ const SearchFeild = function ({ setResults }: Props) {
             <button onClick={handleSubmit} className={cx("search-icon")}>
                 <FaSearch className={cx("search-icon")} />
             </button>
-            <input placeholder="Enter you policyId ..." value={input} onChange={(e) => handleChange(e.target.value)} />
+            <input
+                placeholder="Enter you policyId ..."
+                value={input}
+                onChange={(e) => handleChange(e.target.value)}
+            />
         </div>
     );
 };

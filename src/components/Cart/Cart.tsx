@@ -8,10 +8,10 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import CartContext from "@/contexts/components/CartContext";
 import CartItem from "@/components/Cart/CartItem";
-import { CartContextType } from "@/types/CartContextType";
+import { CartContextType } from "@/types/contexts/CartContextType";
 import Button from "@/components/Button";
 import ModalContext from "@/contexts/components/ModalContext";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 
 const cx = classNames.bind(styles);
 type Props = {};

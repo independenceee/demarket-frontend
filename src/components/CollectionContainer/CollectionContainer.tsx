@@ -8,7 +8,7 @@ import { Pagination, Stack } from "@mui/material";
 import CollectionItem from "@/components/CollectionContainer/CollectionItem";
 import Button from "@/components/Button";
 import CountUp from "react-countup";
-import { LucidContextType } from "@/types/LucidContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
 import LucidContext from "@/contexts/components/LucidContext";
 import CollectionItemSkeleton from "@/components/CollectionContainer/CollectionItem/CollectionItemSkeleton";
 

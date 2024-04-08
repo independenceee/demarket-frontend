@@ -1,5 +1,5 @@
 import { Lucid } from "lucid-cardano";
-import { WalletItemType } from "./GenericsType";
+import { WalletItemType } from "../GenericsType";
 
 export type LucidContextType = {
     networkPlatform: string;

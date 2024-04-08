@@ -6,7 +6,7 @@ import { ArrowDropdownCircleIcon, FillDashCircleFillIcon } from "@/components/Ic
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { CategoryItemType } from "@/types/GenericsType";
-import { DemarketContextType } from "@/types/DemarketContextType";
+import { DemarketContextType } from "@/types/contexts/DemarketContextType";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import styles from "./Category.module.scss";
 import { QueryParamsType } from "@/types/GenericsType";

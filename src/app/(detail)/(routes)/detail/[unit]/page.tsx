@@ -17,18 +17,18 @@ import convertHexToString from "@/helpers/convertHexToString";
 import LucidContext from "@/contexts/components/LucidContext";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import fetchInformationAsset from "@/utils/fetchInformationAsset";
-import { SmartContractType } from "@/types/SmartContextType";
-import { LucidContextType } from "@/types/LucidContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
 import SubTitle from "@/components/SubTitle";
 import Button from "@/components/Button";
 import HistoryContainer from "@/components/HistoryContainer";
 import MetadataContainer from "@/components/MetadataContainer";
-import { CartContextType } from "@/types/CartContextType";
+import { CartContextType } from "@/types/contexts/CartContextType";
 import CartContext from "@/contexts/components/CartContext";
 import { toast } from "react-toastify";
-import { ModalContextType } from "@/types/ModalContextType";
+import { ModalContextType } from "@/types/contexts/ModalContextType";
 import ModalContext from "@/contexts/components/ModalContext";
-import { DemarketContextType } from "@/types/DemarketContextType";
+import { DemarketContextType } from "@/types/contexts/DemarketContextType";
 import DemarketContext from "@/contexts/components/DemarketContext";
 import { ClipLoader } from "react-spinners";
 import { GlobalStateContextType } from "@/types/GlobalStateContextType";
@@ -56,8 +56,14 @@ const DetailPage = function ({}: Props) {
     const { addNft } = useContext<DemarketContextType>(DemarketContext);
     const { toggleNotificationConnectWallet } = useContext<ModalContextType>(ModalContext);
     const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
-    const { assetsFromSmartContract, loadingAssetsFromSmartContract, findAssetService, sellAssetService, buyAssetService, refundAssetService } =
-        useContext<SmartContractType>(SmartContractContext);
+    const {
+        assetsFromSmartContract,
+        loadingAssetsFromSmartContract,
+        findAssetService,
+        sellAssetService,
+        buyAssetService,
+        refundAssetService,
+    } = useContext<SmartContractType>(SmartContractContext);
     const { lucidWallet, walletItem } = useContext<LucidContextType>(LucidContext);
     const { addToCart } = useContext<CartContextType>(CartContext);
 
@@ -190,21 +196,40 @@ const DetailPage = function ({}: Props) {
                         <section className={cx("content__left")}>
                             <div className={cx("content__image")}>
                                 {checkMediaType(String(asset.mediaType), "image") && (
-                                    <img className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))} alt="" />
+                                    <img
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                        alt=""
+                                    />
                                 )}
                                 {checkMediaType(String(asset.mediaType), "video") && (
-                                    <video autoPlay controls muted loop className={cx("content__image--image")}>
-                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="video/mp4" />
+                                    <video
+                                        autoPlay
+                                        controls
+                                        muted
+                                        loop
+                                        className={cx("content__image--image")}
+                                    >
+                                        <source
+                                            src={String(convertIpfsAddressToUrl(asset.image))}
+                                            type="video/mp4"
+                                        />
                                     </video>
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "application") && (
-                                    <iframe className={cx("content__image--image")} src={String(convertIpfsAddressToUrl(asset.image))}></iframe>
+                                    <iframe
+                                        className={cx("content__image--image")}
+                                        src={String(convertIpfsAddressToUrl(asset.image))}
+                                    ></iframe>
                                 )}
 
                                 {checkMediaType(String(asset.mediaType), "audio") && (
                                     <audio controls>
-                                        <source src={String(convertIpfsAddressToUrl(asset.image))} type="audio/mpeg" />
+                                        <source
+                                            src={String(convertIpfsAddressToUrl(asset.image))}
+                                            type="audio/mpeg"
+                                        />
                                     </audio>
                                 )}
                                 <div className={cx("content__image--left")}>
@@ -219,7 +244,9 @@ const DetailPage = function ({}: Props) {
                         <section className={cx("content__right")}>
                             <section className={cx("detail__content")}>
                                 <title>{convertHexToString(asset.assetName)}</title>
-                                <h2 className={cx("asset__name")}>{convertHexToString(asset.assetName)}</h2>
+                                <h2 className={cx("asset__name")}>
+                                    {convertHexToString(asset.assetName)}
+                                </h2>
                                 <div className={cx("description")}>
                                     <span>Type:</span> {asset.mediaType.split("/").pop()}
                                 </div>
@@ -235,12 +262,21 @@ const DetailPage = function ({}: Props) {
                                 <div className={cx("people__wrapper")}>
                                     <section className={cx("people__container")}>
                                         <header className={cx("people__header")}>Owner</header>
-                                        <Link href={`/account/${asset.sellerAddress}`} className={cx("people__content")}>
+                                        <Link
+                                            href={`/account/${asset.sellerAddress}`}
+                                            className={cx("people__content")}
+                                        >
                                             <div className={cx("people__avatar")}>
-                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
                                             </div>
                                             <div className={cx("people__information")}>
-                                                <h3 className={cx("people__name")}>{asset.stakekeySellerAddress}</h3>
+                                                <h3 className={cx("people__name")}>
+                                                    {asset.stakekeySellerAddress}
+                                                </h3>
                                                 <div className={cx("people__address")}>
                                                     <p>{asset.sellerAddress}</p>
                                                     <CopyItem value={asset.sellerAddress} />
@@ -250,12 +286,21 @@ const DetailPage = function ({}: Props) {
                                     </section>
                                     <section className={cx("people__container")}>
                                         <header className={cx("people__header")}>Author</header>
-                                        <Link href={`/account/${asset.authorAddress}`} className={cx("people__content")}>
+                                        <Link
+                                            href={`/account/${asset.authorAddress}`}
+                                            className={cx("people__content")}
+                                        >
                                             <div className={cx("people__avatar")}>
-                                                <Image className={cx("people__avatar--image")} src={images.user} alt="" />
+                                                <Image
+                                                    className={cx("people__avatar--image")}
+                                                    src={images.user}
+                                                    alt=""
+                                                />
                                             </div>
                                             <div className={cx("people__information")}>
-                                                <h3 className={cx("people__name")}>{asset.stakekeyAuthorAddress}</h3>
+                                                <h3 className={cx("people__name")}>
+                                                    {asset.stakekeyAuthorAddress}
+                                                </h3>
                                                 <div className={cx("people__address")}>
                                                     <p>{asset.authorAddress}</p>
                                                     <CopyItem value={asset.authorAddress} />
@@ -267,16 +312,26 @@ const DetailPage = function ({}: Props) {
                             </section>
                             {asset.price && asset.sellerAddress !== walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000} </header>
+                                    <header className={cx("price__header")}>
+                                        ₳ {Number(asset.price) / 1000000}{" "}
+                                    </header>
                                     <article className={cx("price__container")}>
                                         <Button className={cx("search-btn")} onClick={handleBuyNft}>
                                             {!isActive ? (
                                                 "Buy asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleAddtoCart}
+                                        >
                                             Add to cart
                                         </Button>
                                     </article>
@@ -285,16 +340,29 @@ const DetailPage = function ({}: Props) {
 
                             {asset.price && asset.sellerAddress === walletItem.walletAddress && (
                                 <section className={cx("price__wrapper")}>
-                                    <header className={cx("price__header")}>₳ {Number(asset.price) / 1000000}</header>
+                                    <header className={cx("price__header")}>
+                                        ₳ {Number(asset.price) / 1000000}
+                                    </header>
                                     <article className={cx("price__container")}>
-                                        <Button className={cx("search-btn")} onClick={handleRefundNft}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleRefundNft}
+                                        >
                                             {!isActive ? (
                                                 "Refund asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
-                                        <Button className={cx("search-btn")} onClick={handleAddtoCart}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleAddtoCart}
+                                        >
                                             Add to cart
                                         </Button>
                                     </article>
@@ -312,11 +380,19 @@ const DetailPage = function ({}: Props) {
                                             placeholder="Enter the price ..."
                                         />
 
-                                        <Button className={cx("search-btn")} onClick={handleSellNft}>
+                                        <Button
+                                            className={cx("search-btn")}
+                                            onClick={handleSellNft}
+                                        >
                                             {!isActive ? (
                                                 "Sell asset"
                                             ) : (
-                                                <ClipLoader size={25} loading={isActive} color="#7000ff" speedMultiplier={1} />
+                                                <ClipLoader
+                                                    size={25}
+                                                    loading={isActive}
+                                                    color="#7000ff"
+                                                    speedMultiplier={1}
+                                                />
                                             )}
                                         </Button>
                                     </article>
@@ -328,7 +404,11 @@ const DetailPage = function ({}: Props) {
                                         return (
                                             <button
                                                 key={index}
-                                                className={toggleTabState === id ? cx("tab__item--active") : cx("tab__item")}
+                                                className={
+                                                    toggleTabState === id
+                                                        ? cx("tab__item--active")
+                                                        : cx("tab__item")
+                                                }
                                                 onClick={() => toggleTab(id)}
                                             >
                                                 {name}
@@ -339,18 +419,27 @@ const DetailPage = function ({}: Props) {
 
                                 {toggleTabState === 2 && (
                                     <div className={cx("tab__content")}>
-                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
+                                        <HistoryContainer
+                                            policyId={policyId}
+                                            assetsName={assetName}
+                                        />
                                     </div>
                                 )}
                                 {toggleTabState === 1 && (
                                     <div className={cx("tab__content")}>
-                                        <MetadataContainer policyId={policyId} assetName={assetName} />
+                                        <MetadataContainer
+                                            policyId={policyId}
+                                            assetName={assetName}
+                                        />
                                     </div>
                                 )}
 
                                 {toggleTabState === 3 && (
                                     <div className={cx("tab__content")}>
-                                        <HistoryContainer policyId={policyId} assetsName={assetName} />
+                                        <HistoryContainer
+                                            policyId={policyId}
+                                            assetsName={assetName}
+                                        />
                                     </div>
                                 )}
                             </section>
@@ -379,7 +468,10 @@ const DetailPage = function ({}: Props) {
 
                 <section className={cx("other__wrapper")}>
                     <SubTitle title="More Items" />
-                    <NftContainer nfts={assetsFromSmartContract} loading={loadingAssetsFromSmartContract} />
+                    <NftContainer
+                        nfts={assetsFromSmartContract}
+                        loading={loadingAssetsFromSmartContract}
+                    />
                 </section>
             </div>
         </main>

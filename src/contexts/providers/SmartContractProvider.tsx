@@ -3,11 +3,23 @@
 import React, { ReactNode, useState } from "react";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
 import readValidator from "@/utils/read-validator";
-import { Data, Lucid, Script, Tx, TxComplete, TxHash, TxSigned, UTxO } from "lucid-cardano";
+import {
+    Address,
+    Data,
+    Lucid,
+    PolicyId,
+    Script,
+    Tx,
+    TxComplete,
+    TxHash,
+    TxSigned,
+    UTxO,
+} from "lucid-cardano";
 import { ProductType } from "@/types/GenericsType";
 import { MarketplaceDatum } from "@/constants/datum";
 import { MarketplaceRedeemer } from "@/constants/redeemer";
 import fetchPublicKeyFromAddress from "@/utils/fetchPublicKeyFromAddress";
+import convertPublickeyToAddress from "@/helpers/convert-public-key-to-address";
 
 type Props = {
     children: ReactNode;
@@ -49,16 +61,25 @@ const SmartContractProvider = function ({ children }: Props) {
 
             let tx: any = lucid.newTx();
 
-            for (let index = 0; index < utxos.length; index++) {
-                let exchange_fee = BigInt((Number(utxoOuts[index].price) * 1) / 100);
+            for (let index = 0; index < utxoOuts.length; index++) {
+                const exchange_fee = BigInt((Number(utxoOuts[index].price) * 1) / 100);
+                const sellerAddress: Address = convertPublickeyToAddress({
+                    lucid: lucid,
+                    publicKey: utxoOuts[index].seller,
+                });
+
+                const authorAddress: Address = convertPublickeyToAddress({
+                    lucid: lucid,
+                    publicKey: utxoOuts[index].author,
+                });
                 tx = await tx
-                    .payToAddress(String(products[index].sellerAddress), {
+                    .payToAddress(sellerAddress, {
                         lovelace: utxoOuts[index].price as bigint,
                     })
                     .payToAddress(process.env.WALLET_ADDRESS_FEE_EXCHANGE, {
                         lovelace: exchange_fee,
                     })
-                    .payToAddress(products[index].authorAddress, {
+                    .payToAddress(authorAddress, {
                         lovelace: utxoOuts[index].royalties,
                     });
             }
@@ -67,6 +88,7 @@ const SmartContractProvider = function ({ children }: Props) {
                 .collectFrom(utxos, MarketplaceRedeemer)
                 .attachSpendingValidator(validator)
                 .complete();
+
             const signedTx: TxSigned = await tx.sign().complete();
             const txHash: TxHash = await signedTx.submit();
             const success: boolean = await lucid.awaitTx(txHash);
@@ -81,10 +103,16 @@ const SmartContractProvider = function ({ children }: Props) {
 
     const sell = async function ({
         lucid,
-        product,
+        policyId,
+        assetName,
+        price,
+        royalties,
     }: {
         lucid: Lucid;
-        product: ProductType;
+        policyId: PolicyId;
+        assetName: string;
+        price: bigint;
+        royalties: bigint;
     }): Promise<TxHash> {
         try {
             setWaiting(true);
@@ -97,12 +125,12 @@ const SmartContractProvider = function ({ children }: Props) {
 
             const datum: string = Data.to(
                 {
-                    policyId: product.policyId,
-                    assetName: product.assetName,
+                    policyId: policyId,
+                    assetName: assetName,
                     seller: sellerPublicKey,
                     author: authorPublicKey,
-                    price: product.price!,
-                    royalties: product.royalties!,
+                    price: price,
+                    royalties: royalties,
                 },
                 MarketplaceDatum,
             );

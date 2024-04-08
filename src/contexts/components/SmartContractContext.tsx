@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { SmartContractType } from "@/types/SmartContextType";
+import { SmartContractType } from "@/types/contexts/SmartContextType";
 
 const SmartContractContext = createContext<SmartContractType>(null!);
 
