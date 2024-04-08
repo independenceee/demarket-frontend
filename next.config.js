@@ -24,8 +24,11 @@ const nextConfig = {
 
     env: {
         NEXT_APP_BASE_URL: "https://api.demarket.vn/api/v1",
+<<<<<<< HEAD
         ADDRESS_DONATE:
             "addr1qy2z60lx2zdfs7gvjn3mt47mlx20dhqyrt8xu0m7d685x2ng64psekpurtcrh0esrtgkyk3pn5ehv5njx745rqp5ts7s3zfapl",
+=======
+>>>>>>> parent of bb3d987 (develop)
         // NEXT_APP_BASE_URL: "http://localhost:5000/api/v1",
         ADDRESS_DONATE: "addr1qy2z60lx2zdfs7gvjn3mt47mlx20dhqyrt8xu0m7d685x2ng64psekpurtcrh0esrtgkyk3pn5ehv5njx745rqp5ts7s3zfapl",
         CONTRACT_ADDRESS: "addr_test1wpsqeugnmmtk3cdf3fsly998458eavua8rhg4jdtgcva26sqnylmx",
