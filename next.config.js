@@ -26,6 +26,8 @@ const nextConfig = {
         NEXT_APP_BASE_URL: "https://api.demarket.vn/api/v1",
         ADDRESS_DONATE:
             "addr1qy2z60lx2zdfs7gvjn3mt47mlx20dhqyrt8xu0m7d685x2ng64psekpurtcrh0esrtgkyk3pn5ehv5njx745rqp5ts7s3zfapl",
+        // NEXT_APP_BASE_URL: "http://localhost:5000/api/v1",
+        ADDRESS_DONATE: "addr1qy2z60lx2zdfs7gvjn3mt47mlx20dhqyrt8xu0m7d685x2ng64psekpurtcrh0esrtgkyk3pn5ehv5njx745rqp5ts7s3zfapl",
         CONTRACT_ADDRESS: "addr_test1wpsqeugnmmtk3cdf3fsly998458eavua8rhg4jdtgcva26sqnylmx",
         EXCHANGE_ADDRESS:
             "addr_test1qqayue6h7fxemhdktj9w7cxsnxv40vm9q3f7temjr7606s3j0xykpud5ms6may9d6rf34mgwxqv75rj89zpfdftn0esq3pcfjg",
