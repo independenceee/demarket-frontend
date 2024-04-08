@@ -2,8 +2,8 @@ import { Data, Lucid } from "lucid-cardano";
 import readValidator from "@/utils/read-validator";
 import { contractValidatorMarketplace } from "@/libs/marketplace";
 
-import { Datum } from "@/constants/datum";
-import { redeemer } from "@/constants/redeemer";
+import { MarketplaceDatum } from "@/constants/datum";
+import { MarketplaceRedeemer } from "@/constants/redeemer";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -14,18 +14,16 @@ type Props = {
 
 const refundAssetService = async function ({ lucid, policyId, assetName }: Props) {
     try {
-        const validator = await readValidator({
-            compliedCode: contractValidatorMarketplace[0].compiledCode,
-        });
+        const validator = readValidator();
 
         const scriptAddress = lucid.utils.validatorToAddress(validator);
         const scriptUtxos = await lucid.utxosAt(scriptAddress);
         let existAsset: any;
 
         const assets = scriptUtxos.filter((asset: any, index: number) => {
-            const checkAsset = Data.from<Datum>(asset.datum, Datum);
+            const checkAsset = Data.from<MarketplaceDatum>(asset.datum, MarketplaceDatum);
             if (checkAsset.policyId === policyId && checkAsset.assetName === assetName) {
-                existAsset = Data.from<Datum>(asset.datum, Datum);
+                existAsset = Data.from<MarketplaceDatum>(asset.datum, MarketplaceDatum);
                 return true;
             }
             return false;
@@ -39,7 +37,7 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
         if (validator) {
             const tx = await lucid
                 .newTx()
-                .collectFrom(assets, redeemer)
+                .collectFrom(assets, MarketplaceRedeemer)
                 .addSigner(await lucid.wallet.address())
                 .attachSpendingValidator(validator)
                 .complete();

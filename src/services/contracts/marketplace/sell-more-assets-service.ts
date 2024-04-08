@@ -2,8 +2,8 @@ import { Lucid, Script, UTxO, Data, TxComplete } from "lucid-cardano";
 import readValidator from "@/utils/read-validator";
 import { NftItemType } from "@/types/GenericsType";
 import { contractValidatorMarketplace } from "@/libs/marketplace";
-import { Datum } from "@/constants/datum";
-import { redeemer } from "@/constants/redeemer";
+import { MarketplaceDatum } from "@/constants/datum";
+import { MarketplaceRedeemer } from "@/constants/redeemer";
 type Props = {
     lucid: Lucid;
     assets: NftItemType[];
@@ -11,16 +11,14 @@ type Props = {
 
 const sellMoreAssetsService = async function ({ lucid, assets }: Props) {
     try {
-        const validator: Script = await readValidator({
-            compliedCode: contractValidatorMarketplace[0].compiledCode,
-        });
+        const validator: Script = readValidator();
 
         const contractAddress: string = lucid.utils.validatorToAddress(validator);
         const scriptUtxos: UTxO[] | any = await lucid.utxosAt(contractAddress);
 
         const utxos = assets.filter(function (asset: NftItemType, index: number) {
             scriptUtxos.forEach(function (scriptUtxo: any, index: number) {
-                const temp = Data.from<Datum>(scriptUtxo.datum, Datum);
+                const temp = Data.from<MarketplaceDatum>(scriptUtxo.datum, MarketplaceDatum);
                 if (temp.policyId === asset.policyId && temp.assetName === asset.assetName) {
                     return scriptUtxo;
                 }
@@ -28,7 +26,7 @@ const sellMoreAssetsService = async function ({ lucid, assets }: Props) {
         });
 
         const utxoOuts: any = utxos.map(function (utxo: any) {
-            return Data.from<Datum>(utxo.datum, Datum);
+            return Data.from<MarketplaceDatum>(utxo.datum, MarketplaceDatum);
         });
 
         let tx: any = lucid.newTx();
@@ -48,7 +46,10 @@ const sellMoreAssetsService = async function ({ lucid, assets }: Props) {
                 });
         });
 
-        tx = await tx.collectFrom(utxoOuts, redeemer).attachSpendingValidator(validator).complete();
+        tx = await tx
+            .collectFrom(utxoOuts, MarketplaceRedeemer)
+            .attachSpendingValidator(validator)
+            .complete();
         const signedTx = await tx.sign().complete();
 
         const txHash: string = await signedTx.submit();

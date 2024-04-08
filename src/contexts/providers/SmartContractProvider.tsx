@@ -1,216 +1,108 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import SmartContractContext from "@/contexts/components/SmartContractContext";
-import readValidator from "@/utils/read-validator";
-import {
-    Address,
-    Data,
-    Lucid,
-    PolicyId,
-    Script,
-    Tx,
-    TxComplete,
-    TxHash,
-    TxSigned,
-    UTxO,
-} from "lucid-cardano";
-import { ProductType } from "@/types/GenericsType";
-import { MarketplaceDatum } from "@/constants/datum";
-import { MarketplaceRedeemer } from "@/constants/redeemer";
-import fetchPublicKeyFromAddress from "@/utils/fetchPublicKeyFromAddress";
-import convertPublickeyToAddress from "@/helpers/convert-public-key-to-address";
+import buyMoreAssetsService from "@/services/contracts/marketplace/buy-more-assets-service";
+import burnAssetService from "@/services/contracts/marketplace/burn-asset";
+import sellAssetService from "@/services/contracts/marketplace/sell-asset-service";
+import buyAssetService from "@/services/contracts/marketplace/buy-asset-service";
+import listAssetsService from "@/services/contracts/marketplace/list-assets-service";
+import mintAssetService from "@/services/contracts/marketplace/mint-asset-service";
+import mintCollectionService from "@/services/contracts/marketplace/mint-collection-service";
+import refundAssetService from "@/services/contracts/marketplace/refund-asset-service";
+import findAssetService from "@/services/contracts/marketplace/find-asset-service";
+import mintAssetPolicyIdService from "@/services/contracts/marketplace/mint-asset-policyid-service";
+import fetchInformationAsset from "@/utils/fetchInformationAsset";
+import { NftItemType } from "@/types/GenericsType";
+import LucidContext from "@/contexts/components/LucidContext";
+import { LucidContextType } from "@/types/contexts/LucidContextType";
+import { GlobalStateContextType } from "@/types/GlobalStateContextType";
+import GlobalStateContext from "@/contexts/components/GlobalStateContext";
 
 type Props = {
     children: ReactNode;
 };
 
 const SmartContractProvider = function ({ children }: Props) {
-    const [txHash, setTxHash] = useState<TxHash>("");
-    const [waiting, setWaiting] = useState<boolean>(false);
+    const { revalidate, setRevalidate } = useContext<GlobalStateContextType>(GlobalStateContext);
+    const { networkPlatform, lucidNeworkPlatform } = useContext<LucidContextType>(LucidContext);
+    const [assetsFromSmartContract, setAssetsFromSmartContract] = useState<NftItemType[]>([]);
+    const [loadingAssetsFromSmartContract, setLoadingAssetsFromSmartContract] =
+        useState<boolean>(false);
 
-    const buy = async function ({
-        products,
-        lucid,
-    }: {
-        products: Array<ProductType>;
-        lucid: Lucid;
-    }): Promise<TxHash> {
-        try {
-            setWaiting(true);
-            const validator: Script = readValidator();
-            const contractAddress: string = lucid.utils.validatorToAddress(validator);
-            const scriptUtxos: UTxO[] = await lucid.utxosAt(contractAddress);
-
-            const utxos: UTxO[] = products.flatMap(function (product) {
-                return scriptUtxos.filter((scriptUtxo) => {
-                    const marketplaceDatum: MarketplaceDatum = Data.from<MarketplaceDatum>(
-                        scriptUtxo.datum!,
-                        MarketplaceDatum,
-                    );
-                    return (
-                        marketplaceDatum.policyId === product.policyId &&
-                        marketplaceDatum.assetName === product.assetName
-                    );
+    useEffect(() => {
+        const fetchAssetsFromSmartContract = async function () {
+            setLoadingAssetsFromSmartContract(true);
+            try {
+                const assets: NftItemType[] = await listAssetsService({
+                    lucid: lucidNeworkPlatform,
                 });
-            });
-
-            const utxoOuts = utxos.map(function (utxo: UTxO) {
-                return Data.from<MarketplaceDatum>(utxo.datum!, MarketplaceDatum);
-            });
-
-            let tx: any = lucid.newTx();
-
-            for (let index = 0; index < utxoOuts.length; index++) {
-                const exchange_fee = BigInt((Number(utxoOuts[index].price) * 1) / 100);
-                const sellerAddress: Address = convertPublickeyToAddress({
-                    lucid: lucid,
-                    publicKey: utxoOuts[index].seller,
-                });
-
-                const authorAddress: Address = convertPublickeyToAddress({
-                    lucid: lucid,
-                    publicKey: utxoOuts[index].author,
-                });
-                tx = await tx
-                    .payToAddress(sellerAddress, {
-                        lovelace: utxoOuts[index].price as bigint,
-                    })
-                    .payToAddress(process.env.WALLET_ADDRESS_FEE_EXCHANGE, {
-                        lovelace: exchange_fee,
-                    })
-                    .payToAddress(authorAddress, {
-                        lovelace: utxoOuts[index].royalties,
+                console.log(assets);
+                if (assets) {
+                    const assetPromises = assets.reverse().map(async function (asset: NftItemType) {
+                        const response: NftItemType = await fetchInformationAsset({
+                            policyId: asset.policyId,
+                            assetName: asset.assetName,
+                        });
+                        return { ...response, price: asset.price, royalties: asset.royalties };
                     });
-            }
 
-            tx = await tx
-                .collectFrom(utxos, MarketplaceRedeemer)
-                .attachSpendingValidator(validator)
-                .complete();
+                    const convertedAssets: NftItemType[] = await Promise.all(assetPromises);
 
-            const signedTx: TxSigned = await tx.sign().complete();
-            const txHash: TxHash = await signedTx.submit();
-            const success: boolean = await lucid.awaitTx(txHash);
-            if (success) setTxHash(txHash);
-            return txHash;
-        } catch (error) {
-            return "";
-        } finally {
-            setWaiting(false);
-        }
-    };
+                    setAssetsFromSmartContract((previousAssets: NftItemType[]) => {
+                        const updatedAssets: NftItemType[] = previousAssets.map(
+                            (existingAsset: NftItemType) => {
+                                const matchingAsset = convertedAssets.find(function (
+                                    newAsset: NftItemType,
+                                ) {
+                                    return existingAsset.policyId === newAsset.policyId;
+                                });
 
-    const sell = async function ({
-        lucid,
-        policyId,
-        assetName,
-        price,
-        royalties,
-    }: {
-        lucid: Lucid;
-        policyId: PolicyId;
-        assetName: string;
-        price: bigint;
-        royalties: bigint;
-    }): Promise<TxHash> {
-        try {
-            setWaiting(true);
-            const validator: Script = readValidator();
-            const contractAddress: string = lucid.utils.validatorToAddress(validator);
-            const authorPublicKey: string = fetchPublicKeyFromAddress(product.authorAddress!);
-            const sellerPublicKey: string = lucid.utils.getAddressDetails(
-                await lucid.wallet.address(),
-            ).paymentCredential?.hash as string;
+                                if (matchingAsset) {
+                                    return { ...existingAsset, ...matchingAsset };
+                                }
 
-            const datum: string = Data.to(
-                {
-                    policyId: policyId,
-                    assetName: assetName,
-                    seller: sellerPublicKey,
-                    author: authorPublicKey,
-                    price: price,
-                    royalties: royalties,
-                },
-                MarketplaceDatum,
-            );
+                                return existingAsset;
+                            },
+                        );
+                        const newAssets: NftItemType[] = convertedAssets.filter(
+                            (newAsset: NftItemType) =>
+                                !previousAssets.some(
+                                    (existingAsset: any) =>
+                                        existingAsset.policyId === newAsset.policyId,
+                                ),
+                        );
 
-            const tx = await lucid
-                .newTx()
-                .payToContract(
-                    contractAddress,
-                    { inline: datum },
-                    { [product.policyId + product.assetName]: BigInt(1) },
-                )
-                .complete();
-            const signedTx: TxSigned = await tx.sign().complete();
-            const txHash: TxHash = await signedTx.submit();
-            const success: boolean = await lucid.awaitTx(txHash);
-            if (success) setTxHash(txHash);
-            return txHash;
-        } catch (error) {
-            return "";
-        } finally {
-            setWaiting(false);
-        }
-    };
-
-    const refund = async function ({
-        lucid,
-        product,
-    }: {
-        lucid: Lucid;
-        product: ProductType;
-    }): Promise<TxHash> {
-        try {
-            setWaiting(true);
-            const validator: Script = readValidator();
-            const contractAddress: string = lucid.utils.validatorToAddress(validator);
-            const scriptUtxos = await lucid.utxosAt(contractAddress);
-            let existAsset: any;
-
-            const assets = scriptUtxos.filter(function (asset: any, index: number) {
-                const checkAsset = Data.from<MarketplaceDatum>(asset.datum, MarketplaceDatum);
-                if (
-                    checkAsset.policyId === product.policyId &&
-                    checkAsset.assetName === product.assetName
-                ) {
-                    existAsset = Data.from<MarketplaceDatum>(asset.datum, MarketplaceDatum);
-                    return true;
+                        return [...updatedAssets, ...newAssets];
+                    });
                 }
-                return false;
-            });
-            if (assets.length === 0) {
-                process.exit(1);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoadingAssetsFromSmartContract(false);
             }
+        };
 
-            const tx: TxComplete = await lucid
-                .newTx()
-                .collectFrom(assets, MarketplaceRedeemer)
-                .addSigner(await lucid.wallet.address())
-                .attachSpendingValidator(validator)
-                .complete();
+        fetchAssetsFromSmartContract();
 
-            const signedTx: TxSigned = await tx.sign().complete();
-            const txHash: TxHash = await signedTx.submit();
-            const success: boolean = await lucid.awaitTx(txHash);
-            if (success) setTxHash(txHash);
-            return txHash;
-        } catch (error) {
-            return "";
-        } finally {
-            setWaiting(false);
-        }
-    };
+        // react-hooks/exhaustive-deps
+    }, [networkPlatform, lucidNeworkPlatform, revalidate.account]);
 
     return (
         <SmartContractContext.Provider
             value={{
-                txHash,
-                waiting,
-                sell,
-                buy,
-                refund,
+                assetsFromSmartContract,
+                setAssetsFromSmartContract,
+                loadingAssetsFromSmartContract,
+                buyAssetService,
+                burnAssetService,
+                findAssetService,
+                mintAssetService,
+                refundAssetService,
+                sellAssetService,
+                mintCollectionService,
+                mintAssetPolicyIdService,
+                buyMoreAssetsService,
             }}
         >
             {children}
