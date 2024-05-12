@@ -1,63 +1,70 @@
 # Installation Instructions
 
-![snapedit_1695973681512](https://github.com/sonson0910/Demarket-Contract/assets/91943651/cd600320-99eb-49c0-96d2-0b20e6d5cf67)
+Installation Instructions Video: [youtube](https://www.youtube.com/watch?v=7GzWfim-iGk&ab_channel=BLOCKALPHAINNOVA)
 
-## 1. First, please clone this source code
+### 1. Clone demarket-frontend source code
 
-In this project, nextjs is used as the main frontend framework to perform construction and development.. In this guide there will be some requirements to show you how to develop products using git to clone the project.
+In our project, NextJS is used as the main frontend framework to perform construction and development. In this guide there will be some requirements to show you how to develop products using git to clone our project.
 
-```sh
-git clone https://github.com/independenceee/demarket-frontend.git
+```
+git clone https://github.com/independenceee/demarket-frontend
 ```
 
-then Use commands to go to the directory of the current demarket frontend
+and then let's use commands to go to the directory of the current demarket-frontend.
+cd demarket-frontend.
 
-```sh
+```
 cd demarket-frontend
 ```
 
-This tutorial requires you to have `nodejs`. If you don't have it yet, install `nodejs`. Along with nodejs, npm and npx need to check the existence of these two packages before going to the next part.
+This tutorial requires you to have `nodejs`. If you don't have it yet, install `nodejs`. Along with nodejs, npm and npx need to check the existence of these two packages before going to the next part.
 
-```sh
+```
 https://nodejs.org/en
 ```
 
-Then install the project using `npm install` to get the necessary resources for the project
+Then install the project using `npm install` to get the necessary resources for the project.
 
-```sh
+```
 npm install
 ```
 
-after the installation is done successfully use `npm run dev` to run the project
+### 2. Set up .env file
 
-```sh
+In the project you must create an .env file for getting ****all the resources and create the necessary environment to run project dependencies.
+
+```
+BLOCKFROST_PROJECT_ID_SECRET_PREPROD = preprod...
+BLOCKFROST_PROJECT_ID_SECRET_PREVIEW = preview...
+BLOCKFROST_PROJECT_ID_SECRET_MAINNET = mainnet...
+```
+
+To get these resources you need to `https://blockfrost.io` to do a few operations to get all the dependencies for the project. 
+
+### 3. Config next.config.js file
+
+In our initial next.config.js file, you have to set NEXT_APP_BASE_URL to: 
+
+```
+NEXT_APP_BASE_URL: "http://localhost:5000/api/v1"
+```
+
+Make sure that you have commented command line “NEXT_APP_BASE_URL: "https://api.demarket.vn/api/v1"
+
+### 4. Run
+
+After the installation is done successfully use `npm run dev` to run the project.
+
+```
 $ npm run dev
 > demarket-frontend@1.0.0 dev
 > ts-node src/index.ts
 http://localhost:3000
 ```
 
-The project is running on `PORT 3000` and now you will carry out development of our project
-After the project is built successfully, execute `npm run build` to build and check the output
+The project is running on `PORT 3000` and now you will carry out development of our project. After the project is built successfully, execute `npm run build` to build and check the output.
 
-### 2.Get all the resources and create the necessary environment to run the project
-
-In the project you must create an .env file to run project dependencies
-
-```env
-DATABASE_URL="postgresql..."
-PORT = 5000
-BLOCKFROST_PROJECT_ID_SECRET_PREPROD = preprod...
-BLOCKFROST_PROJECT_ID_SECRET_PREVIEW = preview...
-BLOCKFROST_PROJECT_ID_SECRET_MAINNET = mainnet...
-KOIOS_RPC_URL_PREPROD = https...
-KOIOS_RPC_URL_PREVIEW = https...
-KOIOS_RPC_URL_MAINNET = https...
-```
-
-To get these resources you need to `https://blockfrost.io` and `https://www.koios.rest` to do a few operations to get all the dependencies for the project. For the database, I will use the postgresql database and on the local machine on your computer.
-
-### 3.Features: Our Fontend allows users to securely execute the following functions
+## Features: Our Fontend allows users to securely execute the following functions
 
 -   You can create your assets and list them as products for sale
 -   Display your products and product information on the platform
@@ -304,9 +311,17 @@ const refundAssetService = async function ({ lucid, policyId, assetName }: Props
 };
 ```
 
-### 4. License
+## Warning
+
+The command `npx prisma db push` is only used when you want to create a new database or want to reset the database, otherwise there is no need to run it because the database is already available, clone [demarket-database](https://github.com/independenceee/demarket-database.git) and run the command `docker compose up --build` to initialize the environment.
+
+## License
 
 The Demarket Frontend is released under the MIT. See the LICENSE file for more details.
+
+## Contact
+
+For any questions or feedback, please contact the project maintainer at `nguyenkhanh17112003@gmail.com`.
 
 ### 5. Contact
 
